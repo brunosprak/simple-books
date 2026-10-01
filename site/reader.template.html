@@ -471,8 +471,8 @@
     }
 
     function appendAlignedRuby(target, surface, reading) {
-      const kanjiPattern = /^[\p{Script=Han}々〆ヵヶ]+$/u;
-      const runs = surface.match(/[\p{Script=Han}々〆ヵヶ]+|[^\p{Script=Han}々〆ヵヶ]+/gu) || [surface];
+      const kanjiPattern = /^[\p{Script=Han}々〆ヵヶ0-9０-９]+$/u;
+      const runs = surface.match(/[\p{Script=Han}々〆ヵヶ0-9０-９]+|[^\p{Script=Han}々〆ヵヶ0-9０-９]+/gu) || [surface];
       const normalizedReading = toHiragana(reading);
       let readingCursor = 0;
 

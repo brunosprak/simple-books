@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DATA = ROOT / "texts" / "call-of-cthulhu-ja.json"
 DEFAULT_TEMPLATE = ROOT / "site" / "reader.template.html"
 DEFAULT_OUTPUT = ROOT / "site" / "index.html"
-ALLOWED_GAPS = re.compile(r"^[\s、。！？…—「」『』（）・]*$")
+ALLOWED_GAPS = re.compile(r"^[\s、。！？…—―「」『』（）・]*$")
 DATA_BLOCK = re.compile(
     r"(?ms)^    // BOOK_DATA_START\n.*?^    // BOOK_DATA_END$"
 )
