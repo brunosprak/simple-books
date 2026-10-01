@@ -73,6 +73,59 @@
       letter-spacing: 0.08em;
     }
 
+    .reader-controls {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.45rem;
+      margin-top: 1.75rem;
+      font-family: system-ui, sans-serif;
+    }
+
+    .reader-controls-label {
+      margin-right: 0.25rem;
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+    }
+
+    .font-button {
+      min-width: 2.4rem;
+      height: 2.2rem;
+      padding: 0 0.55rem;
+      color: var(--accent);
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .font-button:hover,
+    .font-button:focus-visible {
+      color: var(--paper);
+      background: var(--accent);
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    .font-button:disabled {
+      color: var(--muted);
+      background: transparent;
+      border-color: var(--rule);
+      cursor: not-allowed;
+      opacity: 0.4;
+    }
+
+    .font-level {
+      min-width: 3.4rem;
+      color: var(--muted);
+      font-size: 0.7rem;
+      text-align: center;
+    }
+
     h2 {
       margin: 0 0 2.25rem;
       color: var(--accent);
@@ -94,6 +147,22 @@
 
     #reading-text p {
       font-size: clamp(1.296rem, 3.12vw, 1.416rem);
+    }
+
+    #reading-text[data-font-level="-2"] p {
+      font-size: clamp(1.037rem, 2.496vw, 1.133rem);
+    }
+
+    #reading-text[data-font-level="-1"] p {
+      font-size: clamp(1.166rem, 2.808vw, 1.274rem);
+    }
+
+    #reading-text[data-font-level="1"] p {
+      font-size: clamp(1.426rem, 3.432vw, 1.558rem);
+    }
+
+    #reading-text[data-font-level="2"] p {
+      font-size: clamp(1.555rem, 3.744vw, 1.699rem);
     }
 
     .study-hint {
@@ -317,6 +386,12 @@
       <p class="eyebrow">Japanese Translation</p>
       <h1>クトゥルフの呼び声</h1>
       <p class="author">H・P・ラヴクラフト</p>
+      <div class="reader-controls" aria-label="Controles de tamanho do texto">
+        <span class="reader-controls-label">文字サイズ</span>
+        <button class="font-button" id="font-decrease" type="button" aria-label="Diminuir o texto japonês">A−</button>
+        <output class="font-level" id="font-level" aria-live="polite">100%</output>
+        <button class="font-button" id="font-increase" type="button" aria-label="Aumentar o texto japonês">A＋</button>
+      </div>
     </header>
 
     <article>
@@ -535,6 +610,9 @@
     ];
 
     const readingText = document.querySelector("#reading-text");
+    const fontDecrease = document.querySelector("#font-decrease");
+    const fontIncrease = document.querySelector("#font-increase");
+    const fontLevel = document.querySelector("#font-level");
     const panel = document.querySelector("#study-panel");
     const label = document.querySelector("#study-label");
     const selectedSentence = document.querySelector("#selected-sentence");
@@ -544,6 +622,32 @@
     const closeButton = document.querySelector("#study-close");
     let activeButton = null;
     let sentenceNumber = 0;
+    const fontPercentages = [80, 90, 100, 110, 120];
+    let currentFontLevel = Number.parseInt(localStorage.getItem("reading-font-level") || "0", 10);
+
+    if (!Number.isInteger(currentFontLevel) || currentFontLevel < -2 || currentFontLevel > 2) {
+      currentFontLevel = 0;
+    }
+
+    function updateFontLevel() {
+      readingText.dataset.fontLevel = String(currentFontLevel);
+      fontLevel.value = `${fontPercentages[currentFontLevel + 2]}%`;
+      fontDecrease.disabled = currentFontLevel === -2;
+      fontIncrease.disabled = currentFontLevel === 2;
+      localStorage.setItem("reading-font-level", String(currentFontLevel));
+    }
+
+    fontDecrease.addEventListener("click", () => {
+      currentFontLevel = Math.max(-2, currentFontLevel - 1);
+      updateFontLevel();
+    });
+
+    fontIncrease.addEventListener("click", () => {
+      currentFontLevel = Math.min(2, currentFontLevel + 1);
+      updateFontLevel();
+    });
+
+    updateFontLevel();
 
     function toHiragana(value) {
       return value.replace(/[ァ-ヶ]/g, (character) =>
