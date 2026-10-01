@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "source_file": "princess-of-mars.txt",
+  "translation_file": "princess-of-mars-ja.txt",
+  "languages": {
+    "source": "en",
+    "translation": "ja",
+    "gloss": "pt-BR"
+  },
+  "page": {
+    "html_file": "../site/princess-of-mars.html",
+    "title": "火星のプリンセス",
+    "author": "エドガー・ライス・バローズ",
+    "eyebrow": "JAPANESE TRANSLATION",
+    "description": "エドガー・ライス・バローズ『火星のプリンセス』日本語訳",
+    "section_title": "第一章　アリゾナの丘陵",
+    "study_hint": "文をクリックすると、読み方とポルトガル語の語釈が表示されます。",
+    "footer": "翻訳は段落ごとに順次更新されます。",
+    "font_levels_percent": [
+      80,
+      90,
+      100,
+      110,
+      120,
+      140,
+      160
+    ],
+    "default_font_level_percent": 100
+  },
+  "paragraphs": [
+    [
+      {
+        "text": "私は非常に年老いている。",
+        "pt": "Sou um homem muito velho.",
+        "chunks": [
+          ["私は", "わたしは", "eu"],
+          ["非常に", "ひじょうに", "muito"],
+          ["年老いている", "としおいている", "sou velho"]
+        ]
+      },
+      {
+        "text": "だが、いくつなのかは自分でもわからない。",
+        "pt": "Mas nem eu sei quantos anos tenho.",
+        "chunks": [
+          ["だが", "だが", "mas"],
+          ["いくつなのかは", "いくつなのかは", "quantos anos"],
+          ["自分でも", "じぶんでも", "nem eu mesmo"],
+          ["わからない", "わからない", "não sei"]
+        ]
+      },
+      {
+        "text": "百歳かもしれないし、それ以上かもしれない。",
+        "pt": "Talvez tenha cem anos, talvez mais.",
+        "chunks": [
+          ["百歳かもしれないし", "ひゃくさいかもしれないし", "talvez cem anos"],
+          ["それ以上かもしれない", "それいじょうかもしれない", "talvez mais"]
+        ]
+      },
+      {
+        "text": "ほかの人間のように年を取ったことがなく、子供だった記憶もないので、確かめようがないのだ。",
+        "pt": "Não há como saber, pois nunca envelheci como os outros homens, nem me lembro de ter sido criança.",
+        "chunks": [
+          ["ほかの人間のように", "ほかのにんげんのように", "como os outros"],
+          ["年を取ったことがなく", "としをとったことがなく", "nunca envelheci"],
+          ["子供だった記憶もないので", "こどもだったきおくもないので", "nem lembro da infância"],
+          ["確かめようがない", "たしかめようがない", "não há como saber"],
+          ["のだ", "のだ", "é que"]
+        ]
+      },
+      {
+        "text": "記憶をたどれるかぎり、私はいつも一人前の男だった。",
+        "pt": "Até onde alcança minha memória, sempre fui um homem feito.",
+        "chunks": [
+          ["記憶をたどれるかぎり", "きおくをたどれるかぎり", "até onde me lembro"],
+          ["私は", "わたしは", "eu"],
+          ["いつも", "いつも", "sempre"],
+          ["一人前の男だった", "いちにんまえのおとこだった", "fui homem feito"]
+        ]
+      },
+      {
+        "text": "年のころは三十ほどである。",
+        "pt": "Um homem de cerca de trinta anos.",
+        "chunks": [
+          ["年のころは", "としのころは", "quanto à idade"],
+          ["三十ほどである", "さんじゅうほどである", "cerca de trinta"]
+        ]
+      },
+      {
+        "text": "今の姿も四十年以上前と変わらない。",
+        "pt": "Hoje tenho a mesma aparência de mais de quarenta anos atrás.",
+        "chunks": [
+          ["今の姿も", "いまのすがたも", "minha aparência atual"],
+          ["四十年以上前と", "よんじゅうねんいじょうまえと", "de mais de 40 anos atrás"],
+          ["変わらない", "かわらない", "não mudou"]
+        ]
+      },
+      {
+        "text": "それでも、いつまでも生きつづけられるとは思えない。",
+        "pt": "Ainda assim, não creio que possa continuar vivendo para sempre.",
+        "chunks": [
+          ["それでも", "それでも", "ainda assim"],
+          ["いつまでも", "いつまでも", "para sempre"],
+          ["生きつづけられるとは", "いきつづけられるとは", "que possa continuar vivendo"],
+          ["思えない", "おもえない", "não creio"]
+        ]
+      },
+      {
+        "text": "いつかは、二度と蘇ることのない本当の死を迎えるだろう。",
+        "pt": "Algum dia encontrarei a morte verdadeira, da qual não há ressurreição.",
+        "chunks": [
+          ["いつかは", "いつかは", "algum dia"],
+          ["二度と蘇ることのない", "にどとよみがえることのない", "sem ressurreição"],
+          ["本当の死を", "ほんとうのしを", "a morte verdadeira"],
+          ["迎えるだろう", "むかえるだろう", "encontrarei"]
+        ]
+      },
+      {
+        "text": "二度死んでなお生きているこの私が、なぜ死を恐れるのかはわからない。",
+        "pt": "Não sei por que eu deveria temer a morte, eu que morri duas vezes e ainda estou vivo.",
+        "chunks": [
+          ["二度死んで", "にどしんで", "morri duas vezes"],
+          ["なお生きている", "なおいきている", "ainda estou vivo"],
+          ["この私が", "このわたしが", "eu próprio"],
+          ["なぜ死を恐れるのかは", "なぜしをおそれるのかは", "por que temo a morte"],
+          ["わからない", "わからない", "não sei"]
+        ]
+      },
+      {
+        "text": "それでも、一度も死んだことのない諸君と同じように、私は死に戦慄する。",
+        "pt": "Mesmo assim, sinto diante dela o mesmo horror que vocês, que nunca morreram.",
+        "chunks": [
+          ["それでも", "それでも", "mesmo assim"],
+          ["一度も死んだことのない", "いちどもしんだことのない", "que nunca morreram"],
+          ["諸君と同じように", "しょくんとおなじように", "assim como vocês"],
+          ["私は", "わたしは", "eu"],
+          ["死に戦慄する", "しにせんりつする", "estremeço ante a morte"]
+        ]
+      },
+      {
+        "text": "おそらく、この恐怖があるからこそ、自分も死すべき存在だと固く信じているのだ。",
+        "pt": "E creio que é por causa desse terror da morte que estou tão convencido de minha mortalidade.",
+        "chunks": [
+          ["おそらく", "おそらく", "creio que"],
+          ["この恐怖があるからこそ", "このきょうふがあるからこそ", "por causa desse terror"],
+          ["自分も", "じぶんも", "eu também"],
+          ["死すべき存在だと", "しすべきそんざいだと", "sou mortal"],
+          ["固く信じている", "かたくしんじている", "estou convencido"],
+          ["のだ", "のだ", "é que"]
+        ]
+      }
+    ]
+  ]
+}
