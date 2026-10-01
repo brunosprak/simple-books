@@ -59,12 +59,12 @@ def validate_data(data: Any) -> dict[str, Any]:
     levels = page.get("font_levels_percent")
     if (
         not isinstance(levels, list)
-        or len(levels) != 5
+        or len(levels) < 2
         or any(not isinstance(value, int) or value <= 0 for value in levels)
         or levels != sorted(set(levels))
     ):
         raise BuildError(
-            "page.font_levels_percent must contain five unique ascending positive integers"
+            "page.font_levels_percent must contain unique ascending positive integers"
         )
     default_level = page.get("default_font_level_percent")
     if default_level not in levels:
@@ -135,7 +135,7 @@ def javascript_json(value: Any, *, indent: int | None = None) -> str:
 def render(data: dict[str, Any], template: str) -> str:
     page = data["page"]
     levels = page["font_levels_percent"]
-    default_index = levels.index(page["default_font_level_percent"]) - 2
+    default_index = levels.index(page["default_font_level_percent"])
 
     replacements = {
         "{{META_DESCRIPTION}}": html.escape(page["description"], quote=True),
@@ -146,7 +146,7 @@ def render(data: dict[str, Any], template: str) -> str:
         "{{STUDY_HINT}}": html.escape(page["study_hint"]),
         "{{FOOTER}}": html.escape(page["footer"]),
         "__FONT_LEVELS_JSON__": javascript_json(levels),
-        "__DEFAULT_FONT_LEVEL__": str(default_index),
+        "__DEFAULT_FONT_INDEX__": str(default_index),
     }
 
     output = template
