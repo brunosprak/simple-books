@@ -92,6 +92,10 @@
       text-indent: 1em;
     }
 
+    #reading-text p {
+      font-size: clamp(1.08rem, 2.6vw, 1.18rem);
+    }
+
     .study-hint {
       margin: -1.25rem 0 2rem;
       color: var(--muted);
@@ -185,10 +189,41 @@
 
     .selected-sentence {
       margin: 0 0 0.65rem;
-      font-size: 1rem;
+      font-size: 1.08rem;
       font-weight: 600;
-      line-height: 1.8;
+      line-height: 2.5;
       text-align: left;
+    }
+
+    .selected-sentence ruby {
+      ruby-align: center;
+    }
+
+    .selected-sentence rt {
+      color: var(--accent);
+      font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+      font-size: 0.52em;
+      font-weight: 500;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin: 0 0 1rem;
+      color: var(--accent);
+      font-family: system-ui, sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      line-height: 1.4;
+      text-decoration-thickness: 0.08em;
+      text-underline-offset: 0.18em;
+    }
+
+    .back-link:hover,
+    .back-link:focus-visible {
+      text-decoration-thickness: 0.14em;
+      outline: none;
     }
 
     .sentence-translation {
@@ -301,6 +336,7 @@
           <button class="study-close" id="study-close" type="button" aria-label="Fechar interlinear">×</button>
         </div>
         <p class="selected-sentence" id="selected-sentence" lang="ja"></p>
+        <a class="back-link" id="back-to-original" href="#">↩ Voltar à frase no texto</a>
         <p class="sentence-translation" id="sentence-translation" lang="pt-BR"></p>
         <div class="interlinear" id="interlinear"></div>
       </section>
@@ -502,6 +538,7 @@
     const panel = document.querySelector("#study-panel");
     const label = document.querySelector("#study-label");
     const selectedSentence = document.querySelector("#selected-sentence");
+    const backToOriginal = document.querySelector("#back-to-original");
     const sentenceTranslation = document.querySelector("#sentence-translation");
     const interlinear = document.querySelector("#interlinear");
     const closeButton = document.querySelector("#study-close");
@@ -528,7 +565,28 @@
           activeButton = button;
           activeButton.setAttribute("aria-expanded", "true");
           label.textContent = `Interlinear · frase ${button.dataset.number}`;
-          selectedSentence.textContent = sentence.text;
+          selectedSentence.replaceChildren();
+
+          let cursor = 0;
+          sentence.chunks.forEach(([surface, reading]) => {
+            const start = sentence.text.indexOf(surface, cursor);
+            if (start > cursor) {
+              selectedSentence.append(document.createTextNode(sentence.text.slice(cursor, start)));
+            }
+
+            const ruby = document.createElement("ruby");
+            ruby.append(document.createTextNode(surface));
+            const rt = document.createElement("rt");
+            rt.textContent = reading;
+            ruby.append(rt);
+            selectedSentence.append(ruby);
+            cursor = start + surface.length;
+          });
+
+          if (cursor < sentence.text.length) {
+            selectedSentence.append(document.createTextNode(sentence.text.slice(cursor)));
+          }
+
           sentenceTranslation.textContent = sentence.pt;
           interlinear.replaceChildren();
 
@@ -569,6 +627,14 @@
         activeButton.setAttribute("aria-expanded", "false");
         activeButton.focus();
         activeButton = null;
+      }
+    });
+
+    backToOriginal.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (activeButton) {
+        activeButton.scrollIntoView({ behavior: "smooth", block: "center" });
+        activeButton.focus({ preventScroll: true });
       }
     });
   </script>
