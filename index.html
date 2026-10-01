@@ -254,7 +254,7 @@
       text-align: center;
     }
 
-    .chunk ruby {
+    .chunk-japanese {
       font-size: 1.05rem;
       font-weight: 600;
       line-height: 1.6;
@@ -545,6 +545,50 @@
     let activeButton = null;
     let sentenceNumber = 0;
 
+    function toHiragana(value) {
+      return value.replace(/[ァ-ヶ]/g, (character) =>
+        String.fromCharCode(character.charCodeAt(0) - 0x60)
+      );
+    }
+
+    function appendAlignedRuby(target, surface, reading) {
+      const kanjiPattern = /^[\p{Script=Han}々〆ヵヶ]+$/u;
+      const runs = surface.match(/[\p{Script=Han}々〆ヵヶ]+|[^\p{Script=Han}々〆ヵヶ]+/gu) || [surface];
+      const normalizedReading = toHiragana(reading);
+      let readingCursor = 0;
+
+      runs.forEach((run, index) => {
+        if (!kanjiPattern.test(run)) {
+          target.append(document.createTextNode(run));
+          const normalizedRun = toHiragana(run);
+          if (normalizedReading.startsWith(normalizedRun, readingCursor)) {
+            readingCursor += normalizedRun.length;
+          }
+          return;
+        }
+
+        const nextRun = runs[index + 1];
+        const nextAnchor = nextRun && !kanjiPattern.test(nextRun)
+          ? toHiragana(nextRun)
+          : "";
+        let readingEnd = nextAnchor
+          ? normalizedReading.indexOf(nextAnchor, readingCursor)
+          : normalizedReading.length;
+
+        if (readingEnd < readingCursor) {
+          readingEnd = normalizedReading.length;
+        }
+
+        const ruby = document.createElement("ruby");
+        ruby.append(document.createTextNode(run));
+        const rt = document.createElement("rt");
+        rt.textContent = reading.slice(readingCursor, readingEnd);
+        ruby.append(rt);
+        target.append(ruby);
+        readingCursor = readingEnd;
+      });
+    }
+
     paragraphs.forEach((sentences) => {
       const paragraph = document.createElement("p");
 
@@ -574,12 +618,7 @@
               selectedSentence.append(document.createTextNode(sentence.text.slice(cursor, start)));
             }
 
-            const ruby = document.createElement("ruby");
-            ruby.append(document.createTextNode(surface));
-            const rt = document.createElement("rt");
-            rt.textContent = reading;
-            ruby.append(rt);
-            selectedSentence.append(ruby);
+            appendAlignedRuby(selectedSentence, surface, reading);
             cursor = start + surface.length;
           });
 
@@ -594,18 +633,16 @@
             const chunk = document.createElement("span");
             chunk.className = "chunk";
 
-            const ruby = document.createElement("ruby");
-            ruby.append(document.createTextNode(surface));
-            const rt = document.createElement("rt");
-            rt.textContent = reading;
-            ruby.append(rt);
+            const japanese = document.createElement("span");
+            japanese.className = "chunk-japanese";
+            appendAlignedRuby(japanese, surface, reading);
 
             const meaning = document.createElement("span");
             meaning.className = "gloss";
             meaning.lang = "pt-BR";
             meaning.textContent = gloss;
 
-            chunk.append(ruby, meaning);
+            chunk.append(japanese, meaning);
             interlinear.append(chunk);
           });
 
