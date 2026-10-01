@@ -257,11 +257,41 @@
       cursor: pointer;
     }
 
+    .study-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .study-nav {
+      min-width: 2rem;
+      height: 2rem;
+      padding: 0 0.55rem;
+      color: var(--accent);
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font-family: system-ui, sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .study-nav:hover,
+    .study-nav:focus-visible,
     .study-close:hover,
     .study-close:focus-visible {
       color: var(--ink);
       border-color: var(--accent);
       outline: none;
+    }
+
+    .study-nav:disabled {
+      color: var(--muted);
+      border-color: var(--rule);
+      cursor: not-allowed;
+      opacity: 0.35;
     }
 
     .selected-sentence {
@@ -416,7 +446,11 @@
       <section class="study-panel" id="study-panel" aria-live="polite" hidden>
         <div class="study-topline">
           <p class="study-label" id="study-label">Interlinear</p>
-          <button class="study-close" id="study-close" type="button" aria-label="Fechar interlinear">×</button>
+          <div class="study-actions" aria-label="Navegação entre frases">
+            <button class="study-nav" id="study-previous" type="button" aria-label="Frase anterior">←</button>
+            <button class="study-nav" id="study-next" type="button" aria-label="Próxima frase">→</button>
+            <button class="study-close" id="study-close" type="button" aria-label="Fechar interlinear">×</button>
+          </div>
         </div>
         <p class="selected-sentence" id="selected-sentence" lang="ja"></p>
         <a class="back-link" id="back-to-original" href="#">↩ Voltar à frase no texto</a>
@@ -1365,7 +1399,10 @@
     const backToOriginal = document.querySelector("#back-to-original");
     const sentenceTranslation = document.querySelector("#sentence-translation");
     const interlinear = document.querySelector("#interlinear");
+    const previousButton = document.querySelector("#study-previous");
+    const nextButton = document.querySelector("#study-next");
     const closeButton = document.querySelector("#study-close");
+    const sentenceButtons = [];
     let activeButton = null;
     let sentenceNumber = 0;
     const fontPercentages = [80, 90, 100, 110, 120, 140, 160];
@@ -1461,6 +1498,9 @@
 
           activeButton = button;
           activeButton.setAttribute("aria-expanded", "true");
+          const activeIndex = sentenceButtons.indexOf(activeButton);
+          previousButton.disabled = activeIndex <= 0;
+          nextButton.disabled = activeIndex >= sentenceButtons.length - 1;
           label.textContent = `Interlinear · frase ${button.dataset.number}`;
           selectedSentence.replaceChildren();
 
@@ -1505,10 +1545,25 @@
         });
 
         button.dataset.number = sentenceNumber;
+        sentenceButtons.push(button);
         paragraph.append(button);
       });
 
       readingText.append(paragraph);
+    });
+
+    previousButton.addEventListener("click", () => {
+      const activeIndex = sentenceButtons.indexOf(activeButton);
+      if (activeIndex > 0) {
+        sentenceButtons[activeIndex - 1].click();
+      }
+    });
+
+    nextButton.addEventListener("click", () => {
+      const activeIndex = sentenceButtons.indexOf(activeButton);
+      if (activeIndex >= 0 && activeIndex < sentenceButtons.length - 1) {
+        sentenceButtons[activeIndex + 1].click();
+      }
     });
 
     closeButton.addEventListener("click", () => {
