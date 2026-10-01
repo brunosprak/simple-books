@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{META_DESCRIPTION}}">
+  <title>{{TITLE}}</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --paper: #f3efe4;
+      --ink: #22231f;
+      --muted: #696a62;
+      --rule: #b3ad9f;
+      --accent: #314f46;
+      --accent-soft: rgb(49 79 70 / 11%);
+      --panel: #e9e4d7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: var(--paper);
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 0%, rgb(49 79 70 / 8%), transparent 28rem),
+        var(--paper);
+      font-family: "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif JP", serif;
+      line-height: 2;
+      text-rendering: optimizeLegibility;
+    }
+
+    main {
+      width: min(100% - 2.5rem, 45rem);
+      margin: 0 auto;
+      padding: clamp(4rem, 12vw, 8rem) 0 8rem;
+    }
+
+    header {
+      margin-bottom: 4rem;
+      padding-bottom: 2.25rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .eyebrow {
+      margin: 0 0 1rem;
+      color: var(--accent);
+      font-family: system-ui, sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.2rem, 8vw, 4.25rem);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      line-height: 1.25;
+    }
+
+    .author {
+      margin: 1.25rem 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+    }
+
+    .reader-controls {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.45rem;
+      margin-top: 1.75rem;
+      font-family: system-ui, sans-serif;
+    }
+
+    .reader-controls-label {
+      margin-right: 0.25rem;
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+    }
+
+    .font-button {
+      min-width: 2.4rem;
+      height: 2.2rem;
+      padding: 0 0.55rem;
+      color: var(--accent);
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .font-button:hover,
+    .font-button:focus-visible {
+      color: var(--paper);
+      background: var(--accent);
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    .font-button:disabled {
+      color: var(--muted);
+      background: transparent;
+      border-color: var(--rule);
+      cursor: not-allowed;
+      opacity: 0.4;
+    }
+
+    .font-level {
+      min-width: 3.4rem;
+      color: var(--muted);
+      font-size: 0.7rem;
+      text-align: center;
+    }
+
+    h2 {
+      margin: 0 0 2.25rem;
+      color: var(--accent);
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+    }
+
+    p {
+      margin: 0 0 1.75rem;
+      font-size: clamp(1rem, 2.5vw, 1.1rem);
+      letter-spacing: 0.025em;
+      text-align: justify;
+    }
+
+    p + p {
+      text-indent: 1em;
+    }
+
+    #reading-text p {
+      font-size: clamp(1.296rem, 3.12vw, 1.416rem);
+    }
+
+    #reading-text[data-font-level="-2"] p {
+      font-size: clamp(1.037rem, 2.496vw, 1.133rem);
+    }
+
+    #reading-text[data-font-level="-1"] p {
+      font-size: clamp(1.166rem, 2.808vw, 1.274rem);
+    }
+
+    #reading-text[data-font-level="1"] p {
+      font-size: clamp(1.426rem, 3.432vw, 1.558rem);
+    }
+
+    #reading-text[data-font-level="2"] p {
+      font-size: clamp(1.555rem, 3.744vw, 1.699rem);
+    }
+
+    .study-hint {
+      margin: -1.25rem 0 2rem;
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.02em;
+      text-align: left;
+    }
+
+    .sentence {
+      display: inline;
+      margin: 0;
+      padding: 0.08em 0.05em;
+      color: inherit;
+      background: transparent;
+      border: 0;
+      border-radius: 0.2em;
+      font: inherit;
+      letter-spacing: inherit;
+      line-height: inherit;
+      text-align: inherit;
+      text-decoration: underline;
+      text-decoration-color: color-mix(in srgb, var(--accent) 38%, transparent);
+      text-decoration-style: dotted;
+      text-decoration-thickness: 0.08em;
+      text-underline-offset: 0.23em;
+      cursor: pointer;
+    }
+
+    .sentence:hover,
+    .sentence:focus-visible,
+    .sentence[aria-expanded="true"] {
+      color: var(--accent);
+      background: var(--accent-soft);
+      outline: none;
+      text-decoration-color: var(--accent);
+      text-decoration-style: solid;
+    }
+
+    .study-panel {
+      margin: 0.5rem 0 2.5rem;
+      padding: clamp(1.25rem, 4vw, 2rem);
+      background: var(--panel);
+      border: 1px solid var(--rule);
+      border-radius: 0.45rem;
+      box-shadow: 0 1rem 2.5rem rgb(20 25 22 / 8%);
+      text-indent: 0;
+    }
+
+    .study-panel[hidden] {
+      display: none;
+    }
+
+    .study-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .study-label {
+      margin: 0;
+      color: var(--accent);
+      font-family: system-ui, sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .study-close {
+      width: 2rem;
+      height: 2rem;
+      padding: 0;
+      color: var(--muted);
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 50%;
+      font-size: 1.15rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .study-close:hover,
+    .study-close:focus-visible {
+      color: var(--ink);
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    .selected-sentence {
+      margin: 0 0 0.65rem;
+      font-size: 1.08rem;
+      font-weight: 600;
+      line-height: 2.5;
+      text-align: left;
+    }
+
+    .selected-sentence ruby {
+      ruby-align: center;
+    }
+
+    .selected-sentence rt {
+      color: var(--accent);
+      font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+      font-size: 0.52em;
+      font-weight: 500;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin: 0 0 1rem;
+      color: var(--accent);
+      font-family: system-ui, sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      line-height: 1.4;
+      text-decoration-thickness: 0.08em;
+      text-underline-offset: 0.18em;
+    }
+
+    .back-link:hover,
+    .back-link:focus-visible {
+      text-decoration-thickness: 0.14em;
+      outline: none;
+    }
+
+    .sentence-translation {
+      margin: 0 0 1.5rem;
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+      font-size: 0.88rem;
+      line-height: 1.55;
+      text-align: left;
+    }
+
+    .interlinear {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: 0.75rem 0.55rem;
+    }
+
+    .chunk {
+      display: inline-flex;
+      min-width: 3rem;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.55rem 0.65rem 0.5rem;
+      background: color-mix(in srgb, var(--paper) 72%, transparent);
+      border-radius: 0.35rem;
+      text-align: center;
+    }
+
+    .chunk-japanese {
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    .chunk rt {
+      color: var(--accent);
+      font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+      font-size: 0.6em;
+      font-weight: 500;
+    }
+
+    .gloss {
+      max-width: 12rem;
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+      font-size: 0.7rem;
+      line-height: 1.3;
+    }
+
+    footer {
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #171a18;
+        --ink: #e7e3d8;
+        --muted: #aaa99f;
+        --rule: #414641;
+        --accent: #92b3a7;
+        --accent-soft: rgb(146 179 167 / 13%);
+        --panel: #222724;
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .study-panel {
+        animation: reveal 160ms ease-out;
+      }
+
+      @keyframes reveal {
+        from {
+          opacity: 0;
+          transform: translateY(-0.35rem);
+        }
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">{{EYEBROW}}</p>
+      <h1>{{TITLE}}</h1>
+      <p class="author">{{AUTHOR}}</p>
+      <div class="reader-controls" aria-label="Controles de tamanho do texto">
+        <span class="reader-controls-label">文字サイズ</span>
+        <button class="font-button" id="font-decrease" type="button" aria-label="Diminuir o texto japonês">A−</button>
+        <output class="font-level" id="font-level" aria-live="polite">100%</output>
+        <button class="font-button" id="font-increase" type="button" aria-label="Aumentar o texto japonês">A＋</button>
+      </div>
+    </header>
+
+    <article>
+      <h2>{{SECTION_TITLE}}</h2>
+
+      <p class="study-hint">{{STUDY_HINT}}</p>
+      <div id="reading-text"></div>
+
+      <noscript>
+        <p>この世でもっとも慈悲深いものは、人間の精神が、自らの内にあるすべてを結びつけて考えることができないという事実だろう。われわれは、果てしない黒い海のただ中に浮かぶ、静かな無知の島で暮らしている。そこから遠くへ航海するようにはできていないのだ。さまざまな科学は、それぞれ別の方向へ探究を進め、これまでのところ、われわれにほとんど害を与えてこなかった。だが、いつの日か、ばらばらだった知識が結び合わされ、現実の恐るべき全貌と、その中でわれわれが占める戦慄すべき位置が明らかになる。そのとき人類は、真実を知って狂気に陥るか、死をもたらす光から逃れ、新たな暗黒時代の平穏と安全へ退くほかないだろう。</p>
+        <p>神智学者たちは、われわれの世界と人類が束の間の挿話にすぎない宇宙の循環に、畏るべき壮大さを見て取っていた。穏当な楽観論に覆われていなければ、聞く者の血も凍るような言葉で、異様な残存物の存在をほのめかしてもいた。だが、考えるだけで背筋が凍り、夢に見れば正気を失う、あの禁断の永劫を垣間見せたのは彼らではない。恐るべき真実はいつもそうであるように、その一瞥もまた、ばらばらだったものが偶然ひとつにつながった瞬間、閃光のように現れた。この場合は、古い新聞記事と、死んだ教授の手記だった。ほかの誰にも、このつながりを見いだしてほしくない。少なくとも私が生きているかぎり、これほど忌まわしい鎖に、みずから一つの環を加えることは決してない。教授もまた、知り得たことを口外しないつもりだったのだろう。突然の死に襲われなければ、手記を処分していたに違いない。</p>
+      </noscript>
+
+      <section class="study-panel" id="study-panel" aria-live="polite" hidden>
+        <div class="study-topline">
+          <p class="study-label" id="study-label">Interlinear</p>
+          <button class="study-close" id="study-close" type="button" aria-label="Fechar interlinear">×</button>
+        </div>
+        <p class="selected-sentence" id="selected-sentence" lang="ja"></p>
+        <a class="back-link" id="back-to-original" href="#">↩ Voltar à frase no texto</a>
+        <p class="sentence-translation" id="sentence-translation" lang="pt-BR"></p>
+        <div class="interlinear" id="interlinear"></div>
+      </section>
+    </article>
+
+    <footer>{{FOOTER}}</footer>
+  </main>
+  <script>
+    // BOOK_DATA_START
+    const paragraphs = [];
+    // BOOK_DATA_END
+
+    const readingText = document.querySelector("#reading-text");
+    const fontDecrease = document.querySelector("#font-decrease");
+    const fontIncrease = document.querySelector("#font-increase");
+    const fontLevel = document.querySelector("#font-level");
+    const panel = document.querySelector("#study-panel");
+    const label = document.querySelector("#study-label");
+    const selectedSentence = document.querySelector("#selected-sentence");
+    const backToOriginal = document.querySelector("#back-to-original");
+    const sentenceTranslation = document.querySelector("#sentence-translation");
+    const interlinear = document.querySelector("#interlinear");
+    const closeButton = document.querySelector("#study-close");
+    let activeButton = null;
+    let sentenceNumber = 0;
+    const fontPercentages = __FONT_LEVELS_JSON__;
+    let currentFontLevel = Number.parseInt(localStorage.getItem("reading-font-level") || "__DEFAULT_FONT_LEVEL__", 10);
+
+    if (!Number.isInteger(currentFontLevel) || currentFontLevel < -2 || currentFontLevel > 2) {
+      currentFontLevel = __DEFAULT_FONT_LEVEL__;
+    }
+
+    function updateFontLevel() {
+      readingText.dataset.fontLevel = String(currentFontLevel);
+      fontLevel.value = `${fontPercentages[currentFontLevel + 2]}%`;
+      fontDecrease.disabled = currentFontLevel === -2;
+      fontIncrease.disabled = currentFontLevel === 2;
+      localStorage.setItem("reading-font-level", String(currentFontLevel));
+    }
+
+    fontDecrease.addEventListener("click", () => {
+      currentFontLevel = Math.max(-2, currentFontLevel - 1);
+      updateFontLevel();
+    });
+
+    fontIncrease.addEventListener("click", () => {
+      currentFontLevel = Math.min(2, currentFontLevel + 1);
+      updateFontLevel();
+    });
+
+    updateFontLevel();
+
+    function toHiragana(value) {
+      return value.replace(/[ァ-ヶ]/g, (character) =>
+        String.fromCharCode(character.charCodeAt(0) - 0x60)
+      );
+    }
+
+    function appendAlignedRuby(target, surface, reading) {
+      const kanjiPattern = /^[\p{Script=Han}々〆ヵヶ]+$/u;
+      const runs = surface.match(/[\p{Script=Han}々〆ヵヶ]+|[^\p{Script=Han}々〆ヵヶ]+/gu) || [surface];
+      const normalizedReading = toHiragana(reading);
+      let readingCursor = 0;
+
+      runs.forEach((run, index) => {
+        if (!kanjiPattern.test(run)) {
+          target.append(document.createTextNode(run));
+          const normalizedRun = toHiragana(run);
+          if (normalizedReading.startsWith(normalizedRun, readingCursor)) {
+            readingCursor += normalizedRun.length;
+          }
+          return;
+        }
+
+        const nextRun = runs[index + 1];
+        const nextAnchor = nextRun && !kanjiPattern.test(nextRun)
+          ? toHiragana(nextRun)
+          : "";
+        let readingEnd = nextAnchor
+          ? normalizedReading.indexOf(nextAnchor, readingCursor)
+          : normalizedReading.length;
+
+        if (readingEnd < readingCursor) {
+          readingEnd = normalizedReading.length;
+        }
+
+        const ruby = document.createElement("ruby");
+        ruby.append(document.createTextNode(run));
+        const rt = document.createElement("rt");
+        rt.textContent = reading.slice(readingCursor, readingEnd);
+        ruby.append(rt);
+        target.append(ruby);
+        readingCursor = readingEnd;
+      });
+    }
+
+    paragraphs.forEach((sentences) => {
+      const paragraph = document.createElement("p");
+
+      sentences.forEach((sentence) => {
+        sentenceNumber += 1;
+        const button = document.createElement("button");
+        button.className = "sentence";
+        button.type = "button";
+        button.textContent = sentence.text;
+        button.setAttribute("aria-expanded", "false");
+        button.setAttribute("aria-label", `Abrir interlinear da frase ${sentenceNumber}`);
+
+        button.addEventListener("click", () => {
+          if (activeButton) {
+            activeButton.setAttribute("aria-expanded", "false");
+          }
+
+          activeButton = button;
+          activeButton.setAttribute("aria-expanded", "true");
+          label.textContent = `Interlinear · frase ${button.dataset.number}`;
+          selectedSentence.replaceChildren();
+
+          let cursor = 0;
+          sentence.chunks.forEach(([surface, reading]) => {
+            const start = sentence.text.indexOf(surface, cursor);
+            if (start > cursor) {
+              selectedSentence.append(document.createTextNode(sentence.text.slice(cursor, start)));
+            }
+
+            appendAlignedRuby(selectedSentence, surface, reading);
+            cursor = start + surface.length;
+          });
+
+          if (cursor < sentence.text.length) {
+            selectedSentence.append(document.createTextNode(sentence.text.slice(cursor)));
+          }
+
+          sentenceTranslation.textContent = sentence.pt;
+          interlinear.replaceChildren();
+
+          sentence.chunks.forEach(([surface, reading, gloss]) => {
+            const chunk = document.createElement("span");
+            chunk.className = "chunk";
+
+            const japanese = document.createElement("span");
+            japanese.className = "chunk-japanese";
+            appendAlignedRuby(japanese, surface, reading);
+
+            const meaning = document.createElement("span");
+            meaning.className = "gloss";
+            meaning.lang = "pt-BR";
+            meaning.textContent = gloss;
+
+            chunk.append(japanese, meaning);
+            interlinear.append(chunk);
+          });
+
+          panel.hidden = false;
+          paragraph.after(panel);
+          panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        });
+
+        button.dataset.number = sentenceNumber;
+        paragraph.append(button);
+      });
+
+      readingText.append(paragraph);
+    });
+
+    closeButton.addEventListener("click", () => {
+      panel.hidden = true;
+      if (activeButton) {
+        activeButton.setAttribute("aria-expanded", "false");
+        activeButton.focus();
+        activeButton = null;
+      }
+    });
+
+    backToOriginal.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (activeButton) {
+        activeButton.scrollIntoView({ behavior: "smooth", block: "center" });
+        activeButton.focus({ preventScroll: true });
+      }
+    });
+  </script>
+</body>
+</html>
