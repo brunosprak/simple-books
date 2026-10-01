@@ -11,6 +11,9 @@ Do not translate an entire work in one pass unless the user explicitly asks. Tra
 - Treat files under `texts/` as immutable source material. Do not edit them unless the user explicitly requests a source correction.
 - Translate the file or passage named by the user. If the user says only to continue, resume the source whose Japanese output was most recently updated.
 - Write the translation beside the source file, using the same basename followed by `-ja` before the extension. For example, `texts/book.txt` becomes `texts/book-ja.txt`.
+- Keep the matching `-ja.json` file synchronized with the Japanese TXT. It is the canonical source for the interactive reader and must contain the page metadata, paragraph and sentence structure, Portuguese sentence translations, and each chunk's Japanese surface, reading, and concise Portuguese gloss.
+- Generate `site/index.html` with `python3 tools/build_reader.py` after changing the JSON. Do not edit generated book content directly in `site/index.html`; change the JSON or `site/reader.template.html` and regenerate it.
+- Run `python3 tools/build_reader.py --check` before completing reader-related work.
 - On the first execution for a source file, create its Japanese output and translate the front matter before the prose—such as title, author, and the first section or chapter heading—followed by exactly the first prose paragraph.
 - On every later execution, append exactly one new source paragraph to the same Japanese output file. If a section or chapter heading occurs before that paragraph, append the heading together with the paragraph.
 - Treat a blank-line-delimited prose block as one paragraph. Never split a paragraph across executions, even when it is long.
