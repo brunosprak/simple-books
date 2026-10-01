@@ -32,6 +32,10 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIsNone(build_reader.UNRESOLVED_MARKER.search(first))
         self.assertIn(self.data["page"]["title"], first)
         self.assertIn(self.data["paragraphs"][0][0]["text"], first)
+        self.assertIn('id="study-previous"', first)
+        self.assertIn('id="study-next"', first)
+        self.assertIn('sentenceButtons[activeIndex - 1].click()', first)
+        self.assertIn('sentenceButtons[activeIndex + 1].click()', first)
 
     def test_validation_rejects_out_of_order_chunks(self) -> None:
         invalid = copy.deepcopy(self.data)
