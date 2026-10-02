@@ -23,6 +23,10 @@ class BuildReaderTests(unittest.TestCase):
             encoding="utf-8"
         )
 
+    @staticmethod
+    def first_sentence(data: dict) -> dict:
+        return data["chapters"][0]["paragraphs"][0][0]
+
     def test_render_is_deterministic_and_resolves_markers(self) -> None:
         validated = build_reader.validate_data(copy.deepcopy(self.data))
         first = build_reader.render(validated, self.template)
@@ -31,7 +35,7 @@ class BuildReaderTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertIsNone(build_reader.UNRESOLVED_MARKER.search(first))
         self.assertIn(self.data["page"]["title"], first)
-        self.assertIn(self.data["paragraphs"][0][0]["text"], first)
+        self.assertIn(self.first_sentence(self.data)["text"], first)
         self.assertIn('id="study-previous"', first)
         self.assertIn('id="study-next"', first)
         self.assertIn('id="study-previous-ten"', first)
@@ -66,7 +70,7 @@ class BuildReaderTests(unittest.TestCase):
 
     def test_validation_rejects_out_of_order_chunks(self) -> None:
         invalid = copy.deepcopy(self.data)
-        chunks = invalid["paragraphs"][0][0]["chunks"]
+        chunks = self.first_sentence(invalid)["chunks"]
         chunks[0], chunks[1] = chunks[1], chunks[0]
 
         with self.assertRaisesRegex(
@@ -76,16 +80,15 @@ class BuildReaderTests(unittest.TestCase):
 
     def test_validation_rejects_uncovered_sentence_text(self) -> None:
         invalid = copy.deepcopy(self.data)
-        invalid["paragraphs"][0][0]["text"] = (
-            "追加" + invalid["paragraphs"][0][0]["text"]
-        )
+        sentence = self.first_sentence(invalid)
+        sentence["text"] = "追加" + sentence["text"]
 
         with self.assertRaisesRegex(build_reader.BuildError, "uncovered text"):
             build_reader.validate_data(invalid)
 
     def test_backslashes_in_json_are_not_interpreted_by_regex(self) -> None:
         data = copy.deepcopy(self.data)
-        data["paragraphs"][0][0]["pt"] = r"C:\temp\1"
+        self.first_sentence(data)["pt"] = r"C:\temp\1"
         validated = build_reader.validate_data(data)
 
         output = build_reader.render(validated, self.template)
@@ -98,9 +101,12 @@ class BuildReaderTests(unittest.TestCase):
         output = build_reader.render_text(validated)
 
         self.assertTrue(output.startswith("クトゥルフの呼び声\n\nH・P・ラヴクラフト\n\n"))
-        self.assertIn(self.data["page"]["section_title"], output)
+        self.assertIn(self.data["chapters"][0]["title"], output)
         self.assertIn(
-            "".join(sentence["text"] for sentence in self.data["paragraphs"][0]),
+            "".join(
+                sentence["text"]
+                for sentence in self.data["chapters"][0]["paragraphs"][0]
+            ),
             output,
         )
         self.assertTrue(output.endswith("\n"))
@@ -116,7 +122,7 @@ class BuildReaderTests(unittest.TestCase):
 
         self.assertIn('await fetch(bookDataUrl)', output)
         self.assertIn('../books/call-of-cthulhu-ja.json', output)
-        self.assertNotIn(self.data["paragraphs"][0][0]["text"], output)
+        self.assertNotIn(self.first_sentence(self.data)["text"], output)
         self.assertIn('document.querySelector("#page-title")', output)
 
     def test_public_json_is_deterministic(self) -> None:
@@ -126,6 +132,13 @@ class BuildReaderTests(unittest.TestCase):
 
         self.assertEqual(first, second)
         self.assertEqual(json.loads(first), self.data)
+
+    def test_validation_rejects_obsolete_flat_structure(self) -> None:
+        invalid = copy.deepcopy(self.data)
+        invalid["paragraphs"] = invalid["chapters"][0]["paragraphs"]
+
+        with self.assertRaisesRegex(build_reader.BuildError, "root-level paragraphs"):
+            build_reader.validate_data(invalid)
 
 
 if __name__ == "__main__":

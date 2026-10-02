@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "source_file": "princess-of-mars.txt",
   "languages": {
     "source": "en",
@@ -7,12 +7,10 @@
     "gloss": "pt-BR"
   },
   "page": {
-    "html_file": "../site/princess-of-mars/index.html",
     "title": "火星のプリンセス",
     "author": "エドガー・ライス・バローズ",
     "eyebrow": "JAPANESE TRANSLATION",
     "description": "エドガー・ライス・バローズ『火星のプリンセス』日本語訳",
-    "section_title": "第一章　アリゾナの丘陵",
     "study_hint": "矢印で文を移動できます。ふりがなの表示も切り替えられます。",
     "footer": "収録部分の翻訳は完了しています。",
     "font_levels_percent": [
@@ -29,10 +27,7 @@
   "chapters": [
     {
       "title": "第一章　アリゾナの丘陵",
-      "start_paragraph": 0
-    }
-  ],
-  "paragraphs": [
+      "paragraphs": [
     [
       {
         "text": "私は非常に年老いている。",
@@ -2229,5 +2224,7 @@
         ]
       }
     ]
+      ]
+    }
   ]
 }

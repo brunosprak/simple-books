@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "source_file": "call-of-cthulhu.txt",
   "languages": {
     "source": "en",
@@ -7,12 +7,10 @@
     "gloss": "pt-BR"
   },
   "page": {
-    "html_file": "../site/call-of-cthulhu/index.html",
     "title": "クトゥルフの呼び声",
     "author": "H・P・ラヴクラフト",
     "eyebrow": "JAPANESE TRANSLATION",
     "description": "H・P・ラヴクラフト『クトゥルフの呼び声』日本語訳",
-    "section_title": "1．粘土の恐怖",
     "study_hint": "矢印で文を移動できます。ふりがなの表示も切り替えられます。",
     "footer": "翻訳は段落ごとに順次更新されます。",
     "font_levels_percent": [80, 90, 100, 110, 120, 140, 160],
@@ -21,10 +19,7 @@
   "chapters": [
     {
       "title": "1．粘土の恐怖",
-      "start_paragraph": 0
-    }
-  ],
-  "paragraphs": [
+      "paragraphs": [
     [
       {
         "text": "この世で何より救いなのは、人の心が、その中にあるすべてを結びつけて考えられないことだろう。",
@@ -119,5 +114,7 @@
         ]
       }
     ]
+      ]
+    }
   ]
 }

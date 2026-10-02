@@ -39,18 +39,22 @@ def require_string(container: dict[str, Any], key: str, context: str) -> str:
 def validate_data(data: Any) -> dict[str, Any]:
     if not isinstance(data, dict):
         raise BuildError("the JSON root must be an object")
-    if data.get("schema_version") != 1:
-        raise BuildError("schema_version must be 1")
+    if data.get("schema_version") != 2:
+        raise BuildError("schema_version must be 2")
+    if "paragraphs" in data:
+        raise BuildError("root-level paragraphs is obsolete; nest paragraphs in chapters")
 
     page = data.get("page")
     if not isinstance(page, dict):
         raise BuildError("page must be an object")
+    for obsolete_key in ("html_file", "section_title"):
+        if obsolete_key in page:
+            raise BuildError(f"page.{obsolete_key} is obsolete")
     for key in (
         "title",
         "author",
         "eyebrow",
         "description",
-        "section_title",
         "study_hint",
         "footer",
     ):
@@ -72,72 +76,65 @@ def validate_data(data: Any) -> dict[str, Any]:
             "page.default_font_level_percent must occur in font_levels_percent"
         )
 
-    paragraphs = data.get("paragraphs")
-    if not isinstance(paragraphs, list) or not paragraphs:
-        raise BuildError("paragraphs must be a non-empty array")
-
     chapters = data.get("chapters")
     if not isinstance(chapters, list) or not chapters:
         raise BuildError("chapters must be a non-empty array")
-    previous_start = -1
     for chapter_index, chapter in enumerate(chapters, start=1):
         if not isinstance(chapter, dict):
             raise BuildError(f"chapters[{chapter_index}] must be an object")
         require_string(chapter, "title", f"chapters[{chapter_index}]")
-        start = chapter.get("start_paragraph")
-        if not isinstance(start, int) or start < 0 or start >= len(paragraphs):
-            raise BuildError(
-                f"chapters[{chapter_index}].start_paragraph must identify a paragraph"
-            )
-        if start <= previous_start:
-            raise BuildError("chapter start paragraphs must be strictly ascending")
-        previous_start = start
-    if chapters[0]["start_paragraph"] != 0:
-        raise BuildError("the first chapter must start at paragraph 0")
+        paragraphs = chapter.get("paragraphs")
+        if not isinstance(paragraphs, list) or not paragraphs:
+            raise BuildError(f"chapters[{chapter_index}].paragraphs must be non-empty")
 
-    for paragraph_index, paragraph in enumerate(paragraphs, start=1):
-        if not isinstance(paragraph, list) or not paragraph:
-            raise BuildError(f"paragraphs[{paragraph_index}] must be non-empty")
-        for sentence_index, sentence in enumerate(paragraph, start=1):
-            context = f"paragraph {paragraph_index}, sentence {sentence_index}"
-            if not isinstance(sentence, dict):
-                raise BuildError(f"{context} must be an object")
-            text = require_string(sentence, "text", context)
-            require_string(sentence, "pt", context)
-            chunks = sentence.get("chunks")
-            if not isinstance(chunks, list) or not chunks:
-                raise BuildError(f"{context}.chunks must be non-empty")
-
-            cursor = 0
-            for chunk_index, chunk in enumerate(chunks, start=1):
-                if (
-                    not isinstance(chunk, list)
-                    or len(chunk) != 3
-                    or any(not isinstance(item, str) or not item for item in chunk)
-                ):
-                    raise BuildError(
-                        f"{context}, chunk {chunk_index} must contain "
-                        "[surface, reading, gloss]"
-                    )
-                surface = chunk[0]
-                start = text.find(surface, cursor)
-                if start < 0:
-                    raise BuildError(
-                        f"{context}, chunk {chunk_index} is absent or out of order: "
-                        f"{surface!r}"
-                    )
-                gap = text[cursor:start]
-                if not ALLOWED_GAPS.fullmatch(gap):
-                    raise BuildError(
-                        f"{context} has uncovered text before chunk {chunk_index}: {gap!r}"
-                    )
-                cursor = start + len(surface)
-
-            remainder = text[cursor:]
-            if not ALLOWED_GAPS.fullmatch(remainder):
+        for paragraph_index, paragraph in enumerate(paragraphs, start=1):
+            if not isinstance(paragraph, list) or not paragraph:
                 raise BuildError(
-                    f"{context} has uncovered text after its final chunk: {remainder!r}"
+                    f"chapter {chapter_index}, paragraph {paragraph_index} must be non-empty"
                 )
+            for sentence_index, sentence in enumerate(paragraph, start=1):
+                context = (
+                    f"chapter {chapter_index}, paragraph {paragraph_index}, "
+                    f"sentence {sentence_index}"
+                )
+                if not isinstance(sentence, dict):
+                    raise BuildError(f"{context} must be an object")
+                text = require_string(sentence, "text", context)
+                require_string(sentence, "pt", context)
+                chunks = sentence.get("chunks")
+                if not isinstance(chunks, list) or not chunks:
+                    raise BuildError(f"{context}.chunks must be non-empty")
+
+                cursor = 0
+                for chunk_index, chunk in enumerate(chunks, start=1):
+                    if (
+                        not isinstance(chunk, list)
+                        or len(chunk) != 3
+                        or any(not isinstance(item, str) or not item for item in chunk)
+                    ):
+                        raise BuildError(
+                            f"{context}, chunk {chunk_index} must contain "
+                            "[surface, reading, gloss]"
+                        )
+                    surface = chunk[0]
+                    start = text.find(surface, cursor)
+                    if start < 0:
+                        raise BuildError(
+                            f"{context}, chunk {chunk_index} is absent or out of order: "
+                            f"{surface!r}"
+                        )
+                    gap = text[cursor:start]
+                    if not ALLOWED_GAPS.fullmatch(gap):
+                        raise BuildError(
+                            f"{context} has uncovered text before chunk {chunk_index}: {gap!r}"
+                        )
+                    cursor = start + len(surface)
+
+                remainder = text[cursor:]
+                if not ALLOWED_GAPS.fullmatch(remainder):
+                    raise BuildError(
+                        f"{context} has uncovered text after its final chunk: {remainder!r}"
+                    )
 
     return data
 
@@ -163,7 +160,6 @@ def render(
         "{{TITLE}}": html.escape(page["title"]),
         "{{EYEBROW}}": html.escape(page["eyebrow"]),
         "{{AUTHOR}}": html.escape(page["author"]),
-        "{{SECTION_TITLE}}": html.escape(page["section_title"]),
         "{{STUDY_HINT}}": html.escape(page["study_hint"]),
         "{{FOOTER}}": html.escape(page["footer"]),
         "__FONT_LEVELS_JSON__": javascript_json(levels),
@@ -185,15 +181,15 @@ def render(
             "      throw new Error(`Falha ao carregar o livro: ${bookDataResponse.status}`);\n"
             "    }\n"
             "    const bookData = await bookDataResponse.json();\n"
-            "    const paragraphs = bookData.paragraphs;\n"
+            "    const chapters = bookData.chapters;\n"
             "    // BOOK_DATA_END"
         )
     else:
-        paragraphs = javascript_json(data["paragraphs"], indent=6)
-        indented = "\n".join(f"    {line}" for line in paragraphs.splitlines())
+        chapters = javascript_json(data["chapters"], indent=6)
+        indented = "\n".join(f"    {line}" for line in chapters.splitlines())
         data_block = (
             "    // BOOK_DATA_START\n"
-            f"    const paragraphs = {indented.lstrip()};\n"
+            f"    const chapters = {indented.lstrip()};\n"
             "    const bookData = null;\n"
             "    // BOOK_DATA_END"
         )
@@ -217,12 +213,14 @@ def render_public_json(data: dict[str, Any]) -> str:
 def render_text(data: dict[str, Any]) -> str:
     """Render a clean, disposable Japanese reading copy from canonical JSON."""
     page = data["page"]
-    front_matter = [page["title"], page["author"], page["section_title"]]
-    prose = [
-        "".join(sentence["text"] for sentence in paragraph)
-        for paragraph in data["paragraphs"]
-    ]
-    return "\n\n".join([*front_matter, *prose]).rstrip() + "\n"
+    blocks = [page["title"], page["author"]]
+    for chapter in data["chapters"]:
+        blocks.append(chapter["title"])
+        blocks.extend(
+            "".join(sentence["text"] for sentence in paragraph)
+            for paragraph in chapter["paragraphs"]
+        )
+    return "\n\n".join(blocks).rstrip() + "\n"
 
 
 def write_atomic(path: Path, content: str) -> None:
