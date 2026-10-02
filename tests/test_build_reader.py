@@ -38,6 +38,16 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn("renderCard(activeIndex - 1)", first)
         self.assertIn("renderCard(activeIndex + 1)", first)
         self.assertNotIn('id="reading-text"', first)
+        self.assertIn("visibility: hidden", first)
+        self.assertIn("position: sticky", first)
+        self.assertLess(
+            first.index('id="study-previous"'),
+            first.index('id="furigana-toggle"'),
+        )
+        self.assertLess(
+            first.index('id="furigana-toggle"'),
+            first.index('id="study-next"'),
+        )
 
     def test_validation_rejects_out_of_order_chunks(self) -> None:
         invalid = copy.deepcopy(self.data)
