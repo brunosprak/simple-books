@@ -640,7 +640,8 @@
       option.textContent = chapter.title;
       return option;
     }));
-    let activeIndex = 0;
+    const activeCardStorageKey = `simple-ja-books:active-card:v1:${bookData?.source_file || location.pathname}`;
+    let activeIndex = loadActiveIndex();
     let furiganaVisible = true;
     const fontPercentages = [80, 90, 100, 110, 120, 140, 160];
     const defaultFontLevelIndex = 2;
@@ -649,6 +650,25 @@
     let currentFontLevel = Number.parseInt(localStorage.getItem("reading-font-level") || "0", 10);
     const markedGlossesStorageKey = "simple-ja-books:marked-glosses:v1";
     let markedGlosses = loadMarkedGlosses();
+
+    function loadActiveIndex() {
+      try {
+        const stored = Number.parseInt(localStorage.getItem(activeCardStorageKey) || "0", 10);
+        return Number.isInteger(stored)
+          ? Math.min(Math.max(stored, 0), sentences.length - 1)
+          : 0;
+      } catch (_error) {
+        return 0;
+      }
+    }
+
+    function saveActiveIndex() {
+      try {
+        localStorage.setItem(activeCardStorageKey, String(activeIndex));
+      } catch (_error) {
+        // The reader remains usable when storage is unavailable.
+      }
+    }
 
     function glossKey(term, portuguese) {
       return JSON.stringify([term, portuguese]);
@@ -753,6 +773,7 @@
 
     function renderCard(index) {
       activeIndex = index;
+      saveActiveIndex();
       const sentence = sentences[activeIndex];
       previousTenButton.disabled = activeIndex === 0;
       previousButton.disabled = activeIndex === 0;
@@ -892,7 +913,7 @@
     });
 
     updateGlossCount();
-    renderCard(0);
+    renderCard(activeIndex);
   </script>
 </body>
 </html>
