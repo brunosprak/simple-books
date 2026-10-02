@@ -145,32 +145,32 @@
       text-indent: 1em;
     }
 
-    .study-panel .selected-sentence {
-      font-size: clamp(1.296rem, 3.12vw, 1.416rem);
+    .study-panel {
+      font-size: 100%;
     }
 
-    .study-panel[data-font-level="-2"] .selected-sentence {
-      font-size: clamp(1.037rem, 2.496vw, 1.133rem);
+    .study-panel[data-font-level="-2"] {
+      font-size: 80%;
     }
 
-    .study-panel[data-font-level="-1"] .selected-sentence {
-      font-size: clamp(1.166rem, 2.808vw, 1.274rem);
+    .study-panel[data-font-level="-1"] {
+      font-size: 90%;
     }
 
-    .study-panel[data-font-level="1"] .selected-sentence {
-      font-size: clamp(1.426rem, 3.432vw, 1.558rem);
+    .study-panel[data-font-level="1"] {
+      font-size: 110%;
     }
 
-    .study-panel[data-font-level="2"] .selected-sentence {
-      font-size: clamp(1.555rem, 3.744vw, 1.699rem);
+    .study-panel[data-font-level="2"] {
+      font-size: 120%;
     }
 
-    .study-panel[data-font-level="3"] .selected-sentence {
-      font-size: clamp(1.814rem, 4.368vw, 1.982rem);
+    .study-panel[data-font-level="3"] {
+      font-size: 140%;
     }
 
-    .study-panel[data-font-level="4"] .selected-sentence {
-      font-size: clamp(2.074rem, 4.992vw, 2.266rem);
+    .study-panel[data-font-level="4"] {
+      font-size: 160%;
     }
 
     .study-hint {
@@ -193,11 +193,20 @@
     }
 
     .study-topline {
+      position: sticky;
+      top: 0.5rem;
+      z-index: 10;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
-      margin-bottom: 1rem;
+      margin: -0.75rem -0.75rem 1rem;
+      padding: 0.75rem;
+      background: color-mix(in srgb, var(--panel) 94%, transparent);
+      border: 1px solid color-mix(in srgb, var(--rule) 72%, transparent);
+      border-radius: 0.5rem;
+      box-shadow: 0 0.35rem 1.2rem rgb(20 25 22 / 8%);
+      backdrop-filter: blur(0.6rem);
     }
 
     .study-label {
@@ -253,7 +262,7 @@
 
     .selected-sentence {
       margin: 0 0 0.65rem;
-      font-size: 1.08rem;
+      font-size: 1.35em;
       font-weight: 600;
       line-height: 2.5;
       text-align: left;
@@ -271,14 +280,14 @@
     }
 
     .selected-sentence.furigana-hidden rt {
-      display: none;
+      visibility: hidden;
     }
 
     .sentence-translation {
       margin: 1.5rem 0 0;
       color: var(--muted);
       font-family: system-ui, sans-serif;
-      font-size: 0.88rem;
+      font-size: 0.88em;
       line-height: 1.55;
       text-align: left;
     }
@@ -303,7 +312,7 @@
     }
 
     .chunk-japanese {
-      font-size: 1.05rem;
+      font-size: 1.05em;
       font-weight: 600;
       line-height: 1.6;
     }
@@ -319,7 +328,7 @@
       max-width: 12rem;
       color: var(--muted);
       font-family: system-ui, sans-serif;
-      font-size: 0.7rem;
+      font-size: 0.7em;
       line-height: 1.3;
     }
 
@@ -404,7 +413,7 @@
       .sentence-translation {
         max-width: 52rem;
         margin-top: 2rem;
-        font-size: 0.95rem;
+        font-size: 0.95em;
       }
     }
 
@@ -489,8 +498,8 @@
           <p class="study-label" id="study-label">Interlinear</p>
           <div class="study-actions" aria-label="Navegação entre frases">
             <button class="study-nav" id="study-previous" type="button" aria-label="Frase anterior">←</button>
-            <button class="study-nav" id="study-next" type="button" aria-label="Próxima frase">→</button>
             <button class="study-nav furigana-toggle" id="furigana-toggle" type="button" aria-pressed="true">ふりがな ON</button>
+            <button class="study-nav" id="study-next" type="button" aria-label="Próxima frase">→</button>
           </div>
         </div>
         <p class="selected-sentence" id="selected-sentence" lang="ja"></p>
