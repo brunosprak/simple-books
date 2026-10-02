@@ -95,6 +95,28 @@ class BuildReaderTests(unittest.TestCase):
         )
         self.assertTrue(output.endswith("\n"))
 
+    def test_runtime_reader_fetches_json_without_embedding_book_text(self) -> None:
+        validated = build_reader.validate_data(copy.deepcopy(self.data))
+
+        output = build_reader.render(
+            validated,
+            self.template,
+            data_url="../books/call-of-cthulhu-ja.json",
+        )
+
+        self.assertIn('await fetch(bookDataUrl)', output)
+        self.assertIn('../books/call-of-cthulhu-ja.json', output)
+        self.assertNotIn(self.data["paragraphs"][0][0]["text"], output)
+        self.assertIn('document.querySelector("#page-title")', output)
+
+    def test_public_json_is_deterministic(self) -> None:
+        validated = build_reader.validate_data(copy.deepcopy(self.data))
+        first = build_reader.render_public_json(validated)
+        second = build_reader.render_public_json(validated)
+
+        self.assertEqual(first, second)
+        self.assertEqual(json.loads(first), self.data)
+
 
 if __name__ == "__main__":
     unittest.main()

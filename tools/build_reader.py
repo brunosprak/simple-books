@@ -132,7 +132,9 @@ def javascript_json(value: Any, *, indent: int | None = None) -> str:
     )
 
 
-def render(data: dict[str, Any], template: str) -> str:
+def render(
+    data: dict[str, Any], template: str, *, data_url: str | None = None
+) -> str:
     page = data["page"]
     levels = page["font_levels_percent"]
     default_index = levels.index(page["default_font_level_percent"])
@@ -155,13 +157,27 @@ def render(data: dict[str, Any], template: str) -> str:
             raise BuildError(f"template marker is missing: {marker}")
         output = output.replace(marker, value)
 
-    paragraphs = javascript_json(data["paragraphs"], indent=6)
-    indented = "\n".join(f"    {line}" for line in paragraphs.splitlines())
-    data_block = (
-        "    // BOOK_DATA_START\n"
-        f"    const paragraphs = {indented.lstrip()};\n"
-        "    // BOOK_DATA_END"
-    )
+    if data_url:
+        data_block = (
+            "    // BOOK_DATA_START\n"
+            f"    const bookDataUrl = {javascript_json(data_url)};\n"
+            "    const bookDataResponse = await fetch(bookDataUrl);\n"
+            "    if (!bookDataResponse.ok) {\n"
+            "      throw new Error(`Falha ao carregar o livro: ${bookDataResponse.status}`);\n"
+            "    }\n"
+            "    const bookData = await bookDataResponse.json();\n"
+            "    const paragraphs = bookData.paragraphs;\n"
+            "    // BOOK_DATA_END"
+        )
+    else:
+        paragraphs = javascript_json(data["paragraphs"], indent=6)
+        indented = "\n".join(f"    {line}" for line in paragraphs.splitlines())
+        data_block = (
+            "    // BOOK_DATA_START\n"
+            f"    const paragraphs = {indented.lstrip()};\n"
+            "    const bookData = null;\n"
+            "    // BOOK_DATA_END"
+        )
     output, replacements_count = DATA_BLOCK.subn(
         lambda _match: data_block, output, count=1
     )
@@ -172,6 +188,11 @@ def render(data: dict[str, Any], template: str) -> str:
     if unresolved:
         raise BuildError(f"unresolved template marker: {unresolved.group(0)}")
     return output.rstrip() + "\n"
+
+
+def render_public_json(data: dict[str, Any]) -> str:
+    """Render validated canonical data for browser-side loading."""
+    return json.dumps(data, ensure_ascii=False, indent=2) + "\n"
 
 
 def render_text(data: dict[str, Any]) -> str:
@@ -206,6 +227,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--template", type=Path, default=DEFAULT_TEMPLATE)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument(
+        "--data-url",
+        help="load book data at runtime from this URL instead of embedding it",
+    )
+    parser.add_argument(
+        "--json-output",
+        type=Path,
+        help="publish a normalized copy of the validated JSON for the browser",
+    )
+    parser.add_argument(
         "--text-output",
         type=Path,
         help="optionally export a clean Japanese TXT from the canonical JSON",
@@ -224,7 +254,8 @@ def main() -> int:
         with args.data.open(encoding="utf-8") as source:
             data = validate_data(json.load(source))
         template = args.template.read_text(encoding="utf-8")
-        output = render(data, template)
+        output = render(data, template, data_url=args.data_url)
+        json_output = render_public_json(data) if args.json_output else None
         text_output = render_text(data) if args.text_output else None
     except (BuildError, json.JSONDecodeError, OSError) as error:
         print(f"error: {error}", file=sys.stderr)
@@ -246,9 +277,19 @@ def main() -> int:
             if current_text != text_output:
                 print(f"stale: {args.text_output}", file=sys.stderr)
                 return 1
+        if args.json_output:
+            try:
+                current_json = args.json_output.read_text(encoding="utf-8")
+            except FileNotFoundError:
+                current_json = None
+            if current_json != json_output:
+                print(f"stale: {args.json_output}", file=sys.stderr)
+                return 1
         print(f"up to date: {args.output}")
         if args.text_output:
             print(f"up to date: {args.text_output}")
+        if args.json_output:
+            print(f"up to date: {args.json_output}")
         return 0
 
     write_atomic(args.output, output)
@@ -256,6 +297,9 @@ def main() -> int:
     if args.text_output and text_output is not None:
         write_atomic(args.text_output, text_output)
         print(f"generated: {args.text_output}")
+    if args.json_output and json_output is not None:
+        write_atomic(args.json_output, json_output)
+        print(f"generated: {args.json_output}")
     return 0
 
 
