@@ -26,6 +26,12 @@
     ],
     "default_font_level_percent": 100
   },
+  "chapters": [
+    {
+      "title": "第一章　アリゾナの丘陵",
+      "start_paragraph": 0
+    }
+  ],
   "paragraphs": [
     [
       {

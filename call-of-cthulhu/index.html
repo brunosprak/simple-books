@@ -134,6 +134,24 @@
       letter-spacing: 0.12em;
     }
 
+    .chapter-select {
+      width: 100%;
+      padding: 0.25rem 2.2rem 0.25rem 0;
+      color: var(--accent);
+      background: transparent;
+      border: 0;
+      border-bottom: 1px solid transparent;
+      font: inherit;
+      letter-spacing: inherit;
+      cursor: pointer;
+    }
+
+    .chapter-select:hover,
+    .chapter-select:focus-visible {
+      border-bottom-color: var(--accent);
+      outline: none;
+    }
+
     p {
       margin: 0 0 1.75rem;
       font-size: clamp(1rem, 2.5vw, 1.1rem);
@@ -327,15 +345,6 @@
       box-shadow: inset 0 0 0 1px var(--accent);
     }
 
-    .chunk[aria-pressed="true"]::after {
-      content: "✓";
-      color: var(--accent);
-      font-family: system-ui, sans-serif;
-      font-size: 0.65em;
-      font-weight: 800;
-      line-height: 1;
-    }
-
     .chunk-japanese {
       font-size: 1.05em;
       font-weight: 600;
@@ -361,8 +370,8 @@
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 0.55rem;
-      margin: 0 0 1.35rem;
+      gap: 0.35rem;
+      margin: 0 0 0.9rem;
       color: var(--muted);
       font-family: system-ui, sans-serif;
       font-size: 0.75rem;
@@ -373,12 +382,13 @@
     }
 
     .gloss-tool-button {
-      padding: 0.4rem 0.7rem;
+      padding: 0.25rem 0.55rem;
       color: var(--accent);
       background: transparent;
       border: 1px solid var(--rule);
       border-radius: 999px;
       font: inherit;
+      font-size: 0.85em;
       font-weight: 700;
       cursor: pointer;
     }
@@ -389,15 +399,6 @@
       background: var(--accent);
       border-color: var(--accent);
       outline: none;
-    }
-
-    .gloss-status {
-      width: 100%;
-      min-height: 1.2em;
-      margin: 0;
-      color: var(--accent);
-      font-size: 0.9em;
-      line-height: 1.3;
     }
 
     footer {
@@ -555,7 +556,7 @@
     </header>
 
     <article>
-      <h2 id="section-title">1．粘土の恐怖</h2>
+      <h2><select class="chapter-select" id="chapter-select" aria-label="Selecionar capítulo"><option>1．粘土の恐怖</option></select></h2>
 
       <p class="study-hint" id="study-hint">矢印で文を移動できます。ふりがなの表示も切り替えられます。</p>
 
@@ -565,17 +566,18 @@
         <div class="study-topline">
           <p class="study-label" id="study-label">Interlinear</p>
           <div class="study-actions" aria-label="Navegação entre frases">
+            <button class="study-nav" id="study-previous-ten" type="button" aria-label="Voltar dez frases">−10</button>
             <button class="study-nav" id="study-previous" type="button" aria-label="Frase anterior">←</button>
             <button class="study-nav furigana-toggle" id="furigana-toggle" type="button" aria-pressed="true">ふりがな ON</button>
             <button class="study-nav" id="study-next" type="button" aria-label="Próxima frase">→</button>
+            <button class="study-nav" id="study-next-ten" type="button" aria-label="Avançar dez frases">＋10</button>
           </div>
         </div>
         <div class="gloss-tools" aria-label="Glosses marcados">
           <span class="gloss-count" id="gloss-count">0 glosses marcados</span>
-          <button class="gloss-tool-button" id="gloss-export" type="button">Exportar JSON</button>
-          <button class="gloss-tool-button" id="gloss-import" type="button">Importar JSON</button>
+          <button class="gloss-tool-button" id="gloss-export" type="button" aria-label="Exportar glosses em JSON" title="Exportar glosses em JSON">↓ JSON</button>
+          <button class="gloss-tool-button" id="gloss-import" type="button" aria-label="Importar glosses de JSON" title="Importar glosses de JSON">↑ JSON</button>
           <input id="gloss-import-file" type="file" accept="application/json,.json" hidden>
-          <p class="gloss-status" id="gloss-status" role="status" aria-live="polite"></p>
         </div>
         <p class="selected-sentence" id="selected-sentence" lang="ja"></p>
         <div class="interlinear" id="interlinear"></div>
@@ -604,25 +606,40 @@
     const selectedSentence = document.querySelector("#selected-sentence");
     const sentenceTranslation = document.querySelector("#sentence-translation");
     const interlinear = document.querySelector("#interlinear");
+    const chapterSelect = document.querySelector("#chapter-select");
+    const previousTenButton = document.querySelector("#study-previous-ten");
     const previousButton = document.querySelector("#study-previous");
     const nextButton = document.querySelector("#study-next");
+    const nextTenButton = document.querySelector("#study-next-ten");
     const furiganaToggle = document.querySelector("#furigana-toggle");
     const glossCount = document.querySelector("#gloss-count");
     const glossExport = document.querySelector("#gloss-export");
     const glossImport = document.querySelector("#gloss-import");
     const glossImportFile = document.querySelector("#gloss-import-file");
-    const glossStatus = document.querySelector("#gloss-status");
     if (bookData) {
       document.title = bookData.page.title;
       document.querySelector('meta[name="description"]').content = bookData.page.description;
       document.querySelector("#page-eyebrow").textContent = bookData.page.eyebrow;
       document.querySelector("#page-title").textContent = bookData.page.title;
       document.querySelector("#page-author").textContent = bookData.page.author;
-      document.querySelector("#section-title").textContent = bookData.page.section_title;
       document.querySelector("#study-hint").textContent = bookData.page.study_hint;
       document.querySelector("#page-footer").textContent = bookData.page.footer;
     }
     const sentences = paragraphs.flat();
+    const chapters = bookData?.chapters || [{ title: chapterSelect.value, start_paragraph: 0 }];
+    const paragraphSentenceStarts = [];
+    let sentenceTotal = 0;
+    paragraphs.forEach((paragraph) => {
+      paragraphSentenceStarts.push(sentenceTotal);
+      sentenceTotal += paragraph.length;
+    });
+    const chapterSentenceStarts = chapters.map((chapter) => paragraphSentenceStarts[chapter.start_paragraph]);
+    chapterSelect.replaceChildren(...chapters.map((chapter, index) => {
+      const option = document.createElement("option");
+      option.value = String(index);
+      option.textContent = chapter.title;
+      return option;
+    }));
     let activeIndex = 0;
     let furiganaVisible = true;
     const fontPercentages = [80, 90, 100, 110, 120, 140, 160];
@@ -656,7 +673,7 @@
       try {
         localStorage.setItem(markedGlossesStorageKey, JSON.stringify([...markedGlosses.values()]));
       } catch (_error) {
-        glossStatus.textContent = "Não foi possível salvar neste navegador.";
+        // The reader remains usable when storage is unavailable.
       }
       updateGlossCount();
     }
@@ -664,10 +681,6 @@
     function updateGlossCount() {
       const count = markedGlosses.size;
       glossCount.textContent = `${count} ${count === 1 ? "gloss marcado" : "glosses marcados"}`;
-    }
-
-    function setGlossStatus(message) {
-      glossStatus.textContent = message;
     }
 
     if (!Number.isInteger(currentFontLevel) || currentFontLevel < minFontLevel || currentFontLevel > maxFontLevel) {
@@ -741,8 +754,15 @@
     function renderCard(index) {
       activeIndex = index;
       const sentence = sentences[activeIndex];
+      previousTenButton.disabled = activeIndex === 0;
       previousButton.disabled = activeIndex === 0;
       nextButton.disabled = activeIndex === sentences.length - 1;
+      nextTenButton.disabled = activeIndex === sentences.length - 1;
+      let activeChapter = 0;
+      chapterSentenceStarts.forEach((start, index) => {
+        if (start <= activeIndex) activeChapter = index;
+      });
+      chapterSelect.value = String(activeChapter);
       label.textContent = `Interlinear · frase ${activeIndex + 1} de ${sentences.length}`;
       selectedSentence.replaceChildren();
 
@@ -791,7 +811,6 @@
             chunk.setAttribute("aria-pressed", "true");
           }
           saveMarkedGlosses();
-          setGlossStatus(markedGlosses.has(key) ? `Marcado: ${surface} — ${gloss}` : `Desmarcado: ${surface} — ${gloss}`);
         });
         interlinear.append(chunk);
       });
@@ -810,7 +829,6 @@
       link.download = "glosses-marcados.json";
       link.click();
       URL.revokeObjectURL(url);
-      setGlossStatus(`${markedGlosses.size} glosses exportados.`);
     });
 
     glossImport.addEventListener("click", () => glossImportFile.click());
@@ -835,9 +853,8 @@
         ]));
         saveMarkedGlosses();
         renderCard(activeIndex);
-        setGlossStatus(`${markedGlosses.size} glosses importados.`);
       } catch (_error) {
-        setGlossStatus("O arquivo não é um JSON de glosses válido.");
+        window.alert("O arquivo não é um JSON de glosses válido.");
       } finally {
         glossImportFile.value = "";
       }
@@ -849,10 +866,22 @@
       }
     });
 
+    previousTenButton.addEventListener("click", () => {
+      renderCard(Math.max(0, activeIndex - 10));
+    });
+
     nextButton.addEventListener("click", () => {
       if (activeIndex < sentences.length - 1) {
         renderCard(activeIndex + 1);
       }
+    });
+
+    nextTenButton.addEventListener("click", () => {
+      renderCard(Math.min(sentences.length - 1, activeIndex + 10));
+    });
+
+    chapterSelect.addEventListener("change", () => {
+      renderCard(chapterSentenceStarts[Number(chapterSelect.value)]);
     });
 
     furiganaToggle.addEventListener("click", () => {
