@@ -1,7 +1,6 @@
 {
   "schema_version": 1,
   "source_file": "call-of-cthulhu.txt",
-  "translation_file": "call-of-cthulhu-ja.txt",
   "languages": {
     "source": "en",
     "translation": "ja",

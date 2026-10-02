@@ -174,6 +174,17 @@ def render(data: dict[str, Any], template: str) -> str:
     return output.rstrip() + "\n"
 
 
+def render_text(data: dict[str, Any]) -> str:
+    """Render a clean, disposable Japanese reading copy from canonical JSON."""
+    page = data["page"]
+    front_matter = [page["title"], page["author"], page["section_title"]]
+    prose = [
+        "".join(sentence["text"] for sentence in paragraph)
+        for paragraph in data["paragraphs"]
+    ]
+    return "\n\n".join([*front_matter, *prose]).rstrip() + "\n"
+
+
 def write_atomic(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     encoded = content.encode("utf-8")
@@ -195,6 +206,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--template", type=Path, default=DEFAULT_TEMPLATE)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument(
+        "--text-output",
+        type=Path,
+        help="optionally export a clean Japanese TXT from the canonical JSON",
+    )
+    parser.add_argument(
         "--check",
         action="store_true",
         help="exit with an error instead of writing when the output is stale",
@@ -209,6 +225,7 @@ def main() -> int:
             data = validate_data(json.load(source))
         template = args.template.read_text(encoding="utf-8")
         output = render(data, template)
+        text_output = render_text(data) if args.text_output else None
     except (BuildError, json.JSONDecodeError, OSError) as error:
         print(f"error: {error}", file=sys.stderr)
         return 2
@@ -221,11 +238,24 @@ def main() -> int:
         if current != output:
             print(f"stale: {args.output}", file=sys.stderr)
             return 1
+        if args.text_output:
+            try:
+                current_text = args.text_output.read_text(encoding="utf-8")
+            except FileNotFoundError:
+                current_text = None
+            if current_text != text_output:
+                print(f"stale: {args.text_output}", file=sys.stderr)
+                return 1
         print(f"up to date: {args.output}")
+        if args.text_output:
+            print(f"up to date: {args.text_output}")
         return 0
 
     write_atomic(args.output, output)
     print(f"generated: {args.output}")
+    if args.text_output and text_output is not None:
+        write_atomic(args.text_output, text_output)
+        print(f"generated: {args.text_output}")
     return 0
 
 

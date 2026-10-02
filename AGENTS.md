@@ -8,10 +8,11 @@ If the user does not specify an amount, translate exactly one source paragraph p
 
 ## Source and Output Workflow
 
-- Treat the original English files under `texts/` as immutable source material. Do not edit them unless the user explicitly requests a source correction. Matching `-ja.txt` and `-ja.json` files are editable outputs and must be updated as the translation and reader evolve.
+- Treat the original English files under `texts/` as immutable source material. Do not edit them unless the user explicitly requests a source correction. The matching `-ja.json` file is the sole canonical translation and reader-data source.
 - Translate the file or passage named by the user. If the user says only to continue, resume the source whose Japanese output was most recently updated.
-- Write the translation beside the source file, using the same basename followed by `-ja` before the extension. For example, `texts/book.txt` becomes `texts/book-ja.txt`.
-- Keep the matching `-ja.json` file synchronized with the Japanese TXT. It is the canonical source for the interactive reader and must contain the page metadata, paragraph and sentence structure, Portuguese sentence translations, and each chunk's Japanese surface, reading, and concise Portuguese gloss.
+- Write and revise the translation in a JSON file beside the source, using the same basename followed by `-ja.json`. For example, `texts/book.txt` becomes `texts/book-ja.json`.
+- The `-ja.json` file must contain the page metadata, paragraph and sentence structure, Portuguese sentence translations, and each chunk's Japanese surface, reading, and concise Portuguese gloss.
+- Do not maintain a separate Japanese TXT by hand. When the user requests a clean TXT for reading or download, generate it deterministically from the canonical JSON with `python3 tools/build_reader.py --data <json-path> --output <html-path> --text-output texts/<book-slug>-ja.txt`. A generated TXT is disposable and must never be used to determine translation progress.
 - Give every book its own directory under `site/`, with its generated HTML inside that directory. Use `site/<book-slug>/index.html`; do not place multiple book readers directly in the root of `site/`.
 - Keep `page.html_file` in each `-ja.json` synchronized with that book's output path. Generate the page with `python3 tools/build_reader.py --data <json-path> --output site/<book-slug>/index.html` after changing the JSON.
 - Do not edit generated book content directly in a book's HTML. Change the matching JSON or `site/reader.template.html` and regenerate the page.
@@ -19,7 +20,7 @@ If the user does not specify an amount, translate exactly one source paragraph p
 - On the first execution for a source file, create its Japanese output and translate the front matter before the prose—such as title, author, and the first section or chapter heading—followed by the amount of prose requested by the user. If no amount is specified, translate exactly the first prose paragraph.
 - On every later execution, append the number of source paragraphs requested by the user. If no amount is specified, append exactly one. If a section or chapter heading occurs before the selected paragraph or range, append the heading together with it.
 - Treat a blank-line-delimited prose block as one paragraph. Never split a paragraph across executions, even when it is long.
-- Before appending, compare the end of the Japanese output with the source to identify the next untranslated paragraph. Preserve voice, spelling, naming, formatting, and established terminology.
+- Before appending, compare the final paragraph in the Japanese JSON with the source to identify the next untranslated paragraph. Preserve voice, spelling, naming, formatting, and established terminology.
 - Never silently skip, duplicate, summarize, or reorder source material. Verify that the appended paragraph immediately follows the material already translated.
 - Preserve paragraph breaks when practical. Preserve deliberate headings, letters, quotations, chants, inscriptions, and other embedded forms, adapting their typography naturally for Japanese publishing.
 - Do not add translator's notes, explanations, romanization, alternative renderings, or commentary to translation files unless the user explicitly asks.
@@ -56,7 +57,7 @@ Produce natural Japanese fiction, not a sentence-by-sentence rendering of Englis
 - Do not simplify established proper nouns, essential historical terms, fictional terminology, or precise technical distinctions when doing so would create factual drift.
 - Prefer accessibility when perfect equivalence and simpler vocabulary cannot both be maintained. A small loss of intensity, precision, register, or nuance is acceptable when it allows a substantially more common word or transparent phrase, provided the central action, fact, characterization, and narrative function remain intact. Do not censor, reverse, or materially alter the event.
 - When the user requests simplification beginning at a particular card, paragraph, or sentence, apply the simpler vocabulary consistently from that point onward and keep all earlier material unchanged unless explicitly asked.
-- After simplifying Japanese text, update the TXT, JSON sentence text, readings, chunks, Portuguese glosses, and generated HTML together. Card numbering does not need to be preserved: sentences may be split or combined when that produces clearer Japanese.
+- After simplifying Japanese text, update the JSON sentence text, readings, chunks, Portuguese glosses, and generated HTML together. If a disposable TXT export already exists, regenerate it or remove it so that stale text is not mistaken for canonical data. Card numbering does not need to be preserved: sentences may be split or combined when that produces clearer Japanese.
 
 ### Dialogue
 
@@ -96,7 +97,7 @@ Before marking a part complete:
 
 1. Compare the translation against every source paragraph in the selected range for omissions, additions, factual drift, and accidental repetition.
 2. Read the Japanese independently for idiomatic flow, clear reference, consistent viewpoint, and brisk narrative rhythm.
-3. Check names, terminology, dates, measurements, quotations, and formatting against the earlier content in the Japanese output file.
+3. Check names, terminology, dates, measurements, quotations, and formatting against the earlier content in the canonical Japanese JSON.
 4. Revise any passage whose English structure remains perceptible beneath the Japanese.
 5. Check that interlinear chunks are minimal meaningful units and that their Portuguese glosses are short prompts rather than clause-level retranslations.
 6. Check for unnecessarily difficult vocabulary and replace it with a common modern equivalent wherever meaning and tone remain intact.

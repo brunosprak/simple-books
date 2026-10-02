@@ -1,7 +1,6 @@
 {
   "schema_version": 1,
   "source_file": "princess-of-mars.txt",
-  "translation_file": "princess-of-mars-ja.txt",
   "languages": {
     "source": "en",
     "translation": "ja",

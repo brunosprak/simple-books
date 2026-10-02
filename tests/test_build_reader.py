@@ -77,6 +77,19 @@ class BuildReaderTests(unittest.TestCase):
 
         self.assertIn(r"C:\\temp\\1", output)
 
+    def test_plain_text_is_derived_from_canonical_json(self) -> None:
+        validated = build_reader.validate_data(copy.deepcopy(self.data))
+
+        output = build_reader.render_text(validated)
+
+        self.assertTrue(output.startswith("クトゥルフの呼び声\n\nH・P・ラヴクラフト\n\n"))
+        self.assertIn(self.data["page"]["section_title"], output)
+        self.assertIn(
+            "".join(sentence["text"] for sentence in self.data["paragraphs"][0]),
+            output,
+        )
+        self.assertTrue(output.endswith("\n"))
+
 
 if __name__ == "__main__":
     unittest.main()
