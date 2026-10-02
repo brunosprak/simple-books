@@ -18,6 +18,12 @@
     "font_levels_percent": [80, 90, 100, 110, 120, 140, 160],
     "default_font_level_percent": 100
   },
+  "chapters": [
+    {
+      "title": "1．粘土の恐怖",
+      "start_paragraph": 0
+    }
+  ],
   "paragraphs": [
     [
       {

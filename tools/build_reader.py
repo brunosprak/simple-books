@@ -76,6 +76,25 @@ def validate_data(data: Any) -> dict[str, Any]:
     if not isinstance(paragraphs, list) or not paragraphs:
         raise BuildError("paragraphs must be a non-empty array")
 
+    chapters = data.get("chapters")
+    if not isinstance(chapters, list) or not chapters:
+        raise BuildError("chapters must be a non-empty array")
+    previous_start = -1
+    for chapter_index, chapter in enumerate(chapters, start=1):
+        if not isinstance(chapter, dict):
+            raise BuildError(f"chapters[{chapter_index}] must be an object")
+        require_string(chapter, "title", f"chapters[{chapter_index}]")
+        start = chapter.get("start_paragraph")
+        if not isinstance(start, int) or start < 0 or start >= len(paragraphs):
+            raise BuildError(
+                f"chapters[{chapter_index}].start_paragraph must identify a paragraph"
+            )
+        if start <= previous_start:
+            raise BuildError("chapter start paragraphs must be strictly ascending")
+        previous_start = start
+    if chapters[0]["start_paragraph"] != 0:
+        raise BuildError("the first chapter must start at paragraph 0")
+
     for paragraph_index, paragraph in enumerate(paragraphs, start=1):
         if not isinstance(paragraph, list) or not paragraph:
             raise BuildError(f"paragraphs[{paragraph_index}] must be non-empty")
