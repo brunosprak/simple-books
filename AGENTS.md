@@ -45,6 +45,17 @@ Produce natural Japanese fiction, not a sentence-by-sentence rendering of Englis
 - Use ordinary standard kanji appropriate for general adult or young-adult fiction. Do not avoid kanji merely to simplify the text.
 - Do not explain what the source merely shows.
 
+### Vocabulary accessibility and simplicity
+
+- Prefer common, immediately understandable modern Japanese vocabulary whenever it preserves the source's meaning, tone, atmosphere, and factual detail.
+- When a rare, formal, literary, or technical expression has a natural everyday equivalent, use the simpler equivalent. For example, prefer forms comparable to `危険な` over `凶暴な`, `盗賊` over `略奪者`, `隠れる` over `潜む`, `殺す` over `命を奪う`, and `勝つ見込み` over `勝ち目` when the context permits.
+- Favor transparent verbs and concrete descriptions over nominal, abstract, or compressed constructions. Prefer `武器を持つ` to `武装する`, `跡を追うのがうまい` to `追跡に長ける`, and similarly direct wording when no important nuance is lost.
+- Simplify sentence structure when it improves readability, but do not make the prose childish, choppy, explanatory, or unnaturally casual. The result should remain polished narrative fiction.
+- Do not simplify established proper nouns, essential historical terms, fictional terminology, or precise technical distinctions when doing so would create factual drift.
+- Preserve intensity and narrative function. Replace difficult wording with clearer wording, not with weaker or censored wording.
+- When the user requests simplification beginning at a particular card, paragraph, or sentence, apply the simpler vocabulary consistently from that point onward and keep all earlier material unchanged unless explicitly asked.
+- After simplifying Japanese text, update the TXT, JSON sentence text, readings, chunks, Portuguese glosses, and generated HTML together. Preserve card numbering whenever practical.
+
 ### Dialogue
 
 - Write genuinely spoken Japanese suited to each character's personality, age, relationship, social position, and immediate situation.
@@ -86,5 +97,6 @@ Before marking a part complete:
 3. Check names, terminology, dates, measurements, quotations, and formatting against the earlier content in the Japanese output file.
 4. Revise any passage whose English structure remains perceptible beneath the Japanese.
 5. Check that interlinear chunks are minimal meaningful units and that their Portuguese glosses are short prompts rather than clause-level retranslations.
+6. Check for unnecessarily difficult vocabulary and replace it with a common modern equivalent wherever meaning and tone remain intact.
 
 When the user requests translation text in the response, output only the Japanese translation itself. Do not append explanations, notes, alternatives, romanization, or a summary.
