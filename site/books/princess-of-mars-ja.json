@@ -2387,29 +2387,44 @@
             "pt": "Notei que os cavaleiros perseguidores — pois agora eu tinha certeza de que eram isso — haviam parado apenas por um instante para beber e continuado atrás de Powell, sempre na mesma velocidade que ele.",
             "chunks": [
               [
-                "追っている騎手たちは、",
-                "おっているきしゅたちは、",
-                "os cavaleiros perseguidores"
+                "追っている",
+                "おっている",
+                "em perseguição"
               ],
               [
-                "やはりそうに違いないと",
-                "やはりそうにちがいないと",
-                "sem dúvida eram eles"
+                "騎手たちは、",
+                "きしゅたちは、",
+                "os cavaleiros"
+              ],
+              [
+                "やはり",
+                "やはり",
+                "como pensei"
+              ],
+              [
+                "そうに違いないと",
+                "そうにちがいないと",
+                "sem dúvida"
               ],
               [
                 "確信したのだが、",
                 "かくしんしたのだが、",
-                "disso eu tinha certeza"
+                "eu tinha certeza"
               ],
               [
                 "水を飲むために",
                 "みずをのむために",
-                "para beber água"
+                "para beber"
               ],
               [
-                "わずかに止まっただけで、",
-                "わずかにとまっただけで、",
-                "pararam só um instante"
+                "わずかに",
+                "わずかに",
+                "por um instante"
+              ],
+              [
+                "止まっただけで、",
+                "とまっただけで、",
+                "só pararam"
               ],
               [
                 "パウエルの後を",
@@ -2419,12 +2434,12 @@
               [
                 "進み続けていた。",
                 "すすみつづけていた。",
-                "continuaram avançando"
+                "continuaram"
               ],
               [
                 "しかも、ずっと",
                 "しかも、ずっと",
-                "e sempre"
+                "o tempo todo"
               ],
               [
                 "彼と同じ速さだった。",
