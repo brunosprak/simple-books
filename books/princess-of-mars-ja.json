@@ -1,6 +1,7 @@
 {
   "schema_version": 2,
   "source_file": "princess-of-mars.txt",
+  "source_url": "https://www.gutenberg.org/cache/epub/62/pg62.txt",
   "languages": {
     "source": "en",
     "translation": "ja",
