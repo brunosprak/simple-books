@@ -543,9 +543,9 @@
 <body>
   <main>
     <header>
-      <p class="eyebrow">{{EYEBROW}}</p>
-      <h1>{{TITLE}}</h1>
-      <p class="author">{{AUTHOR}}</p>
+      <p class="eyebrow" id="page-eyebrow">{{EYEBROW}}</p>
+      <h1 id="page-title">{{TITLE}}</h1>
+      <p class="author" id="page-author">{{AUTHOR}}</p>
       <div class="reader-controls" aria-label="Controles de tamanho do texto">
         <span class="reader-controls-label">文字サイズ</span>
         <button class="font-button" id="font-decrease" type="button" aria-label="Diminuir o texto japonês">A−</button>
@@ -555,9 +555,9 @@
     </header>
 
     <article>
-      <h2>{{SECTION_TITLE}}</h2>
+      <h2 id="section-title">{{SECTION_TITLE}}</h2>
 
-      <p class="study-hint">{{STUDY_HINT}}</p>
+      <p class="study-hint" id="study-hint">{{STUDY_HINT}}</p>
 
       <noscript><p>このページを表示するにはJavaScriptを有効にしてください。</p></noscript>
 
@@ -583,9 +583,9 @@
       </section>
     </article>
 
-    <footer>{{FOOTER}}</footer>
+    <footer id="page-footer">{{FOOTER}}</footer>
   </main>
-  <script>
+  <script type="module">
     // BOOK_DATA_START
     const paragraphs = [];
     // BOOK_DATA_END
@@ -606,6 +606,16 @@
     const glossImport = document.querySelector("#gloss-import");
     const glossImportFile = document.querySelector("#gloss-import-file");
     const glossStatus = document.querySelector("#gloss-status");
+    if (bookData) {
+      document.title = bookData.page.title;
+      document.querySelector('meta[name="description"]').content = bookData.page.description;
+      document.querySelector("#page-eyebrow").textContent = bookData.page.eyebrow;
+      document.querySelector("#page-title").textContent = bookData.page.title;
+      document.querySelector("#page-author").textContent = bookData.page.author;
+      document.querySelector("#section-title").textContent = bookData.page.section_title;
+      document.querySelector("#study-hint").textContent = bookData.page.study_hint;
+      document.querySelector("#page-footer").textContent = bookData.page.footer;
+    }
     const sentences = paragraphs.flat();
     let activeIndex = 0;
     let furiganaVisible = true;

@@ -1,0 +1,349 @@
+{
+  "schema_version": 1,
+  "source_file": "call-of-cthulhu.txt",
+  "languages": {
+    "source": "en",
+    "translation": "ja",
+    "gloss": "pt-BR"
+  },
+  "page": {
+    "html_file": "../site/call-of-cthulhu/index.html",
+    "title": "クトゥルフの呼び声",
+    "author": "H・P・ラヴクラフト",
+    "eyebrow": "JAPANESE TRANSLATION",
+    "description": "H・P・ラヴクラフト『クトゥルフの呼び声』日本語訳",
+    "section_title": "1．粘土の恐怖",
+    "study_hint": "矢印で文を移動できます。ふりがなの表示も切り替えられます。",
+    "footer": "翻訳は段落ごとに順次更新されます。",
+    "font_levels_percent": [
+      80,
+      90,
+      100,
+      110,
+      120,
+      140,
+      160
+    ],
+    "default_font_level_percent": 100
+  },
+  "paragraphs": [
+    [
+      {
+        "text": "この世で何より救いなのは、人の心が、その中にあるすべてを結びつけて考えられないことだろう。",
+        "pt": "A coisa mais misericordiosa deste mundo talvez seja a incapacidade da mente humana de relacionar tudo o que contém.",
+        "chunks": [
+          [
+            "この世で",
+            "このよで",
+            "neste mundo"
+          ],
+          [
+            "何より",
+            "なにより",
+            "acima de tudo"
+          ],
+          [
+            "救いなのは",
+            "すくいなのは",
+            "o alívio é"
+          ],
+          [
+            "人の心が",
+            "ひとのこころが",
+            "a mente humana"
+          ],
+          [
+            "その中にある",
+            "そのなかにある",
+            "que contém"
+          ],
+          [
+            "すべてを",
+            "すべてを",
+            "tudo"
+          ],
+          [
+            "結びつけて",
+            "むすびつけて",
+            "relacionar"
+          ],
+          [
+            "考えられない",
+            "かんがえられない",
+            "não consegue pensar"
+          ],
+          [
+            "ことだろう",
+            "ことだろう",
+            "talvez seja o fato"
+          ]
+        ]
+      },
+      {
+        "text": "私たちは、果てしない黒い海の中に浮かぶ、静かな無知の島で暮らしている。",
+        "pt": "Vivemos numa tranquila ilha de ignorância, flutuando em meio a mares negros e infinitos.",
+        "chunks": [
+          [
+            "私たちは",
+            "わたしたちは",
+            "nós"
+          ],
+          [
+            "果てしない",
+            "はてしない",
+            "sem fim"
+          ],
+          [
+            "黒い海の中に",
+            "くろいうみのなかに",
+            "em mares negros"
+          ],
+          [
+            "浮かぶ",
+            "うかぶ",
+            "flutuando"
+          ],
+          [
+            "静かな",
+            "しずかな",
+            "tranquila"
+          ],
+          [
+            "無知の島で",
+            "むちのしまで",
+            "ilha de ignorância"
+          ],
+          [
+            "暮らしている",
+            "くらしている",
+            "vivemos"
+          ]
+        ]
+      },
+      {
+        "text": "そこから遠くへ航海するようにはできていない。",
+        "pt": "Não fomos feitos para navegar para longe dali.",
+        "chunks": [
+          [
+            "そこから",
+            "そこから",
+            "a partir dali"
+          ],
+          [
+            "遠くへ",
+            "とおくへ",
+            "para longe"
+          ],
+          [
+            "航海する",
+            "こうかいする",
+            "navegar"
+          ],
+          [
+            "ようには",
+            "ようには",
+            "para isso"
+          ],
+          [
+            "できていない",
+            "できていない",
+            "não fomos feitos"
+          ]
+        ]
+      },
+      {
+        "text": "さまざまな科学は、それぞれ別の方向へ進み、これまではほとんど害を与えてこなかった。",
+        "pt": "As diversas ciências, cada qual avançando em uma direção diferente, até agora pouco mal nos causaram.",
+        "chunks": [
+          [
+            "さまざまな",
+            "さまざまな",
+            "diversas"
+          ],
+          [
+            "科学は",
+            "かがくは",
+            "as ciências"
+          ],
+          [
+            "それぞれ",
+            "それぞれ",
+            "cada qual"
+          ],
+          [
+            "別の方向へ",
+            "べつのほうこうへ",
+            "noutra direção"
+          ],
+          [
+            "進み",
+            "すすみ",
+            "avançando"
+          ],
+          [
+            "これまでは",
+            "これまでは",
+            "até agora"
+          ],
+          [
+            "ほとんど",
+            "ほとんど",
+            "quase nenhum"
+          ],
+          [
+            "害を",
+            "がいを",
+            "mal"
+          ],
+          [
+            "与えてこなかった",
+            "あたえてこなかった",
+            "não causaram"
+          ]
+        ]
+      },
+      {
+        "text": "だがいつか、ばらばらの知識が一つにつながれば、現実の恐ろしい全体像と、その中で私たちがどれほど恐ろしい場所にいるかが見えてくる。",
+        "pt": "Mas um dia, quando os conhecimentos dispersos se unirem, veremos a terrível totalidade da realidade e quão assustadora é nossa posição dentro dela.",
+        "chunks": [
+          [
+            "だがいつか",
+            "だがいつか",
+            "mas um dia"
+          ],
+          [
+            "ばらばらの",
+            "ばらばらの",
+            "dispersos"
+          ],
+          [
+            "知識が",
+            "ちしきが",
+            "os conhecimentos"
+          ],
+          [
+            "一つに",
+            "ひとつに",
+            "num só"
+          ],
+          [
+            "つながれば",
+            "つながれば",
+            "quando se unirem"
+          ],
+          [
+            "現実の",
+            "げんじつの",
+            "da realidade"
+          ],
+          [
+            "恐ろしい",
+            "おそろしい",
+            "terrível"
+          ],
+          [
+            "全体像と",
+            "ぜんたいぞうと",
+            "a visão completa"
+          ],
+          [
+            "その中で",
+            "そのなかで",
+            "dentro dela"
+          ],
+          [
+            "私たちが",
+            "わたしたちが",
+            "nós"
+          ],
+          [
+            "どれほど",
+            "どれほど",
+            "quão"
+          ],
+          [
+            "恐ろしい場所に",
+            "おそろしいばしょに",
+            "posição assustadora"
+          ],
+          [
+            "いるかが",
+            "いるかが",
+            "onde estamos"
+          ],
+          [
+            "見えてくる",
+            "みえてくる",
+            "ficará visível"
+          ]
+        ]
+      },
+      {
+        "text": "そのとき私たちは、真実を知って狂うか、死をもたらす光から逃げ、新しい暗黒時代の平和と安全へ戻るしかないだろう。",
+        "pt": "Então só nos restará enlouquecer com a revelação ou fugir da luz mortal para a paz e a segurança de uma nova era de trevas.",
+        "chunks": [
+          [
+            "そのとき",
+            "そのとき",
+            "então"
+          ],
+          [
+            "私たちは",
+            "わたしたちは",
+            "nós"
+          ],
+          [
+            "真実を",
+            "しんじつを",
+            "a verdade"
+          ],
+          [
+            "知って",
+            "しって",
+            "ao conhecer"
+          ],
+          [
+            "狂うか",
+            "くるうか",
+            "enlouquecer ou"
+          ],
+          [
+            "死をもたらす",
+            "しをもたらす",
+            "mortal"
+          ],
+          [
+            "光から",
+            "ひかりから",
+            "da luz"
+          ],
+          [
+            "逃げ",
+            "にげ",
+            "fugir"
+          ],
+          [
+            "新しい",
+            "あたらしい",
+            "nova"
+          ],
+          [
+            "暗黒時代の",
+            "あんこくじだいの",
+            "era de trevas"
+          ],
+          [
+            "平和と安全へ",
+            "へいわとあんぜんへ",
+            "à paz e segurança"
+          ],
+          [
+            "戻るしかないだろう",
+            "もどるしかないだろう",
+            "só restará voltar"
+          ]
+        ]
+      }
+    ]
+  ]
+}
