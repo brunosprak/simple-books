@@ -2387,14 +2387,24 @@
             "pt": "Notei que os cavaleiros perseguidores — pois agora eu tinha certeza de que eram isso — haviam parado apenas por um instante para beber e continuado atrás de Powell, sempre na mesma velocidade que ele.",
             "chunks": [
               [
-                "追っている騎手たちは、やはり",
-                "おっているきしゅたちは、やはり",
+                "追っている騎手たちは、",
+                "おっているきしゅたちは、",
                 "os cavaleiros perseguidores"
               ],
               [
-                "そうに違いないと確信したのだが、水を飲むために",
-                "そうにちがいないとかくしんしたのだが、みずをのむために",
+                "やはりそうに違いないと",
+                "やはりそうにちがいないと",
+                "sem dúvida eram eles"
+              ],
+              [
+                "確信したのだが、",
+                "かくしんしたのだが、",
                 "disso eu tinha certeza"
+              ],
+              [
+                "水を飲むために",
+                "みずをのむために",
+                "para beber água"
               ],
               [
                 "わずかに止まっただけで、",
@@ -2403,18 +2413,23 @@
               ],
               [
                 "パウエルの後を",
-                "ぱうえるののちを",
+                "ぱうえるのあとを",
                 "atrás de Powell"
               ],
               [
-                "進み続けていた。しかも、ずっと",
-                "すすみつづけていた。しかも、ずっと",
+                "進み続けていた。",
+                "すすみつづけていた。",
                 "continuaram avançando"
+              ],
+              [
+                "しかも、ずっと",
+                "しかも、ずっと",
+                "e sempre"
               ],
               [
                 "彼と同じ速さだった。",
                 "かれとおなじはやさだった。",
-                "na mesma velocidade"
+                "na velocidade dele"
               ]
             ]
           }
