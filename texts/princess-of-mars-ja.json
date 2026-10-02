@@ -358,11 +358,21 @@
         "text": "装備があまりにも粗末だったため、一人が文明社会へ戻って必要な機械を買い、鉱山を本格的に採掘できるだけの人員を連れて戻ることにした。",
         "pt": "Como nosso equipamento era extremamente rudimentar, decidimos que um de nós voltaria à civilização, compraria as máquinas necessárias e regressaria com homens suficientes para explorar a mina devidamente.",
         "chunks": [
-          ["装備があまりにも粗末だったため", "そうびがあまりにもそまつだったため", "como o equipamento era rudimentar"],
-          ["一人が文明社会へ戻って", "ひとりがぶんめいしゃかいへもどって", "um voltaria à civilização"],
-          ["必要な機械を買い", "ひつようなきかいをかい", "compraria as máquinas"],
-          ["鉱山を本格的に採掘できるだけの", "こうざんをほんかくてきにさいくつできるだけの", "para explorar bem a mina"],
-          ["人員を連れて戻ることにした", "じんいんをつれてもどることにした", "traria homens suficientes"]
+          ["装備が", "そうびが", "equipamento"],
+          ["あまりにも", "あまりにも", "excessivamente"],
+          ["粗末だったため", "そまつだったため", "por ser rudimentar"],
+          ["一人が", "ひとりが", "um de nós"],
+          ["文明社会へ", "ぶんめいしゃかいへ", "à civilização"],
+          ["戻って", "もどって", "voltar"],
+          ["必要な", "ひつような", "necessárias"],
+          ["機械を", "きかいを", "máquinas"],
+          ["買い", "かい", "comprar"],
+          ["鉱山を", "こうざんを", "a mina"],
+          ["本格的に", "ほんかくてきに", "devidamente"],
+          ["採掘できるだけの", "さいくつできるだけの", "para poder explorar"],
+          ["人員を", "じんいんを", "pessoal"],
+          ["連れて戻る", "つれてもどる", "trazer de volta"],
+          ["ことにした", "ことにした", "decidimos"]
         ]
       }
     ],

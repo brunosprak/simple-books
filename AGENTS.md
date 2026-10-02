@@ -59,6 +59,16 @@ Produce natural Japanese fiction, not a sentence-by-sentence rendering of Englis
 - For invented terminology, choose a natural rendering and keep it internally consistent across parts.
 - Check the progress record and prior translated parts before changing any established rendering. If a correction is necessary, update affected earlier parts and the terminology record consistently rather than introducing an unexplained variant.
 
+### Interlinear chunks and Portuguese glosses
+
+- Divide each Japanese sentence into small, meaningful lexical or grammatical chunks. A chunk should normally contain one content word, a short compound, or a compact grammatical construction—not an entire clause merely because it has a natural Portuguese translation.
+- Split subjects, destinations, adverbs, verbs, objects, auxiliaries, and clause endings when each part is independently useful to a learner. Keep elements together only when separating them would obscure an idiom, fixed expression, compound term, or grammatical construction.
+- Make Portuguese glosses concise prompts, not miniature sentence translations. Prefer one to three words; use four only when needed to preserve the function or meaning of a compact construction.
+- Prefer dictionary-like meanings such as `equipamento`, `à civilização`, `voltar`, and `por ser rudimentar`. Avoid repeating complete Portuguese clauses such as `como o equipamento era rudimentar` when the Japanese can be divided naturally.
+- Do not force Portuguese word order onto the Japanese chunks. Each gloss should describe its own Japanese unit; the separate `pt` field carries the natural translation of the full sentence.
+- Include particles or inflectional material in the chunk where they make the relationship or grammatical function clearer, but keep the Portuguese gloss economical.
+- During review, inspect the rendered card at large font sizes. If a chunk becomes a multi-line sentence-like block, re-evaluate whether it should be split further.
+
 ### Fidelity
 
 - Preserve meaning, characterization, atmosphere, tone, narrative perspective, factual details, and the amount of information available to the narrator.
@@ -75,5 +85,6 @@ Before marking a part complete:
 2. Read the Japanese independently for idiomatic flow, clear reference, consistent viewpoint, and brisk narrative rhythm.
 3. Check names, terminology, dates, measurements, quotations, and formatting against the earlier content in the Japanese output file.
 4. Revise any passage whose English structure remains perceptible beneath the Japanese.
+5. Check that interlinear chunks are minimal meaningful units and that their Portuguese glosses are short prompts rather than clause-level retranslations.
 
 When the user requests translation text in the response, output only the Japanese translation itself. Do not append explanations, notes, alternatives, romanization, or a summary.
