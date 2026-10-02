@@ -4,18 +4,20 @@
 
 This repository is for translating English prose supplied under `texts/` into natural, publication-quality modern Japanese. Apply these instructions whenever translating or revising a translation in this repository.
 
-Do not translate an entire work in one pass unless the user explicitly asks. Translate exactly one source paragraph per execution so that the user can review style and terminology before translation continues.
+If the user does not specify an amount, translate exactly one source paragraph per execution so that style and terminology can be reviewed before translation continues. When the user explicitly requests a number of paragraphs, a range, all available paragraphs, or an entire work, translate the requested amount in that execution.
 
 ## Source and Output Workflow
 
-- Treat files under `texts/` as immutable source material. Do not edit them unless the user explicitly requests a source correction.
+- Treat the original English files under `texts/` as immutable source material. Do not edit them unless the user explicitly requests a source correction. Matching `-ja.txt` and `-ja.json` files are editable outputs and must be updated as the translation and reader evolve.
 - Translate the file or passage named by the user. If the user says only to continue, resume the source whose Japanese output was most recently updated.
 - Write the translation beside the source file, using the same basename followed by `-ja` before the extension. For example, `texts/book.txt` becomes `texts/book-ja.txt`.
 - Keep the matching `-ja.json` file synchronized with the Japanese TXT. It is the canonical source for the interactive reader and must contain the page metadata, paragraph and sentence structure, Portuguese sentence translations, and each chunk's Japanese surface, reading, and concise Portuguese gloss.
-- Generate `site/index.html` with `python3 tools/build_reader.py` after changing the JSON. Do not edit generated book content directly in `site/index.html`; change the JSON or `site/reader.template.html` and regenerate it.
-- Run `python3 tools/build_reader.py --check` before completing reader-related work.
-- On the first execution for a source file, create its Japanese output and translate the front matter before the prose—such as title, author, and the first section or chapter heading—followed by exactly the first prose paragraph.
-- On every later execution, append exactly one new source paragraph to the same Japanese output file. If a section or chapter heading occurs before that paragraph, append the heading together with the paragraph.
+- Give every book its own directory under `site/`, with its generated HTML inside that directory. Use `site/<book-slug>/index.html`; do not place multiple book readers directly in the root of `site/`.
+- Keep `page.html_file` in each `-ja.json` synchronized with that book's output path. Generate the page with `python3 tools/build_reader.py --data <json-path> --output site/<book-slug>/index.html` after changing the JSON.
+- Do not edit generated book content directly in a book's HTML. Change the matching JSON or `site/reader.template.html` and regenerate the page.
+- Run the corresponding `python3 tools/build_reader.py --data <json-path> --output <html-path> --check` command before completing reader-related work.
+- On the first execution for a source file, create its Japanese output and translate the front matter before the prose—such as title, author, and the first section or chapter heading—followed by the amount of prose requested by the user. If no amount is specified, translate exactly the first prose paragraph.
+- On every later execution, append the number of source paragraphs requested by the user. If no amount is specified, append exactly one. If a section or chapter heading occurs before the selected paragraph or range, append the heading together with it.
 - Treat a blank-line-delimited prose block as one paragraph. Never split a paragraph across executions, even when it is long.
 - Before appending, compare the end of the Japanese output with the source to identify the next untranslated paragraph. Preserve voice, spelling, naming, formatting, and established terminology.
 - Never silently skip, duplicate, summarize, or reorder source material. Verify that the appended paragraph immediately follows the material already translated.
@@ -42,19 +44,19 @@ Produce natural Japanese fiction, not a sentence-by-sentence rendering of Englis
 - Avoid translationese. Do not mechanically reproduce English subjects, pronouns, conjunctions, passive constructions, or sentence boundaries.
 - Omit subjects and pronouns when context makes them unnecessary.
 - Use connective forms such as `～とき`, `～と`, `～ながら`, `～ため`, `～ので`, `すると`, `それに`, and `そこで` only where they sound natural; do not rely on them mechanically.
-- Use ordinary standard kanji appropriate for general adult or young-adult fiction. Do not avoid kanji merely to simplify the text.
+- Use ordinary standard kanji appropriate for general adult or young-adult fiction. Simplifying vocabulary does not mean rewriting ordinary kanji in hiragana; retain conventional kanji unless the written form itself is unusually difficult or unnatural for the intended reader.
 - Do not explain what the source merely shows.
 
 ### Vocabulary accessibility and simplicity
 
 - Prefer common, immediately understandable modern Japanese vocabulary whenever it preserves the source's meaning, tone, atmosphere, and factual detail.
-- When a rare, formal, literary, or technical expression has a natural everyday equivalent, use the simpler equivalent. For example, prefer forms comparable to `危険な` over `凶暴な`, `盗賊` over `略奪者`, `隠れる` over `潜む`, `殺す` over `命を奪う`, and `勝つ見込み` over `勝ち目` when the context permits.
+- When a rare, formal, literary, or technical expression has a natural everyday equivalent, use the simpler equivalent. For example, forms comparable to `危険な` instead of `凶暴な`, `盗賊` instead of `略奪者`, `隠れる` instead of `潜む`, `殺す` instead of `命を奪う`, or an explicit phrase instead of a compact literary expression may be preferable.
 - Favor transparent verbs and concrete descriptions over nominal, abstract, or compressed constructions. Prefer `武器を持つ` to `武装する`, `跡を追うのがうまい` to `追跡に長ける`, and similarly direct wording when no important nuance is lost.
 - Simplify sentence structure when it improves readability, but do not make the prose childish, choppy, explanatory, or unnaturally casual. The result should remain polished narrative fiction.
 - Do not simplify established proper nouns, essential historical terms, fictional terminology, or precise technical distinctions when doing so would create factual drift.
-- Preserve intensity and narrative function. Replace difficult wording with clearer wording, not with weaker or censored wording.
+- Prefer accessibility when perfect equivalence and simpler vocabulary cannot both be maintained. A small loss of intensity, precision, register, or nuance is acceptable when it allows a substantially more common word or transparent phrase, provided the central action, fact, characterization, and narrative function remain intact. Do not censor, reverse, or materially alter the event.
 - When the user requests simplification beginning at a particular card, paragraph, or sentence, apply the simpler vocabulary consistently from that point onward and keep all earlier material unchanged unless explicitly asked.
-- After simplifying Japanese text, update the TXT, JSON sentence text, readings, chunks, Portuguese glosses, and generated HTML together. Preserve card numbering whenever practical.
+- After simplifying Japanese text, update the TXT, JSON sentence text, readings, chunks, Portuguese glosses, and generated HTML together. Card numbering does not need to be preserved: sentences may be split or combined when that produces clearer Japanese.
 
 ### Dialogue
 
@@ -82,8 +84,8 @@ Produce natural Japanese fiction, not a sentence-by-sentence rendering of Englis
 
 ### Fidelity
 
-- Preserve meaning, characterization, atmosphere, tone, narrative perspective, factual details, and the amount of information available to the narrator.
-- Do not summarize, censor, soften, embellish, or introduce details or Japanese cultural elements absent from the source.
+- Preserve the central meaning, characterization, atmosphere, narrative perspective, factual events, and the amount of information available to the narrator. Minor losses of intensity, precision, register, or nuance are permitted only under the vocabulary-simplicity rules above.
+- Do not summarize, censor, materially soften, embellish, or introduce details or Japanese cultural elements absent from the source. Replacing a difficult expression with a slightly broader but substantially more common expression is not considered material softening when the central event and narrative function remain intact.
 - Do not explain terminology unless the source explains it.
 - Preserve deliberate ambiguity instead of arbitrarily resolving it.
 - Retain the historical or social attitudes present in the source without silently modernizing them; translate their narrative function accurately.
