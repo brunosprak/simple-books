@@ -34,8 +34,10 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn(self.data["paragraphs"][0][0]["text"], first)
         self.assertIn('id="study-previous"', first)
         self.assertIn('id="study-next"', first)
-        self.assertIn('sentenceButtons[activeIndex - 1].click()', first)
-        self.assertIn('sentenceButtons[activeIndex + 1].click()', first)
+        self.assertIn('id="furigana-toggle"', first)
+        self.assertIn("renderCard(activeIndex - 1)", first)
+        self.assertIn("renderCard(activeIndex + 1)", first)
+        self.assertNotIn('id="reading-text"', first)
 
     def test_validation_rejects_out_of_order_chunks(self) -> None:
         invalid = copy.deepcopy(self.data)

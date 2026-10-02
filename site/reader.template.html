@@ -145,31 +145,31 @@
       text-indent: 1em;
     }
 
-    #reading-text p {
+    .study-panel .selected-sentence {
       font-size: clamp(1.296rem, 3.12vw, 1.416rem);
     }
 
-    #reading-text[data-font-level="-2"] p {
+    .study-panel[data-font-level="-2"] .selected-sentence {
       font-size: clamp(1.037rem, 2.496vw, 1.133rem);
     }
 
-    #reading-text[data-font-level="-1"] p {
+    .study-panel[data-font-level="-1"] .selected-sentence {
       font-size: clamp(1.166rem, 2.808vw, 1.274rem);
     }
 
-    #reading-text[data-font-level="1"] p {
+    .study-panel[data-font-level="1"] .selected-sentence {
       font-size: clamp(1.426rem, 3.432vw, 1.558rem);
     }
 
-    #reading-text[data-font-level="2"] p {
+    .study-panel[data-font-level="2"] .selected-sentence {
       font-size: clamp(1.555rem, 3.744vw, 1.699rem);
     }
 
-    #reading-text[data-font-level="3"] p {
+    .study-panel[data-font-level="3"] .selected-sentence {
       font-size: clamp(1.814rem, 4.368vw, 1.982rem);
     }
 
-    #reading-text[data-font-level="4"] p {
+    .study-panel[data-font-level="4"] .selected-sentence {
       font-size: clamp(2.074rem, 4.992vw, 2.266rem);
     }
 
@@ -222,10 +222,6 @@
       text-indent: 0;
     }
 
-    .study-panel[hidden] {
-      display: none;
-    }
-
     .study-topline {
       display: flex;
       align-items: center;
@@ -242,19 +238,6 @@
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-    }
-
-    .study-close {
-      width: 2rem;
-      height: 2rem;
-      padding: 0;
-      color: var(--muted);
-      background: transparent;
-      border: 1px solid var(--rule);
-      border-radius: 50%;
-      font-size: 1.15rem;
-      line-height: 1;
-      cursor: pointer;
     }
 
     .study-actions {
@@ -278,10 +261,14 @@
       cursor: pointer;
     }
 
+    .furigana-toggle {
+      min-width: 6.4rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.03em;
+    }
+
     .study-nav:hover,
-    .study-nav:focus-visible,
-    .study-close:hover,
-    .study-close:focus-visible {
+    .study-nav:focus-visible {
       color: var(--ink);
       border-color: var(--accent);
       outline: none;
@@ -313,24 +300,8 @@
       font-weight: 500;
     }
 
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      margin: 0 0 1rem;
-      color: var(--accent);
-      font-family: system-ui, sans-serif;
-      font-size: 0.75rem;
-      font-weight: 600;
-      line-height: 1.4;
-      text-decoration-thickness: 0.08em;
-      text-underline-offset: 0.18em;
-    }
-
-    .back-link:hover,
-    .back-link:focus-visible {
-      text-decoration-thickness: 0.14em;
-      outline: none;
+    .selected-sentence.furigana-hidden rt {
+      display: none;
     }
 
     .sentence-translation {
@@ -392,6 +363,35 @@
       letter-spacing: 0.06em;
     }
 
+    @media (max-width: 36rem) {
+      main {
+        width: min(100% - 1.25rem, 45rem);
+        padding-top: 2rem;
+      }
+
+      header {
+        margin-bottom: 2.5rem;
+      }
+
+      .study-topline {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .study-actions {
+        width: 100%;
+      }
+
+      .study-nav {
+        flex: 1;
+        min-height: 2.75rem;
+      }
+
+      .furigana-toggle {
+        flex: 1.65;
+      }
+    }
+
     @media (prefers-color-scheme: dark) {
       :root {
         --paper: #171a18;
@@ -436,24 +436,19 @@
       <h2>{{SECTION_TITLE}}</h2>
 
       <p class="study-hint">{{STUDY_HINT}}</p>
-      <div id="reading-text"></div>
 
-      <noscript>
-        <p>この世でもっとも慈悲深いものは、人間の精神が、自らの内にあるすべてを結びつけて考えることができないという事実だろう。われわれは、果てしない黒い海のただ中に浮かぶ、静かな無知の島で暮らしている。そこから遠くへ航海するようにはできていないのだ。さまざまな科学は、それぞれ別の方向へ探究を進め、これまでのところ、われわれにほとんど害を与えてこなかった。だが、いつの日か、ばらばらだった知識が結び合わされ、現実の恐るべき全貌と、その中でわれわれが占める戦慄すべき位置が明らかになる。そのとき人類は、真実を知って狂気に陥るか、死をもたらす光から逃れ、新たな暗黒時代の平穏と安全へ退くほかないだろう。</p>
-        <p>神智学者たちは、われわれの世界と人類が束の間の挿話にすぎない宇宙の循環に、畏るべき壮大さを見て取っていた。穏当な楽観論に覆われていなければ、聞く者の血も凍るような言葉で、異様な残存物の存在をほのめかしてもいた。だが、考えるだけで背筋が凍り、夢に見れば正気を失う、あの禁断の永劫を垣間見せたのは彼らではない。恐るべき真実はいつもそうであるように、その一瞥もまた、ばらばらだったものが偶然ひとつにつながった瞬間、閃光のように現れた。この場合は、古い新聞記事と、死んだ教授の手記だった。ほかの誰にも、このつながりを見いだしてほしくない。少なくとも私が生きているかぎり、これほど忌まわしい鎖に、みずから一つの環を加えることは決してない。教授もまた、知り得たことを口外しないつもりだったのだろう。突然の死に襲われなければ、手記を処分していたに違いない。</p>
-      </noscript>
+      <noscript><p>このページを表示するにはJavaScriptを有効にしてください。</p></noscript>
 
-      <section class="study-panel" id="study-panel" aria-live="polite" hidden>
+      <section class="study-panel" id="study-panel" aria-live="polite">
         <div class="study-topline">
           <p class="study-label" id="study-label">Interlinear</p>
           <div class="study-actions" aria-label="Navegação entre frases">
             <button class="study-nav" id="study-previous" type="button" aria-label="Frase anterior">←</button>
             <button class="study-nav" id="study-next" type="button" aria-label="Próxima frase">→</button>
-            <button class="study-close" id="study-close" type="button" aria-label="Fechar interlinear">×</button>
+            <button class="study-nav furigana-toggle" id="furigana-toggle" type="button" aria-pressed="true">ふりがな ON</button>
           </div>
         </div>
         <p class="selected-sentence" id="selected-sentence" lang="ja"></p>
-        <a class="back-link" id="back-to-original" href="#">↩ Voltar à frase no texto</a>
         <div class="interlinear" id="interlinear"></div>
         <p class="sentence-translation" id="sentence-translation" lang="pt-BR"></p>
       </section>
@@ -466,22 +461,20 @@
     const paragraphs = [];
     // BOOK_DATA_END
 
-    const readingText = document.querySelector("#reading-text");
     const fontDecrease = document.querySelector("#font-decrease");
     const fontIncrease = document.querySelector("#font-increase");
     const fontLevel = document.querySelector("#font-level");
     const panel = document.querySelector("#study-panel");
     const label = document.querySelector("#study-label");
     const selectedSentence = document.querySelector("#selected-sentence");
-    const backToOriginal = document.querySelector("#back-to-original");
     const sentenceTranslation = document.querySelector("#sentence-translation");
     const interlinear = document.querySelector("#interlinear");
     const previousButton = document.querySelector("#study-previous");
     const nextButton = document.querySelector("#study-next");
-    const closeButton = document.querySelector("#study-close");
-    const sentenceButtons = [];
-    let activeButton = null;
-    let sentenceNumber = 0;
+    const furiganaToggle = document.querySelector("#furigana-toggle");
+    const sentences = paragraphs.flat();
+    let activeIndex = 0;
+    let furiganaVisible = true;
     const fontPercentages = __FONT_LEVELS_JSON__;
     const defaultFontLevelIndex = __DEFAULT_FONT_INDEX__;
     const minFontLevel = -defaultFontLevelIndex;
@@ -493,7 +486,7 @@
     }
 
     function updateFontLevel() {
-      readingText.dataset.fontLevel = String(currentFontLevel);
+      panel.dataset.fontLevel = String(currentFontLevel);
       fontLevel.value = `${fontPercentages[currentFontLevel + defaultFontLevelIndex]}%`;
       fontDecrease.disabled = currentFontLevel === minFontLevel;
       fontIncrease.disabled = currentFontLevel === maxFontLevel;
@@ -556,109 +549,70 @@
       });
     }
 
-    paragraphs.forEach((sentences) => {
-      const paragraph = document.createElement("p");
+    function renderCard(index) {
+      activeIndex = index;
+      const sentence = sentences[activeIndex];
+      previousButton.disabled = activeIndex === 0;
+      nextButton.disabled = activeIndex === sentences.length - 1;
+      label.textContent = `Interlinear · frase ${activeIndex + 1} de ${sentences.length}`;
+      selectedSentence.replaceChildren();
 
-      sentences.forEach((sentence) => {
-        sentenceNumber += 1;
-        const button = document.createElement("button");
-        button.className = "sentence";
-        button.type = "button";
-        button.textContent = sentence.text;
-        button.setAttribute("aria-expanded", "false");
-        button.setAttribute("aria-label", `Abrir interlinear da frase ${sentenceNumber}`);
+      let cursor = 0;
+      sentence.chunks.forEach(([surface, reading]) => {
+        const start = sentence.text.indexOf(surface, cursor);
+        if (start > cursor) {
+          selectedSentence.append(document.createTextNode(sentence.text.slice(cursor, start)));
+        }
 
-        button.addEventListener("click", () => {
-          if (activeButton) {
-            activeButton.setAttribute("aria-expanded", "false");
-          }
-
-          activeButton = button;
-          activeButton.setAttribute("aria-expanded", "true");
-          const activeIndex = sentenceButtons.indexOf(activeButton);
-          previousButton.disabled = activeIndex <= 0;
-          nextButton.disabled = activeIndex >= sentenceButtons.length - 1;
-          label.textContent = `Interlinear · frase ${button.dataset.number}`;
-          selectedSentence.replaceChildren();
-
-          let cursor = 0;
-          sentence.chunks.forEach(([surface, reading]) => {
-            const start = sentence.text.indexOf(surface, cursor);
-            if (start > cursor) {
-              selectedSentence.append(document.createTextNode(sentence.text.slice(cursor, start)));
-            }
-
-            appendAlignedRuby(selectedSentence, surface, reading);
-            cursor = start + surface.length;
-          });
-
-          if (cursor < sentence.text.length) {
-            selectedSentence.append(document.createTextNode(sentence.text.slice(cursor)));
-          }
-
-          sentenceTranslation.textContent = sentence.pt;
-          interlinear.replaceChildren();
-
-          sentence.chunks.forEach(([surface, reading, gloss]) => {
-            const chunk = document.createElement("span");
-            chunk.className = "chunk";
-
-            const japanese = document.createElement("span");
-            japanese.className = "chunk-japanese";
-            appendAlignedRuby(japanese, surface, reading);
-
-            const meaning = document.createElement("span");
-            meaning.className = "gloss";
-            meaning.lang = "pt-BR";
-            meaning.textContent = gloss;
-
-            chunk.append(japanese, meaning);
-            interlinear.append(chunk);
-          });
-
-          panel.hidden = false;
-          paragraph.after(panel);
-          panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
-        });
-
-        button.dataset.number = sentenceNumber;
-        sentenceButtons.push(button);
-        paragraph.append(button);
+        appendAlignedRuby(selectedSentence, surface, reading);
+        cursor = start + surface.length;
       });
 
-      readingText.append(paragraph);
-    });
+      if (cursor < sentence.text.length) {
+        selectedSentence.append(document.createTextNode(sentence.text.slice(cursor)));
+      }
+
+      sentenceTranslation.textContent = sentence.pt;
+      interlinear.replaceChildren();
+
+      sentence.chunks.forEach(([surface, reading, gloss]) => {
+        const chunk = document.createElement("span");
+        chunk.className = "chunk";
+
+        const japanese = document.createElement("span");
+        japanese.className = "chunk-japanese";
+        appendAlignedRuby(japanese, surface, reading);
+
+        const meaning = document.createElement("span");
+        meaning.className = "gloss";
+        meaning.lang = "pt-BR";
+        meaning.textContent = gloss;
+
+        chunk.append(japanese, meaning);
+        interlinear.append(chunk);
+      });
+    }
 
     previousButton.addEventListener("click", () => {
-      const activeIndex = sentenceButtons.indexOf(activeButton);
       if (activeIndex > 0) {
-        sentenceButtons[activeIndex - 1].click();
+        renderCard(activeIndex - 1);
       }
     });
 
     nextButton.addEventListener("click", () => {
-      const activeIndex = sentenceButtons.indexOf(activeButton);
-      if (activeIndex >= 0 && activeIndex < sentenceButtons.length - 1) {
-        sentenceButtons[activeIndex + 1].click();
+      if (activeIndex < sentences.length - 1) {
+        renderCard(activeIndex + 1);
       }
     });
 
-    closeButton.addEventListener("click", () => {
-      panel.hidden = true;
-      if (activeButton) {
-        activeButton.setAttribute("aria-expanded", "false");
-        activeButton.focus();
-        activeButton = null;
-      }
+    furiganaToggle.addEventListener("click", () => {
+      furiganaVisible = !furiganaVisible;
+      selectedSentence.classList.toggle("furigana-hidden", !furiganaVisible);
+      furiganaToggle.setAttribute("aria-pressed", String(furiganaVisible));
+      furiganaToggle.textContent = `ふりがな ${furiganaVisible ? "ON" : "OFF"}`;
     });
 
-    backToOriginal.addEventListener("click", (event) => {
-      event.preventDefault();
-      if (activeButton) {
-        activeButton.scrollIntoView({ behavior: "smooth", block: "center" });
-        activeButton.focus({ preventScroll: true });
-      }
-    });
+    renderCard(0);
   </script>
 </body>
 </html>
