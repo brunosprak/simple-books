@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "source_file": "princess-of-mars.txt",
   "languages": {
     "source": "en",
@@ -7,12 +7,10 @@
     "gloss": "pt-BR"
   },
   "page": {
-    "html_file": "../site/princess-of-mars/index.html",
     "title": "火星のプリンセス",
     "author": "エドガー・ライス・バローズ",
     "eyebrow": "JAPANESE TRANSLATION",
     "description": "エドガー・ライス・バローズ『火星のプリンセス』日本語訳",
-    "section_title": "第一章　アリゾナの丘陵",
     "study_hint": "矢印で文を移動できます。ふりがなの表示も切り替えられます。",
     "footer": "収録部分の翻訳は完了しています。",
     "font_levels_percent": [
@@ -29,2205 +27,2204 @@
   "chapters": [
     {
       "title": "第一章　アリゾナの丘陵",
-      "start_paragraph": 0
+      "paragraphs": [
+        [
+          {
+            "text": "私は非常に年老いている。",
+            "pt": "Sou um homem muito velho.",
+            "chunks": [
+              [
+                "私は",
+                "わたしは",
+                "eu"
+              ],
+              [
+                "非常に",
+                "ひじょうに",
+                "muito"
+              ],
+              [
+                "年老いている",
+                "としおいている",
+                "sou velho"
+              ]
+            ]
+          },
+          {
+            "text": "だが、いくつなのかは自分でもわからない。",
+            "pt": "Mas nem eu sei quantos anos tenho.",
+            "chunks": [
+              [
+                "だが",
+                "だが",
+                "mas"
+              ],
+              [
+                "いくつなのかは",
+                "いくつなのかは",
+                "quantos anos"
+              ],
+              [
+                "自分でも",
+                "じぶんでも",
+                "nem eu mesmo"
+              ],
+              [
+                "わからない",
+                "わからない",
+                "não sei"
+              ]
+            ]
+          },
+          {
+            "text": "百歳かもしれないし、それ以上かもしれない。",
+            "pt": "Talvez tenha cem anos, talvez mais.",
+            "chunks": [
+              [
+                "百歳かもしれないし",
+                "ひゃくさいかもしれないし",
+                "talvez cem anos"
+              ],
+              [
+                "それ以上かもしれない",
+                "それいじょうかもしれない",
+                "talvez mais"
+              ]
+            ]
+          },
+          {
+            "text": "ほかの人間のように年を取ったことがなく、子供だった記憶もないので、確かめようがないのだ。",
+            "pt": "Não há como saber, pois nunca envelheci como os outros homens, nem me lembro de ter sido criança.",
+            "chunks": [
+              [
+                "ほかの人間の",
+                "ほかのにんげんの",
+                "dos outros"
+              ],
+              [
+                "ように",
+                "ように",
+                "como"
+              ],
+              [
+                "年を取った",
+                "としをとった",
+                "envelhecido"
+              ],
+              [
+                "ことがなく",
+                "ことがなく",
+                "nunca havia"
+              ],
+              [
+                "子供だった",
+                "こどもだった",
+                "ter sido criança"
+              ],
+              [
+                "記憶もないので",
+                "きおくもないので",
+                "sem lembrança"
+              ],
+              [
+                "確かめようがない",
+                "たしかめようがない",
+                "impossível saber"
+              ],
+              [
+                "のだ",
+                "のだ",
+                "é que"
+              ]
+            ]
+          },
+          {
+            "text": "記憶をたどれるかぎり、私はいつも一人前の男だった。",
+            "pt": "Até onde alcança minha memória, sempre fui um homem feito.",
+            "chunks": [
+              [
+                "記憶を",
+                "きおくを",
+                "a memória"
+              ],
+              [
+                "たどれるかぎり",
+                "たどれるかぎり",
+                "até onde alcança"
+              ],
+              [
+                "私は",
+                "わたしは",
+                "eu"
+              ],
+              [
+                "いつも",
+                "いつも",
+                "sempre"
+              ],
+              [
+                "一人前の男だった",
+                "いちにんまえのおとこだった",
+                "fui homem feito"
+              ]
+            ]
+          },
+          {
+            "text": "年のころは三十ほどである。",
+            "pt": "Um homem de cerca de trinta anos.",
+            "chunks": [
+              [
+                "年のころは",
+                "としのころは",
+                "quanto à idade"
+              ],
+              [
+                "三十ほどである",
+                "さんじゅうほどである",
+                "cerca de trinta"
+              ]
+            ]
+          },
+          {
+            "text": "今の姿も四十年以上前と変わらない。",
+            "pt": "Hoje tenho a mesma aparência de mais de quarenta anos atrás.",
+            "chunks": [
+              [
+                "今の姿も",
+                "いまのすがたも",
+                "minha aparência atual"
+              ],
+              [
+                "四十年以上",
+                "よんじゅうねんいじょう",
+                "mais de quarenta"
+              ],
+              [
+                "前と",
+                "まえと",
+                "de antes"
+              ],
+              [
+                "変わらない",
+                "かわらない",
+                "não mudou"
+              ]
+            ]
+          },
+          {
+            "text": "それでも、いつまでも生きつづけられるとは思えない。",
+            "pt": "Ainda assim, não creio que possa continuar vivendo para sempre.",
+            "chunks": [
+              [
+                "それでも",
+                "それでも",
+                "ainda assim"
+              ],
+              [
+                "いつまでも",
+                "いつまでも",
+                "para sempre"
+              ],
+              [
+                "生きつづけられる",
+                "いきつづけられる",
+                "continuar vivendo"
+              ],
+              [
+                "とは",
+                "とは",
+                "quanto a"
+              ],
+              [
+                "思えない",
+                "おもえない",
+                "não creio"
+              ]
+            ]
+          },
+          {
+            "text": "いつかは、二度と蘇ることのない本当の死を迎えるだろう。",
+            "pt": "Algum dia encontrarei a morte verdadeira, da qual não há ressurreição.",
+            "chunks": [
+              [
+                "いつかは",
+                "いつかは",
+                "algum dia"
+              ],
+              [
+                "二度と",
+                "にどと",
+                "nunca mais"
+              ],
+              [
+                "蘇ることのない",
+                "よみがえることのない",
+                "sem ressuscitar"
+              ],
+              [
+                "本当の死を",
+                "ほんとうのしを",
+                "a morte verdadeira"
+              ],
+              [
+                "迎えるだろう",
+                "むかえるだろう",
+                "encontrarei"
+              ]
+            ]
+          },
+          {
+            "text": "二度死んでなお生きているこの私が、なぜ死を恐れるのかはわからない。",
+            "pt": "Não sei por que eu deveria temer a morte, eu que morri duas vezes e ainda estou vivo.",
+            "chunks": [
+              [
+                "二度死んで",
+                "にどしんで",
+                "morri duas vezes"
+              ],
+              [
+                "なお生きている",
+                "なおいきている",
+                "ainda estou vivo"
+              ],
+              [
+                "この私が",
+                "このわたしが",
+                "eu próprio"
+              ],
+              [
+                "なぜ",
+                "なぜ",
+                "por que"
+              ],
+              [
+                "死を",
+                "しを",
+                "a morte"
+              ],
+              [
+                "恐れるのかは",
+                "おそれるのかは",
+                "temeria"
+              ],
+              [
+                "わからない",
+                "わからない",
+                "não sei"
+              ]
+            ]
+          },
+          {
+            "text": "それでも、一度も死んだことのない諸君と同じように、私は死に戦慄する。",
+            "pt": "Mesmo assim, sinto diante dela o mesmo horror que vocês, que nunca morreram.",
+            "chunks": [
+              [
+                "それでも",
+                "それでも",
+                "mesmo assim"
+              ],
+              [
+                "一度も",
+                "いちども",
+                "nem uma vez"
+              ],
+              [
+                "死んだことのない",
+                "しんだことのない",
+                "nunca morreram"
+              ],
+              [
+                "諸君と",
+                "しょくんと",
+                "com vocês"
+              ],
+              [
+                "同じように",
+                "おなじように",
+                "do mesmo modo"
+              ],
+              [
+                "私は",
+                "わたしは",
+                "eu"
+              ],
+              [
+                "死に戦慄する",
+                "しにせんりつする",
+                "temo a morte"
+              ]
+            ]
+          },
+          {
+            "text": "おそらく、この恐怖があるからこそ、自分も死すべき存在だと固く信じているのだ。",
+            "pt": "E creio que é por causa desse terror da morte que estou tão convencido de minha mortalidade.",
+            "chunks": [
+              [
+                "おそらく",
+                "おそらく",
+                "creio que"
+              ],
+              [
+                "この恐怖が",
+                "このきょうふが",
+                "esse terror"
+              ],
+              [
+                "あるからこそ",
+                "あるからこそ",
+                "justamente por haver"
+              ],
+              [
+                "自分も",
+                "じぶんも",
+                "eu também"
+              ],
+              [
+                "死すべき存在だと",
+                "しすべきそんざいだと",
+                "sou mortal"
+              ],
+              [
+                "固く信じている",
+                "かたくしんじている",
+                "estou convencido"
+              ],
+              [
+                "のだ",
+                "のだ",
+                "é que"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "だから私は、自らの生と死の中で興味深い時期について書き残すことにした。",
+            "pt": "Por causa dessa convicção, decidi registrar os períodos interessantes de minha vida e de minha morte.",
+            "chunks": [
+              [
+                "だから私は",
+                "だからわたしは",
+                "por isso, eu"
+              ],
+              [
+                "自らの",
+                "みずからの",
+                "minha própria"
+              ],
+              [
+                "生と死の中で",
+                "せいとしのなかで",
+                "vida e morte"
+              ],
+              [
+                "興味深い",
+                "きょうみぶかい",
+                "marcantes"
+              ],
+              [
+                "時期について",
+                "じきについて",
+                "sobre os períodos"
+              ],
+              [
+                "書き残す",
+                "かきのこす",
+                "registrar"
+              ],
+              [
+                "ことにした",
+                "ことにした",
+                "decidi"
+              ]
+            ]
+          },
+          {
+            "text": "この現象を説明することはできない。",
+            "pt": "Não posso explicar esses fenômenos.",
+            "chunks": [
+              [
+                "この現象を",
+                "このげんしょうを",
+                "esses fenômenos"
+              ],
+              [
+                "説明する",
+                "せつめいする",
+                "explicar"
+              ],
+              [
+                "ことはできない",
+                "ことはできない",
+                "não posso"
+              ]
+            ]
+          },
+          {
+            "text": "ただ、死体がアリゾナの洞窟で発見されないまま横たわっていた十年間に、私の身に起きた奇怪な出来事を、ありふれた冒険家の言葉で記すだけである。",
+            "pt": "Posso apenas narrar, nas palavras de um aventureiro comum, os estranhos acontecimentos daqueles dez anos em que meu cadáver permaneceu oculto numa caverna do Arizona.",
+            "chunks": [
+              [
+                "ただ",
+                "ただ",
+                "apenas"
+              ],
+              [
+                "死体が",
+                "したいが",
+                "meu cadáver"
+              ],
+              [
+                "アリゾナの",
+                "アリゾナの",
+                "do Arizona"
+              ],
+              [
+                "洞窟で",
+                "どうくつで",
+                "numa caverna"
+              ],
+              [
+                "発見されないまま",
+                "はっけんされないまま",
+                "sem ser descoberto"
+              ],
+              [
+                "横たわっていた",
+                "よこたわっていた",
+                "permaneceu deitado"
+              ],
+              [
+                "十年間に",
+                "じゅうねんかんに",
+                "durante dez anos"
+              ],
+              [
+                "私の身に",
+                "わたしのみに",
+                "comigo"
+              ],
+              [
+                "起きた",
+                "おきた",
+                "aconteceram"
+              ],
+              [
+                "奇怪な出来事を",
+                "きかいなできごとを",
+                "eventos estranhos"
+              ],
+              [
+                "ありふれた",
+                "ありふれた",
+                "comum"
+              ],
+              [
+                "冒険家の",
+                "ぼうけんかの",
+                "de um aventureiro"
+              ],
+              [
+                "言葉で",
+                "ことばで",
+                "nas palavras"
+              ],
+              [
+                "記すだけである",
+                "しるすだけである",
+                "apenas narro"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "この話は誰にもしたことがない。",
+            "pt": "Nunca contei esta história a ninguém.",
+            "chunks": [
+              [
+                "この話は",
+                "このはなしは",
+                "esta história"
+              ],
+              [
+                "誰にも",
+                "だれにも",
+                "a ninguém"
+              ],
+              [
+                "したことがない",
+                "したことがない",
+                "nunca contei"
+              ]
+            ]
+          },
+          {
+            "text": "私が永遠の彼方へ旅立つまで、この原稿を生ある者が目にすることもないだろう。",
+            "pt": "Nenhum mortal verá este manuscrito até que eu tenha partido para a eternidade.",
+            "chunks": [
+              [
+                "私が",
+                "わたしが",
+                "eu"
+              ],
+              [
+                "永遠の彼方へ",
+                "えいえんのかなたへ",
+                "para a eternidade"
+              ],
+              [
+                "旅立つまで",
+                "たびだつまで",
+                "até partir"
+              ],
+              [
+                "この原稿を",
+                "このげんこうを",
+                "este manuscrito"
+              ],
+              [
+                "生ある者が",
+                "せいあるものが",
+                "nenhum mortal"
+              ],
+              [
+                "目にする",
+                "めにする",
+                "ver"
+              ],
+              [
+                "こともないだろう",
+                "こともないだろう",
+                "certamente não"
+              ]
+            ]
+          },
+          {
+            "text": "人は理解できないものを信じない。",
+            "pt": "As pessoas não acreditam no que não conseguem compreender.",
+            "chunks": [
+              [
+                "人は",
+                "ひとは",
+                "as pessoas"
+              ],
+              [
+                "理解できない",
+                "りかいできない",
+                "incompreensível"
+              ],
+              [
+                "ものを",
+                "ものを",
+                "aquilo que"
+              ],
+              [
+                "信じない",
+                "しんじない",
+                "não acreditam"
+              ]
+            ]
+          },
+          {
+            "text": "それは承知している。",
+            "pt": "Sei muito bem disso.",
+            "chunks": [
+              [
+                "それは",
+                "それは",
+                "disso"
+              ],
+              [
+                "承知している",
+                "しょうちしている",
+                "sei bem"
+              ]
+            ]
+          },
+          {
+            "text": "いつか科学が裏づけるはずの単純な真実を語っただけで、世間や教会や新聞にさらし者にされ、大ぼら吹きの烙印を押されるつもりはない。",
+            "pt": "Não pretendo ser exposto pelo público, pelo púlpito e pela imprensa como um mentiroso colossal por apenas contar verdades simples que um dia a ciência confirmará.",
+            "chunks": [
+              [
+                "いつか",
+                "いつか",
+                "algum dia"
+              ],
+              [
+                "科学が",
+                "かがくが",
+                "a ciência"
+              ],
+              [
+                "裏づけるはずの",
+                "うらづけるはずの",
+                "deverá confirmar"
+              ],
+              [
+                "単純な真実を",
+                "たんじゅんなしんじつを",
+                "verdades simples"
+              ],
+              [
+                "語っただけで",
+                "かたっただけで",
+                "só por contar"
+              ],
+              [
+                "世間や",
+                "せけんや",
+                "pelo público"
+              ],
+              [
+                "教会や",
+                "きょうかいや",
+                "pela igreja"
+              ],
+              [
+                "新聞に",
+                "しんぶんに",
+                "pela imprensa"
+              ],
+              [
+                "さらし者にされ",
+                "さらしものにされ",
+                "ser exposto"
+              ],
+              [
+                "大ぼら吹きの",
+                "おおぼらふきの",
+                "de mentiroso"
+              ],
+              [
+                "烙印を押される",
+                "らくいんをおされる",
+                "ser rotulado"
+              ],
+              [
+                "つもりはない",
+                "つもりはない",
+                "não pretendo"
+              ]
+            ]
+          },
+          {
+            "text": "火星で得た手がかりと、この記録に書き残す知識が、われらの姉妹惑星の謎をより早く解明する助けになるかもしれない。",
+            "pt": "Talvez as pistas que obtive em Marte e o conhecimento registrado aqui ajudem a compreender mais cedo os mistérios de nosso planeta irmão.",
+            "chunks": [
+              [
+                "火星で",
+                "かせいで",
+                "em Marte"
+              ],
+              [
+                "得た手がかりと",
+                "えたてがかりと",
+                "pistas obtidas"
+              ],
+              [
+                "この記録に",
+                "このきろくに",
+                "neste relato"
+              ],
+              [
+                "書き残す",
+                "かきのこす",
+                "registrado"
+              ],
+              [
+                "知識が",
+                "ちしきが",
+                "o conhecimento"
+              ],
+              [
+                "われらの",
+                "われらの",
+                "nosso"
+              ],
+              [
+                "姉妹惑星の",
+                "しまいわくせいの",
+                "planeta irmão"
+              ],
+              [
+                "謎を",
+                "なぞを",
+                "os mistérios"
+              ],
+              [
+                "より早く解明する",
+                "よりはやくかいめいする",
+                "compreender mais cedo"
+              ],
+              [
+                "助けになる",
+                "たすけになる",
+                "pode ajudar"
+              ],
+              [
+                "かもしれない",
+                "かもしれない",
+                "talvez"
+              ]
+            ]
+          },
+          {
+            "text": "諸君には謎でも、私にはもはや謎ではない。",
+            "pt": "Mistérios para vocês, mas não mais para mim.",
+            "chunks": [
+              [
+                "諸君には謎でも",
+                "しょくんにはなぞでも",
+                "mistérios para vocês"
+              ],
+              [
+                "私には",
+                "わたしには",
+                "para mim"
+              ],
+              [
+                "もはや謎ではない",
+                "もはやなぞではない",
+                "não mais mistério"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "私の名はジョン・カーター。",
+            "pt": "Meu nome é John Carter.",
+            "chunks": [
+              [
+                "私の名は",
+                "わたしのなは",
+                "meu nome é"
+              ],
+              [
+                "ジョン・カーター",
+                "ジョン・カーター",
+                "John Carter"
+              ]
+            ]
+          },
+          {
+            "text": "ヴァージニアのジャック・カーター大尉としてよく知られている。",
+            "pt": "Sou mais conhecido como capitão Jack Carter, da Virgínia.",
+            "chunks": [
+              [
+                "ヴァージニアの",
+                "ヴァージニアの",
+                "da Virgínia"
+              ],
+              [
+                "ジャック・カーター大尉",
+                "ジャック・カーターたいい",
+                "capitão Jack Carter"
+              ],
+              [
+                "として",
+                "として",
+                "como"
+              ],
+              [
+                "よく知られている",
+                "よくしられている",
+                "sou mais conhecido"
+              ]
+            ]
+          },
+          {
+            "text": "南北戦争が終わったとき、私の手元にあったのは数十万ドルの南部連合紙幣と、もはや存在しない軍の騎兵隊大尉の辞令だけだった。",
+            "pt": "Ao fim da Guerra Civil, eu possuía algumas centenas de milhares de dólares confederados e uma patente de capitão de cavalaria num exército que já não existia.",
+            "chunks": [
+              [
+                "南北戦争が",
+                "なんぼくせんそうが",
+                "a Guerra Civil"
+              ],
+              [
+                "終わったとき",
+                "おわったとき",
+                "quando terminou"
+              ],
+              [
+                "私の手元に",
+                "わたしのてもとに",
+                "em minhas mãos"
+              ],
+              [
+                "あったのは",
+                "あったのは",
+                "eu tinha"
+              ],
+              [
+                "数十万ドルの",
+                "すうじゅうまんドルの",
+                "centenas de milhares"
+              ],
+              [
+                "南部連合紙幣と",
+                "なんぶれんごうしへいと",
+                "em moeda confederada"
+              ],
+              [
+                "もはや",
+                "もはや",
+                "já não"
+              ],
+              [
+                "存在しない",
+                "そんざいしない",
+                "existia"
+              ],
+              [
+                "軍の",
+                "ぐんの",
+                "do exército"
+              ],
+              [
+                "騎兵隊大尉の",
+                "きへいたいたいいの",
+                "capitão de cavalaria"
+              ],
+              [
+                "辞令だけだった",
+                "じれいだけだった",
+                "apenas a patente"
+              ]
+            ]
+          },
+          {
+            "text": "南部の希望とともに消えた国家に仕えていたのである。",
+            "pt": "Eu servira a um Estado desaparecido com as esperanças do Sul.",
+            "chunks": [
+              [
+                "南部の希望と",
+                "なんぶのきぼうと",
+                "esperanças sulistas"
+              ],
+              [
+                "ともに",
+                "ともに",
+                "junto com"
+              ],
+              [
+                "消えた国家に",
+                "きえたこっかに",
+                "Estado desaparecido"
+              ],
+              [
+                "仕えていたのである",
+                "つかえていたのである",
+                "eu servira"
+              ]
+            ]
+          },
+          {
+            "text": "仕える相手を失い、無一文となり、唯一の生計の手段だった戦いもなくなった。",
+            "pt": "Sem senhor, sem dinheiro e privado da luta, meu único meio de vida.",
+            "chunks": [
+              [
+                "仕える相手を失い",
+                "つかえるあいてをうしない",
+                "sem senhor"
+              ],
+              [
+                "無一文となり",
+                "むいちもんとなり",
+                "sem dinheiro"
+              ],
+              [
+                "唯一の",
+                "ゆいいつの",
+                "único"
+              ],
+              [
+                "生計の手段だった",
+                "せいけいのしゅだんだった",
+                "meio de vida"
+              ],
+              [
+                "戦いもなくなった",
+                "たたかいもなくなった",
+                "a luta desapareceu"
+              ]
+            ]
+          },
+          {
+            "text": "そこで南西部へ向かい、金を探して失った財産を取り戻そうと決めた。",
+            "pt": "Decidi seguir para o sudoeste e tentar recuperar minha fortuna procurando ouro.",
+            "chunks": [
+              [
+                "そこで",
+                "そこで",
+                "assim"
+              ],
+              [
+                "南西部へ",
+                "なんせいぶへ",
+                "ao sudoeste"
+              ],
+              [
+                "向かい",
+                "むかい",
+                "parti"
+              ],
+              [
+                "金を探して",
+                "きんをさがして",
+                "procurando ouro"
+              ],
+              [
+                "失った財産を",
+                "うしなったざいさんを",
+                "a fortuna perdida"
+              ],
+              [
+                "取り戻そうと決めた",
+                "とりもどそうときめた",
+                "decidi recuperar"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "私はリッチモンド出身の南軍士官、ジェームズ・K・パウエル大尉と、ほぼ一年にわたって金を探した。",
+            "pt": "Passei quase um ano prospectando com outro oficial confederado, o capitão James K. Powell, de Richmond.",
+            "chunks": [
+              [
+                "私は",
+                "わたしは",
+                "eu"
+              ],
+              [
+                "リッチモンド出身の",
+                "リッチモンドしゅっしんの",
+                "de Richmond"
+              ],
+              [
+                "南軍士官",
+                "なんぐんしかん",
+                "oficial confederado"
+              ],
+              [
+                "ジェームズ・K・パウエル大尉",
+                "ジェームズ・ケー・パウエルたいい",
+                "capitão James Powell"
+              ],
+              [
+                "と",
+                "と",
+                "com"
+              ],
+              [
+                "ほぼ一年にわたって",
+                "ほぼいちねんにわたって",
+                "quase um ano"
+              ],
+              [
+                "金を探した",
+                "きんをさがした",
+                "procurei ouro"
+              ]
+            ]
+          },
+          {
+            "text": "運は格別に恵まれていた。",
+            "pt": "Tivemos uma sorte extraordinária.",
+            "chunks": [
+              [
+                "運は",
+                "うんは",
+                "a sorte"
+              ],
+              [
+                "格別に",
+                "かくべつに",
+                "extraordinariamente"
+              ],
+              [
+                "恵まれていた",
+                "めぐまれていた",
+                "nos favoreceu"
+              ]
+            ]
+          },
+          {
+            "text": "1865年の冬も終わりに近づいたころ、幾多の困難と窮乏を越え、夢にも見たことのないほど見事な含金石英鉱脈を発見した。",
+            "pt": "No fim do inverno de 1865, depois de muitas dificuldades e privações, encontramos o mais extraordinário veio de quartzo aurífero que já havíamos imaginado.",
+            "chunks": [
+              [
+                "1865年の冬も",
+                "せんはっぴゃくろくじゅうごねんのふゆも",
+                "inverno de 1865"
+              ],
+              [
+                "終わりに近づいたころ",
+                "おわりにちかづいたころ",
+                "perto do fim"
+              ],
+              [
+                "幾多の",
+                "いくたの",
+                "muitas"
+              ],
+              [
+                "困難と窮乏を",
+                "こんなんときゅうぼうを",
+                "dificuldades e privações"
+              ],
+              [
+                "越え",
+                "こえ",
+                "superadas"
+              ],
+              [
+                "夢にも見たことのないほど",
+                "ゆめにもみたことのないほど",
+                "além dos sonhos"
+              ],
+              [
+                "見事な",
+                "みごとな",
+                "extraordinário"
+              ],
+              [
+                "含金石英鉱脈を",
+                "がんきんせきえいこうみゃくを",
+                "quartzo aurífero"
+              ],
+              [
+                "発見した",
+                "はっけんした",
+                "encontramos"
+              ]
+            ]
+          },
+          {
+            "text": "鉱山技師の教育を受けたパウエルによれば、わずか三か月あまりで、百万ドルを超える価値の鉱石を掘り当てたという。",
+            "pt": "Powell, formado em engenharia de minas, afirmou que em pouco mais de três meses havíamos descoberto minério no valor de mais de um milhão de dólares.",
+            "chunks": [
+              [
+                "鉱山技師の",
+                "こうざんぎしの",
+                "engenheiro de minas"
+              ],
+              [
+                "教育を受けた",
+                "きょういくをうけた",
+                "formado como"
+              ],
+              [
+                "パウエルによれば",
+                "パウエルによれば",
+                "segundo Powell"
+              ],
+              [
+                "わずか",
+                "わずか",
+                "apenas"
+              ],
+              [
+                "三か月あまりで",
+                "さんかげつあまりで",
+                "três meses e pouco"
+              ],
+              [
+                "百万ドルを超える",
+                "ひゃくまんドルをこえる",
+                "mais de um milhão"
+              ],
+              [
+                "価値の",
+                "かちの",
+                "no valor de"
+              ],
+              [
+                "鉱石を",
+                "こうせきを",
+                "minério"
+              ],
+              [
+                "掘り当てたという",
+                "ほりあてたという",
+                "havíamos descoberto"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "装備があまりにも粗末だったため、一人が文明社会へ戻って必要な機械を買い、鉱山を本格的に採掘できるだけの人員を連れて戻ることにした。",
+            "pt": "Como nosso equipamento era extremamente rudimentar, decidimos que um de nós voltaria à civilização, compraria as máquinas necessárias e regressaria com homens suficientes para explorar a mina devidamente.",
+            "chunks": [
+              [
+                "装備が",
+                "そうびが",
+                "equipamento"
+              ],
+              [
+                "あまりにも",
+                "あまりにも",
+                "excessivamente"
+              ],
+              [
+                "粗末だったため",
+                "そまつだったため",
+                "por ser rudimentar"
+              ],
+              [
+                "一人が",
+                "ひとりが",
+                "um de nós"
+              ],
+              [
+                "文明社会へ",
+                "ぶんめいしゃかいへ",
+                "à civilização"
+              ],
+              [
+                "戻って",
+                "もどって",
+                "voltar"
+              ],
+              [
+                "必要な",
+                "ひつような",
+                "necessárias"
+              ],
+              [
+                "機械を",
+                "きかいを",
+                "máquinas"
+              ],
+              [
+                "買い",
+                "かい",
+                "comprar"
+              ],
+              [
+                "鉱山を",
+                "こうざんを",
+                "a mina"
+              ],
+              [
+                "本格的に",
+                "ほんかくてきに",
+                "devidamente"
+              ],
+              [
+                "採掘できるだけの",
+                "さいくつできるだけの",
+                "para poder explorar"
+              ],
+              [
+                "人員を",
+                "じんいんを",
+                "pessoal"
+              ],
+              [
+                "連れて戻る",
+                "つれてもどる",
+                "trazer de volta"
+              ],
+              [
+                "ことにした",
+                "ことにした",
+                "decidimos"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "パウエルは土地にも採鉱に必要な機械にも通じていたため、彼が出向くのが最善だと判断した。",
+            "pt": "Como Powell conhecia tanto a região quanto as exigências mecânicas da mineração, concluímos que seria melhor ele fazer a viagem.",
+            "chunks": [
+              [
+                "パウエルは",
+                "パウエルは",
+                "Powell"
+              ],
+              [
+                "土地にも",
+                "とちにも",
+                "conhecia a região"
+              ],
+              [
+                "採鉱に",
+                "さいこうに",
+                "para mineração"
+              ],
+              [
+                "必要な機械にも",
+                "ひつようなきかいにも",
+                "também as máquinas"
+              ],
+              [
+                "通じていたため",
+                "つうじていたため",
+                "como dominava"
+              ],
+              [
+                "彼が出向くのが",
+                "かれがでむくのが",
+                "a viagem dele"
+              ],
+              [
+                "最善だと",
+                "さいぜんだと",
+                "seria melhor"
+              ],
+              [
+                "判断した",
+                "はんだんした",
+                "decidimos"
+              ]
+            ]
+          },
+          {
+            "text": "流れ者の探鉱者に鉱区を横取りされる万一に備え、私は残って権利を守ることになった。",
+            "pt": "Ficou combinado que eu guardaria nossa concessão contra a remota possibilidade de algum garimpeiro errante tomá-la.",
+            "chunks": [
+              [
+                "流れ者の",
+                "ながれものの",
+                "errante"
+              ],
+              [
+                "探鉱者に",
+                "たんこうしゃに",
+                "por um garimpeiro"
+              ],
+              [
+                "鉱区を横取りされる",
+                "こうくをよこどりされる",
+                "concessão tomada"
+              ],
+              [
+                "万一に備え",
+                "まんいちにそなえ",
+                "por precaução"
+              ],
+              [
+                "私は残って",
+                "わたしはのこって",
+                "eu ficaria"
+              ],
+              [
+                "権利を",
+                "けんりを",
+                "a concessão"
+              ],
+              [
+                "守ることになった",
+                "まもることになった",
+                "ficaria protegendo"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "1866年3月3日、私とパウエルは二頭のロバに彼の食料を積んだ。",
+            "pt": "Em 3 de março de 1866, Powell e eu carregamos suas provisões em dois de nossos burros.",
+            "chunks": [
+              [
+                "1866年",
+                "せんはっぴゃくろくじゅうろくねん",
+                "1866"
+              ],
+              [
+                "3月3日",
+                "さんがつみっか",
+                "3 de março"
+              ],
+              [
+                "私とパウエルは",
+                "わたしとパウエルは",
+                "Powell e eu"
+              ],
+              [
+                "二頭のロバに",
+                "にとうのロバに",
+                "em dois burros"
+              ],
+              [
+                "彼の食料を積んだ",
+                "かれのしょくりょうをつんだ",
+                "carregamos as provisões"
+              ]
+            ]
+          },
+          {
+            "text": "別れを告げると、彼は馬にまたがり、旅の第一行程となる谷へ向かって山腹を下りていった。",
+            "pt": "Depois de se despedir, ele montou no cavalo e desceu a encosta rumo ao vale, a primeira etapa da viagem.",
+            "chunks": [
+              [
+                "別れを告げると",
+                "わかれをつげると",
+                "após despedir-se"
+              ],
+              [
+                "彼は馬にまたがり",
+                "かれはうまにまたがり",
+                "montou a cavalo"
+              ],
+              [
+                "旅の第一行程となる",
+                "たびのだいいちこうていとなる",
+                "primeira etapa"
+              ],
+              [
+                "谷へ向かって",
+                "たにへむかって",
+                "rumo ao vale"
+              ],
+              [
+                "山腹を下りていった",
+                "さんぷくをおりていった",
+                "desceu a encosta"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "パウエルが出発した朝は、アリゾナの朝のほとんどがそうであるように、晴れわたって美しかった。",
+            "pt": "A manhã da partida de Powell, como quase todas as manhãs do Arizona, estava clara e bela.",
+            "chunks": [
+              [
+                "パウエルが",
+                "パウエルが",
+                "Powell"
+              ],
+              [
+                "出発した朝は",
+                "しゅっぱつしたあさは",
+                "manhã da partida"
+              ],
+              [
+                "アリゾナの朝の",
+                "アリゾナのあさの",
+                "manhãs do Arizona"
+              ],
+              [
+                "ほとんどが",
+                "ほとんどが",
+                "quase todas"
+              ],
+              [
+                "そうであるように",
+                "そうであるように",
+                "como costuma ser"
+              ],
+              [
+                "晴れわたって",
+                "はれわたって",
+                "clara"
+              ],
+              [
+                "美しかった",
+                "うつくしかった",
+                "e bela"
+              ]
+            ]
+          },
+          {
+            "text": "彼と小さな荷駄の動物たちが谷へ向かって山腹を慎重に下る姿が見えた。",
+            "pt": "Eu via ele e seus pequenos animais de carga descendo cuidadosamente a encosta rumo ao vale.",
+            "chunks": [
+              [
+                "彼と",
+                "かれと",
+                "ele e"
+              ],
+              [
+                "小さな",
+                "ちいさな",
+                "pequenos"
+              ],
+              [
+                "荷駄の動物たちが",
+                "にだのどうぶつたちが",
+                "animais de carga"
+              ],
+              [
+                "谷へ向かって",
+                "たにへむかって",
+                "rumo ao vale"
+              ],
+              [
+                "山腹を",
+                "さんぷくを",
+                "a encosta"
+              ],
+              [
+                "慎重に",
+                "しんちょうに",
+                "cuidadosamente"
+              ],
+              [
+                "下る姿が",
+                "くだるすがたが",
+                "descendo"
+              ],
+              [
+                "見えた",
+                "みえた",
+                "eu via"
+              ]
+            ]
+          },
+          {
+            "text": "その午前中、豚の背のような尾根を越えたり、平らな台地に出たりするたびに、何度もその姿を垣間見た。",
+            "pt": "Durante a manhã, eu os avistava de vez em quando quando cruzavam uma crista ou surgiam num planalto.",
+            "chunks": [
+              [
+                "その午前中",
+                "そのごぜんちゅう",
+                "durante a manhã"
+              ],
+              [
+                "豚の背のような",
+                "ぶたのせのような",
+                "como lombo suíno"
+              ],
+              [
+                "尾根を",
+                "おねを",
+                "a crista"
+              ],
+              [
+                "越えたり",
+                "こえたり",
+                "ao cruzar"
+              ],
+              [
+                "平らな台地に",
+                "たいらなだいちに",
+                "num planalto"
+              ],
+              [
+                "出たりするたびに",
+                "でたりするたびに",
+                "sempre que surgiam"
+              ],
+              [
+                "何度も",
+                "なんども",
+                "várias vezes"
+              ],
+              [
+                "その姿を垣間見た",
+                "そのすがたをかいまみた",
+                "eu os avistei"
+              ]
+            ]
+          },
+          {
+            "text": "最後にパウエルを見たのは午後三時ごろ、谷の反対側の山並みの陰へ入っていくところだった。",
+            "pt": "Vi Powell pela última vez por volta das três da tarde, quando ele entrou nas sombras da serra do outro lado do vale.",
+            "chunks": [
+              [
+                "最後に",
+                "さいごに",
+                "pela última vez"
+              ],
+              [
+                "パウエルを",
+                "パウエルを",
+                "Powell"
+              ],
+              [
+                "見たのは",
+                "みたのは",
+                "quando vi"
+              ],
+              [
+                "午後三時ごろ",
+                "ごごさんじごろ",
+                "cerca das três"
+              ],
+              [
+                "谷の",
+                "たにの",
+                "do vale"
+              ],
+              [
+                "反対側の",
+                "はんたいがわの",
+                "lado oposto"
+              ],
+              [
+                "山並みの陰へ",
+                "やまなみのかげへ",
+                "sombras da serra"
+              ],
+              [
+                "入っていく",
+                "はいっていく",
+                "entrava"
+              ],
+              [
+                "ところだった",
+                "ところだった",
+                "naquele momento"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "それから三十分ほどして何気なく谷の向こうに目をやると、友人と二頭の荷役動物を最後に見たあたりに、小さな点が三つあるのに気づき、ひどく驚いた。",
+            "pt": "Cerca de meia hora depois, olhei por acaso através do vale e me surpreendi ao notar três pequenos pontos perto de onde vira meu amigo e seus dois animais pela última vez.",
+            "chunks": [
+              [
+                "それから",
+                "それから",
+                "depois"
+              ],
+              [
+                "三十分ほどして",
+                "さんじゅっぷんほどして",
+                "meia hora depois"
+              ],
+              [
+                "何気なく",
+                "なにげなく",
+                "por acaso"
+              ],
+              [
+                "谷の向こうに",
+                "たにのむこうに",
+                "através do vale"
+              ],
+              [
+                "目をやると",
+                "めをやると",
+                "ao olhar"
+              ],
+              [
+                "友人と",
+                "ゆうじんと",
+                "meu amigo e"
+              ],
+              [
+                "二頭の",
+                "にとうの",
+                "dois"
+              ],
+              [
+                "荷役動物を",
+                "かえきどうぶつを",
+                "animais de carga"
+              ],
+              [
+                "最後に見た",
+                "さいごにみた",
+                "vistos por último"
+              ],
+              [
+                "あたりに",
+                "あたりに",
+                "nas proximidades"
+              ],
+              [
+                "小さな点が",
+                "ちいさなてんが",
+                "pequenos pontos"
+              ],
+              [
+                "三つあるのに",
+                "みっつあるのに",
+                "havia três"
+              ],
+              [
+                "気づき",
+                "きづき",
+                "notei"
+              ],
+              [
+                "ひどく驚いた",
+                "ひどくおどろいた",
+                "fiquei muito surpreso"
+              ]
+            ]
+          },
+          {
+            "text": "私はむやみに心配するたちではない。",
+            "pt": "Não sou dado a preocupações sem motivo.",
+            "chunks": [
+              [
+                "私は",
+                "わたしは",
+                "eu"
+              ],
+              [
+                "むやみに",
+                "むやみに",
+                "sem motivo"
+              ],
+              [
+                "心配する",
+                "しんぱいする",
+                "preocupar-me"
+              ],
+              [
+                "たちではない",
+                "たちではない",
+                "não sou do tipo"
+              ]
+            ]
+          },
+          {
+            "text": "だが、パウエルは無事で、彼の通った道に見えた点はアンテロープか野生馬だと自分に言い聞かせようとするほど、不安は募った。",
+            "pt": "Mas quanto mais eu tentava me convencer de que Powell estava bem e de que os pontos em seu rastro eram antílopes ou cavalos selvagens, menos conseguia me tranquilizar.",
+            "chunks": [
+              [
+                "だが",
+                "だが",
+                "mas"
+              ],
+              [
+                "パウエルは",
+                "パウエルは",
+                "Powell"
+              ],
+              [
+                "無事で",
+                "ぶじで",
+                "estava bem"
+              ],
+              [
+                "彼の通った道に",
+                "かれのとおったみちに",
+                "na trilha dele"
+              ],
+              [
+                "見えた点は",
+                "みえたてんは",
+                "os pontos vistos"
+              ],
+              [
+                "アンテロープか",
+                "アンテロープか",
+                "antílopes ou"
+              ],
+              [
+                "野生馬だと",
+                "やせいばだと",
+                "cavalos selvagens"
+              ],
+              [
+                "自分に",
+                "じぶんに",
+                "a mim mesmo"
+              ],
+              [
+                "言い聞かせようと",
+                "いいきかせようと",
+                "tentava convencer"
+              ],
+              [
+                "するほど",
+                "するほど",
+                "quanto mais"
+              ],
+              [
+                "不安は募った",
+                "ふあんはつのった",
+                "a inquietação crescia"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "この土地へ入って以来、敵対するインディアンには一人も遭遇していなかった。",
+            "pt": "Desde que entráramos no território, não havíamos encontrado nenhum indígena hostil.",
+            "chunks": [
+              [
+                "この土地へ",
+                "このとちへ",
+                "neste território"
+              ],
+              [
+                "入って以来",
+                "はいっていらい",
+                "desde que entramos"
+              ],
+              [
+                "敵対する",
+                "てきたいする",
+                "hostis"
+              ],
+              [
+                "インディアンには",
+                "インディアンには",
+                "indígenas"
+              ],
+              [
+                "一人も",
+                "ひとりも",
+                "nenhum sequer"
+              ],
+              [
+                "遭遇していなかった",
+                "そうぐうしていなかった",
+                "havíamos encontrado"
+              ]
+            ]
+          },
+          {
+            "text": "そのため、すっかり油断していた。",
+            "pt": "Por isso, havíamos nos tornado extremamente descuidados.",
+            "chunks": [
+              [
+                "そのため",
+                "そのため",
+                "por isso"
+              ],
+              [
+                "すっかり",
+                "すっかり",
+                "completamente"
+              ],
+              [
+                "油断していた",
+                "ゆだんしていた",
+                "baixamos a guarda"
+              ]
+            ]
+          },
+          {
+            "text": "道には危険な盗賊が大勢隠れ、捕まえた白人の一行を容赦なく殺し、拷問するという話も、いつの間にか笑い話になっていた。",
+            "pt": "Passáramos a ridicularizar as histórias sobre numerosos saqueadores cruéis que rondavam as trilhas, matando e torturando todo grupo de brancos que caía em suas mãos impiedosas.",
+            "chunks": [
+              [
+                "道には",
+                "みちには",
+                "nas estradas"
+              ],
+              [
+                "危険な",
+                "きけんな",
+                "perigosos"
+              ],
+              [
+                "盗賊が",
+                "とうぞくが",
+                "bandidos"
+              ],
+              [
+                "大勢隠れ",
+                "おおぜいかくれ",
+                "muitos escondidos"
+              ],
+              [
+                "捕まえた",
+                "つかまえた",
+                "capturaram"
+              ],
+              [
+                "白人の一行を",
+                "はくじんのいっこうを",
+                "grupo de brancos"
+              ],
+              [
+                "容赦なく",
+                "ようしゃなく",
+                "sem piedade"
+              ],
+              [
+                "殺し",
+                "ころし",
+                "matar"
+              ],
+              [
+                "拷問する",
+                "ごうもんする",
+                "torturar"
+              ],
+              [
+                "という話も",
+                "というはなしも",
+                "essas histórias"
+              ],
+              [
+                "いつの間にか",
+                "いつのまにか",
+                "com o tempo"
+              ],
+              [
+                "笑い話に",
+                "わらいばなしに",
+                "motivo de riso"
+              ],
+              [
+                "なっていた",
+                "なっていた",
+                "tinham virado"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "パウエルが十分に武器を持ち、インディアンとの戦いにも慣れていることは知っていた。",
+            "pt": "Eu sabia que Powell estava bem armado e era experiente em combates contra indígenas.",
+            "chunks": [
+              [
+                "パウエルが",
+                "パウエルが",
+                "Powell"
+              ],
+              [
+                "十分に",
+                "じゅうぶんに",
+                "bem"
+              ],
+              [
+                "武器を持ち",
+                "ぶきをもち",
+                "tinha armas"
+              ],
+              [
+                "インディアンとの",
+                "インディアンとの",
+                "contra indígenas"
+              ],
+              [
+                "戦いにも",
+                "たたかいにも",
+                "em combates"
+              ],
+              [
+                "慣れていることは",
+                "なれていることは",
+                "era experiente"
+              ],
+              [
+                "知っていた",
+                "しっていた",
+                "eu sabia"
+              ]
+            ]
+          },
+          {
+            "text": "だが私も北部のスー族の間で何年も暮らし、戦ってきた。",
+            "pt": "Mas eu também vivera e lutara durante anos entre os sioux do Norte.",
+            "chunks": [
+              [
+                "だが私も",
+                "だがわたしも",
+                "mas eu também"
+              ],
+              [
+                "北部の",
+                "ほくぶの",
+                "do Norte"
+              ],
+              [
+                "スー族の間で",
+                "スーぞくのあいだで",
+                "entre os sioux"
+              ],
+              [
+                "何年も",
+                "なんねんも",
+                "por anos"
+              ],
+              [
+                "暮らし",
+                "くらし",
+                "vivi"
+              ],
+              [
+                "戦ってきた",
+                "たたかってきた",
+                "e lutei"
+              ]
+            ]
+          },
+          {
+            "text": "跡を追うのがうまいアパッチの一団を相手にすれば、彼に勝つ見込みはほとんどないこともわかっていた。",
+            "pt": "Eu sabia que ele teria poucas chances contra um grupo de apaches hábeis no rastreamento.",
+            "chunks": [
+              [
+                "跡を追うのが",
+                "あとをおうのが",
+                "seguir rastros"
+              ],
+              [
+                "うまい",
+                "うまい",
+                "hábeis"
+              ],
+              [
+                "アパッチの一団を",
+                "アパッチのいちだんを",
+                "grupo de apaches"
+              ],
+              [
+                "相手にすれば",
+                "あいてにすれば",
+                "ao enfrentar"
+              ],
+              [
+                "彼に",
+                "かれに",
+                "para ele"
+              ],
+              [
+                "勝つ見込みは",
+                "かつみこみは",
+                "chance de vencer"
+              ],
+              [
+                "ほとんどないことも",
+                "ほとんどないことも",
+                "quase nenhuma"
+              ],
+              [
+                "わかっていた",
+                "わかっていた",
+                "eu sabia"
+              ]
+            ]
+          },
+          {
+            "text": "とうとう不安に耐えられなくなった。",
+            "pt": "Por fim, não pude mais suportar a incerteza.",
+            "chunks": [
+              [
+                "とうとう",
+                "とうとう",
+                "por fim"
+              ],
+              [
+                "不安に",
+                "ふあんに",
+                "a incerteza"
+              ],
+              [
+                "耐えられなく",
+                "たえられなく",
+                "não suportava"
+              ],
+              [
+                "なった",
+                "なった",
+                "mais"
+              ]
+            ]
+          },
+          {
+            "text": "二丁のコルト拳銃とカービン銃を持ち、二本の弾帯を体に巻くと、乗る馬を捕まえ、その朝パウエルが通った道を下りはじめた。",
+            "pt": "Armei-me com dois revólveres Colt e uma carabina, prendi dois cinturões de munição ao corpo, peguei meu cavalo de sela e desci pela trilha que Powell tomara naquela manhã.",
+            "chunks": [
+              [
+                "二丁の",
+                "にちょうの",
+                "duas"
+              ],
+              [
+                "コルト拳銃と",
+                "コルトけんじゅうと",
+                "pistolas Colt"
+              ],
+              [
+                "カービン銃を",
+                "カービンじゅうを",
+                "uma carabina"
+              ],
+              [
+                "持ち",
+                "もち",
+                "peguei"
+              ],
+              [
+                "二本の",
+                "にほんの",
+                "dois"
+              ],
+              [
+                "弾帯を",
+                "だんたいを",
+                "cinturões de munição"
+              ],
+              [
+                "体に巻くと",
+                "からだにまくと",
+                "ao prender ao corpo"
+              ],
+              [
+                "乗る馬を",
+                "のるうまを",
+                "cavalo de montaria"
+              ],
+              [
+                "捕まえ",
+                "つかまえ",
+                "peguei"
+              ],
+              [
+                "その朝",
+                "そのあさ",
+                "naquela manhã"
+              ],
+              [
+                "パウエルが通った",
+                "パウエルがとおった",
+                "tomada por Powell"
+              ],
+              [
+                "道を",
+                "みちを",
+                "a trilha"
+              ],
+              [
+                "下りはじめた",
+                "くだりはじめた",
+                "comecei a descer"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "わりあい平らな土地に出るとすぐ、馬を軽く走らせた。",
+            "pt": "Assim que alcancei terreno relativamente plano, pus minha montaria a meio-galope.",
+            "chunks": [
+              [
+                "わりあい",
+                "わりあい",
+                "relativamente"
+              ],
+              [
+                "平らな土地に",
+                "たいらなとちに",
+                "terreno plano"
+              ],
+              [
+                "出るとすぐ",
+                "でるとすぐ",
+                "assim que alcancei"
+              ],
+              [
+                "馬を",
+                "うまを",
+                "o cavalo"
+              ],
+              [
+                "軽く",
+                "かるく",
+                "levemente"
+              ],
+              [
+                "走らせた",
+                "はしらせた",
+                "fiz correr"
+              ]
+            ]
+          },
+          {
+            "text": "道が悪くないかぎりその速さで進み、日が暮れるころ、別の足跡がパウエルの跡に重なる場所を見つけた。",
+            "pt": "Mantive esse ritmo onde o terreno permitia até que, perto do anoitecer, encontrei o ponto em que outras pegadas se juntavam às de Powell.",
+            "chunks": [
+              [
+                "道が",
+                "みちが",
+                "o caminho"
+              ],
+              [
+                "悪くないかぎり",
+                "わるくないかぎり",
+                "enquanto estava bom"
+              ],
+              [
+                "その速さで",
+                "そのはやさで",
+                "nesse ritmo"
+              ],
+              [
+                "進み",
+                "すすみ",
+                "avancei"
+              ],
+              [
+                "日が暮れるころ",
+                "ひがくれるころ",
+                "perto do anoitecer"
+              ],
+              [
+                "別の足跡が",
+                "べつのあしあとが",
+                "outras pegadas"
+              ],
+              [
+                "パウエルの跡に",
+                "パウエルのあとに",
+                "rastros de Powell"
+              ],
+              [
+                "重なる",
+                "かさなる",
+                "se sobrepunham"
+              ],
+              [
+                "場所を",
+                "ばしょを",
+                "o ponto"
+              ],
+              [
+                "見つけた",
+                "みつけた",
+                "encontrei"
+              ]
+            ]
+          },
+          {
+            "text": "蹄鉄をつけていない三頭のポニーの足跡で、どの馬も走っていた。",
+            "pt": "Eram rastros de três pôneis sem ferraduras, e os animais haviam galopado.",
+            "chunks": [
+              [
+                "蹄鉄を",
+                "ていてつを",
+                "ferraduras"
+              ],
+              [
+                "つけていない",
+                "つけていない",
+                "sem usar"
+              ],
+              [
+                "三頭のポニーの",
+                "さんとうのポニーの",
+                "de três pôneis"
+              ],
+              [
+                "足跡で",
+                "あしあとで",
+                "eram rastros"
+              ],
+              [
+                "どの馬も",
+                "どのうまも",
+                "todos os animais"
+              ],
+              [
+                "走っていた",
+                "はしっていた",
+                "haviam corrido"
+              ]
+            ]
+          }
+        ]
+      ]
     }
-  ],
-  "paragraphs": [
-    [
-      {
-        "text": "私は非常に年老いている。",
-        "pt": "Sou um homem muito velho.",
-        "chunks": [
-          [
-            "私は",
-            "わたしは",
-            "eu"
-          ],
-          [
-            "非常に",
-            "ひじょうに",
-            "muito"
-          ],
-          [
-            "年老いている",
-            "としおいている",
-            "sou velho"
-          ]
-        ]
-      },
-      {
-        "text": "だが、いくつなのかは自分でもわからない。",
-        "pt": "Mas nem eu sei quantos anos tenho.",
-        "chunks": [
-          [
-            "だが",
-            "だが",
-            "mas"
-          ],
-          [
-            "いくつなのかは",
-            "いくつなのかは",
-            "quantos anos"
-          ],
-          [
-            "自分でも",
-            "じぶんでも",
-            "nem eu mesmo"
-          ],
-          [
-            "わからない",
-            "わからない",
-            "não sei"
-          ]
-        ]
-      },
-      {
-        "text": "百歳かもしれないし、それ以上かもしれない。",
-        "pt": "Talvez tenha cem anos, talvez mais.",
-        "chunks": [
-          [
-            "百歳かもしれないし",
-            "ひゃくさいかもしれないし",
-            "talvez cem anos"
-          ],
-          [
-            "それ以上かもしれない",
-            "それいじょうかもしれない",
-            "talvez mais"
-          ]
-        ]
-      },
-      {
-        "text": "ほかの人間のように年を取ったことがなく、子供だった記憶もないので、確かめようがないのだ。",
-        "pt": "Não há como saber, pois nunca envelheci como os outros homens, nem me lembro de ter sido criança.",
-        "chunks": [
-          [
-            "ほかの人間の",
-            "ほかのにんげんの",
-            "dos outros"
-          ],
-          [
-            "ように",
-            "ように",
-            "como"
-          ],
-          [
-            "年を取った",
-            "としをとった",
-            "envelhecido"
-          ],
-          [
-            "ことがなく",
-            "ことがなく",
-            "nunca havia"
-          ],
-          [
-            "子供だった",
-            "こどもだった",
-            "ter sido criança"
-          ],
-          [
-            "記憶もないので",
-            "きおくもないので",
-            "sem lembrança"
-          ],
-          [
-            "確かめようがない",
-            "たしかめようがない",
-            "impossível saber"
-          ],
-          [
-            "のだ",
-            "のだ",
-            "é que"
-          ]
-        ]
-      },
-      {
-        "text": "記憶をたどれるかぎり、私はいつも一人前の男だった。",
-        "pt": "Até onde alcança minha memória, sempre fui um homem feito.",
-        "chunks": [
-          [
-            "記憶を",
-            "きおくを",
-            "a memória"
-          ],
-          [
-            "たどれるかぎり",
-            "たどれるかぎり",
-            "até onde alcança"
-          ],
-          [
-            "私は",
-            "わたしは",
-            "eu"
-          ],
-          [
-            "いつも",
-            "いつも",
-            "sempre"
-          ],
-          [
-            "一人前の男だった",
-            "いちにんまえのおとこだった",
-            "fui homem feito"
-          ]
-        ]
-      },
-      {
-        "text": "年のころは三十ほどである。",
-        "pt": "Um homem de cerca de trinta anos.",
-        "chunks": [
-          [
-            "年のころは",
-            "としのころは",
-            "quanto à idade"
-          ],
-          [
-            "三十ほどである",
-            "さんじゅうほどである",
-            "cerca de trinta"
-          ]
-        ]
-      },
-      {
-        "text": "今の姿も四十年以上前と変わらない。",
-        "pt": "Hoje tenho a mesma aparência de mais de quarenta anos atrás.",
-        "chunks": [
-          [
-            "今の姿も",
-            "いまのすがたも",
-            "minha aparência atual"
-          ],
-          [
-            "四十年以上",
-            "よんじゅうねんいじょう",
-            "mais de quarenta"
-          ],
-          [
-            "前と",
-            "まえと",
-            "de antes"
-          ],
-          [
-            "変わらない",
-            "かわらない",
-            "não mudou"
-          ]
-        ]
-      },
-      {
-        "text": "それでも、いつまでも生きつづけられるとは思えない。",
-        "pt": "Ainda assim, não creio que possa continuar vivendo para sempre.",
-        "chunks": [
-          [
-            "それでも",
-            "それでも",
-            "ainda assim"
-          ],
-          [
-            "いつまでも",
-            "いつまでも",
-            "para sempre"
-          ],
-          [
-            "生きつづけられる",
-            "いきつづけられる",
-            "continuar vivendo"
-          ],
-          [
-            "とは",
-            "とは",
-            "quanto a"
-          ],
-          [
-            "思えない",
-            "おもえない",
-            "não creio"
-          ]
-        ]
-      },
-      {
-        "text": "いつかは、二度と蘇ることのない本当の死を迎えるだろう。",
-        "pt": "Algum dia encontrarei a morte verdadeira, da qual não há ressurreição.",
-        "chunks": [
-          [
-            "いつかは",
-            "いつかは",
-            "algum dia"
-          ],
-          [
-            "二度と",
-            "にどと",
-            "nunca mais"
-          ],
-          [
-            "蘇ることのない",
-            "よみがえることのない",
-            "sem ressuscitar"
-          ],
-          [
-            "本当の死を",
-            "ほんとうのしを",
-            "a morte verdadeira"
-          ],
-          [
-            "迎えるだろう",
-            "むかえるだろう",
-            "encontrarei"
-          ]
-        ]
-      },
-      {
-        "text": "二度死んでなお生きているこの私が、なぜ死を恐れるのかはわからない。",
-        "pt": "Não sei por que eu deveria temer a morte, eu que morri duas vezes e ainda estou vivo.",
-        "chunks": [
-          [
-            "二度死んで",
-            "にどしんで",
-            "morri duas vezes"
-          ],
-          [
-            "なお生きている",
-            "なおいきている",
-            "ainda estou vivo"
-          ],
-          [
-            "この私が",
-            "このわたしが",
-            "eu próprio"
-          ],
-          [
-            "なぜ",
-            "なぜ",
-            "por que"
-          ],
-          [
-            "死を",
-            "しを",
-            "a morte"
-          ],
-          [
-            "恐れるのかは",
-            "おそれるのかは",
-            "temeria"
-          ],
-          [
-            "わからない",
-            "わからない",
-            "não sei"
-          ]
-        ]
-      },
-      {
-        "text": "それでも、一度も死んだことのない諸君と同じように、私は死に戦慄する。",
-        "pt": "Mesmo assim, sinto diante dela o mesmo horror que vocês, que nunca morreram.",
-        "chunks": [
-          [
-            "それでも",
-            "それでも",
-            "mesmo assim"
-          ],
-          [
-            "一度も",
-            "いちども",
-            "nem uma vez"
-          ],
-          [
-            "死んだことのない",
-            "しんだことのない",
-            "nunca morreram"
-          ],
-          [
-            "諸君と",
-            "しょくんと",
-            "com vocês"
-          ],
-          [
-            "同じように",
-            "おなじように",
-            "do mesmo modo"
-          ],
-          [
-            "私は",
-            "わたしは",
-            "eu"
-          ],
-          [
-            "死に戦慄する",
-            "しにせんりつする",
-            "temo a morte"
-          ]
-        ]
-      },
-      {
-        "text": "おそらく、この恐怖があるからこそ、自分も死すべき存在だと固く信じているのだ。",
-        "pt": "E creio que é por causa desse terror da morte que estou tão convencido de minha mortalidade.",
-        "chunks": [
-          [
-            "おそらく",
-            "おそらく",
-            "creio que"
-          ],
-          [
-            "この恐怖が",
-            "このきょうふが",
-            "esse terror"
-          ],
-          [
-            "あるからこそ",
-            "あるからこそ",
-            "justamente por haver"
-          ],
-          [
-            "自分も",
-            "じぶんも",
-            "eu também"
-          ],
-          [
-            "死すべき存在だと",
-            "しすべきそんざいだと",
-            "sou mortal"
-          ],
-          [
-            "固く信じている",
-            "かたくしんじている",
-            "estou convencido"
-          ],
-          [
-            "のだ",
-            "のだ",
-            "é que"
-          ]
-        ]
-      }
-    ],
-    [
-      {
-        "text": "だから私は、自らの生と死の中で興味深い時期について書き残すことにした。",
-        "pt": "Por causa dessa convicção, decidi registrar os períodos interessantes de minha vida e de minha morte.",
-        "chunks": [
-          [
-            "だから私は",
-            "だからわたしは",
-            "por isso, eu"
-          ],
-          [
-            "自らの",
-            "みずからの",
-            "minha própria"
-          ],
-          [
-            "生と死の中で",
-            "せいとしのなかで",
-            "vida e morte"
-          ],
-          [
-            "興味深い",
-            "きょうみぶかい",
-            "marcantes"
-          ],
-          [
-            "時期について",
-            "じきについて",
-            "sobre os períodos"
-          ],
-          [
-            "書き残す",
-            "かきのこす",
-            "registrar"
-          ],
-          [
-            "ことにした",
-            "ことにした",
-            "decidi"
-          ]
-        ]
-      },
-      {
-        "text": "この現象を説明することはできない。",
-        "pt": "Não posso explicar esses fenômenos.",
-        "chunks": [
-          [
-            "この現象を",
-            "このげんしょうを",
-            "esses fenômenos"
-          ],
-          [
-            "説明する",
-            "せつめいする",
-            "explicar"
-          ],
-          [
-            "ことはできない",
-            "ことはできない",
-            "não posso"
-          ]
-        ]
-      },
-      {
-        "text": "ただ、死体がアリゾナの洞窟で発見されないまま横たわっていた十年間に、私の身に起きた奇怪な出来事を、ありふれた冒険家の言葉で記すだけである。",
-        "pt": "Posso apenas narrar, nas palavras de um aventureiro comum, os estranhos acontecimentos daqueles dez anos em que meu cadáver permaneceu oculto numa caverna do Arizona.",
-        "chunks": [
-          [
-            "ただ",
-            "ただ",
-            "apenas"
-          ],
-          [
-            "死体が",
-            "したいが",
-            "meu cadáver"
-          ],
-          [
-            "アリゾナの",
-            "アリゾナの",
-            "do Arizona"
-          ],
-          [
-            "洞窟で",
-            "どうくつで",
-            "numa caverna"
-          ],
-          [
-            "発見されないまま",
-            "はっけんされないまま",
-            "sem ser descoberto"
-          ],
-          [
-            "横たわっていた",
-            "よこたわっていた",
-            "permaneceu deitado"
-          ],
-          [
-            "十年間に",
-            "じゅうねんかんに",
-            "durante dez anos"
-          ],
-          [
-            "私の身に",
-            "わたしのみに",
-            "comigo"
-          ],
-          [
-            "起きた",
-            "おきた",
-            "aconteceram"
-          ],
-          [
-            "奇怪な出来事を",
-            "きかいなできごとを",
-            "eventos estranhos"
-          ],
-          [
-            "ありふれた",
-            "ありふれた",
-            "comum"
-          ],
-          [
-            "冒険家の",
-            "ぼうけんかの",
-            "de um aventureiro"
-          ],
-          [
-            "言葉で",
-            "ことばで",
-            "nas palavras"
-          ],
-          [
-            "記すだけである",
-            "しるすだけである",
-            "apenas narro"
-          ]
-        ]
-      }
-    ],
-    [
-      {
-        "text": "この話は誰にもしたことがない。",
-        "pt": "Nunca contei esta história a ninguém.",
-        "chunks": [
-          [
-            "この話は",
-            "このはなしは",
-            "esta história"
-          ],
-          [
-            "誰にも",
-            "だれにも",
-            "a ninguém"
-          ],
-          [
-            "したことがない",
-            "したことがない",
-            "nunca contei"
-          ]
-        ]
-      },
-      {
-        "text": "私が永遠の彼方へ旅立つまで、この原稿を生ある者が目にすることもないだろう。",
-        "pt": "Nenhum mortal verá este manuscrito até que eu tenha partido para a eternidade.",
-        "chunks": [
-          [
-            "私が",
-            "わたしが",
-            "eu"
-          ],
-          [
-            "永遠の彼方へ",
-            "えいえんのかなたへ",
-            "para a eternidade"
-          ],
-          [
-            "旅立つまで",
-            "たびだつまで",
-            "até partir"
-          ],
-          [
-            "この原稿を",
-            "このげんこうを",
-            "este manuscrito"
-          ],
-          [
-            "生ある者が",
-            "せいあるものが",
-            "nenhum mortal"
-          ],
-          [
-            "目にする",
-            "めにする",
-            "ver"
-          ],
-          [
-            "こともないだろう",
-            "こともないだろう",
-            "certamente não"
-          ]
-        ]
-      },
-      {
-        "text": "人は理解できないものを信じない。",
-        "pt": "As pessoas não acreditam no que não conseguem compreender.",
-        "chunks": [
-          [
-            "人は",
-            "ひとは",
-            "as pessoas"
-          ],
-          [
-            "理解できない",
-            "りかいできない",
-            "incompreensível"
-          ],
-          [
-            "ものを",
-            "ものを",
-            "aquilo que"
-          ],
-          [
-            "信じない",
-            "しんじない",
-            "não acreditam"
-          ]
-        ]
-      },
-      {
-        "text": "それは承知している。",
-        "pt": "Sei muito bem disso.",
-        "chunks": [
-          [
-            "それは",
-            "それは",
-            "disso"
-          ],
-          [
-            "承知している",
-            "しょうちしている",
-            "sei bem"
-          ]
-        ]
-      },
-      {
-        "text": "いつか科学が裏づけるはずの単純な真実を語っただけで、世間や教会や新聞にさらし者にされ、大ぼら吹きの烙印を押されるつもりはない。",
-        "pt": "Não pretendo ser exposto pelo público, pelo púlpito e pela imprensa como um mentiroso colossal por apenas contar verdades simples que um dia a ciência confirmará.",
-        "chunks": [
-          [
-            "いつか",
-            "いつか",
-            "algum dia"
-          ],
-          [
-            "科学が",
-            "かがくが",
-            "a ciência"
-          ],
-          [
-            "裏づけるはずの",
-            "うらづけるはずの",
-            "deverá confirmar"
-          ],
-          [
-            "単純な真実を",
-            "たんじゅんなしんじつを",
-            "verdades simples"
-          ],
-          [
-            "語っただけで",
-            "かたっただけで",
-            "só por contar"
-          ],
-          [
-            "世間や",
-            "せけんや",
-            "pelo público"
-          ],
-          [
-            "教会や",
-            "きょうかいや",
-            "pela igreja"
-          ],
-          [
-            "新聞に",
-            "しんぶんに",
-            "pela imprensa"
-          ],
-          [
-            "さらし者にされ",
-            "さらしものにされ",
-            "ser exposto"
-          ],
-          [
-            "大ぼら吹きの",
-            "おおぼらふきの",
-            "de mentiroso"
-          ],
-          [
-            "烙印を押される",
-            "らくいんをおされる",
-            "ser rotulado"
-          ],
-          [
-            "つもりはない",
-            "つもりはない",
-            "não pretendo"
-          ]
-        ]
-      },
-      {
-        "text": "火星で得た手がかりと、この記録に書き残す知識が、われらの姉妹惑星の謎をより早く解明する助けになるかもしれない。",
-        "pt": "Talvez as pistas que obtive em Marte e o conhecimento registrado aqui ajudem a compreender mais cedo os mistérios de nosso planeta irmão.",
-        "chunks": [
-          [
-            "火星で",
-            "かせいで",
-            "em Marte"
-          ],
-          [
-            "得た手がかりと",
-            "えたてがかりと",
-            "pistas obtidas"
-          ],
-          [
-            "この記録に",
-            "このきろくに",
-            "neste relato"
-          ],
-          [
-            "書き残す",
-            "かきのこす",
-            "registrado"
-          ],
-          [
-            "知識が",
-            "ちしきが",
-            "o conhecimento"
-          ],
-          [
-            "われらの",
-            "われらの",
-            "nosso"
-          ],
-          [
-            "姉妹惑星の",
-            "しまいわくせいの",
-            "planeta irmão"
-          ],
-          [
-            "謎を",
-            "なぞを",
-            "os mistérios"
-          ],
-          [
-            "より早く解明する",
-            "よりはやくかいめいする",
-            "compreender mais cedo"
-          ],
-          [
-            "助けになる",
-            "たすけになる",
-            "pode ajudar"
-          ],
-          [
-            "かもしれない",
-            "かもしれない",
-            "talvez"
-          ]
-        ]
-      },
-      {
-        "text": "諸君には謎でも、私にはもはや謎ではない。",
-        "pt": "Mistérios para vocês, mas não mais para mim.",
-        "chunks": [
-          [
-            "諸君には謎でも",
-            "しょくんにはなぞでも",
-            "mistérios para vocês"
-          ],
-          [
-            "私には",
-            "わたしには",
-            "para mim"
-          ],
-          [
-            "もはや謎ではない",
-            "もはやなぞではない",
-            "não mais mistério"
-          ]
-        ]
-      }
-    ],
-    [
-      {
-        "text": "私の名はジョン・カーター。",
-        "pt": "Meu nome é John Carter.",
-        "chunks": [
-          [
-            "私の名は",
-            "わたしのなは",
-            "meu nome é"
-          ],
-          [
-            "ジョン・カーター",
-            "ジョン・カーター",
-            "John Carter"
-          ]
-        ]
-      },
-      {
-        "text": "ヴァージニアのジャック・カーター大尉としてよく知られている。",
-        "pt": "Sou mais conhecido como capitão Jack Carter, da Virgínia.",
-        "chunks": [
-          [
-            "ヴァージニアの",
-            "ヴァージニアの",
-            "da Virgínia"
-          ],
-          [
-            "ジャック・カーター大尉",
-            "ジャック・カーターたいい",
-            "capitão Jack Carter"
-          ],
-          [
-            "として",
-            "として",
-            "como"
-          ],
-          [
-            "よく知られている",
-            "よくしられている",
-            "sou mais conhecido"
-          ]
-        ]
-      },
-      {
-        "text": "南北戦争が終わったとき、私の手元にあったのは数十万ドルの南部連合紙幣と、もはや存在しない軍の騎兵隊大尉の辞令だけだった。",
-        "pt": "Ao fim da Guerra Civil, eu possuía algumas centenas de milhares de dólares confederados e uma patente de capitão de cavalaria num exército que já não existia.",
-        "chunks": [
-          [
-            "南北戦争が",
-            "なんぼくせんそうが",
-            "a Guerra Civil"
-          ],
-          [
-            "終わったとき",
-            "おわったとき",
-            "quando terminou"
-          ],
-          [
-            "私の手元に",
-            "わたしのてもとに",
-            "em minhas mãos"
-          ],
-          [
-            "あったのは",
-            "あったのは",
-            "eu tinha"
-          ],
-          [
-            "数十万ドルの",
-            "すうじゅうまんドルの",
-            "centenas de milhares"
-          ],
-          [
-            "南部連合紙幣と",
-            "なんぶれんごうしへいと",
-            "em moeda confederada"
-          ],
-          [
-            "もはや",
-            "もはや",
-            "já não"
-          ],
-          [
-            "存在しない",
-            "そんざいしない",
-            "existia"
-          ],
-          [
-            "軍の",
-            "ぐんの",
-            "do exército"
-          ],
-          [
-            "騎兵隊大尉の",
-            "きへいたいたいいの",
-            "capitão de cavalaria"
-          ],
-          [
-            "辞令だけだった",
-            "じれいだけだった",
-            "apenas a patente"
-          ]
-        ]
-      },
-      {
-        "text": "南部の希望とともに消えた国家に仕えていたのである。",
-        "pt": "Eu servira a um Estado desaparecido com as esperanças do Sul.",
-        "chunks": [
-          [
-            "南部の希望と",
-            "なんぶのきぼうと",
-            "esperanças sulistas"
-          ],
-          [
-            "ともに",
-            "ともに",
-            "junto com"
-          ],
-          [
-            "消えた国家に",
-            "きえたこっかに",
-            "Estado desaparecido"
-          ],
-          [
-            "仕えていたのである",
-            "つかえていたのである",
-            "eu servira"
-          ]
-        ]
-      },
-      {
-        "text": "仕える相手を失い、無一文となり、唯一の生計の手段だった戦いもなくなった。",
-        "pt": "Sem senhor, sem dinheiro e privado da luta, meu único meio de vida.",
-        "chunks": [
-          [
-            "仕える相手を失い",
-            "つかえるあいてをうしない",
-            "sem senhor"
-          ],
-          [
-            "無一文となり",
-            "むいちもんとなり",
-            "sem dinheiro"
-          ],
-          [
-            "唯一の",
-            "ゆいいつの",
-            "único"
-          ],
-          [
-            "生計の手段だった",
-            "せいけいのしゅだんだった",
-            "meio de vida"
-          ],
-          [
-            "戦いもなくなった",
-            "たたかいもなくなった",
-            "a luta desapareceu"
-          ]
-        ]
-      },
-      {
-        "text": "そこで南西部へ向かい、金を探して失った財産を取り戻そうと決めた。",
-        "pt": "Decidi seguir para o sudoeste e tentar recuperar minha fortuna procurando ouro.",
-        "chunks": [
-          [
-            "そこで",
-            "そこで",
-            "assim"
-          ],
-          [
-            "南西部へ",
-            "なんせいぶへ",
-            "ao sudoeste"
-          ],
-          [
-            "向かい",
-            "むかい",
-            "parti"
-          ],
-          [
-            "金を探して",
-            "きんをさがして",
-            "procurando ouro"
-          ],
-          [
-            "失った財産を",
-            "うしなったざいさんを",
-            "a fortuna perdida"
-          ],
-          [
-            "取り戻そうと決めた",
-            "とりもどそうときめた",
-            "decidi recuperar"
-          ]
-        ]
-      }
-    ],
-    [
-      {
-        "text": "私はリッチモンド出身の南軍士官、ジェームズ・K・パウエル大尉と、ほぼ一年にわたって金を探した。",
-        "pt": "Passei quase um ano prospectando com outro oficial confederado, o capitão James K. Powell, de Richmond.",
-        "chunks": [
-          [
-            "私は",
-            "わたしは",
-            "eu"
-          ],
-          [
-            "リッチモンド出身の",
-            "リッチモンドしゅっしんの",
-            "de Richmond"
-          ],
-          [
-            "南軍士官",
-            "なんぐんしかん",
-            "oficial confederado"
-          ],
-          [
-            "ジェームズ・K・パウエル大尉",
-            "ジェームズ・ケー・パウエルたいい",
-            "capitão James Powell"
-          ],
-          [
-            "と",
-            "と",
-            "com"
-          ],
-          [
-            "ほぼ一年にわたって",
-            "ほぼいちねんにわたって",
-            "quase um ano"
-          ],
-          [
-            "金を探した",
-            "きんをさがした",
-            "procurei ouro"
-          ]
-        ]
-      },
-      {
-        "text": "運は格別に恵まれていた。",
-        "pt": "Tivemos uma sorte extraordinária.",
-        "chunks": [
-          [
-            "運は",
-            "うんは",
-            "a sorte"
-          ],
-          [
-            "格別に",
-            "かくべつに",
-            "extraordinariamente"
-          ],
-          [
-            "恵まれていた",
-            "めぐまれていた",
-            "nos favoreceu"
-          ]
-        ]
-      },
-      {
-        "text": "1865年の冬も終わりに近づいたころ、幾多の困難と窮乏を越え、夢にも見たことのないほど見事な含金石英鉱脈を発見した。",
-        "pt": "No fim do inverno de 1865, depois de muitas dificuldades e privações, encontramos o mais extraordinário veio de quartzo aurífero que já havíamos imaginado.",
-        "chunks": [
-          [
-            "1865年の冬も",
-            "せんはっぴゃくろくじゅうごねんのふゆも",
-            "inverno de 1865"
-          ],
-          [
-            "終わりに近づいたころ",
-            "おわりにちかづいたころ",
-            "perto do fim"
-          ],
-          [
-            "幾多の",
-            "いくたの",
-            "muitas"
-          ],
-          [
-            "困難と窮乏を",
-            "こんなんときゅうぼうを",
-            "dificuldades e privações"
-          ],
-          [
-            "越え",
-            "こえ",
-            "superadas"
-          ],
-          [
-            "夢にも見たことのないほど",
-            "ゆめにもみたことのないほど",
-            "além dos sonhos"
-          ],
-          [
-            "見事な",
-            "みごとな",
-            "extraordinário"
-          ],
-          [
-            "含金石英鉱脈を",
-            "がんきんせきえいこうみゃくを",
-            "quartzo aurífero"
-          ],
-          [
-            "発見した",
-            "はっけんした",
-            "encontramos"
-          ]
-        ]
-      },
-      {
-        "text": "鉱山技師の教育を受けたパウエルによれば、わずか三か月あまりで、百万ドルを超える価値の鉱石を掘り当てたという。",
-        "pt": "Powell, formado em engenharia de minas, afirmou que em pouco mais de três meses havíamos descoberto minério no valor de mais de um milhão de dólares.",
-        "chunks": [
-          [
-            "鉱山技師の",
-            "こうざんぎしの",
-            "engenheiro de minas"
-          ],
-          [
-            "教育を受けた",
-            "きょういくをうけた",
-            "formado como"
-          ],
-          [
-            "パウエルによれば",
-            "パウエルによれば",
-            "segundo Powell"
-          ],
-          [
-            "わずか",
-            "わずか",
-            "apenas"
-          ],
-          [
-            "三か月あまりで",
-            "さんかげつあまりで",
-            "três meses e pouco"
-          ],
-          [
-            "百万ドルを超える",
-            "ひゃくまんドルをこえる",
-            "mais de um milhão"
-          ],
-          [
-            "価値の",
-            "かちの",
-            "no valor de"
-          ],
-          [
-            "鉱石を",
-            "こうせきを",
-            "minério"
-          ],
-          [
-            "掘り当てたという",
-            "ほりあてたという",
-            "havíamos descoberto"
-          ]
-        ]
-      }
-    ],
-    [
-      {
-        "text": "装備があまりにも粗末だったため、一人が文明社会へ戻って必要な機械を買い、鉱山を本格的に採掘できるだけの人員を連れて戻ることにした。",
-        "pt": "Como nosso equipamento era extremamente rudimentar, decidimos que um de nós voltaria à civilização, compraria as máquinas necessárias e regressaria com homens suficientes para explorar a mina devidamente.",
-        "chunks": [
-          [
-            "装備が",
-            "そうびが",
-            "equipamento"
-          ],
-          [
-            "あまりにも",
-            "あまりにも",
-            "excessivamente"
-          ],
-          [
-            "粗末だったため",
-            "そまつだったため",
-            "por ser rudimentar"
-          ],
-          [
-            "一人が",
-            "ひとりが",
-            "um de nós"
-          ],
-          [
-            "文明社会へ",
-            "ぶんめいしゃかいへ",
-            "à civilização"
-          ],
-          [
-            "戻って",
-            "もどって",
-            "voltar"
-          ],
-          [
-            "必要な",
-            "ひつような",
-            "necessárias"
-          ],
-          [
-            "機械を",
-            "きかいを",
-            "máquinas"
-          ],
-          [
-            "買い",
-            "かい",
-            "comprar"
-          ],
-          [
-            "鉱山を",
-            "こうざんを",
-            "a mina"
-          ],
-          [
-            "本格的に",
-            "ほんかくてきに",
-            "devidamente"
-          ],
-          [
-            "採掘できるだけの",
-            "さいくつできるだけの",
-            "para poder explorar"
-          ],
-          [
-            "人員を",
-            "じんいんを",
-            "pessoal"
-          ],
-          [
-            "連れて戻る",
-            "つれてもどる",
-            "trazer de volta"
-          ],
-          [
-            "ことにした",
-            "ことにした",
-            "decidimos"
-          ]
-        ]
-      }
-    ],
-    [
-      {
-        "text": "パウエルは土地にも採鉱に必要な機械にも通じていたため、彼が出向くのが最善だと判断した。",
-        "pt": "Como Powell conhecia tanto a região quanto as exigências mecânicas da mineração, concluímos que seria melhor ele fazer a viagem.",
-        "chunks": [
-          [
-            "パウエルは",
-            "パウエルは",
-            "Powell"
-          ],
-          [
-            "土地にも",
-            "とちにも",
-            "conhecia a região"
-          ],
-          [
-            "採鉱に",
-            "さいこうに",
-            "para mineração"
-          ],
-          [
-            "必要な機械にも",
-            "ひつようなきかいにも",
-            "também as máquinas"
-          ],
-          [
-            "通じていたため",
-            "つうじていたため",
-            "como dominava"
-          ],
-          [
-            "彼が出向くのが",
-            "かれがでむくのが",
-            "a viagem dele"
-          ],
-          [
-            "最善だと",
-            "さいぜんだと",
-            "seria melhor"
-          ],
-          [
-            "判断した",
-            "はんだんした",
-            "decidimos"
-          ]
-        ]
-      },
-      {
-        "text": "流れ者の探鉱者に鉱区を横取りされる万一に備え、私は残って権利を守ることになった。",
-        "pt": "Ficou combinado que eu guardaria nossa concessão contra a remota possibilidade de algum garimpeiro errante tomá-la.",
-        "chunks": [
-          [
-            "流れ者の",
-            "ながれものの",
-            "errante"
-          ],
-          [
-            "探鉱者に",
-            "たんこうしゃに",
-            "por um garimpeiro"
-          ],
-          [
-            "鉱区を横取りされる",
-            "こうくをよこどりされる",
-            "concessão tomada"
-          ],
-          [
-            "万一に備え",
-            "まんいちにそなえ",
-            "por precaução"
-          ],
-          [
-            "私は残って",
-            "わたしはのこって",
-            "eu ficaria"
-          ],
-          [
-            "権利を",
-            "けんりを",
-            "a concessão"
-          ],
-          [
-            "守ることになった",
-            "まもることになった",
-            "ficaria protegendo"
-          ]
-        ]
-      }
-    ],
-    [
-      {
-        "text": "1866年3月3日、私とパウエルは二頭のロバに彼の食料を積んだ。",
-        "pt": "Em 3 de março de 1866, Powell e eu carregamos suas provisões em dois de nossos burros.",
-        "chunks": [
-          [
-            "1866年",
-            "せんはっぴゃくろくじゅうろくねん",
-            "1866"
-          ],
-          [
-            "3月3日",
-            "さんがつみっか",
-            "3 de março"
-          ],
-          [
-            "私とパウエルは",
-            "わたしとパウエルは",
-            "Powell e eu"
-          ],
-          [
-            "二頭のロバに",
-            "にとうのロバに",
-            "em dois burros"
-          ],
-          [
-            "彼の食料を積んだ",
-            "かれのしょくりょうをつんだ",
-            "carregamos as provisões"
-          ]
-        ]
-      },
-      {
-        "text": "別れを告げると、彼は馬にまたがり、旅の第一行程となる谷へ向かって山腹を下りていった。",
-        "pt": "Depois de se despedir, ele montou no cavalo e desceu a encosta rumo ao vale, a primeira etapa da viagem.",
-        "chunks": [
-          [
-            "別れを告げると",
-            "わかれをつげると",
-            "após despedir-se"
-          ],
-          [
-            "彼は馬にまたがり",
-            "かれはうまにまたがり",
-            "montou a cavalo"
-          ],
-          [
-            "旅の第一行程となる",
-            "たびのだいいちこうていとなる",
-            "primeira etapa"
-          ],
-          [
-            "谷へ向かって",
-            "たにへむかって",
-            "rumo ao vale"
-          ],
-          [
-            "山腹を下りていった",
-            "さんぷくをおりていった",
-            "desceu a encosta"
-          ]
-        ]
-      }
-    ],
-    [
-      {
-        "text": "パウエルが出発した朝は、アリゾナの朝のほとんどがそうであるように、晴れわたって美しかった。",
-        "pt": "A manhã da partida de Powell, como quase todas as manhãs do Arizona, estava clara e bela.",
-        "chunks": [
-          [
-            "パウエルが",
-            "パウエルが",
-            "Powell"
-          ],
-          [
-            "出発した朝は",
-            "しゅっぱつしたあさは",
-            "manhã da partida"
-          ],
-          [
-            "アリゾナの朝の",
-            "アリゾナのあさの",
-            "manhãs do Arizona"
-          ],
-          [
-            "ほとんどが",
-            "ほとんどが",
-            "quase todas"
-          ],
-          [
-            "そうであるように",
-            "そうであるように",
-            "como costuma ser"
-          ],
-          [
-            "晴れわたって",
-            "はれわたって",
-            "clara"
-          ],
-          [
-            "美しかった",
-            "うつくしかった",
-            "e bela"
-          ]
-        ]
-      },
-      {
-        "text": "彼と小さな荷駄の動物たちが谷へ向かって山腹を慎重に下る姿が見えた。",
-        "pt": "Eu via ele e seus pequenos animais de carga descendo cuidadosamente a encosta rumo ao vale.",
-        "chunks": [
-          [
-            "彼と",
-            "かれと",
-            "ele e"
-          ],
-          [
-            "小さな",
-            "ちいさな",
-            "pequenos"
-          ],
-          [
-            "荷駄の動物たちが",
-            "にだのどうぶつたちが",
-            "animais de carga"
-          ],
-          [
-            "谷へ向かって",
-            "たにへむかって",
-            "rumo ao vale"
-          ],
-          [
-            "山腹を",
-            "さんぷくを",
-            "a encosta"
-          ],
-          [
-            "慎重に",
-            "しんちょうに",
-            "cuidadosamente"
-          ],
-          [
-            "下る姿が",
-            "くだるすがたが",
-            "descendo"
-          ],
-          [
-            "見えた",
-            "みえた",
-            "eu via"
-          ]
-        ]
-      },
-      {
-        "text": "その午前中、豚の背のような尾根を越えたり、平らな台地に出たりするたびに、何度もその姿を垣間見た。",
-        "pt": "Durante a manhã, eu os avistava de vez em quando quando cruzavam uma crista ou surgiam num planalto.",
-        "chunks": [
-          [
-            "その午前中",
-            "そのごぜんちゅう",
-            "durante a manhã"
-          ],
-          [
-            "豚の背のような",
-            "ぶたのせのような",
-            "como lombo suíno"
-          ],
-          [
-            "尾根を",
-            "おねを",
-            "a crista"
-          ],
-          [
-            "越えたり",
-            "こえたり",
-            "ao cruzar"
-          ],
-          [
-            "平らな台地に",
-            "たいらなだいちに",
-            "num planalto"
-          ],
-          [
-            "出たりするたびに",
-            "でたりするたびに",
-            "sempre que surgiam"
-          ],
-          [
-            "何度も",
-            "なんども",
-            "várias vezes"
-          ],
-          [
-            "その姿を垣間見た",
-            "そのすがたをかいまみた",
-            "eu os avistei"
-          ]
-        ]
-      },
-      {
-        "text": "最後にパウエルを見たのは午後三時ごろ、谷の反対側の山並みの陰へ入っていくところだった。",
-        "pt": "Vi Powell pela última vez por volta das três da tarde, quando ele entrou nas sombras da serra do outro lado do vale.",
-        "chunks": [
-          [
-            "最後に",
-            "さいごに",
-            "pela última vez"
-          ],
-          [
-            "パウエルを",
-            "パウエルを",
-            "Powell"
-          ],
-          [
-            "見たのは",
-            "みたのは",
-            "quando vi"
-          ],
-          [
-            "午後三時ごろ",
-            "ごごさんじごろ",
-            "cerca das três"
-          ],
-          [
-            "谷の",
-            "たにの",
-            "do vale"
-          ],
-          [
-            "反対側の",
-            "はんたいがわの",
-            "lado oposto"
-          ],
-          [
-            "山並みの陰へ",
-            "やまなみのかげへ",
-            "sombras da serra"
-          ],
-          [
-            "入っていく",
-            "はいっていく",
-            "entrava"
-          ],
-          [
-            "ところだった",
-            "ところだった",
-            "naquele momento"
-          ]
-        ]
-      }
-    ],
-    [
-      {
-        "text": "それから三十分ほどして何気なく谷の向こうに目をやると、友人と二頭の荷役動物を最後に見たあたりに、小さな点が三つあるのに気づき、ひどく驚いた。",
-        "pt": "Cerca de meia hora depois, olhei por acaso através do vale e me surpreendi ao notar três pequenos pontos perto de onde vira meu amigo e seus dois animais pela última vez.",
-        "chunks": [
-          [
-            "それから",
-            "それから",
-            "depois"
-          ],
-          [
-            "三十分ほどして",
-            "さんじゅっぷんほどして",
-            "meia hora depois"
-          ],
-          [
-            "何気なく",
-            "なにげなく",
-            "por acaso"
-          ],
-          [
-            "谷の向こうに",
-            "たにのむこうに",
-            "através do vale"
-          ],
-          [
-            "目をやると",
-            "めをやると",
-            "ao olhar"
-          ],
-          [
-            "友人と",
-            "ゆうじんと",
-            "meu amigo e"
-          ],
-          [
-            "二頭の",
-            "にとうの",
-            "dois"
-          ],
-          [
-            "荷役動物を",
-            "かえきどうぶつを",
-            "animais de carga"
-          ],
-          [
-            "最後に見た",
-            "さいごにみた",
-            "vistos por último"
-          ],
-          [
-            "あたりに",
-            "あたりに",
-            "nas proximidades"
-          ],
-          [
-            "小さな点が",
-            "ちいさなてんが",
-            "pequenos pontos"
-          ],
-          [
-            "三つあるのに",
-            "みっつあるのに",
-            "havia três"
-          ],
-          [
-            "気づき",
-            "きづき",
-            "notei"
-          ],
-          [
-            "ひどく驚いた",
-            "ひどくおどろいた",
-            "fiquei muito surpreso"
-          ]
-        ]
-      },
-      {
-        "text": "私はむやみに心配するたちではない。",
-        "pt": "Não sou dado a preocupações sem motivo.",
-        "chunks": [
-          [
-            "私は",
-            "わたしは",
-            "eu"
-          ],
-          [
-            "むやみに",
-            "むやみに",
-            "sem motivo"
-          ],
-          [
-            "心配する",
-            "しんぱいする",
-            "preocupar-me"
-          ],
-          [
-            "たちではない",
-            "たちではない",
-            "não sou do tipo"
-          ]
-        ]
-      },
-      {
-        "text": "だが、パウエルは無事で、彼の通った道に見えた点はアンテロープか野生馬だと自分に言い聞かせようとするほど、不安は募った。",
-        "pt": "Mas quanto mais eu tentava me convencer de que Powell estava bem e de que os pontos em seu rastro eram antílopes ou cavalos selvagens, menos conseguia me tranquilizar.",
-        "chunks": [
-          [
-            "だが",
-            "だが",
-            "mas"
-          ],
-          [
-            "パウエルは",
-            "パウエルは",
-            "Powell"
-          ],
-          [
-            "無事で",
-            "ぶじで",
-            "estava bem"
-          ],
-          [
-            "彼の通った道に",
-            "かれのとおったみちに",
-            "na trilha dele"
-          ],
-          [
-            "見えた点は",
-            "みえたてんは",
-            "os pontos vistos"
-          ],
-          [
-            "アンテロープか",
-            "アンテロープか",
-            "antílopes ou"
-          ],
-          [
-            "野生馬だと",
-            "やせいばだと",
-            "cavalos selvagens"
-          ],
-          [
-            "自分に",
-            "じぶんに",
-            "a mim mesmo"
-          ],
-          [
-            "言い聞かせようと",
-            "いいきかせようと",
-            "tentava convencer"
-          ],
-          [
-            "するほど",
-            "するほど",
-            "quanto mais"
-          ],
-          [
-            "不安は募った",
-            "ふあんはつのった",
-            "a inquietação crescia"
-          ]
-        ]
-      }
-    ],
-    [
-      {
-        "text": "この土地へ入って以来、敵対するインディアンには一人も遭遇していなかった。",
-        "pt": "Desde que entráramos no território, não havíamos encontrado nenhum indígena hostil.",
-        "chunks": [
-          [
-            "この土地へ",
-            "このとちへ",
-            "neste território"
-          ],
-          [
-            "入って以来",
-            "はいっていらい",
-            "desde que entramos"
-          ],
-          [
-            "敵対する",
-            "てきたいする",
-            "hostis"
-          ],
-          [
-            "インディアンには",
-            "インディアンには",
-            "indígenas"
-          ],
-          [
-            "一人も",
-            "ひとりも",
-            "nenhum sequer"
-          ],
-          [
-            "遭遇していなかった",
-            "そうぐうしていなかった",
-            "havíamos encontrado"
-          ]
-        ]
-      },
-      {
-        "text": "そのため、すっかり油断していた。",
-        "pt": "Por isso, havíamos nos tornado extremamente descuidados.",
-        "chunks": [
-          [
-            "そのため",
-            "そのため",
-            "por isso"
-          ],
-          [
-            "すっかり",
-            "すっかり",
-            "completamente"
-          ],
-          [
-            "油断していた",
-            "ゆだんしていた",
-            "baixamos a guarda"
-          ]
-        ]
-      },
-      {
-        "text": "道には危険な盗賊が大勢隠れ、捕まえた白人の一行を容赦なく殺し、拷問するという話も、いつの間にか笑い話になっていた。",
-        "pt": "Passáramos a ridicularizar as histórias sobre numerosos saqueadores cruéis que rondavam as trilhas, matando e torturando todo grupo de brancos que caía em suas mãos impiedosas.",
-        "chunks": [
-          [
-            "道には",
-            "みちには",
-            "nas estradas"
-          ],
-          [
-            "危険な",
-            "きけんな",
-            "perigosos"
-          ],
-          [
-            "盗賊が",
-            "とうぞくが",
-            "bandidos"
-          ],
-          [
-            "大勢隠れ",
-            "おおぜいかくれ",
-            "muitos escondidos"
-          ],
-          [
-            "捕まえた",
-            "つかまえた",
-            "capturaram"
-          ],
-          [
-            "白人の一行を",
-            "はくじんのいっこうを",
-            "grupo de brancos"
-          ],
-          [
-            "容赦なく",
-            "ようしゃなく",
-            "sem piedade"
-          ],
-          [
-            "殺し",
-            "ころし",
-            "matar"
-          ],
-          [
-            "拷問する",
-            "ごうもんする",
-            "torturar"
-          ],
-          [
-            "という話も",
-            "というはなしも",
-            "essas histórias"
-          ],
-          [
-            "いつの間にか",
-            "いつのまにか",
-            "com o tempo"
-          ],
-          [
-            "笑い話に",
-            "わらいばなしに",
-            "motivo de riso"
-          ],
-          [
-            "なっていた",
-            "なっていた",
-            "tinham virado"
-          ]
-        ]
-      }
-    ],
-    [
-      {
-        "text": "パウエルが十分に武器を持ち、インディアンとの戦いにも慣れていることは知っていた。",
-        "pt": "Eu sabia que Powell estava bem armado e era experiente em combates contra indígenas.",
-        "chunks": [
-          [
-            "パウエルが",
-            "パウエルが",
-            "Powell"
-          ],
-          [
-            "十分に",
-            "じゅうぶんに",
-            "bem"
-          ],
-          [
-            "武器を持ち",
-            "ぶきをもち",
-            "tinha armas"
-          ],
-          [
-            "インディアンとの",
-            "インディアンとの",
-            "contra indígenas"
-          ],
-          [
-            "戦いにも",
-            "たたかいにも",
-            "em combates"
-          ],
-          [
-            "慣れていることは",
-            "なれていることは",
-            "era experiente"
-          ],
-          [
-            "知っていた",
-            "しっていた",
-            "eu sabia"
-          ]
-        ]
-      },
-      {
-        "text": "だが私も北部のスー族の間で何年も暮らし、戦ってきた。",
-        "pt": "Mas eu também vivera e lutara durante anos entre os sioux do Norte.",
-        "chunks": [
-          [
-            "だが私も",
-            "だがわたしも",
-            "mas eu também"
-          ],
-          [
-            "北部の",
-            "ほくぶの",
-            "do Norte"
-          ],
-          [
-            "スー族の間で",
-            "スーぞくのあいだで",
-            "entre os sioux"
-          ],
-          [
-            "何年も",
-            "なんねんも",
-            "por anos"
-          ],
-          [
-            "暮らし",
-            "くらし",
-            "vivi"
-          ],
-          [
-            "戦ってきた",
-            "たたかってきた",
-            "e lutei"
-          ]
-        ]
-      },
-      {
-        "text": "跡を追うのがうまいアパッチの一団を相手にすれば、彼に勝つ見込みはほとんどないこともわかっていた。",
-        "pt": "Eu sabia que ele teria poucas chances contra um grupo de apaches hábeis no rastreamento.",
-        "chunks": [
-          [
-            "跡を追うのが",
-            "あとをおうのが",
-            "seguir rastros"
-          ],
-          [
-            "うまい",
-            "うまい",
-            "hábeis"
-          ],
-          [
-            "アパッチの一団を",
-            "アパッチのいちだんを",
-            "grupo de apaches"
-          ],
-          [
-            "相手にすれば",
-            "あいてにすれば",
-            "ao enfrentar"
-          ],
-          [
-            "彼に",
-            "かれに",
-            "para ele"
-          ],
-          [
-            "勝つ見込みは",
-            "かつみこみは",
-            "chance de vencer"
-          ],
-          [
-            "ほとんどないことも",
-            "ほとんどないことも",
-            "quase nenhuma"
-          ],
-          [
-            "わかっていた",
-            "わかっていた",
-            "eu sabia"
-          ]
-        ]
-      },
-      {
-        "text": "とうとう不安に耐えられなくなった。",
-        "pt": "Por fim, não pude mais suportar a incerteza.",
-        "chunks": [
-          [
-            "とうとう",
-            "とうとう",
-            "por fim"
-          ],
-          [
-            "不安に",
-            "ふあんに",
-            "a incerteza"
-          ],
-          [
-            "耐えられなく",
-            "たえられなく",
-            "não suportava"
-          ],
-          [
-            "なった",
-            "なった",
-            "mais"
-          ]
-        ]
-      },
-      {
-        "text": "二丁のコルト拳銃とカービン銃を持ち、二本の弾帯を体に巻くと、乗る馬を捕まえ、その朝パウエルが通った道を下りはじめた。",
-        "pt": "Armei-me com dois revólveres Colt e uma carabina, prendi dois cinturões de munição ao corpo, peguei meu cavalo de sela e desci pela trilha que Powell tomara naquela manhã.",
-        "chunks": [
-          [
-            "二丁の",
-            "にちょうの",
-            "duas"
-          ],
-          [
-            "コルト拳銃と",
-            "コルトけんじゅうと",
-            "pistolas Colt"
-          ],
-          [
-            "カービン銃を",
-            "カービンじゅうを",
-            "uma carabina"
-          ],
-          [
-            "持ち",
-            "もち",
-            "peguei"
-          ],
-          [
-            "二本の",
-            "にほんの",
-            "dois"
-          ],
-          [
-            "弾帯を",
-            "だんたいを",
-            "cinturões de munição"
-          ],
-          [
-            "体に巻くと",
-            "からだにまくと",
-            "ao prender ao corpo"
-          ],
-          [
-            "乗る馬を",
-            "のるうまを",
-            "cavalo de montaria"
-          ],
-          [
-            "捕まえ",
-            "つかまえ",
-            "peguei"
-          ],
-          [
-            "その朝",
-            "そのあさ",
-            "naquela manhã"
-          ],
-          [
-            "パウエルが通った",
-            "パウエルがとおった",
-            "tomada por Powell"
-          ],
-          [
-            "道を",
-            "みちを",
-            "a trilha"
-          ],
-          [
-            "下りはじめた",
-            "くだりはじめた",
-            "comecei a descer"
-          ]
-        ]
-      }
-    ],
-    [
-      {
-        "text": "わりあい平らな土地に出るとすぐ、馬を軽く走らせた。",
-        "pt": "Assim que alcancei terreno relativamente plano, pus minha montaria a meio-galope.",
-        "chunks": [
-          [
-            "わりあい",
-            "わりあい",
-            "relativamente"
-          ],
-          [
-            "平らな土地に",
-            "たいらなとちに",
-            "terreno plano"
-          ],
-          [
-            "出るとすぐ",
-            "でるとすぐ",
-            "assim que alcancei"
-          ],
-          [
-            "馬を",
-            "うまを",
-            "o cavalo"
-          ],
-          [
-            "軽く",
-            "かるく",
-            "levemente"
-          ],
-          [
-            "走らせた",
-            "はしらせた",
-            "fiz correr"
-          ]
-        ]
-      },
-      {
-        "text": "道が悪くないかぎりその速さで進み、日が暮れるころ、別の足跡がパウエルの跡に重なる場所を見つけた。",
-        "pt": "Mantive esse ritmo onde o terreno permitia até que, perto do anoitecer, encontrei o ponto em que outras pegadas se juntavam às de Powell.",
-        "chunks": [
-          [
-            "道が",
-            "みちが",
-            "o caminho"
-          ],
-          [
-            "悪くないかぎり",
-            "わるくないかぎり",
-            "enquanto estava bom"
-          ],
-          [
-            "その速さで",
-            "そのはやさで",
-            "nesse ritmo"
-          ],
-          [
-            "進み",
-            "すすみ",
-            "avancei"
-          ],
-          [
-            "日が暮れるころ",
-            "ひがくれるころ",
-            "perto do anoitecer"
-          ],
-          [
-            "別の足跡が",
-            "べつのあしあとが",
-            "outras pegadas"
-          ],
-          [
-            "パウエルの跡に",
-            "パウエルのあとに",
-            "rastros de Powell"
-          ],
-          [
-            "重なる",
-            "かさなる",
-            "se sobrepunham"
-          ],
-          [
-            "場所を",
-            "ばしょを",
-            "o ponto"
-          ],
-          [
-            "見つけた",
-            "みつけた",
-            "encontrei"
-          ]
-        ]
-      },
-      {
-        "text": "蹄鉄をつけていない三頭のポニーの足跡で、どの馬も走っていた。",
-        "pt": "Eram rastros de três pôneis sem ferraduras, e os animais haviam galopado.",
-        "chunks": [
-          [
-            "蹄鉄を",
-            "ていてつを",
-            "ferraduras"
-          ],
-          [
-            "つけていない",
-            "つけていない",
-            "sem usar"
-          ],
-          [
-            "三頭のポニーの",
-            "さんとうのポニーの",
-            "de três pôneis"
-          ],
-          [
-            "足跡で",
-            "あしあとで",
-            "eram rastros"
-          ],
-          [
-            "どの馬も",
-            "どのうまも",
-            "todos os animais"
-          ],
-          [
-            "走っていた",
-            "はしっていた",
-            "haviam corrido"
-          ]
-        ]
-      }
-    ]
   ]
 }

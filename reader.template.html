@@ -556,7 +556,7 @@
     </header>
 
     <article>
-      <h2><select class="chapter-select" id="chapter-select" aria-label="Selecionar capítulo"><option>{{SECTION_TITLE}}</option></select></h2>
+      <h2><select class="chapter-select" id="chapter-select" aria-label="Selecionar capítulo"><option>Capítulo</option></select></h2>
 
       <p class="study-hint" id="study-hint">{{STUDY_HINT}}</p>
 
@@ -589,7 +589,8 @@
   </main>
   <script type="module">
     // BOOK_DATA_START
-    const paragraphs = [];
+    const bookData = null;
+    const chapters = [];
     // BOOK_DATA_END
 
     const fontDecrease = document.querySelector("#font-decrease");
@@ -619,15 +620,17 @@
       document.querySelector("#study-hint").textContent = bookData.page.study_hint;
       document.querySelector("#page-footer").textContent = bookData.page.footer;
     }
-    const sentences = paragraphs.flat();
-    const chapters = bookData?.chapters || [{ title: chapterSelect.value, start_paragraph: 0 }];
-    const paragraphSentenceStarts = [];
+    const chapterSentenceStarts = [];
+    const paragraphs = [];
     let sentenceTotal = 0;
-    paragraphs.forEach((paragraph) => {
-      paragraphSentenceStarts.push(sentenceTotal);
-      sentenceTotal += paragraph.length;
+    chapters.forEach((chapter) => {
+      chapterSentenceStarts.push(sentenceTotal);
+      chapter.paragraphs.forEach((paragraph) => {
+        paragraphs.push(paragraph);
+        sentenceTotal += paragraph.length;
+      });
     });
-    const chapterSentenceStarts = chapters.map((chapter) => paragraphSentenceStarts[chapter.start_paragraph]);
+    const sentences = paragraphs.flat();
     chapterSelect.replaceChildren(...chapters.map((chapter, index) => {
       const option = document.createElement("option");
       option.value = String(index);
