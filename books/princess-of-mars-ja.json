@@ -2226,6 +2226,285 @@
           }
         ]
       ]
+    },
+    {
+      "title": "第二章　死者の脱出",
+      "paragraphs": [
+        [
+          {
+            "text": "心地よい夢のような感覚に包まれ、全身の力が抜けた。",
+            "pt": "Uma agradável sensação de sonho tomou conta de mim, e meus músculos relaxaram.",
+            "chunks": [
+              [
+                "心地よい",
+                "ここちよい",
+                "agradável"
+              ],
+              [
+                "夢のような",
+                "ゆめのような",
+                "como um sonho"
+              ],
+              [
+                "感覚に包まれ",
+                "かんかくにつつまれ",
+                "envolto na sensação"
+              ],
+              [
+                "全身の力が",
+                "ぜんしんのちからが",
+                "a força do corpo"
+              ],
+              [
+                "抜けた",
+                "ぬけた",
+                "se esvaiu"
+              ]
+            ]
+          },
+          {
+            "text": "眠気に身を任せかけたとき、近づいてくる馬の音が耳に入った。",
+            "pt": "Eu estava prestes a me entregar ao sono quando ouvi cavalos se aproximando.",
+            "chunks": [
+              [
+                "眠気に",
+                "ねむけに",
+                "ao sono"
+              ],
+              [
+                "身を任せかけた",
+                "みをまかせかけた",
+                "quase me entreguei"
+              ],
+              [
+                "とき",
+                "とき",
+                "quando"
+              ],
+              [
+                "近づいてくる",
+                "ちかづいてくる",
+                "que se aproximavam"
+              ],
+              [
+                "馬の音が",
+                "うまのおとが",
+                "o som dos cavalos"
+              ],
+              [
+                "耳に入った",
+                "みみにはいった",
+                "chegou aos ouvidos"
+              ]
+            ]
+          },
+          {
+            "text": "飛び起きようとしたが、恐ろしいことに、筋肉はまるで言うことをきかなかった。",
+            "pt": "Tentei saltar de pé, mas descobri, horrorizado, que meus músculos não me obedeciam.",
+            "chunks": [
+              [
+                "飛び起きようとしたが",
+                "とびおきようとしたが",
+                "tentei me levantar"
+              ],
+              [
+                "恐ろしいことに",
+                "おそろしいことに",
+                "para meu horror"
+              ],
+              [
+                "筋肉は",
+                "きんにくは",
+                "os músculos"
+              ],
+              [
+                "まるで",
+                "まるで",
+                "de modo algum"
+              ],
+              [
+                "言うことをきかなかった",
+                "いうことをきかなかった",
+                "não obedeciam"
+              ]
+            ]
+          },
+          {
+            "text": "意識は完全に目覚めているのに、石になったように指一本動かせない。",
+            "pt": "Eu estava inteiramente desperto, mas não conseguia mover um único dedo, como se tivesse virado pedra.",
+            "chunks": [
+              [
+                "意識は",
+                "いしきは",
+                "a consciência"
+              ],
+              [
+                "完全に",
+                "かんぜんに",
+                "completamente"
+              ],
+              [
+                "目覚めているのに",
+                "めざめているのに",
+                "estava desperta"
+              ],
+              [
+                "石になったように",
+                "いしになったように",
+                "como se fosse pedra"
+              ],
+              [
+                "指一本",
+                "ゆびいっぽん",
+                "um único dedo"
+              ],
+              [
+                "動かせない",
+                "うごかせない",
+                "não podia mover"
+              ]
+            ]
+          },
+          {
+            "text": "そのとき初めて、洞窟の中に薄い霧が満ちていることに気づいた。",
+            "pt": "Foi então que notei pela primeira vez uma névoa leve enchendo a caverna.",
+            "chunks": [
+              [
+                "そのとき初めて",
+                "そのときはじめて",
+                "só então"
+              ],
+              [
+                "洞窟の中に",
+                "どうくつのなかに",
+                "na caverna"
+              ],
+              [
+                "薄い霧が",
+                "うすいきりが",
+                "uma névoa leve"
+              ],
+              [
+                "満ちている",
+                "みちている",
+                "enchia"
+              ],
+              [
+                "ことに気づいた",
+                "ことにきづいた",
+                "percebi"
+              ]
+            ]
+          },
+          {
+            "text": "霧はとても薄く、日の光が差す入口を背にして、ようやく見えるほどだった。",
+            "pt": "A névoa era tão fina que só podia ser vista contra a entrada iluminada pelo dia.",
+            "chunks": [
+              [
+                "霧は",
+                "きりは",
+                "a névoa"
+              ],
+              [
+                "とても薄く",
+                "とてもうすく",
+                "era muito fina"
+              ],
+              [
+                "日の光が差す",
+                "ひのひかりがさす",
+                "iluminada pelo dia"
+              ],
+              [
+                "入口を背にして",
+                "いりぐちをせにして",
+                "contra a entrada"
+              ],
+              [
+                "ようやく見える",
+                "ようやくみえる",
+                "mal podia ser vista"
+              ],
+              [
+                "ほどだった",
+                "ほどだった",
+                "era tão tênue"
+              ]
+            ]
+          },
+          {
+            "text": "鼻にはかすかに刺激のある臭いも届いた。何かの毒ガスにやられたとしか思えなかったが、なぜ意識ははっきりしているのに体が動かないのか、私にはわからなかった。",
+            "pt": "Um leve odor pungente também chegou às minhas narinas. Só pude concluir que algum gás venenoso me dominara, mas não entendia por que minha mente permanecia lúcida enquanto meu corpo não se movia.",
+            "chunks": [
+              [
+                "鼻には",
+                "はなには",
+                "às narinas"
+              ],
+              [
+                "かすかに",
+                "かすかに",
+                "levemente"
+              ],
+              [
+                "刺激のある臭いも",
+                "しげきのあるにおいも",
+                "um odor pungente"
+              ],
+              [
+                "届いた",
+                "とどいた",
+                "chegou"
+              ],
+              [
+                "何かの毒ガスに",
+                "なにかのどくがすに",
+                "por algum gás venenoso"
+              ],
+              [
+                "やられたとしか",
+                "やられたとしか",
+                "só podia ter sido vencido"
+              ],
+              [
+                "思えなかったが",
+                "おもえなかったが",
+                "era o que pensei"
+              ],
+              [
+                "なぜ",
+                "なぜ",
+                "por que"
+              ],
+              [
+                "意識は",
+                "いしきは",
+                "a mente"
+              ],
+              [
+                "はっきりしているのに",
+                "はっきりしているのに",
+                "continuava lúcida"
+              ],
+              [
+                "体が動かないのか",
+                "からだがうごかないのか",
+                "o corpo não se movia"
+              ],
+              [
+                "私には",
+                "わたしには",
+                "para mim"
+              ],
+              [
+                "わからなかった",
+                "わからなかった",
+                "era incompreensível"
+              ]
+            ]
+          }
+        ]
+      ]
     }
   ]
 }
