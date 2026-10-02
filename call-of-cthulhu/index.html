@@ -1,0 +1,991 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="H・P・ラヴクラフト『クトゥルフの呼び声』日本語訳">
+  <title>クトゥルフの呼び声</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --paper: #f3efe4;
+      --ink: #22231f;
+      --muted: #696a62;
+      --rule: #b3ad9f;
+      --accent: #314f46;
+      --accent-soft: rgb(49 79 70 / 11%);
+      --panel: #e9e4d7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: var(--paper);
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 0%, rgb(49 79 70 / 8%), transparent 28rem),
+        var(--paper);
+      font-family: "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif JP", serif;
+      line-height: 2;
+      text-rendering: optimizeLegibility;
+    }
+
+    main {
+      width: min(100% - 2.5rem, 45rem);
+      margin: 0 auto;
+      padding: clamp(4rem, 12vw, 8rem) 0 8rem;
+    }
+
+    header {
+      margin-bottom: 4rem;
+      padding-bottom: 2.25rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .eyebrow {
+      margin: 0 0 1rem;
+      color: var(--accent);
+      font-family: system-ui, sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.2rem, 8vw, 4.25rem);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      line-height: 1.25;
+    }
+
+    .author {
+      margin: 1.25rem 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+    }
+
+    .reader-controls {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.45rem;
+      margin-top: 1.75rem;
+      font-family: system-ui, sans-serif;
+    }
+
+    .reader-controls-label {
+      margin-right: 0.25rem;
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+    }
+
+    .font-button {
+      min-width: 2.4rem;
+      height: 2.2rem;
+      padding: 0 0.55rem;
+      color: var(--accent);
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .font-button:hover,
+    .font-button:focus-visible {
+      color: var(--paper);
+      background: var(--accent);
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    .font-button:disabled {
+      color: var(--muted);
+      background: transparent;
+      border-color: var(--rule);
+      cursor: not-allowed;
+      opacity: 0.4;
+    }
+
+    .font-level {
+      min-width: 3.4rem;
+      color: var(--muted);
+      font-size: 0.7rem;
+      text-align: center;
+    }
+
+    h2 {
+      margin: 0 0 2.25rem;
+      color: var(--accent);
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+    }
+
+    p {
+      margin: 0 0 1.75rem;
+      font-size: clamp(1rem, 2.5vw, 1.1rem);
+      letter-spacing: 0.025em;
+      text-align: justify;
+    }
+
+    p + p {
+      text-indent: 1em;
+    }
+
+    .study-panel {
+      font-size: 100%;
+    }
+
+    .study-panel[data-font-level="-2"] {
+      font-size: 80%;
+    }
+
+    .study-panel[data-font-level="-1"] {
+      font-size: 90%;
+    }
+
+    .study-panel[data-font-level="1"] {
+      font-size: 110%;
+    }
+
+    .study-panel[data-font-level="2"] {
+      font-size: 120%;
+    }
+
+    .study-panel[data-font-level="3"] {
+      font-size: 140%;
+    }
+
+    .study-panel[data-font-level="4"] {
+      font-size: 160%;
+    }
+
+    .study-hint {
+      margin: -1.25rem 0 2rem;
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.02em;
+      text-align: left;
+    }
+
+    .study-panel {
+      margin: 0.5rem 0 2.5rem;
+      padding: clamp(1.25rem, 4vw, 2rem);
+      background: var(--panel);
+      border: 1px solid var(--rule);
+      border-radius: 0.45rem;
+      box-shadow: 0 1rem 2.5rem rgb(20 25 22 / 8%);
+      text-indent: 0;
+    }
+
+    .study-topline {
+      position: sticky;
+      top: 0.5rem;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin: -0.75rem -0.75rem 1rem;
+      padding: 0.75rem;
+      background: color-mix(in srgb, var(--panel) 94%, transparent);
+      border: 1px solid color-mix(in srgb, var(--rule) 72%, transparent);
+      border-radius: 0.5rem;
+      box-shadow: 0 0.35rem 1.2rem rgb(20 25 22 / 8%);
+      backdrop-filter: blur(0.6rem);
+    }
+
+    .study-label {
+      margin: 0;
+      color: var(--accent);
+      font-family: system-ui, sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .study-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .study-nav {
+      min-width: 2rem;
+      height: 2rem;
+      padding: 0 0.55rem;
+      color: var(--accent);
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font-family: system-ui, sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .furigana-toggle {
+      min-width: 6.4rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.03em;
+    }
+
+    .study-nav:hover,
+    .study-nav:focus-visible {
+      color: var(--ink);
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    .study-nav:disabled {
+      color: var(--muted);
+      border-color: var(--rule);
+      cursor: not-allowed;
+      opacity: 0.35;
+    }
+
+    .selected-sentence {
+      margin: 0 0 0.65rem;
+      font-size: 1.35em;
+      font-weight: 600;
+      line-height: 2.5;
+      text-align: left;
+    }
+
+    .selected-sentence ruby {
+      ruby-align: center;
+    }
+
+    .selected-sentence rt {
+      color: var(--accent);
+      font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+      font-size: 0.52em;
+      font-weight: 500;
+    }
+
+    .selected-sentence.furigana-hidden rt {
+      visibility: hidden;
+    }
+
+    .sentence-translation {
+      margin: 1.5rem 0 0;
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+      font-size: 0.88em;
+      line-height: 1.55;
+      text-align: left;
+    }
+
+    .interlinear {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: 0.75rem 0.55rem;
+    }
+
+    .chunk {
+      display: inline-flex;
+      min-width: 3rem;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.55rem 0.65rem 0.5rem;
+      background: color-mix(in srgb, var(--paper) 72%, transparent);
+      border-radius: 0.35rem;
+      text-align: center;
+    }
+
+    .chunk-japanese {
+      font-size: 1.05em;
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    .chunk rt {
+      color: var(--accent);
+      font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+      font-size: 0.6em;
+      font-weight: 500;
+    }
+
+    .gloss {
+      max-width: 12rem;
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+      font-size: 0.7em;
+      line-height: 1.3;
+    }
+
+    footer {
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+    }
+
+    @media (min-width: 48rem) {
+      main {
+        width: min(100% - 4rem, 68rem);
+        padding-top: 5rem;
+      }
+
+      header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        column-gap: 3rem;
+        align-items: end;
+      }
+
+      .eyebrow {
+        grid-column: 1 / -1;
+      }
+
+      h1,
+      .author {
+        grid-column: 1;
+      }
+
+      .reader-controls {
+        grid-column: 2;
+        grid-row: 2 / 4;
+        align-self: end;
+        margin: 0 0 0.1rem;
+      }
+
+      .study-panel {
+        min-height: 25rem;
+        padding: 2.5rem 3rem 2.75rem;
+        border-radius: 0.75rem;
+      }
+
+      .study-topline {
+        margin-bottom: 1.75rem;
+      }
+
+      .study-nav {
+        min-width: 3rem;
+        height: 2.5rem;
+      }
+
+      .furigana-toggle {
+        min-width: 7rem;
+      }
+
+      .selected-sentence {
+        margin-bottom: 1.5rem;
+        padding: 0.75rem 0 1.75rem;
+        border-bottom: 1px solid var(--rule);
+        line-height: 2.7;
+      }
+
+      .interlinear {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+        align-items: stretch;
+        gap: 0.75rem;
+      }
+
+      .chunk {
+        min-width: 0;
+        justify-content: center;
+        padding: 0.85rem 0.9rem 0.75rem;
+      }
+
+      .sentence-translation {
+        max-width: 52rem;
+        margin-top: 2rem;
+        font-size: 0.95em;
+      }
+    }
+
+    @media (max-width: 36rem) {
+      main {
+        width: min(100% - 1.25rem, 45rem);
+        padding-top: 2rem;
+      }
+
+      header {
+        margin-bottom: 2.5rem;
+      }
+
+      .study-topline {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .study-actions {
+        width: 100%;
+      }
+
+      .study-nav {
+        flex: 1;
+        min-height: 2.75rem;
+      }
+
+      .furigana-toggle {
+        flex: 1.65;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #171a18;
+        --ink: #e7e3d8;
+        --muted: #aaa99f;
+        --rule: #414641;
+        --accent: #92b3a7;
+        --accent-soft: rgb(146 179 167 / 13%);
+        --panel: #222724;
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .study-panel {
+        animation: reveal 160ms ease-out;
+      }
+
+      @keyframes reveal {
+        from {
+          opacity: 0;
+          transform: translateY(-0.35rem);
+        }
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">JAPANESE TRANSLATION</p>
+      <h1>クトゥルフの呼び声</h1>
+      <p class="author">H・P・ラヴクラフト</p>
+      <div class="reader-controls" aria-label="Controles de tamanho do texto">
+        <span class="reader-controls-label">文字サイズ</span>
+        <button class="font-button" id="font-decrease" type="button" aria-label="Diminuir o texto japonês">A−</button>
+        <output class="font-level" id="font-level" aria-live="polite">100%</output>
+        <button class="font-button" id="font-increase" type="button" aria-label="Aumentar o texto japonês">A＋</button>
+      </div>
+    </header>
+
+    <article>
+      <h2>1．粘土の恐怖</h2>
+
+      <p class="study-hint">矢印で文を移動できます。ふりがなの表示も切り替えられます。</p>
+
+      <noscript><p>このページを表示するにはJavaScriptを有効にしてください。</p></noscript>
+
+      <section class="study-panel" id="study-panel" aria-live="polite">
+        <div class="study-topline">
+          <p class="study-label" id="study-label">Interlinear</p>
+          <div class="study-actions" aria-label="Navegação entre frases">
+            <button class="study-nav" id="study-previous" type="button" aria-label="Frase anterior">←</button>
+            <button class="study-nav furigana-toggle" id="furigana-toggle" type="button" aria-pressed="true">ふりがな ON</button>
+            <button class="study-nav" id="study-next" type="button" aria-label="Próxima frase">→</button>
+          </div>
+        </div>
+        <p class="selected-sentence" id="selected-sentence" lang="ja"></p>
+        <div class="interlinear" id="interlinear"></div>
+        <p class="sentence-translation" id="sentence-translation" lang="pt-BR"></p>
+      </section>
+    </article>
+
+    <footer>翻訳は段落ごとに順次更新されます。</footer>
+  </main>
+  <script>
+    // BOOK_DATA_START
+    const paragraphs = [
+          [
+                {
+                      "text": "この世で何より救いなのは、人の心が、その中にあるすべてを結びつけて考えられないことだろう。",
+                      "pt": "A coisa mais misericordiosa deste mundo talvez seja a incapacidade da mente humana de relacionar tudo o que contém.",
+                      "chunks": [
+                            [
+                                  "この世で",
+                                  "このよで",
+                                  "neste mundo"
+                            ],
+                            [
+                                  "何より",
+                                  "なにより",
+                                  "acima de tudo"
+                            ],
+                            [
+                                  "救いなのは",
+                                  "すくいなのは",
+                                  "o alívio é"
+                            ],
+                            [
+                                  "人の心が",
+                                  "ひとのこころが",
+                                  "a mente humana"
+                            ],
+                            [
+                                  "その中にある",
+                                  "そのなかにある",
+                                  "que contém"
+                            ],
+                            [
+                                  "すべてを",
+                                  "すべてを",
+                                  "tudo"
+                            ],
+                            [
+                                  "結びつけて",
+                                  "むすびつけて",
+                                  "relacionar"
+                            ],
+                            [
+                                  "考えられない",
+                                  "かんがえられない",
+                                  "não consegue pensar"
+                            ],
+                            [
+                                  "ことだろう",
+                                  "ことだろう",
+                                  "talvez seja o fato"
+                            ]
+                      ]
+                },
+                {
+                      "text": "私たちは、果てしない黒い海の中に浮かぶ、静かな無知の島で暮らしている。",
+                      "pt": "Vivemos numa tranquila ilha de ignorância, flutuando em meio a mares negros e infinitos.",
+                      "chunks": [
+                            [
+                                  "私たちは",
+                                  "わたしたちは",
+                                  "nós"
+                            ],
+                            [
+                                  "果てしない",
+                                  "はてしない",
+                                  "sem fim"
+                            ],
+                            [
+                                  "黒い海の中に",
+                                  "くろいうみのなかに",
+                                  "em mares negros"
+                            ],
+                            [
+                                  "浮かぶ",
+                                  "うかぶ",
+                                  "flutuando"
+                            ],
+                            [
+                                  "静かな",
+                                  "しずかな",
+                                  "tranquila"
+                            ],
+                            [
+                                  "無知の島で",
+                                  "むちのしまで",
+                                  "ilha de ignorância"
+                            ],
+                            [
+                                  "暮らしている",
+                                  "くらしている",
+                                  "vivemos"
+                            ]
+                      ]
+                },
+                {
+                      "text": "そこから遠くへ航海するようにはできていない。",
+                      "pt": "Não fomos feitos para navegar para longe dali.",
+                      "chunks": [
+                            [
+                                  "そこから",
+                                  "そこから",
+                                  "a partir dali"
+                            ],
+                            [
+                                  "遠くへ",
+                                  "とおくへ",
+                                  "para longe"
+                            ],
+                            [
+                                  "航海する",
+                                  "こうかいする",
+                                  "navegar"
+                            ],
+                            [
+                                  "ようには",
+                                  "ようには",
+                                  "para isso"
+                            ],
+                            [
+                                  "できていない",
+                                  "できていない",
+                                  "não fomos feitos"
+                            ]
+                      ]
+                },
+                {
+                      "text": "さまざまな科学は、それぞれ別の方向へ進み、これまではほとんど害を与えてこなかった。",
+                      "pt": "As diversas ciências, cada qual avançando em uma direção diferente, até agora pouco mal nos causaram.",
+                      "chunks": [
+                            [
+                                  "さまざまな",
+                                  "さまざまな",
+                                  "diversas"
+                            ],
+                            [
+                                  "科学は",
+                                  "かがくは",
+                                  "as ciências"
+                            ],
+                            [
+                                  "それぞれ",
+                                  "それぞれ",
+                                  "cada qual"
+                            ],
+                            [
+                                  "別の方向へ",
+                                  "べつのほうこうへ",
+                                  "noutra direção"
+                            ],
+                            [
+                                  "進み",
+                                  "すすみ",
+                                  "avançando"
+                            ],
+                            [
+                                  "これまでは",
+                                  "これまでは",
+                                  "até agora"
+                            ],
+                            [
+                                  "ほとんど",
+                                  "ほとんど",
+                                  "quase nenhum"
+                            ],
+                            [
+                                  "害を",
+                                  "がいを",
+                                  "mal"
+                            ],
+                            [
+                                  "与えてこなかった",
+                                  "あたえてこなかった",
+                                  "não causaram"
+                            ]
+                      ]
+                },
+                {
+                      "text": "だがいつか、ばらばらの知識が一つにつながれば、現実の恐ろしい全体像と、その中で私たちがどれほど恐ろしい場所にいるかが見えてくる。",
+                      "pt": "Mas um dia, quando os conhecimentos dispersos se unirem, veremos a terrível totalidade da realidade e quão assustadora é nossa posição dentro dela.",
+                      "chunks": [
+                            [
+                                  "だがいつか",
+                                  "だがいつか",
+                                  "mas um dia"
+                            ],
+                            [
+                                  "ばらばらの",
+                                  "ばらばらの",
+                                  "dispersos"
+                            ],
+                            [
+                                  "知識が",
+                                  "ちしきが",
+                                  "os conhecimentos"
+                            ],
+                            [
+                                  "一つに",
+                                  "ひとつに",
+                                  "num só"
+                            ],
+                            [
+                                  "つながれば",
+                                  "つながれば",
+                                  "quando se unirem"
+                            ],
+                            [
+                                  "現実の",
+                                  "げんじつの",
+                                  "da realidade"
+                            ],
+                            [
+                                  "恐ろしい",
+                                  "おそろしい",
+                                  "terrível"
+                            ],
+                            [
+                                  "全体像と",
+                                  "ぜんたいぞうと",
+                                  "a visão completa"
+                            ],
+                            [
+                                  "その中で",
+                                  "そのなかで",
+                                  "dentro dela"
+                            ],
+                            [
+                                  "私たちが",
+                                  "わたしたちが",
+                                  "nós"
+                            ],
+                            [
+                                  "どれほど",
+                                  "どれほど",
+                                  "quão"
+                            ],
+                            [
+                                  "恐ろしい場所に",
+                                  "おそろしいばしょに",
+                                  "posição assustadora"
+                            ],
+                            [
+                                  "いるかが",
+                                  "いるかが",
+                                  "onde estamos"
+                            ],
+                            [
+                                  "見えてくる",
+                                  "みえてくる",
+                                  "ficará visível"
+                            ]
+                      ]
+                },
+                {
+                      "text": "そのとき私たちは、真実を知って狂うか、死をもたらす光から逃げ、新しい暗黒時代の平和と安全へ戻るしかないだろう。",
+                      "pt": "Então só nos restará enlouquecer com a revelação ou fugir da luz mortal para a paz e a segurança de uma nova era de trevas.",
+                      "chunks": [
+                            [
+                                  "そのとき",
+                                  "そのとき",
+                                  "então"
+                            ],
+                            [
+                                  "私たちは",
+                                  "わたしたちは",
+                                  "nós"
+                            ],
+                            [
+                                  "真実を",
+                                  "しんじつを",
+                                  "a verdade"
+                            ],
+                            [
+                                  "知って",
+                                  "しって",
+                                  "ao conhecer"
+                            ],
+                            [
+                                  "狂うか",
+                                  "くるうか",
+                                  "enlouquecer ou"
+                            ],
+                            [
+                                  "死をもたらす",
+                                  "しをもたらす",
+                                  "mortal"
+                            ],
+                            [
+                                  "光から",
+                                  "ひかりから",
+                                  "da luz"
+                            ],
+                            [
+                                  "逃げ",
+                                  "にげ",
+                                  "fugir"
+                            ],
+                            [
+                                  "新しい",
+                                  "あたらしい",
+                                  "nova"
+                            ],
+                            [
+                                  "暗黒時代の",
+                                  "あんこくじだいの",
+                                  "era de trevas"
+                            ],
+                            [
+                                  "平和と安全へ",
+                                  "へいわとあんぜんへ",
+                                  "à paz e segurança"
+                            ],
+                            [
+                                  "戻るしかないだろう",
+                                  "もどるしかないだろう",
+                                  "só restará voltar"
+                            ]
+                      ]
+                }
+          ]
+    ];
+    // BOOK_DATA_END
+
+    const fontDecrease = document.querySelector("#font-decrease");
+    const fontIncrease = document.querySelector("#font-increase");
+    const fontLevel = document.querySelector("#font-level");
+    const panel = document.querySelector("#study-panel");
+    const label = document.querySelector("#study-label");
+    const selectedSentence = document.querySelector("#selected-sentence");
+    const sentenceTranslation = document.querySelector("#sentence-translation");
+    const interlinear = document.querySelector("#interlinear");
+    const previousButton = document.querySelector("#study-previous");
+    const nextButton = document.querySelector("#study-next");
+    const furiganaToggle = document.querySelector("#furigana-toggle");
+    const sentences = paragraphs.flat();
+    let activeIndex = 0;
+    let furiganaVisible = true;
+    const fontPercentages = [80, 90, 100, 110, 120, 140, 160];
+    const defaultFontLevelIndex = 2;
+    const minFontLevel = -defaultFontLevelIndex;
+    const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
+    let currentFontLevel = Number.parseInt(localStorage.getItem("reading-font-level") || "0", 10);
+
+    if (!Number.isInteger(currentFontLevel) || currentFontLevel < minFontLevel || currentFontLevel > maxFontLevel) {
+      currentFontLevel = 0;
+    }
+
+    function updateFontLevel() {
+      panel.dataset.fontLevel = String(currentFontLevel);
+      fontLevel.value = `${fontPercentages[currentFontLevel + defaultFontLevelIndex]}%`;
+      fontDecrease.disabled = currentFontLevel === minFontLevel;
+      fontIncrease.disabled = currentFontLevel === maxFontLevel;
+      localStorage.setItem("reading-font-level", String(currentFontLevel));
+    }
+
+    fontDecrease.addEventListener("click", () => {
+      currentFontLevel = Math.max(minFontLevel, currentFontLevel - 1);
+      updateFontLevel();
+    });
+
+    fontIncrease.addEventListener("click", () => {
+      currentFontLevel = Math.min(maxFontLevel, currentFontLevel + 1);
+      updateFontLevel();
+    });
+
+    updateFontLevel();
+
+    function toHiragana(value) {
+      return value.replace(/[ァ-ヶ]/g, (character) =>
+        String.fromCharCode(character.charCodeAt(0) - 0x60)
+      );
+    }
+
+    function appendAlignedRuby(target, surface, reading) {
+      const kanjiPattern = /^[\p{Script=Han}々〆ヵヶ0-9０-９]+$/u;
+      const runs = surface.match(/[\p{Script=Han}々〆ヵヶ0-9０-９]+|[^\p{Script=Han}々〆ヵヶ0-9０-９]+/gu) || [surface];
+      const normalizedReading = toHiragana(reading);
+      let readingCursor = 0;
+
+      runs.forEach((run, index) => {
+        if (!kanjiPattern.test(run)) {
+          target.append(document.createTextNode(run));
+          const normalizedRun = toHiragana(run);
+          if (normalizedReading.startsWith(normalizedRun, readingCursor)) {
+            readingCursor += normalizedRun.length;
+          }
+          return;
+        }
+
+        const nextRun = runs[index + 1];
+        const nextAnchor = nextRun && !kanjiPattern.test(nextRun)
+          ? toHiragana(nextRun)
+          : "";
+        let readingEnd = nextAnchor
+          ? normalizedReading.indexOf(nextAnchor, readingCursor)
+          : normalizedReading.length;
+
+        if (readingEnd < readingCursor) {
+          readingEnd = normalizedReading.length;
+        }
+
+        const ruby = document.createElement("ruby");
+        ruby.append(document.createTextNode(run));
+        const rt = document.createElement("rt");
+        rt.textContent = reading.slice(readingCursor, readingEnd);
+        ruby.append(rt);
+        target.append(ruby);
+        readingCursor = readingEnd;
+      });
+    }
+
+    function renderCard(index) {
+      activeIndex = index;
+      const sentence = sentences[activeIndex];
+      previousButton.disabled = activeIndex === 0;
+      nextButton.disabled = activeIndex === sentences.length - 1;
+      label.textContent = `Interlinear · frase ${activeIndex + 1} de ${sentences.length}`;
+      selectedSentence.replaceChildren();
+
+      let cursor = 0;
+      sentence.chunks.forEach(([surface, reading]) => {
+        const start = sentence.text.indexOf(surface, cursor);
+        if (start > cursor) {
+          selectedSentence.append(document.createTextNode(sentence.text.slice(cursor, start)));
+        }
+
+        appendAlignedRuby(selectedSentence, surface, reading);
+        cursor = start + surface.length;
+      });
+
+      if (cursor < sentence.text.length) {
+        selectedSentence.append(document.createTextNode(sentence.text.slice(cursor)));
+      }
+
+      sentenceTranslation.textContent = sentence.pt;
+      interlinear.replaceChildren();
+
+      sentence.chunks.forEach(([surface, reading, gloss]) => {
+        const chunk = document.createElement("span");
+        chunk.className = "chunk";
+
+        const japanese = document.createElement("span");
+        japanese.className = "chunk-japanese";
+        appendAlignedRuby(japanese, surface, reading);
+
+        const meaning = document.createElement("span");
+        meaning.className = "gloss";
+        meaning.lang = "pt-BR";
+        meaning.textContent = gloss;
+
+        chunk.append(japanese, meaning);
+        interlinear.append(chunk);
+      });
+    }
+
+    previousButton.addEventListener("click", () => {
+      if (activeIndex > 0) {
+        renderCard(activeIndex - 1);
+      }
+    });
+
+    nextButton.addEventListener("click", () => {
+      if (activeIndex < sentences.length - 1) {
+        renderCard(activeIndex + 1);
+      }
+    });
+
+    furiganaToggle.addEventListener("click", () => {
+      furiganaVisible = !furiganaVisible;
+      selectedSentence.classList.toggle("furigana-hidden", !furiganaVisible);
+      furiganaToggle.setAttribute("aria-pressed", String(furiganaVisible));
+      furiganaToggle.textContent = `ふりがな ${furiganaVisible ? "ON" : "OFF"}`;
+    });
+
+    renderCard(0);
+  </script>
+</body>
+</html>
