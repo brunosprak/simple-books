@@ -307,8 +307,33 @@
       gap: 0.25rem;
       padding: 0.55rem 0.65rem 0.5rem;
       background: color-mix(in srgb, var(--paper) 72%, transparent);
+      color: var(--ink);
+      border: 1px solid transparent;
       border-radius: 0.35rem;
+      font-family: inherit;
       text-align: center;
+      cursor: pointer;
+    }
+
+    .chunk:hover,
+    .chunk:focus-visible {
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    .chunk[aria-pressed="true"] {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      box-shadow: inset 0 0 0 1px var(--accent);
+    }
+
+    .chunk[aria-pressed="true"]::after {
+      content: "✓";
+      color: var(--accent);
+      font-family: system-ui, sans-serif;
+      font-size: 0.65em;
+      font-weight: 800;
+      line-height: 1;
     }
 
     .chunk-japanese {
@@ -329,6 +354,49 @@
       color: var(--muted);
       font-family: system-ui, sans-serif;
       font-size: 0.7em;
+      line-height: 1.3;
+    }
+
+    .gloss-tools {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin: 0 0 1.35rem;
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+      font-size: 0.75rem;
+    }
+
+    .gloss-count {
+      margin-right: auto;
+    }
+
+    .gloss-tool-button {
+      padding: 0.4rem 0.7rem;
+      color: var(--accent);
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .gloss-tool-button:hover,
+    .gloss-tool-button:focus-visible {
+      color: var(--paper);
+      background: var(--accent);
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    .gloss-status {
+      width: 100%;
+      min-height: 1.2em;
+      margin: 0;
+      color: var(--accent);
+      font-size: 0.9em;
       line-height: 1.3;
     }
 
@@ -502,6 +570,13 @@
             <button class="study-nav" id="study-next" type="button" aria-label="Próxima frase">→</button>
           </div>
         </div>
+        <div class="gloss-tools" aria-label="Glosses marcados">
+          <span class="gloss-count" id="gloss-count">0 glosses marcados</span>
+          <button class="gloss-tool-button" id="gloss-export" type="button">Exportar JSON</button>
+          <button class="gloss-tool-button" id="gloss-import" type="button">Importar JSON</button>
+          <input id="gloss-import-file" type="file" accept="application/json,.json" hidden>
+          <p class="gloss-status" id="gloss-status" role="status" aria-live="polite"></p>
+        </div>
         <p class="selected-sentence" id="selected-sentence" lang="ja"></p>
         <div class="interlinear" id="interlinear"></div>
         <p class="sentence-translation" id="sentence-translation" lang="pt-BR"></p>
@@ -526,6 +601,11 @@
     const previousButton = document.querySelector("#study-previous");
     const nextButton = document.querySelector("#study-next");
     const furiganaToggle = document.querySelector("#furigana-toggle");
+    const glossCount = document.querySelector("#gloss-count");
+    const glossExport = document.querySelector("#gloss-export");
+    const glossImport = document.querySelector("#gloss-import");
+    const glossImportFile = document.querySelector("#gloss-import-file");
+    const glossStatus = document.querySelector("#gloss-status");
     const sentences = paragraphs.flat();
     let activeIndex = 0;
     let furiganaVisible = true;
@@ -534,6 +614,45 @@
     const minFontLevel = -defaultFontLevelIndex;
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
     let currentFontLevel = Number.parseInt(localStorage.getItem("reading-font-level") || "0", 10);
+    const markedGlossesStorageKey = "simple-ja-books:marked-glosses:v1";
+    let markedGlosses = loadMarkedGlosses();
+
+    function glossKey(term, portuguese) {
+      return JSON.stringify([term, portuguese]);
+    }
+
+    function loadMarkedGlosses() {
+      try {
+        const stored = JSON.parse(localStorage.getItem(markedGlossesStorageKey) || "[]");
+        if (!Array.isArray(stored)) return new Map();
+        return new Map(stored
+          .filter((entry) => entry && typeof entry.term === "string" && typeof entry.portuguese === "string")
+          .map((entry) => [glossKey(entry.term, entry.portuguese), {
+            term: entry.term,
+            portuguese: entry.portuguese
+          }]));
+      } catch (_error) {
+        return new Map();
+      }
+    }
+
+    function saveMarkedGlosses() {
+      try {
+        localStorage.setItem(markedGlossesStorageKey, JSON.stringify([...markedGlosses.values()]));
+      } catch (_error) {
+        glossStatus.textContent = "Não foi possível salvar neste navegador.";
+      }
+      updateGlossCount();
+    }
+
+    function updateGlossCount() {
+      const count = markedGlosses.size;
+      glossCount.textContent = `${count} ${count === 1 ? "gloss marcado" : "glosses marcados"}`;
+    }
+
+    function setGlossStatus(message) {
+      glossStatus.textContent = message;
+    }
 
     if (!Number.isInteger(currentFontLevel) || currentFontLevel < minFontLevel || currentFontLevel > maxFontLevel) {
       currentFontLevel = 0;
@@ -630,8 +749,12 @@
       interlinear.replaceChildren();
 
       sentence.chunks.forEach(([surface, reading, gloss]) => {
-        const chunk = document.createElement("span");
+        const chunk = document.createElement("button");
         chunk.className = "chunk";
+        chunk.type = "button";
+        const key = glossKey(surface, gloss);
+        chunk.setAttribute("aria-pressed", String(markedGlosses.has(key)));
+        chunk.setAttribute("aria-label", `${surface}: ${gloss}. Marcar ou desmarcar gloss.`);
 
         const japanese = document.createElement("span");
         japanese.className = "chunk-japanese";
@@ -643,9 +766,66 @@
         meaning.textContent = gloss;
 
         chunk.append(japanese, meaning);
+        chunk.addEventListener("click", () => {
+          if (markedGlosses.has(key)) {
+            markedGlosses.delete(key);
+            chunk.setAttribute("aria-pressed", "false");
+          } else {
+            markedGlosses.set(key, { term: surface, portuguese: gloss });
+            chunk.setAttribute("aria-pressed", "true");
+          }
+          saveMarkedGlosses();
+          setGlossStatus(markedGlosses.has(key) ? `Marcado: ${surface} — ${gloss}` : `Desmarcado: ${surface} — ${gloss}`);
+        });
         interlinear.append(chunk);
       });
     }
+
+    glossExport.addEventListener("click", () => {
+      const payload = {
+        schema_version: 1,
+        exported_at: new Date().toISOString(),
+        glosses: [...markedGlosses.values()]
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2) + "\n"], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "glosses-marcados.json";
+      link.click();
+      URL.revokeObjectURL(url);
+      setGlossStatus(`${markedGlosses.size} glosses exportados.`);
+    });
+
+    glossImport.addEventListener("click", () => glossImportFile.click());
+
+    glossImportFile.addEventListener("change", async () => {
+      const [file] = glossImportFile.files;
+      if (!file) return;
+      try {
+        const payload = JSON.parse(await file.text());
+        if (payload?.schema_version !== 1 || !Array.isArray(payload.glosses)) {
+          throw new Error("Formato incompatível");
+        }
+        const imported = payload.glosses.map((entry) => {
+          if (!entry || typeof entry.term !== "string" || !entry.term || typeof entry.portuguese !== "string" || !entry.portuguese) {
+            throw new Error("Gloss inválido");
+          }
+          return entry;
+        });
+        markedGlosses = new Map(imported.map((entry) => [
+          glossKey(entry.term, entry.portuguese),
+          { term: entry.term, portuguese: entry.portuguese }
+        ]));
+        saveMarkedGlosses();
+        renderCard(activeIndex);
+        setGlossStatus(`${markedGlosses.size} glosses importados.`);
+      } catch (_error) {
+        setGlossStatus("O arquivo não é um JSON de glosses válido.");
+      } finally {
+        glossImportFile.value = "";
+      }
+    });
 
     previousButton.addEventListener("click", () => {
       if (activeIndex > 0) {
@@ -666,6 +846,7 @@
       furiganaToggle.textContent = `ふりがな ${furiganaVisible ? "ON" : "OFF"}`;
     });
 
+    updateGlossCount();
     renderCard(0);
   </script>
 </body>
