@@ -1,0 +1,968 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="火星を舞台にした冒険小説を、読みやすい現代日本語で楽しめます。">
+  <title>火星のプリンセス</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --paper: #f3efe4;
+      --ink: #22231f;
+      --muted: #696a62;
+      --rule: #b3ad9f;
+      --accent: #314f46;
+      --accent-soft: rgb(49 79 70 / 11%);
+      --panel: #e9e4d7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: var(--paper);
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 0%, rgb(49 79 70 / 8%), transparent 28rem),
+        var(--paper);
+      font-family: "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif JP", serif;
+      line-height: 2;
+      text-rendering: optimizeLegibility;
+    }
+
+    main {
+      width: min(100% - 2.5rem, 45rem);
+      margin: 0 auto;
+      padding: clamp(4rem, 12vw, 8rem) 0 8rem;
+    }
+
+    header {
+      margin-bottom: 4rem;
+      padding-bottom: 2.25rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .eyebrow {
+      margin: 0 0 1rem;
+      color: var(--accent);
+      font-family: system-ui, sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.2rem, 8vw, 4.25rem);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      line-height: 1.25;
+    }
+
+    .author {
+      margin: 1.25rem 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+    }
+
+    .reader-controls {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.45rem;
+      margin-top: 1.75rem;
+      font-family: system-ui, sans-serif;
+    }
+
+    .reader-controls-label {
+      margin-right: 0.25rem;
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+    }
+
+    .font-button {
+      min-width: 2.4rem;
+      height: 2.2rem;
+      padding: 0 0.55rem;
+      color: var(--accent);
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .font-button:hover,
+    .font-button:focus-visible {
+      color: var(--paper);
+      background: var(--accent);
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    .font-button:disabled {
+      color: var(--muted);
+      background: transparent;
+      border-color: var(--rule);
+      cursor: not-allowed;
+      opacity: 0.4;
+    }
+
+    .font-level {
+      min-width: 3.4rem;
+      color: var(--muted);
+      font-size: 0.7rem;
+      text-align: center;
+    }
+
+    h2 {
+      margin: 0 0 2.25rem;
+      color: var(--accent);
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+    }
+
+    .chapter-select {
+      width: 100%;
+      padding: 0.25rem 2.2rem 0.25rem 0;
+      color: var(--accent);
+      background: transparent;
+      border: 0;
+      border-bottom: 1px solid transparent;
+      font: inherit;
+      letter-spacing: inherit;
+      cursor: pointer;
+    }
+
+    .chapter-select:hover,
+    .chapter-select:focus-visible {
+      border-bottom-color: var(--accent);
+      outline: none;
+    }
+
+    p {
+      margin: 0 0 1.75rem;
+      font-size: clamp(1rem, 2.5vw, 1.1rem);
+      letter-spacing: 0.025em;
+      text-align: justify;
+    }
+
+    p + p {
+      text-indent: 1em;
+    }
+
+    .study-panel {
+      font-size: 100%;
+    }
+
+    .study-panel[data-font-level="-2"] {
+      font-size: 80%;
+    }
+
+    .study-panel[data-font-level="-1"] {
+      font-size: 90%;
+    }
+
+    .study-panel[data-font-level="1"] {
+      font-size: 110%;
+    }
+
+    .study-panel[data-font-level="2"] {
+      font-size: 120%;
+    }
+
+    .study-panel[data-font-level="3"] {
+      font-size: 140%;
+    }
+
+    .study-panel[data-font-level="4"] {
+      font-size: 160%;
+    }
+
+    .study-hint {
+      margin: -1.25rem 0 2rem;
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.02em;
+      text-align: left;
+    }
+
+    .study-panel {
+      margin: 0.5rem 0 2.5rem;
+      padding: clamp(1.25rem, 4vw, 2rem);
+      background: var(--panel);
+      border: 1px solid var(--rule);
+      border-radius: 0.45rem;
+      box-shadow: 0 1rem 2.5rem rgb(20 25 22 / 8%);
+      text-indent: 0;
+    }
+
+    .study-topline {
+      position: sticky;
+      top: 0.5rem;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin: -0.75rem -0.75rem 1rem;
+      padding: 0.75rem;
+      background: color-mix(in srgb, var(--panel) 94%, transparent);
+      border: 1px solid color-mix(in srgb, var(--rule) 72%, transparent);
+      border-radius: 0.5rem;
+      box-shadow: 0 0.35rem 1.2rem rgb(20 25 22 / 8%);
+      backdrop-filter: blur(0.6rem);
+    }
+
+    .study-label {
+      margin: 0;
+      color: var(--accent);
+      font-family: system-ui, sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .study-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .study-nav {
+      min-width: 2rem;
+      height: 2rem;
+      padding: 0 0.55rem;
+      color: var(--accent);
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font-family: system-ui, sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .furigana-toggle {
+      min-width: 6.4rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.03em;
+    }
+
+    .study-nav:hover,
+    .study-nav:focus-visible {
+      color: var(--ink);
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    .study-nav:disabled {
+      color: var(--muted);
+      border-color: var(--rule);
+      cursor: not-allowed;
+      opacity: 0.35;
+    }
+
+    .selected-sentence {
+      margin: 0 0 0.65rem;
+      font-size: 1.35em;
+      font-weight: 600;
+      line-height: 2.5;
+      text-align: left;
+    }
+
+    .selected-sentence ruby {
+      ruby-align: center;
+    }
+
+    .selected-sentence rt {
+      color: var(--accent);
+      font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+      font-size: 0.52em;
+      font-weight: 500;
+    }
+
+    .selected-sentence.furigana-hidden rt {
+      visibility: hidden;
+    }
+
+    .sentence-translation {
+      margin: 1.5rem 0 0;
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+      font-size: 0.88em;
+      line-height: 1.55;
+      text-align: left;
+    }
+
+    .interlinear {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: 0.75rem 0.55rem;
+    }
+
+    .chunk {
+      display: inline-flex;
+      min-width: 3rem;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.55rem 0.65rem 0.5rem;
+      background: color-mix(in srgb, var(--paper) 72%, transparent);
+      color: var(--ink);
+      border: 1px solid transparent;
+      border-radius: 0.35rem;
+      font-family: inherit;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .chunk:hover,
+    .chunk:focus-visible {
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    .chunk[aria-pressed="true"] {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      box-shadow: inset 0 0 0 1px var(--accent);
+    }
+
+    .chunk-japanese {
+      font-size: 1.05em;
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    .chunk rt {
+      color: var(--accent);
+      font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+      font-size: 0.6em;
+      font-weight: 500;
+    }
+
+    .gloss {
+      max-width: 12rem;
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+      font-size: 0.7em;
+      line-height: 1.3;
+    }
+
+    .gloss-tools {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin: 0 0 0.9rem;
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+      font-size: 0.75rem;
+    }
+
+    .gloss-count {
+      margin-right: auto;
+    }
+
+    .gloss-tool-button {
+      padding: 0.25rem 0.55rem;
+      color: var(--accent);
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font: inherit;
+      font-size: 0.85em;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .gloss-tool-button:hover,
+    .gloss-tool-button:focus-visible {
+      color: var(--paper);
+      background: var(--accent);
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    footer {
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+    }
+
+    @media (min-width: 48rem) {
+      main {
+        width: min(100% - 4rem, 68rem);
+        padding-top: 5rem;
+      }
+
+      header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        column-gap: 3rem;
+        align-items: end;
+      }
+
+      .eyebrow {
+        grid-column: 1 / -1;
+      }
+
+      h1,
+      .author {
+        grid-column: 1;
+      }
+
+      .reader-controls {
+        grid-column: 2;
+        grid-row: 2 / 4;
+        align-self: end;
+        margin: 0 0 0.1rem;
+      }
+
+      .study-panel {
+        min-height: 25rem;
+        padding: 2.5rem 3rem 2.75rem;
+        border-radius: 0.75rem;
+      }
+
+      .study-topline {
+        margin-bottom: 1.75rem;
+      }
+
+      .study-nav {
+        min-width: 3rem;
+        height: 2.5rem;
+      }
+
+      .furigana-toggle {
+        min-width: 7rem;
+      }
+
+      .selected-sentence {
+        margin-bottom: 1.5rem;
+        padding: 0.75rem 0 1.75rem;
+        border-bottom: 1px solid var(--rule);
+        line-height: 2.7;
+      }
+
+      .interlinear {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+        align-items: stretch;
+        gap: 0.75rem;
+      }
+
+      .chunk {
+        min-width: 0;
+        justify-content: center;
+        padding: 0.85rem 0.9rem 0.75rem;
+      }
+
+      .sentence-translation {
+        max-width: 52rem;
+        margin-top: 2rem;
+        font-size: 0.95em;
+      }
+    }
+
+    @media (max-width: 36rem) {
+      main {
+        width: min(100% - 1.25rem, 45rem);
+        padding-top: 1rem;
+      }
+
+      header {
+        margin-bottom: 1.25rem;
+        padding-bottom: 1rem;
+      }
+
+      .eyebrow {
+        margin-bottom: 0.45rem;
+        font-size: 0.62rem;
+        letter-spacing: 0.17em;
+      }
+
+      h1 {
+        font-size: clamp(1.85rem, 9vw, 2.6rem);
+        line-height: 1.15;
+      }
+
+      .author {
+        margin-top: 0.5rem;
+        font-size: 0.82rem;
+      }
+
+      .reader-controls {
+        justify-content: flex-start;
+        gap: 0.35rem;
+        margin-top: 0.75rem;
+      }
+
+      .reader-controls-label {
+        margin-right: auto;
+        font-size: 0.65rem;
+      }
+
+      .font-button {
+        min-width: 2.2rem;
+        height: 2rem;
+        padding: 0 0.45rem;
+      }
+
+      .font-level {
+        min-width: 2.8rem;
+      }
+
+      h2 {
+        margin-bottom: 1rem;
+        font-size: 1.05rem;
+      }
+
+      .study-hint {
+        margin: -0.35rem 0 0.8rem;
+      }
+
+      .study-topline {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .study-actions {
+        width: 100%;
+      }
+
+      .study-nav {
+        flex: 1;
+        min-height: 2.75rem;
+      }
+
+      .furigana-toggle {
+        flex: 1.65;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #171a18;
+        --ink: #e7e3d8;
+        --muted: #aaa99f;
+        --rule: #414641;
+        --accent: #92b3a7;
+        --accent-soft: rgb(146 179 167 / 13%);
+        --panel: #222724;
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .study-panel {
+        animation: reveal 160ms ease-out;
+      }
+
+      @keyframes reveal {
+        from {
+          opacity: 0;
+          transform: translateY(-0.35rem);
+        }
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow" id="page-eyebrow">日本語で読む世界の名作</p>
+      <h1 id="page-title">火星のプリンセス</h1>
+      <p class="author" id="page-author">エドガー・ライス・バローズ</p>
+      <div class="reader-controls" aria-label="Controles de tamanho do texto">
+        <span class="reader-controls-label">文字サイズ</span>
+        <button class="font-button" id="font-decrease" type="button" aria-label="Diminuir o texto japonês">A−</button>
+        <output class="font-level" id="font-level" aria-live="polite">100%</output>
+        <button class="font-button" id="font-increase" type="button" aria-label="Aumentar o texto japonês">A＋</button>
+      </div>
+    </header>
+
+    <article>
+      <h2><select class="chapter-select" id="chapter-select" aria-label="Selecionar capítulo"><option>Capítulo</option></select></h2>
+
+      <p class="study-hint" id="study-hint">文を選ぶと、日本語の読み方とポルトガル語の意味を確認できます。</p>
+
+      <noscript><p>このページを表示するにはJavaScriptを有効にしてください。</p></noscript>
+
+      <section class="study-panel" id="study-panel" aria-live="polite">
+        <div class="study-topline">
+          <p class="study-label" id="study-label">Interlinear</p>
+          <div class="study-actions" aria-label="Navegação entre frases">
+            <button class="study-nav" id="study-previous-ten" type="button" aria-label="Voltar dez frases">−10</button>
+            <button class="study-nav" id="study-previous" type="button" aria-label="Frase anterior">←</button>
+            <button class="study-nav furigana-toggle" id="furigana-toggle" type="button" aria-pressed="true">ふりがな ON</button>
+            <button class="study-nav" id="study-next" type="button" aria-label="Próxima frase">→</button>
+            <button class="study-nav" id="study-next-ten" type="button" aria-label="Avançar dez frases">＋10</button>
+          </div>
+        </div>
+        <div class="gloss-tools" aria-label="Glosses marcados">
+          <span class="gloss-count" id="gloss-count">0 glosses marcados</span>
+          <button class="gloss-tool-button" id="gloss-export" type="button" aria-label="Exportar glosses em JSON" title="Exportar glosses em JSON">↓ JSON</button>
+          <button class="gloss-tool-button" id="gloss-import" type="button" aria-label="Importar glosses de JSON" title="Importar glosses de JSON">↑ JSON</button>
+          <input id="gloss-import-file" type="file" accept="application/json,.json" hidden>
+        </div>
+        <p class="selected-sentence" id="selected-sentence" lang="ja"></p>
+        <div class="interlinear" id="interlinear"></div>
+        <p class="sentence-translation" id="sentence-translation" lang="pt-BR"></p>
+      </section>
+    </article>
+
+    <footer id="page-footer">原作：A Princess of Mars</footer>
+  </main>
+  <script type="module">
+    // BOOK_DATA_START
+    const bookDataUrl = "../books/princess-of-mars-ja.json";
+    const bookDataResponse = await fetch(bookDataUrl);
+    if (!bookDataResponse.ok) {
+      throw new Error(`Falha ao carregar o livro: ${bookDataResponse.status}`);
+    }
+    const bookData = await bookDataResponse.json();
+    const chapters = bookData.chapters;
+    // BOOK_DATA_END
+
+    const fontDecrease = document.querySelector("#font-decrease");
+    const fontIncrease = document.querySelector("#font-increase");
+    const fontLevel = document.querySelector("#font-level");
+    const panel = document.querySelector("#study-panel");
+    const label = document.querySelector("#study-label");
+    const selectedSentence = document.querySelector("#selected-sentence");
+    const sentenceTranslation = document.querySelector("#sentence-translation");
+    const interlinear = document.querySelector("#interlinear");
+    const chapterSelect = document.querySelector("#chapter-select");
+    const previousTenButton = document.querySelector("#study-previous-ten");
+    const previousButton = document.querySelector("#study-previous");
+    const nextButton = document.querySelector("#study-next");
+    const nextTenButton = document.querySelector("#study-next-ten");
+    const furiganaToggle = document.querySelector("#furigana-toggle");
+    const glossCount = document.querySelector("#gloss-count");
+    const glossExport = document.querySelector("#gloss-export");
+    const glossImport = document.querySelector("#gloss-import");
+    const glossImportFile = document.querySelector("#gloss-import-file");
+    if (bookData) {
+      document.title = bookData.page.title;
+      document.querySelector('meta[name="description"]').content = bookData.page.description;
+      document.querySelector("#page-eyebrow").textContent = bookData.page.eyebrow;
+      document.querySelector("#page-title").textContent = bookData.page.title;
+      document.querySelector("#page-author").textContent = bookData.page.author;
+      document.querySelector("#study-hint").textContent = bookData.page.study_hint;
+      document.querySelector("#page-footer").textContent = bookData.page.footer;
+    }
+    const chapterSentenceStarts = [];
+    const paragraphs = [];
+    let sentenceTotal = 0;
+    chapters.forEach((chapter) => {
+      chapterSentenceStarts.push(sentenceTotal);
+      chapter.paragraphs.forEach((paragraph) => {
+        paragraphs.push(paragraph);
+        sentenceTotal += paragraph.length;
+      });
+    });
+    const sentences = paragraphs.flat();
+    chapterSelect.replaceChildren(...chapters.map((chapter, index) => {
+      const option = document.createElement("option");
+      option.value = String(index);
+      option.textContent = chapter.title;
+      return option;
+    }));
+    const activeCardStorageKey = `simple-ja-books:active-card:v1:${bookData?.source_file || location.pathname}`;
+    let activeIndex = loadActiveIndex();
+    let furiganaVisible = true;
+    const fontPercentages = [85, 100, 115, 130, 150];
+    const defaultFontLevelIndex = 1;
+    const minFontLevel = -defaultFontLevelIndex;
+    const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
+    let currentFontLevel = Number.parseInt(localStorage.getItem("reading-font-level") || "0", 10);
+    const markedGlossesStorageKey = "simple-ja-books:marked-glosses:v1";
+    let markedGlosses = loadMarkedGlosses();
+
+    function loadActiveIndex() {
+      try {
+        const stored = Number.parseInt(localStorage.getItem(activeCardStorageKey) || "0", 10);
+        return Number.isInteger(stored)
+          ? Math.min(Math.max(stored, 0), sentences.length - 1)
+          : 0;
+      } catch (_error) {
+        return 0;
+      }
+    }
+
+    function saveActiveIndex() {
+      try {
+        localStorage.setItem(activeCardStorageKey, String(activeIndex));
+      } catch (_error) {
+        // The reader remains usable when storage is unavailable.
+      }
+    }
+
+    function glossKey(term, portuguese) {
+      return JSON.stringify([term, portuguese]);
+    }
+
+    function loadMarkedGlosses() {
+      try {
+        const stored = JSON.parse(localStorage.getItem(markedGlossesStorageKey) || "[]");
+        if (!Array.isArray(stored)) return new Map();
+        return new Map(stored
+          .filter((entry) => entry && typeof entry.term === "string" && typeof entry.portuguese === "string")
+          .map((entry) => [glossKey(entry.term, entry.portuguese), {
+            term: entry.term,
+            portuguese: entry.portuguese
+          }]));
+      } catch (_error) {
+        return new Map();
+      }
+    }
+
+    function saveMarkedGlosses() {
+      try {
+        localStorage.setItem(markedGlossesStorageKey, JSON.stringify([...markedGlosses.values()]));
+      } catch (_error) {
+        // The reader remains usable when storage is unavailable.
+      }
+      updateGlossCount();
+    }
+
+    function updateGlossCount() {
+      const count = markedGlosses.size;
+      glossCount.textContent = `${count} ${count === 1 ? "gloss marcado" : "glosses marcados"}`;
+    }
+
+    if (!Number.isInteger(currentFontLevel) || currentFontLevel < minFontLevel || currentFontLevel > maxFontLevel) {
+      currentFontLevel = 0;
+    }
+
+    function updateFontLevel() {
+      panel.dataset.fontLevel = String(currentFontLevel);
+      fontLevel.value = `${fontPercentages[currentFontLevel + defaultFontLevelIndex]}%`;
+      fontDecrease.disabled = currentFontLevel === minFontLevel;
+      fontIncrease.disabled = currentFontLevel === maxFontLevel;
+      localStorage.setItem("reading-font-level", String(currentFontLevel));
+    }
+
+    fontDecrease.addEventListener("click", () => {
+      currentFontLevel = Math.max(minFontLevel, currentFontLevel - 1);
+      updateFontLevel();
+    });
+
+    fontIncrease.addEventListener("click", () => {
+      currentFontLevel = Math.min(maxFontLevel, currentFontLevel + 1);
+      updateFontLevel();
+    });
+
+    updateFontLevel();
+
+    function toHiragana(value) {
+      return value.replace(/[ァ-ヶ]/g, (character) =>
+        String.fromCharCode(character.charCodeAt(0) - 0x60)
+      );
+    }
+
+    function appendAlignedRuby(target, surface, reading) {
+      const kanjiPattern = /^[\p{Script=Han}々〆ヵヶ0-9０-９]+$/u;
+      const runs = surface.match(/[\p{Script=Han}々〆ヵヶ0-9０-９]+|[^\p{Script=Han}々〆ヵヶ0-9０-９]+/gu) || [surface];
+      const normalizedReading = toHiragana(reading);
+      let readingCursor = 0;
+
+      runs.forEach((run, index) => {
+        if (!kanjiPattern.test(run)) {
+          target.append(document.createTextNode(run));
+          const normalizedRun = toHiragana(run);
+          if (normalizedReading.startsWith(normalizedRun, readingCursor)) {
+            readingCursor += normalizedRun.length;
+          }
+          return;
+        }
+
+        const nextRun = runs[index + 1];
+        const nextAnchor = nextRun && !kanjiPattern.test(nextRun)
+          ? toHiragana(nextRun)
+          : "";
+        let readingEnd = nextAnchor
+          ? normalizedReading.indexOf(nextAnchor, readingCursor)
+          : normalizedReading.length;
+
+        if (readingEnd < readingCursor) {
+          readingEnd = normalizedReading.length;
+        }
+
+        const ruby = document.createElement("ruby");
+        ruby.append(document.createTextNode(run));
+        const rt = document.createElement("rt");
+        rt.textContent = reading.slice(readingCursor, readingEnd);
+        ruby.append(rt);
+        target.append(ruby);
+        readingCursor = readingEnd;
+      });
+    }
+
+    function renderCard(index) {
+      activeIndex = index;
+      saveActiveIndex();
+      const sentence = sentences[activeIndex];
+      previousTenButton.disabled = activeIndex === 0;
+      previousButton.disabled = activeIndex === 0;
+      nextButton.disabled = activeIndex === sentences.length - 1;
+      nextTenButton.disabled = activeIndex === sentences.length - 1;
+      let activeChapter = 0;
+      chapterSentenceStarts.forEach((start, index) => {
+        if (start <= activeIndex) activeChapter = index;
+      });
+      chapterSelect.value = String(activeChapter);
+      label.textContent = `Interlinear · frase ${activeIndex + 1} de ${sentences.length}`;
+      selectedSentence.replaceChildren();
+
+      let cursor = 0;
+      sentence.chunks.forEach(([surface, reading]) => {
+        const start = sentence.text.indexOf(surface, cursor);
+        if (start > cursor) {
+          selectedSentence.append(document.createTextNode(sentence.text.slice(cursor, start)));
+        }
+
+        appendAlignedRuby(selectedSentence, surface, reading);
+        cursor = start + surface.length;
+      });
+
+      if (cursor < sentence.text.length) {
+        selectedSentence.append(document.createTextNode(sentence.text.slice(cursor)));
+      }
+
+      sentenceTranslation.textContent = sentence.pt;
+      interlinear.replaceChildren();
+
+      sentence.chunks.forEach(([surface, reading, gloss]) => {
+        const chunk = document.createElement("button");
+        chunk.className = "chunk";
+        chunk.type = "button";
+        const key = glossKey(surface, gloss);
+        chunk.setAttribute("aria-pressed", String(markedGlosses.has(key)));
+        chunk.setAttribute("aria-label", `${surface}: ${gloss}. Marcar ou desmarcar gloss.`);
+
+        const japanese = document.createElement("span");
+        japanese.className = "chunk-japanese";
+        appendAlignedRuby(japanese, surface, reading);
+
+        const meaning = document.createElement("span");
+        meaning.className = "gloss";
+        meaning.lang = "pt-BR";
+        meaning.textContent = gloss;
+
+        chunk.append(japanese, meaning);
+        chunk.addEventListener("click", () => {
+          if (markedGlosses.has(key)) {
+            markedGlosses.delete(key);
+            chunk.setAttribute("aria-pressed", "false");
+          } else {
+            markedGlosses.set(key, { term: surface, portuguese: gloss });
+            chunk.setAttribute("aria-pressed", "true");
+          }
+          saveMarkedGlosses();
+        });
+        interlinear.append(chunk);
+      });
+    }
+
+    glossExport.addEventListener("click", () => {
+      const payload = {
+        schema_version: 1,
+        exported_at: new Date().toISOString(),
+        glosses: [...markedGlosses.values()]
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2) + "\n"], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "glosses-marcados.json";
+      link.click();
+      URL.revokeObjectURL(url);
+    });
+
+    glossImport.addEventListener("click", () => glossImportFile.click());
+
+    glossImportFile.addEventListener("change", async () => {
+      const [file] = glossImportFile.files;
+      if (!file) return;
+      try {
+        const payload = JSON.parse(await file.text());
+        if (payload?.schema_version !== 1 || !Array.isArray(payload.glosses)) {
+          throw new Error("Formato incompatível");
+        }
+        const imported = payload.glosses.map((entry) => {
+          if (!entry || typeof entry.term !== "string" || !entry.term || typeof entry.portuguese !== "string" || !entry.portuguese) {
+            throw new Error("Gloss inválido");
+          }
+          return entry;
+        });
+        markedGlosses = new Map(imported.map((entry) => [
+          glossKey(entry.term, entry.portuguese),
+          { term: entry.term, portuguese: entry.portuguese }
+        ]));
+        saveMarkedGlosses();
+        renderCard(activeIndex);
+      } catch (_error) {
+        window.alert("O arquivo não é um JSON de glosses válido.");
+      } finally {
+        glossImportFile.value = "";
+      }
+    });
+
+    previousButton.addEventListener("click", () => {
+      if (activeIndex > 0) {
+        renderCard(activeIndex - 1);
+      }
+    });
+
+    previousTenButton.addEventListener("click", () => {
+      renderCard(Math.max(0, activeIndex - 10));
+    });
+
+    nextButton.addEventListener("click", () => {
+      if (activeIndex < sentences.length - 1) {
+        renderCard(activeIndex + 1);
+      }
+    });
+
+    nextTenButton.addEventListener("click", () => {
+      renderCard(Math.min(sentences.length - 1, activeIndex + 10));
+    });
+
+    chapterSelect.addEventListener("change", () => {
+      renderCard(chapterSentenceStarts[Number(chapterSelect.value)]);
+    });
+
+    furiganaToggle.addEventListener("click", () => {
+      furiganaVisible = !furiganaVisible;
+      selectedSentence.classList.toggle("furigana-hidden", !furiganaVisible);
+      furiganaToggle.setAttribute("aria-pressed", String(furiganaVisible));
+      furiganaToggle.textContent = `ふりがな ${furiganaVisible ? "ON" : "OFF"}`;
+    });
+
+    updateGlossCount();
+    renderCard(activeIndex);
+  </script>
+</body>
+</html>

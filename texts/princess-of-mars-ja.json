@@ -1,0 +1,166 @@
+{
+  "schema_version": 2,
+  "source_file": "princess-of-mars.txt",
+  "source_url": "https://www.gutenberg.org/cache/epub/62/pg62.txt",
+  "languages": {
+    "source": "en",
+    "translation": "ja",
+    "gloss": "pt-BR"
+  },
+  "page": {
+    "title": "火星のプリンセス",
+    "author": "エドガー・ライス・バローズ",
+    "eyebrow": "日本語で読む世界の名作",
+    "description": "火星を舞台にした冒険小説を、読みやすい現代日本語で楽しめます。",
+    "study_hint": "文を選ぶと、日本語の読み方とポルトガル語の意味を確認できます。",
+    "footer": "原作：A Princess of Mars",
+    "font_levels_percent": [85, 100, 115, 130, 150],
+    "default_font_level_percent": 100
+  },
+  "chapters": [
+    {
+      "title": "第一章　アリゾナの丘陵で",
+      "paragraphs": [
+        [
+          {
+            "text": "私はずいぶん年を取っている。",
+            "pt": "Sou um homem muito velho.",
+            "chunks": [
+              ["私は", "わたしは", "eu"],
+              ["ずいぶん", "ずいぶん", "muito"],
+              ["年を取っている", "としをとっている", "sou velho"],
+              ["。", "。", "."]
+            ]
+          },
+          {
+            "text": "だが、いくつなのかは自分でもわからない。",
+            "pt": "Mas nem eu sei quantos anos tenho.",
+            "chunks": [
+              ["だが、", "だが、", "mas"],
+              ["いくつなのかは", "いくつなのかは", "quantos anos"],
+              ["自分でも", "じぶんでも", "nem eu mesmo"],
+              ["わからない", "わからない", "não sei"],
+              ["。", "。", "."]
+            ]
+          },
+          {
+            "text": "百歳かもしれないし、それ以上かもしれない。",
+            "pt": "Talvez eu tenha cem anos, talvez mais.",
+            "chunks": [
+              ["百歳", "ひゃくさい", "cem anos"],
+              ["かもしれないし、", "かもしれないし、", "talvez"],
+              ["それ以上", "それいじょう", "mais que isso"],
+              ["かもしれない", "かもしれない", "talvez"],
+              ["。", "。", "."]
+            ]
+          },
+          {
+            "text": "ほかの人のように年を取ったことがなく、子供だったころの記憶もないので、確かなことは言えない。",
+            "pt": "Não posso afirmar, pois nunca envelheci como as outras pessoas, nem me lembro de ter sido criança.",
+            "chunks": [
+              ["ほかの人のように", "ほかのひとのように", "como os outros"],
+              ["年を取ったことがなく、", "としをとったことがなく、", "nunca envelheci"],
+              ["子供だったころの", "こどもだったころの", "da infância"],
+              ["記憶もない", "きおくもない", "sem lembrança"],
+              ["ので、", "ので、", "pois"],
+              ["確かなことは", "たしかなことは", "com certeza"],
+              ["言えない", "いえない", "não posso dizer"],
+              ["。", "。", "."]
+            ]
+          },
+          {
+            "text": "覚えているかぎり、私はいつも三十歳ほどの男だった。",
+            "pt": "Até onde me lembro, sempre fui um homem de cerca de trinta anos.",
+            "chunks": [
+              ["覚えているかぎり、", "おぼえているかぎり、", "até onde lembro"],
+              ["私は", "わたしは", "eu"],
+              ["いつも", "いつも", "sempre"],
+              ["三十歳ほどの", "さんじゅっさいほどの", "de uns trinta anos"],
+              ["男だった", "おとこだった", "era um homem"],
+              ["。", "。", "."]
+            ]
+          },
+          {
+            "text": "今の姿も、四十年以上前と変わらない。",
+            "pt": "Hoje tenho a mesma aparência de mais de quarenta anos atrás.",
+            "chunks": [
+              ["今の姿も、", "いまのすがたも、", "minha aparência atual"],
+              ["四十年以上前と", "よんじゅうねんいじょうまえと", "de mais de quarenta anos atrás"],
+              ["変わらない", "かわらない", "não mudou"],
+              ["。", "。", "."]
+            ]
+          },
+          {
+            "text": "それでも、永遠に生き続けられるとは思えない。",
+            "pt": "Mesmo assim, não creio que possa continuar vivendo para sempre.",
+            "chunks": [
+              ["それでも、", "それでも、", "mesmo assim"],
+              ["永遠に", "えいえんに", "para sempre"],
+              ["生き続けられるとは", "いきつづけられるとは", "que possa continuar vivendo"],
+              ["思えない", "おもえない", "não creio"],
+              ["。", "。", "."]
+            ]
+          },
+          {
+            "text": "いつかは、生き返ることのない本当の死を迎えるのだろう。",
+            "pt": "Algum dia encontrarei a morte verdadeira, da qual não há ressurreição.",
+            "chunks": [
+              ["いつかは、", "いつかは、", "algum dia"],
+              ["生き返ることのない", "いきかえることのない", "sem ressurreição"],
+              ["本当の死を", "ほんとうのしを", "a morte verdadeira"],
+              ["迎えるのだろう", "むかえるのだろう", "devo encontrar"],
+              ["。", "。", "."]
+            ]
+          },
+          {
+            "text": "二度も死んで、今も生きているこの私が、なぜ死を恐れるのかはわからない。",
+            "pt": "Não sei por que eu, que morri duas vezes e ainda vivo, deveria temer a morte.",
+            "chunks": [
+              ["二度も", "にども", "duas vezes"],
+              ["死んで、", "しんで、", "morri"],
+              ["今も", "いまも", "ainda"],
+              ["生きている", "いきている", "estou vivo"],
+              ["この私が、", "このわたしが、", "eu"],
+              ["なぜ", "なぜ", "por que"],
+              ["死を", "しを", "a morte"],
+              ["恐れるのかは", "おそれるのかは", "deveria temer"],
+              ["わからない", "わからない", "não sei"],
+              ["。", "。", "."]
+            ]
+          },
+          {
+            "text": "それでも、一度も死んだことのないあなたと同じように、私は死が恐ろしい。",
+            "pt": "Ainda assim, tenho o mesmo horror à morte que você, que nunca morreu.",
+            "chunks": [
+              ["それでも、", "それでも、", "ainda assim"],
+              ["一度も", "いちども", "nem uma vez"],
+              ["死んだことのない", "しんだことのない", "que nunca morreu"],
+              ["あなたと", "あなたと", "como você"],
+              ["同じように、", "おなじように、", "do mesmo modo"],
+              ["私は", "わたしは", "eu"],
+              ["死が", "しが", "a morte"],
+              ["恐ろしい", "おそろしい", "é aterradora"],
+              ["。", "。", "."]
+            ]
+          },
+          {
+            "text": "この死への恐れがあるからこそ、自分にも必ず死が訪れると強く信じているのだと思う。",
+            "pt": "Creio que é justamente esse medo da morte que me convence tanto de que também sou mortal.",
+            "chunks": [
+              ["この", "この", "esse"],
+              ["死への恐れが", "しへのおそれが", "medo da morte"],
+              ["あるからこそ、", "あるからこそ、", "justamente por haver"],
+              ["自分にも", "じぶんにも", "também a mim"],
+              ["必ず", "かならず", "inevitavelmente"],
+              ["死が訪れると", "しがおとずれると", "que a morte virá"],
+              ["強く", "つよく", "firmemente"],
+              ["信じているのだと", "しんじているのだと", "estou convencido"],
+              ["思う", "おもう", "creio"],
+              ["。", "。", "."]
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}
