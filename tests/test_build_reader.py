@@ -143,6 +143,13 @@ class BuildReaderTests(unittest.TestCase):
         with self.assertRaisesRegex(build_reader.BuildError, "uncovered text"):
             build_reader.validate_data(invalid)
 
+    def test_validation_rejects_punctuation_only_chunk(self) -> None:
+        invalid = copy.deepcopy(self.data)
+        self.first_sentence(invalid)["chunks"].append(["。", "。", "."])
+
+        with self.assertRaisesRegex(build_reader.BuildError, "punctuation only"):
+            build_reader.validate_data(invalid)
+
     def test_backslashes_in_json_are_not_interpreted_by_regex(self) -> None:
         data = copy.deepcopy(self.data)
         self.first_sentence(data)["pt"] = r"C:\temp\1"

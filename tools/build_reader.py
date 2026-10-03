@@ -10,6 +10,7 @@ import os
 import re
 import sys
 import tempfile
+import unicodedata
 from pathlib import Path
 from typing import Any
 
@@ -117,6 +118,14 @@ def validate_data(data: Any) -> dict[str, Any]:
                             "[surface, reading, gloss]"
                         )
                     surface = chunk[0]
+                    if all(
+                        unicodedata.category(character).startswith("P")
+                        for character in surface
+                    ):
+                        raise BuildError(
+                            f"{context}, chunk {chunk_index} must not contain "
+                            "punctuation only"
+                        )
                     start = text.find(surface, cursor)
                     if start < 0:
                         raise BuildError(
