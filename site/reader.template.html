@@ -281,10 +281,16 @@
 
     .selected-sentence {
       margin: 0 0 0.65rem;
+      cursor: pointer;
       font-size: 1.35em;
       font-weight: 600;
       line-height: 2.5;
       text-align: left;
+    }
+
+    .selected-sentence:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 0.35rem;
     }
 
     .selected-sentence ruby {
@@ -627,7 +633,7 @@
           <button class="gloss-tool-button" id="gloss-import" type="button" aria-label="Importar glosses de JSON" title="Importar glosses de JSON">↑ JSON</button>
           <input id="gloss-import-file" type="file" accept="application/json,.json" hidden>
         </div>
-        <p class="selected-sentence" id="selected-sentence" lang="ja"></p>
+        <p class="selected-sentence" id="selected-sentence" lang="ja" role="button" tabindex="0" aria-label="Alternar furigana" aria-pressed="true"></p>
         <div class="interlinear" id="interlinear"></div>
         <p class="sentence-translation" id="sentence-translation" lang="pt-BR"></p>
       </section>
@@ -999,11 +1005,20 @@
       renderCard(chapterSentenceStarts[Number(chapterSelect.value)]);
     });
 
-    furiganaToggle.addEventListener("click", () => {
+    function toggleFurigana() {
       furiganaVisible = !furiganaVisible;
       selectedSentence.classList.toggle("furigana-hidden", !furiganaVisible);
+      selectedSentence.setAttribute("aria-pressed", String(furiganaVisible));
       furiganaToggle.setAttribute("aria-pressed", String(furiganaVisible));
       furiganaToggle.textContent = `ふりがな ${furiganaVisible ? "ON" : "OFF"}`;
+    }
+
+    furiganaToggle.addEventListener("click", toggleFurigana);
+    selectedSentence.addEventListener("click", toggleFurigana);
+    selectedSentence.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      toggleFurigana();
     });
 
     updateGlossCount();
