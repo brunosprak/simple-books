@@ -163,6 +163,134 @@
       text-indent: 1em;
     }
 
+    .reading-mode-switch {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.45rem;
+      margin: -1rem 0 2rem;
+      font-family: system-ui, sans-serif;
+    }
+
+    .reading-mode-button {
+      min-height: 2.6rem;
+      padding: 0.45rem 0.65rem;
+      color: var(--accent);
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font: inherit;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .reading-mode-button[aria-pressed="true"] {
+      color: var(--paper);
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .reading-mode-button:hover,
+    .reading-mode-button:focus-visible { border-color: var(--accent); outline: none; }
+
+    .chapter-reader {
+      margin: 0.5rem 0 2.5rem;
+      padding: clamp(1.25rem, 4vw, 2rem);
+      background: var(--panel);
+      border: 1px solid var(--rule);
+      border-radius: 0.45rem;
+      box-shadow: 0 1rem 2.5rem rgb(20 25 22 / 8%);
+      font-size: 100%;
+      touch-action: pan-y;
+    }
+
+    .chapter-reader-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px solid var(--rule);
+      font-family: system-ui, sans-serif;
+      touch-action: pan-y;
+    }
+
+    .chapter-reader-title {
+      min-width: 0;
+      flex: 1;
+      margin: 0;
+      overflow: hidden;
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-align: center;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .chapter-nav-button {
+      min-width: 2.6rem;
+      height: 2.35rem;
+      padding: 0 0.65rem;
+      color: var(--accent);
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .chapter-nav-button:disabled { cursor: not-allowed; opacity: 0.35; }
+    .chapter-reading-viewport { max-width: 100%; }
+
+    .chapter-reading-text { cursor: pointer; line-height: 2.25; }
+    .chapter-reading-text:focus-visible { outline: 2px solid var(--accent); outline-offset: 0.4rem; }
+    .chapter-reading-text p { margin-bottom: 1.75rem; }
+    .chapter-reading-text rt {
+      color: var(--accent);
+      font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+      font-size: 0.52em;
+      font-weight: 500;
+    }
+    .chapter-reading-text.furigana-hidden rt { visibility: hidden; }
+    .chapter-reader.vertical { touch-action: auto; }
+    .chapter-reader.vertical .chapter-reading-viewport {
+      height: min(72vh, 44rem);
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 0.5rem;
+      overscroll-behavior-x: contain;
+    }
+    .chapter-reader.vertical .chapter-reading-text {
+      width: max-content;
+      min-width: 100%;
+      height: 100%;
+      padding-left: 1rem;
+      line-height: 2.25;
+      text-orientation: mixed;
+      writing-mode: vertical-rl;
+    }
+    .chapter-reader.vertical .chapter-reading-text p {
+      margin: 0 0 0 2em;
+      text-align: justify;
+    }
+    .chapter-swipe-hint {
+      margin: 1rem 0 0;
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+      font-size: 0.68rem;
+      text-align: center;
+    }
+    .chapter-reader[data-font-level="-2"] { font-size: 80%; }
+    .chapter-reader[data-font-level="-1"] { font-size: 90%; }
+    .chapter-reader[data-font-level="1"] { font-size: 110%; }
+    .chapter-reader[data-font-level="2"] { font-size: 120%; }
+    .chapter-reader[data-font-level="3"] { font-size: 140%; }
+    .chapter-reader[data-font-level="4"] { font-size: 160%; }
+
     .study-panel {
       font-size: 100%;
     }
@@ -651,6 +779,12 @@
     <article>
       <h2><select class="chapter-select" id="chapter-select" aria-label="Selecionar capítulo"><option>Capítulo</option></select></h2>
 
+      <nav class="reading-mode-switch" aria-label="Modo de leitura">
+        <button class="reading-mode-button" type="button" data-reading-mode="sentence" aria-pressed="true">Leitura por frase</button>
+        <button class="reading-mode-button" type="button" data-reading-mode="continuous" aria-pressed="false">Texto corrido</button>
+        <button class="reading-mode-button" type="button" data-reading-mode="vertical" aria-pressed="false">Texto vertical</button>
+      </nav>
+
       <p class="study-hint" id="study-hint">{{STUDY_HINT}}</p>
 
       <noscript><p>このページを表示するにはJavaScriptを有効にしてください。</p></noscript>
@@ -677,6 +811,19 @@
         <p class="paragraph-end" id="paragraph-end" hidden>Fim do parágrafo</p>
         <div class="interlinear" id="interlinear"></div>
         <p class="sentence-translation" id="sentence-translation" lang="pt-BR"></p>
+      </section>
+
+      <section class="chapter-reader" id="chapter-reader" aria-live="polite" hidden>
+        <div class="chapter-reader-toolbar">
+          <button class="chapter-nav-button" id="chapter-previous" type="button" aria-label="Capítulo anterior">← 章</button>
+          <p class="chapter-reader-title" id="chapter-reader-title"></p>
+          <button class="chapter-nav-button" id="chapter-furigana-toggle" type="button" aria-pressed="true">ふりがな ON</button>
+          <button class="chapter-nav-button" id="chapter-next" type="button" aria-label="Próximo capítulo">章 →</button>
+        </div>
+        <div class="chapter-reading-viewport" id="chapter-reading-viewport">
+          <div class="chapter-reading-text" id="chapter-reading-text" lang="ja" role="button" tabindex="0" aria-label="Alternar furigana" aria-pressed="true"></div>
+        </div>
+        <p class="chapter-swipe-hint" id="chapter-swipe-hint">Deslize para trocar de capítulo.</p>
       </section>
     </article>
 
@@ -708,6 +855,17 @@
     const glossExport = document.querySelector("#gloss-export");
     const glossImport = document.querySelector("#gloss-import");
     const glossImportFile = document.querySelector("#gloss-import-file");
+    const studyHint = document.querySelector("#study-hint");
+    const modeButtons = [...document.querySelectorAll("[data-reading-mode]")];
+    const chapterReader = document.querySelector("#chapter-reader");
+    const chapterReaderToolbar = document.querySelector(".chapter-reader-toolbar");
+    const chapterReaderTitle = document.querySelector("#chapter-reader-title");
+    const chapterReadingViewport = document.querySelector("#chapter-reading-viewport");
+    const chapterReadingText = document.querySelector("#chapter-reading-text");
+    const chapterPreviousButton = document.querySelector("#chapter-previous");
+    const chapterNextButton = document.querySelector("#chapter-next");
+    const chapterFuriganaToggle = document.querySelector("#chapter-furigana-toggle");
+    const chapterSwipeHint = document.querySelector("#chapter-swipe-hint");
     if (bookData) {
       document.title = bookData.page.title;
       document.querySelector('meta[name="description"]').content = bookData.page.description;
@@ -744,6 +902,8 @@
     const activeCardStorageKey = `simple-ja-books:active-card:v1:${bookData?.source_file || location.pathname}`;
     let activeIndex = loadActiveIndex();
     let furiganaVisible = true;
+    const readingModeStorageKey = "simple-ja-books:reading-mode:v1";
+    let readingMode = loadReadingMode();
     const fontPercentages = __FONT_LEVELS_JSON__;
     const defaultFontLevelIndex = __DEFAULT_FONT_INDEX__;
     const minFontLevel = -defaultFontLevelIndex;
@@ -751,6 +911,15 @@
     let currentFontLevel = Number.parseInt(localStorage.getItem("reading-font-level") || "0", 10);
     const markedGlossesStorageKey = "simple-ja-books:marked-glosses:v1";
     let markedGlosses = loadMarkedGlosses();
+
+    function loadReadingMode() {
+      try {
+        const stored = localStorage.getItem(readingModeStorageKey);
+        return ["sentence", "continuous", "vertical"].includes(stored) ? stored : "sentence";
+      } catch (_error) {
+        return "sentence";
+      }
+    }
 
     function loadActiveIndex() {
       try {
@@ -810,6 +979,7 @@
 
     function updateFontLevel() {
       panel.dataset.fontLevel = String(currentFontLevel);
+      chapterReader.dataset.fontLevel = String(currentFontLevel);
       fontLevel.value = `${fontPercentages[currentFontLevel + defaultFontLevelIndex]}%`;
       fontDecrease.disabled = currentFontLevel === minFontLevel;
       fontIncrease.disabled = currentFontLevel === maxFontLevel;
@@ -870,6 +1040,98 @@
         target.append(ruby);
         readingCursor = readingEnd;
       });
+    }
+
+    function appendSentenceWithRuby(target, sentence) {
+      let cursor = 0;
+      sentence.chunks.forEach(([surface, reading]) => {
+        const start = sentence.text.indexOf(surface, cursor);
+        if (start > cursor) {
+          target.append(document.createTextNode(sentence.text.slice(cursor, start)));
+        }
+        appendAlignedRuby(target, surface, reading);
+        cursor = start + surface.length;
+      });
+      if (cursor < sentence.text.length) {
+        target.append(document.createTextNode(sentence.text.slice(cursor)));
+      }
+    }
+
+    function activeChapterForIndex(index) {
+      let activeChapter = 0;
+      chapterSentenceStarts.forEach((start, chapterIndex) => {
+        if (start <= index) activeChapter = chapterIndex;
+      });
+      return activeChapter;
+    }
+
+    function updateFuriganaState() {
+      selectedSentence.classList.toggle("furigana-hidden", !furiganaVisible);
+      chapterReadingText.classList.toggle("furigana-hidden", !furiganaVisible);
+      selectedSentence.setAttribute("aria-pressed", String(furiganaVisible));
+      chapterReadingText.setAttribute("aria-pressed", String(furiganaVisible));
+      furiganaToggle.setAttribute("aria-pressed", String(furiganaVisible));
+      chapterFuriganaToggle.setAttribute("aria-pressed", String(furiganaVisible));
+      const toggleLabel = "ふりがな " + (furiganaVisible ? "ON" : "OFF");
+      furiganaToggle.textContent = toggleLabel;
+      chapterFuriganaToggle.textContent = toggleLabel;
+    }
+
+    function renderFullChapter(chapterIndex) {
+      activeIndex = chapterSentenceStarts[chapterIndex];
+      saveActiveIndex();
+      chapterSelect.value = String(chapterIndex);
+      chapterReaderTitle.textContent = chapters[chapterIndex].title;
+      chapterPreviousButton.disabled = chapterIndex === 0;
+      chapterNextButton.disabled = chapterIndex === chapters.length - 1;
+      chapterReader.classList.toggle("vertical", readingMode === "vertical");
+      chapterSwipeHint.textContent = readingMode === "vertical"
+        ? "Deslize na barra acima para trocar de capítulo; arraste o texto para percorrer as colunas."
+        : "Deslize para trocar de capítulo.";
+      chapterReadingText.replaceChildren();
+      chapters[chapterIndex].paragraphs.forEach((paragraph) => {
+        const paragraphElement = document.createElement("p");
+        paragraph.forEach((sentence) => appendSentenceWithRuby(paragraphElement, sentence));
+        chapterReadingText.append(paragraphElement);
+      });
+      updateFuriganaState();
+      chapterReadingViewport.scrollTop = 0;
+      if (readingMode === "vertical") {
+        requestAnimationFrame(() => {
+          chapterReadingViewport.scrollLeft = chapterReadingViewport.scrollWidth;
+        });
+      } else {
+        chapterReadingViewport.scrollLeft = 0;
+      }
+    }
+
+    function setReadingMode(mode, persist = true) {
+      readingMode = mode;
+      if (persist) {
+        try {
+          localStorage.setItem(readingModeStorageKey, mode);
+        } catch (_error) {
+          // The reader remains usable when storage is unavailable.
+        }
+      }
+      modeButtons.forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.readingMode === mode));
+      });
+      const sentenceMode = mode === "sentence";
+      panel.hidden = !sentenceMode;
+      studyHint.hidden = !sentenceMode;
+      chapterReader.hidden = sentenceMode;
+      if (sentenceMode) {
+        renderCard(activeIndex);
+      } else {
+        renderFullChapter(activeChapterForIndex(activeIndex));
+      }
+    }
+
+    function navigateChapter(offset) {
+      const currentChapter = Number(chapterSelect.value);
+      const targetChapter = Math.min(Math.max(currentChapter + offset, 0), chapters.length - 1);
+      if (targetChapter !== currentChapter) renderFullChapter(targetChapter);
     }
 
     function renderCard(index) {
@@ -1063,15 +1325,17 @@
     }, true);
 
     chapterSelect.addEventListener("change", () => {
-      renderCard(chapterSentenceStarts[Number(chapterSelect.value)]);
+      const chapterIndex = Number(chapterSelect.value);
+      if (readingMode === "sentence") {
+        renderCard(chapterSentenceStarts[chapterIndex]);
+      } else {
+        renderFullChapter(chapterIndex);
+      }
     });
 
     function toggleFurigana() {
       furiganaVisible = !furiganaVisible;
-      selectedSentence.classList.toggle("furigana-hidden", !furiganaVisible);
-      selectedSentence.setAttribute("aria-pressed", String(furiganaVisible));
-      furiganaToggle.setAttribute("aria-pressed", String(furiganaVisible));
-      furiganaToggle.textContent = `ふりがな ${furiganaVisible ? "ON" : "OFF"}`;
+      updateFuriganaState();
     }
 
     furiganaToggle.addEventListener("click", toggleFurigana);
@@ -1082,8 +1346,60 @@
       toggleFurigana();
     });
 
+    modeButtons.forEach((button) => {
+      button.addEventListener("click", () => setReadingMode(button.dataset.readingMode));
+    });
+
+    chapterPreviousButton.addEventListener("click", () => navigateChapter(-1));
+    chapterNextButton.addEventListener("click", () => navigateChapter(1));
+    chapterFuriganaToggle.addEventListener("click", toggleFurigana);
+    chapterReadingText.addEventListener("click", toggleFurigana);
+    chapterReadingText.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      toggleFurigana();
+    });
+
+    let chapterSwipePointerId = null;
+    let chapterSwipeStartX = 0;
+    let chapterSwipeStartY = 0;
+    let suppressChapterClick = false;
+
+    chapterReader.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "mouse" || !event.isPrimary) return;
+      if (readingMode === "vertical" && !event.target.closest(".chapter-reader-toolbar")) return;
+      chapterSwipePointerId = event.pointerId;
+      chapterSwipeStartX = event.clientX;
+      chapterSwipeStartY = event.clientY;
+    });
+
+    chapterReader.addEventListener("pointerup", (event) => {
+      if (event.pointerId !== chapterSwipePointerId) return;
+      const horizontalDistance = event.clientX - chapterSwipeStartX;
+      const verticalDistance = event.clientY - chapterSwipeStartY;
+      chapterSwipePointerId = null;
+      if (Math.abs(horizontalDistance) < swipeThreshold
+        || Math.abs(horizontalDistance) <= Math.abs(verticalDistance) * 1.25) return;
+      event.preventDefault();
+      suppressChapterClick = true;
+      setTimeout(() => { suppressChapterClick = false; }, 0);
+      navigateChapter(horizontalDistance < 0 ? 1 : -1);
+    });
+
+    chapterReader.addEventListener("pointercancel", (event) => {
+      if (event.pointerId === chapterSwipePointerId) chapterSwipePointerId = null;
+    });
+
+    chapterReader.addEventListener("click", (event) => {
+      if (!suppressChapterClick) return;
+      suppressChapterClick = false;
+      event.preventDefault();
+      event.stopPropagation();
+    }, true);
+
     updateGlossCount();
-    renderCard(activeIndex);
+    updateFuriganaState();
+    setReadingMode(readingMode, false);
   </script>
 </body>
 </html>
