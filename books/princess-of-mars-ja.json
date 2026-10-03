@@ -449,6 +449,192 @@
               ]
             ]
           }
+        ],
+        [
+          {
+            "text": "そこで私は、生きていた時期と死んでいた時期のうち、特に興味深い部分を物語として書き残すことにした。",
+            "pt": "Por isso, decidi registrar como relato as partes mais interessantes dos períodos em que estive vivo e morto.",
+            "chunks": [
+              [
+                "そこで",
+                "そこで",
+                "por isso"
+              ],
+              [
+                "私は、",
+                "わたしは、",
+                "eu"
+              ],
+              [
+                "生きていた時期と",
+                "いきていたじきと",
+                "quando estava vivo"
+              ],
+              [
+                "死んでいた時期のうち、",
+                "しんでいたじきのうち、",
+                "e estava morto"
+              ],
+              [
+                "特に",
+                "とくに",
+                "especialmente"
+              ],
+              [
+                "興味深い部分を",
+                "きょうみぶかいぶぶんを",
+                "partes interessantes"
+              ],
+              [
+                "物語として",
+                "ものがたりとして",
+                "como relato"
+              ],
+              [
+                "書き残すことにした",
+                "かきのこすことにした",
+                "decidi registrar"
+              ],
+              [
+                "。",
+                "。",
+                "."
+              ]
+            ]
+          },
+          {
+            "text": "こうした現象がなぜ起きたのか、私には説明できない。",
+            "pt": "Não posso explicar por que esses fenômenos aconteceram.",
+            "chunks": [
+              [
+                "こうした現象が",
+                "こうしたげんしょうが",
+                "esses fenômenos"
+              ],
+              [
+                "なぜ",
+                "なぜ",
+                "por que"
+              ],
+              [
+                "起きたのか、",
+                "おきたのか、",
+                "aconteceram"
+              ],
+              [
+                "私には",
+                "わたしには",
+                "para mim"
+              ],
+              [
+                "説明できない",
+                "せつめいできない",
+                "não posso explicar"
+              ],
+              [
+                "。",
+                "。",
+                "."
+              ]
+            ]
+          },
+          {
+            "text": "私にできるのは、ただ、ごく普通の冒険家の言葉で、奇妙な出来事をここに書き記すことだけだ。",
+            "pt": "Só posso registrar aqui, nas palavras de um aventureiro comum, os estranhos acontecimentos.",
+            "chunks": [
+              [
+                "私にできるのは、",
+                "わたしにできるのは、",
+                "o que posso fazer"
+              ],
+              [
+                "ただ、",
+                "ただ、",
+                "apenas"
+              ],
+              [
+                "ごく普通の",
+                "ごくふつうの",
+                "muito comum"
+              ],
+              [
+                "冒険家の言葉で、",
+                "ぼうけんかのことばで、",
+                "nas palavras do aventureiro"
+              ],
+              [
+                "奇妙な出来事を",
+                "きみょうなできごとを",
+                "acontecimentos estranhos"
+              ],
+              [
+                "ここに",
+                "ここに",
+                "aqui"
+              ],
+              [
+                "書き記すことだけだ",
+                "かきしるすことだけだ",
+                "somente registrar"
+              ],
+              [
+                "。",
+                "。",
+                "."
+              ]
+            ]
+          },
+          {
+            "text": "それは、私の死体がアリゾナの洞窟に誰にも見つからないまま横たわっていた十年間に起きたことだ。",
+            "pt": "Eles ocorreram durante os dez anos em que meu cadáver permaneceu numa caverna do Arizona sem ser descoberto.",
+            "chunks": [
+              [
+                "それは、",
+                "それは、",
+                "isso"
+              ],
+              [
+                "私の死体が",
+                "わたしのしたいが",
+                "meu cadáver"
+              ],
+              [
+                "アリゾナの洞窟に",
+                "アリゾナのどうくつに",
+                "numa caverna do Arizona"
+              ],
+              [
+                "誰にも",
+                "だれにも",
+                "por ninguém"
+              ],
+              [
+                "見つからないまま",
+                "みつからないまま",
+                "sem ser encontrado"
+              ],
+              [
+                "横たわっていた",
+                "よこたわっていた",
+                "permaneceu deitado"
+              ],
+              [
+                "十年間に",
+                "じゅうねんかんに",
+                "durante dez anos"
+              ],
+              [
+                "起きたことだ",
+                "おきたことだ",
+                "foi o que ocorreu"
+              ],
+              [
+                "。",
+                "。",
+                "."
+              ]
+            ]
+          }
         ]
       ]
     }
