@@ -246,9 +246,16 @@
     .chapter-nav-button:disabled { cursor: not-allowed; opacity: 0.35; }
     .chapter-reading-viewport { max-width: 100%; }
 
-    .chapter-reading-text { cursor: pointer; line-height: 2.25; }
+    .chapter-reading-text {
+      font-size: 1.1em;
+      cursor: pointer;
+      line-height: 2.25;
+    }
     .chapter-reading-text:focus-visible { outline: 2px solid var(--accent); outline-offset: 0.4rem; }
-    .chapter-reading-text p { margin-bottom: 1.75rem; }
+    .chapter-reading-text p {
+      margin-bottom: 1.75rem;
+      font-size: inherit;
+    }
     .chapter-reading-text rt {
       color: var(--accent);
       font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
