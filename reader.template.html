@@ -208,6 +208,7 @@
       border-radius: 0.45rem;
       box-shadow: 0 1rem 2.5rem rgb(20 25 22 / 8%);
       text-indent: 0;
+      touch-action: pan-y;
     }
 
     .study-topline {
@@ -925,25 +926,74 @@
       }
     });
 
-    previousButton.addEventListener("click", () => {
+    function showPreviousSentence() {
       if (activeIndex > 0) {
         renderCard(activeIndex - 1);
       }
-    });
+    }
+
+    function showNextSentence() {
+      if (activeIndex < sentences.length - 1) {
+        renderCard(activeIndex + 1);
+      }
+    }
+
+    previousButton.addEventListener("click", showPreviousSentence);
 
     previousTenButton.addEventListener("click", () => {
       renderCard(Math.max(0, activeIndex - 10));
     });
 
-    nextButton.addEventListener("click", () => {
-      if (activeIndex < sentences.length - 1) {
-        renderCard(activeIndex + 1);
-      }
-    });
+    nextButton.addEventListener("click", showNextSentence);
 
     nextTenButton.addEventListener("click", () => {
       renderCard(Math.min(sentences.length - 1, activeIndex + 10));
     });
+
+    const swipeThreshold = 50;
+    let swipePointerId = null;
+    let swipeStartX = 0;
+    let swipeStartY = 0;
+    let suppressClickAfterSwipe = false;
+
+    panel.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "mouse" || !event.isPrimary) return;
+      swipePointerId = event.pointerId;
+      swipeStartX = event.clientX;
+      swipeStartY = event.clientY;
+    });
+
+    panel.addEventListener("pointerup", (event) => {
+      if (event.pointerId !== swipePointerId) return;
+      const horizontalDistance = event.clientX - swipeStartX;
+      const verticalDistance = event.clientY - swipeStartY;
+      swipePointerId = null;
+
+      if (
+        Math.abs(horizontalDistance) < swipeThreshold
+        || Math.abs(horizontalDistance) <= Math.abs(verticalDistance) * 1.25
+      ) return;
+
+      event.preventDefault();
+      suppressClickAfterSwipe = true;
+      setTimeout(() => { suppressClickAfterSwipe = false; }, 0);
+      if (horizontalDistance < 0) {
+        showNextSentence();
+      } else {
+        showPreviousSentence();
+      }
+    });
+
+    panel.addEventListener("pointercancel", (event) => {
+      if (event.pointerId === swipePointerId) swipePointerId = null;
+    });
+
+    panel.addEventListener("click", (event) => {
+      if (!suppressClickAfterSwipe) return;
+      suppressClickAfterSwipe = false;
+      event.preventDefault();
+      event.stopPropagation();
+    }, true);
 
     chapterSelect.addEventListener("change", () => {
       renderCard(chapterSentenceStarts[Number(chapterSelect.value)]);
