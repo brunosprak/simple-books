@@ -69,6 +69,8 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('id="chapter-reader"', first)
         self.assertIn('id="chapter-reading-text"', first)
         self.assertIn("writing-mode: vertical-rl", first)
+        self.assertIn(".chapter-reading-text p {", first)
+        self.assertIn("font-size: inherit;", first)
         self.assertIn("renderFullChapter", first)
         self.assertIn("appendSentenceWithRuby(paragraphElement, sentence)", first)
         self.assertIn('chapterReadingText.addEventListener("click", toggleFurigana)', first)
