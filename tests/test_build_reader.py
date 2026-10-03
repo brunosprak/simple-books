@@ -68,6 +68,14 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn("paragraphSentenceStarts", first)
         self.assertIn("sentenceParagraphIndexes", first)
         self.assertIn("sentenceInParagraph + 1", first)
+        self.assertLess(
+            first.index('id="selected-sentence"'),
+            first.index('id="paragraph-end"'),
+        )
+        self.assertLess(
+            first.index('id="paragraph-end"'),
+            first.index('id="interlinear"'),
+        )
         self.assertNotIn('id="gloss-status"', first)
         self.assertNotIn('content: "✓"', first)
         self.assertNotIn('id="reading-text"', first)
