@@ -818,8 +818,8 @@
         </div>
         <div class="gloss-tools" aria-label="Glosses marcados">
           <span class="gloss-count" id="gloss-count">0 glosses marcados</span>
-          <button class="gloss-tool-button" id="gloss-export" type="button" aria-label="Exportar glosses em JSON" title="Exportar glosses em JSON">↓ JSON</button>
-          <button class="gloss-tool-button" id="gloss-import" type="button" aria-label="Importar glosses de JSON" title="Importar glosses de JSON">↑ JSON</button>
+          <button class="gloss-tool-button" id="gloss-export" type="button" aria-label="Exportar dados de leitura em JSON" title="Exportar dados de leitura em JSON">↓ JSON</button>
+          <button class="gloss-tool-button" id="gloss-import" type="button" aria-label="Importar dados de leitura em JSON" title="Importar dados de leitura em JSON">↑ JSON</button>
           <input id="gloss-import-file" type="file" accept="application/json,.json" hidden>
         </div>
         <p class="paragraph-boundary" id="paragraph-boundary" hidden>Novo parágrafo</p>
@@ -923,7 +923,8 @@
     const storageScope = bookData?.source_file || location.pathname;
     const activeCardStorageKey = `simple-ja-books:active-card:v1:${storageScope}`;
     let activeIndex = loadActiveIndex();
-    let furiganaVisible = true;
+    const furiganaStorageKey = `simple-ja-books:furigana-visible:v1:${storageScope}`;
+    let furiganaVisible = loadFuriganaVisibility();
     const readingModeStorageKey = "simple-ja-books:reading-mode:v1";
     let readingMode = loadReadingMode();
     const readingPositionsStorageKey = `simple-ja-books:reading-positions:v1:${storageScope}`;
@@ -959,32 +960,43 @@
       }
     }
 
-    function loadReadingPositions() {
+    function normalizeReadingPositions(stored) {
       const fallbackChapter = activeChapterForIndex(activeIndex);
       const defaults = {
         sentence: { chapterIndex: fallbackChapter, pageScrollY: 0, scrollLeft: null },
         continuous: { chapterIndex: fallbackChapter, pageScrollY: 0, scrollLeft: null },
         vertical: { chapterIndex: fallbackChapter, pageScrollY: 0, scrollLeft: null }
       };
-      try {
-        const stored = JSON.parse(localStorage.getItem(readingPositionsStorageKey) || "{}");
-        Object.keys(defaults).forEach((mode) => {
-          const position = stored[mode];
-          if (!position || typeof position !== "object") return;
-          if (Number.isInteger(position.chapterIndex)) {
-            defaults[mode].chapterIndex = Math.min(Math.max(position.chapterIndex, 0), chapters.length - 1);
-          }
-          if (Number.isFinite(position.pageScrollY)) {
-            defaults[mode].pageScrollY = Math.max(position.pageScrollY, 0);
-          }
-          if (Number.isFinite(position.scrollLeft)) {
-            defaults[mode].scrollLeft = position.scrollLeft;
-          }
-        });
-      } catch (_error) {
-        // Invalid or unavailable storage falls back to the current sentence chapter.
-      }
+      Object.keys(defaults).forEach((mode) => {
+        const position = stored?.[mode];
+        if (!position || typeof position !== "object") return;
+        if (Number.isInteger(position.chapterIndex)) {
+          defaults[mode].chapterIndex = Math.min(Math.max(position.chapterIndex, 0), chapters.length - 1);
+        }
+        if (Number.isFinite(position.pageScrollY)) {
+          defaults[mode].pageScrollY = Math.max(position.pageScrollY, 0);
+        }
+        if (Number.isFinite(position.scrollLeft)) {
+          defaults[mode].scrollLeft = position.scrollLeft;
+        }
+      });
       return defaults;
+    }
+
+    function loadFuriganaVisibility() {
+      try {
+        return localStorage.getItem(furiganaStorageKey) !== "false";
+      } catch (_error) {
+        return true;
+      }
+    }
+
+    function loadReadingPositions() {
+      try {
+        return normalizeReadingPositions(JSON.parse(localStorage.getItem(readingPositionsStorageKey) || "{}"));
+      } catch (_error) {
+        return normalizeReadingPositions({});
+      }
     }
 
     function saveReadingPositions() {
@@ -1158,6 +1170,11 @@
     }
 
     function updateFuriganaState() {
+      try {
+        localStorage.setItem(furiganaStorageKey, String(furiganaVisible));
+      } catch (_error) {
+        // The reader remains usable when storage is unavailable.
+      }
       selectedSentence.classList.toggle("furigana-hidden", !furiganaVisible);
       chapterReadingText.classList.toggle("furigana-hidden", !furiganaVisible);
       selectedSentence.setAttribute("aria-pressed", String(furiganaVisible));
@@ -1315,16 +1332,25 @@
     }
 
     glossExport.addEventListener("click", () => {
+      captureReadingPosition();
       const payload = {
-        schema_version: 1,
+        schema_version: 2,
+        source_file: bookData?.source_file || null,
         exported_at: new Date().toISOString(),
+        reader_state: {
+          reading_mode: readingMode,
+          active_sentence_index: activeIndex,
+          font_level: currentFontLevel,
+          furigana_visible: furiganaVisible,
+          positions: readingPositions
+        },
         glosses: [...markedGlosses.values()]
       };
       const blob = new Blob([JSON.stringify(payload, null, 2) + "\n"], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = "glosses-marcados.json";
+      link.download = "dados-de-leitura.json";
       link.click();
       URL.revokeObjectURL(url);
     });
@@ -1336,7 +1362,7 @@
       if (!file) return;
       try {
         const payload = JSON.parse(await file.text());
-        if (payload?.schema_version !== 1 || !Array.isArray(payload.glosses)) {
+        if (![1, 2].includes(payload?.schema_version) || !Array.isArray(payload.glosses)) {
           throw new Error("Formato incompatível");
         }
         const imported = payload.glosses.map((entry) => {
@@ -1345,14 +1371,54 @@
           }
           return entry;
         });
+        let importedReaderState = null;
+        if (payload.schema_version === 2) {
+          const state = payload.reader_state;
+          if (payload.source_file !== bookData?.source_file
+            || !state || typeof state !== "object"
+            || !["sentence", "continuous", "vertical"].includes(state.reading_mode)
+            || !Number.isInteger(state.active_sentence_index)
+            || !Number.isInteger(state.font_level)
+            || state.font_level < minFontLevel || state.font_level > maxFontLevel
+            || typeof state.furigana_visible !== "boolean"
+            || !state.positions || typeof state.positions !== "object") {
+            throw new Error("Estado de leitura inválido");
+          }
+          importedReaderState = {
+            activeIndex: Math.min(Math.max(state.active_sentence_index, 0), sentences.length - 1),
+            readingMode: state.reading_mode,
+            fontLevel: state.font_level,
+            furiganaVisible: state.furigana_visible,
+            positions: normalizeReadingPositions(state.positions)
+          };
+        }
+
         markedGlosses = new Map(imported.map((entry) => [
           glossKey(entry.term, entry.portuguese),
           { term: entry.term, portuguese: entry.portuguese }
         ]));
         saveMarkedGlosses();
-        renderCard(activeIndex);
+
+        if (importedReaderState) {
+          activeIndex = importedReaderState.activeIndex;
+          readingMode = importedReaderState.readingMode;
+          currentFontLevel = importedReaderState.fontLevel;
+          furiganaVisible = importedReaderState.furiganaVisible;
+          readingPositions = importedReaderState.positions;
+          chapterReaderIndex = readingPositions[readingMode === "sentence" ? "continuous" : readingMode].chapterIndex;
+          saveActiveIndex();
+          saveReadingPositions();
+          localStorage.setItem(readingModeStorageKey, readingMode);
+          updateFontLevel();
+          updateFuriganaState();
+          setReadingMode(readingMode, false);
+        } else if (readingMode === "sentence") {
+          renderCard(activeIndex);
+        } else {
+          renderFullChapter(chapterReaderIndex);
+        }
       } catch (_error) {
-        window.alert("O arquivo não é um JSON de glosses válido.");
+        window.alert("O arquivo não é um JSON de dados de leitura válido para este livro.");
       } finally {
         glossImportFile.value = "";
       }
