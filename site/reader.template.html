@@ -279,6 +279,45 @@
       opacity: 0.35;
     }
 
+    .paragraph-boundary {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0.25rem 0 1rem;
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .paragraph-boundary::before,
+    .paragraph-boundary::after {
+      height: 1px;
+      flex: 1;
+      background: var(--rule);
+      content: "";
+    }
+
+    .paragraph-end {
+      margin: 1.25rem 0 0;
+      padding-top: 0.75rem;
+      color: var(--muted);
+      border-top: 1px solid var(--rule);
+      font-family: system-ui, sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .paragraph-boundary[hidden],
+    .paragraph-end[hidden] {
+      display: none;
+    }
+
     .selected-sentence {
       margin: 0 0 0.65rem;
       cursor: pointer;
@@ -633,9 +672,11 @@
           <button class="gloss-tool-button" id="gloss-import" type="button" aria-label="Importar glosses de JSON" title="Importar glosses de JSON">↑ JSON</button>
           <input id="gloss-import-file" type="file" accept="application/json,.json" hidden>
         </div>
+        <p class="paragraph-boundary" id="paragraph-boundary" hidden>Novo parágrafo</p>
         <p class="selected-sentence" id="selected-sentence" lang="ja" role="button" tabindex="0" aria-label="Alternar furigana" aria-pressed="true"></p>
         <div class="interlinear" id="interlinear"></div>
         <p class="sentence-translation" id="sentence-translation" lang="pt-BR"></p>
+        <p class="paragraph-end" id="paragraph-end" hidden>Fim do parágrafo</p>
       </section>
     </article>
 
@@ -652,6 +693,8 @@
     const fontLevel = document.querySelector("#font-level");
     const panel = document.querySelector("#study-panel");
     const label = document.querySelector("#study-label");
+    const paragraphBoundary = document.querySelector("#paragraph-boundary");
+    const paragraphEnd = document.querySelector("#paragraph-end");
     const selectedSentence = document.querySelector("#selected-sentence");
     const sentenceTranslation = document.querySelector("#sentence-translation");
     const interlinear = document.querySelector("#interlinear");
@@ -675,12 +718,19 @@
       document.querySelector("#page-footer").textContent = bookData.page.footer;
     }
     const chapterSentenceStarts = [];
+    const paragraphSentenceStarts = [];
+    const paragraphSentenceCounts = [];
+    const sentenceParagraphIndexes = [];
     const paragraphs = [];
     let sentenceTotal = 0;
     chapters.forEach((chapter) => {
       chapterSentenceStarts.push(sentenceTotal);
       chapter.paragraphs.forEach((paragraph) => {
+        const paragraphIndex = paragraphs.length;
+        paragraphSentenceStarts.push(sentenceTotal);
+        paragraphSentenceCounts.push(paragraph.length);
         paragraphs.push(paragraph);
+        paragraph.forEach(() => sentenceParagraphIndexes.push(paragraphIndex));
         sentenceTotal += paragraph.length;
       });
     });
@@ -826,6 +876,9 @@
       activeIndex = index;
       saveActiveIndex();
       const sentence = sentences[activeIndex];
+      const activeParagraph = sentenceParagraphIndexes[activeIndex];
+      const sentenceInParagraph = activeIndex - paragraphSentenceStarts[activeParagraph];
+      const sentencesInParagraph = paragraphSentenceCounts[activeParagraph];
       previousTenButton.disabled = activeIndex === 0;
       previousButton.disabled = activeIndex === 0;
       nextButton.disabled = activeIndex === sentences.length - 1;
@@ -835,7 +888,9 @@
         if (start <= activeIndex) activeChapter = index;
       });
       chapterSelect.value = String(activeChapter);
-      label.textContent = `Interlinear · frase ${activeIndex + 1} de ${sentences.length}`;
+      label.textContent = `Parágrafo ${activeParagraph + 1} de ${paragraphs.length} · frase ${sentenceInParagraph + 1} de ${sentencesInParagraph}`;
+      paragraphBoundary.hidden = activeParagraph === 0 || sentenceInParagraph !== 0;
+      paragraphEnd.hidden = sentenceInParagraph !== sentencesInParagraph - 1;
       selectedSentence.replaceChildren();
 
       let cursor = 0;
