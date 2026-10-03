@@ -787,9 +787,9 @@
       <h2><select class="chapter-select" id="chapter-select" aria-label="Selecionar capítulo"><option>Capítulo</option></select></h2>
 
       <nav class="reading-mode-switch" aria-label="Modo de leitura">
-        <button class="reading-mode-button" type="button" data-reading-mode="sentence" aria-pressed="true">Leitura por frase</button>
-        <button class="reading-mode-button" type="button" data-reading-mode="continuous" aria-pressed="false">Texto corrido</button>
-        <button class="reading-mode-button" type="button" data-reading-mode="vertical" aria-pressed="false">Texto vertical</button>
+        <button class="reading-mode-button" type="button" data-reading-mode="sentence" aria-pressed="true">Frases</button>
+        <button class="reading-mode-button" type="button" data-reading-mode="continuous" aria-pressed="false">Corrido</button>
+        <button class="reading-mode-button" type="button" data-reading-mode="vertical" aria-pressed="false">Vertical</button>
       </nav>
 
       <p class="study-hint" id="study-hint">文を選ぶと、日本語の読み方とポルトガル語の意味を確認できます。</p>
@@ -913,6 +913,7 @@
     }));
     const activeCardStorageKey = `simple-ja-books:active-card:v1:${bookData?.source_file || location.pathname}`;
     let activeIndex = loadActiveIndex();
+    let chapterReaderIndex = activeChapterForIndex(activeIndex);
     let furiganaVisible = true;
     const readingModeStorageKey = "simple-ja-books:reading-mode:v1";
     let readingMode = loadReadingMode();
@@ -1090,8 +1091,7 @@
     }
 
     function renderFullChapter(chapterIndex) {
-      activeIndex = chapterSentenceStarts[chapterIndex];
-      saveActiveIndex();
+      chapterReaderIndex = chapterIndex;
       chapterSelect.value = String(chapterIndex);
       chapterReaderTitle.textContent = chapters[chapterIndex].title;
       chapterPreviousButton.disabled = chapterIndex === 0;
@@ -1118,6 +1118,7 @@
     }
 
     function setReadingMode(mode, persist = true) {
+      const previousMode = readingMode;
       readingMode = mode;
       if (persist) {
         try {
@@ -1136,12 +1137,15 @@
       if (sentenceMode) {
         renderCard(activeIndex);
       } else {
-        renderFullChapter(activeChapterForIndex(activeIndex));
+        const chapterIndex = previousMode === "sentence"
+          ? activeChapterForIndex(activeIndex)
+          : chapterReaderIndex;
+        renderFullChapter(chapterIndex);
       }
     }
 
     function navigateChapter(offset) {
-      const currentChapter = Number(chapterSelect.value);
+      const currentChapter = chapterReaderIndex;
       const targetChapter = Math.min(Math.max(currentChapter + offset, 0), chapters.length - 1);
       if (targetChapter !== currentChapter) renderFullChapter(targetChapter);
     }
