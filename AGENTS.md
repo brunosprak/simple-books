@@ -11,11 +11,12 @@ If the user does not specify an amount, translate exactly one source paragraph p
 - Treat the original English files under `texts/` as immutable source material. Do not edit them unless the user explicitly requests a source correction. The matching `-ja.json` file is the sole canonical translation and reader-data source.
 - Translate the file or passage named by the user. If the user says only to continue, resume the source whose Japanese output was most recently updated.
 - Write and revise the translation in a JSON file beside the source, using the same basename followed by `-ja.json`. For example, `texts/book.txt` becomes `texts/book-ja.json`.
-- Use JSON schema version `2`. The root must contain `schema_version`, `source_file`, optional `source_url`, `languages`, `page`, and `chapters`. Each `chapters[]` object contains its own `title` and `paragraphs`; each paragraph is an array of sentence objects with `text`, `pt`, and `chunks`. Each chunk is `[Japanese surface, reading, concise Portuguese gloss]`.
+- Use JSON schema version `2`. The root must contain `schema_version`, `source_file`, `languages`, `page`, and `chapters`, and may contain `source_url`. The `page` object must include the reader metadata plus `font_levels_percent` and `default_font_level_percent`. Each `chapters[]` object contains its own `title` and `paragraphs`; each paragraph is an array of sentence objects with `text`, `pt`, and `chunks`. Each chunk is `[Japanese surface, reading, concise Portuguese gloss]`.
 - When the English source comes from a stable public edition, record its canonical download URL in root-level `source_url`. Keep `source_file` as the local filename; the URL does not replace the local source.
 - Do not maintain a separate Japanese TXT by hand. When the user requests a clean TXT for reading or download, generate it deterministically from the canonical JSON with `python3 tools/build_reader.py --data <json-path> --output <html-path> --text-output texts/<book-slug>-ja.txt`. A generated TXT is disposable and must never be used to determine translation progress.
 - Give every book its own directory under `site/`, with its generated HTML inside that directory. Use `site/<book-slug>/index.html`; do not place multiple book readers directly in the root of `site/`.
 - Store paragraphs inside their chapter object under `chapters[].paragraphs`; do not keep a root-level `paragraphs` array or duplicate chapter titles in `page`. Generate the runtime reader and its public JSON with `python3 tools/build_reader.py --data <json-path> --output site/<book-slug>/index.html --data-url ../books/<book-slug>-ja.json --json-output site/books/<book-slug>-ja.json` after changing the canonical JSON.
+- Treat `site/books/<book-slug>-ja.json` and `site/<book-slug>/index.html` as generated artifacts. The book HTML loads its content from the public JSON at runtime, so a translation-only change may leave the HTML byte-identical even though the public JSON changes.
 - Do not edit generated book content directly in a book's HTML. Change the matching JSON or `site/reader.template.html` and regenerate the page.
 - Run the corresponding generation command with `--check`, including `--data-url` and `--json-output`, before completing reader-related work.
 - On the first execution for a source file, create its Japanese output and translate the front matter before the prose—such as title, author, and the first section or chapter heading—followed by the amount of prose requested by the user. If no amount is specified, translate exactly the first prose paragraph.
@@ -59,7 +60,7 @@ Produce natural Japanese fiction, not a sentence-by-sentence rendering of Englis
 - Do not simplify established proper nouns, essential historical terms, fictional terminology, or precise technical distinctions when doing so would create factual drift.
 - Prefer accessibility when perfect equivalence and simpler vocabulary cannot both be maintained. A small loss of intensity, precision, register, or nuance is acceptable when it allows a substantially more common word or transparent phrase, provided the central action, fact, characterization, and narrative function remain intact. Do not censor, reverse, or materially alter the event.
 - When the user requests simplification beginning at a particular card, paragraph, or sentence, apply the simpler vocabulary consistently from that point onward and keep all earlier material unchanged unless explicitly asked.
-- After simplifying Japanese text, update the JSON sentence text, readings, chunks, Portuguese glosses, and generated HTML together. If a disposable TXT export already exists, regenerate it or remove it so that stale text is not mistaken for canonical data. Card numbering does not need to be preserved: sentences may be split or combined when that produces clearer Japanese.
+- After simplifying Japanese text, update the JSON sentence text, readings, chunks, and Portuguese glosses together, then regenerate the public JSON and reader outputs. If a disposable TXT export already exists, regenerate it or remove it so that stale text is not mistaken for canonical data. Card numbering does not need to be preserved: sentences may be split or combined when that produces clearer Japanese.
 
 ### Dialogue
 
@@ -83,7 +84,24 @@ Produce natural Japanese fiction, not a sentence-by-sentence rendering of Englis
 - Prefer dictionary-like meanings such as `equipamento`, `à civilização`, `voltar`, and `por ser rudimentar`. Avoid repeating complete Portuguese clauses such as `como o equipamento era rudimentar` when the Japanese can be divided naturally.
 - Do not force Portuguese word order onto the Japanese chunks. Each gloss should describe its own Japanese unit; the separate `pt` field carries the natural translation of the full sentence.
 - Include particles or inflectional material in the chunk where they make the relationship or grammatical function clearer, but keep the Portuguese gloss economical.
+- Never create a chunk whose Japanese surface consists only of punctuation, such as `。`, `、`, `！`, or `？`. Attach sentence-final or adjacent punctuation to the preceding lexical or grammatical chunk in both the surface and reading fields; keep that chunk's lexical gloss instead of adding a punctuation gloss.
 - During review, inspect the rendered card at large font sizes. If a chunk becomes a multi-line sentence-like block, re-evaluate whether it should be split further.
+
+## Reader Behavior and Compatibility
+
+- The shared reader template supports three modes: `Frases`, `Corrido`, and `Vertical`. `Frases` navigates sentence cards and paragraphs; `Corrido` shows the whole current chapter without chunks or interlinear translation; `Vertical` presents the same chapter with Japanese vertical writing.
+- Clicking Japanese text toggles furigana in every mode. Font controls must affect every mode. Sentence-mode swipes move by sentence; continuous-mode swipes move by chapter; vertical text scrolls horizontally, with chapter swipes confined to the toolbar so the gestures do not conflict.
+- In `Frases`, keep the previous/next-paragraph controls and show paragraph-boundary markers directly below the Japanese sentence and before chunks or Portuguese translation. Keep the mode selector available while scrolling.
+- Keep the positions of all three modes independent. Sentence index, continuous scroll, vertical horizontal position, current chapter, and furigana preference persist per book; the active mode and font level also survive reloads and are currently shared across readers.
+- The JSON backup downloaded as `dados-de-leitura.json` uses backup schema version `2` and contains marked glosses plus reader state. Imports must remain compatible with legacy schema version `1` gloss-only files. Apply version `2` reader state only to the matching `source_file`, validate the entire payload before mutating local state, and keep imports atomic on validation failure.
+- `site/reader.template.html` is shared by every book. After changing it, regenerate and check every existing book reader, not only the book named in the request.
+
+## Verification and Publishing
+
+- After canonical JSON, builder, template, or generated-output changes, run `python3 -m unittest discover -s tests` and `git diff --check` in addition to each affected `tools/build_reader.py ... --check` command.
+- When JavaScript in the reader template changes, extract the generated module script and run `node --check` on it, or perform an equivalent syntax check. For interaction changes, verify the affected behavior in a locally served generated reader when practical.
+- When asked to publish, commit the canonical source, template or builder changes, tests, and generated artifacts together. The repository workflow deploys `site/` after a successful push to `main`.
+- If the available GitHub credential cannot push `main` because it lacks `workflow` permission, do not alter or remove `.github/workflows/pages.yml` to work around it. Report the rejected `main` push and publish the committed `site/` snapshot directly with `git subtree split --prefix=site HEAD` followed by a non-force push of that commit to `gh-pages`.
 
 ### Fidelity
 
