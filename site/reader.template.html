@@ -658,12 +658,12 @@
       <section class="study-panel" id="study-panel" aria-live="polite">
         <div class="study-topline">
           <p class="study-label" id="study-label">Interlinear</p>
-          <div class="study-actions" aria-label="Navegação entre frases">
-            <button class="study-nav" id="study-previous-ten" type="button" aria-label="Voltar dez frases">−10</button>
+          <div class="study-actions" aria-label="Navegação entre frases e parágrafos">
+            <button class="study-nav" id="study-previous-paragraph" type="button" aria-label="Parágrafo anterior" title="Parágrafo anterior">−1¶</button>
             <button class="study-nav" id="study-previous" type="button" aria-label="Frase anterior">←</button>
             <button class="study-nav furigana-toggle" id="furigana-toggle" type="button" aria-pressed="true">ふりがな ON</button>
             <button class="study-nav" id="study-next" type="button" aria-label="Próxima frase">→</button>
-            <button class="study-nav" id="study-next-ten" type="button" aria-label="Avançar dez frases">＋10</button>
+            <button class="study-nav" id="study-next-paragraph" type="button" aria-label="Próximo parágrafo" title="Próximo parágrafo">＋1¶</button>
           </div>
         </div>
         <div class="gloss-tools" aria-label="Glosses marcados">
@@ -699,10 +699,10 @@
     const sentenceTranslation = document.querySelector("#sentence-translation");
     const interlinear = document.querySelector("#interlinear");
     const chapterSelect = document.querySelector("#chapter-select");
-    const previousTenButton = document.querySelector("#study-previous-ten");
+    const previousParagraphButton = document.querySelector("#study-previous-paragraph");
     const previousButton = document.querySelector("#study-previous");
     const nextButton = document.querySelector("#study-next");
-    const nextTenButton = document.querySelector("#study-next-ten");
+    const nextParagraphButton = document.querySelector("#study-next-paragraph");
     const furiganaToggle = document.querySelector("#furigana-toggle");
     const glossCount = document.querySelector("#gloss-count");
     const glossExport = document.querySelector("#gloss-export");
@@ -879,10 +879,10 @@
       const activeParagraph = sentenceParagraphIndexes[activeIndex];
       const sentenceInParagraph = activeIndex - paragraphSentenceStarts[activeParagraph];
       const sentencesInParagraph = paragraphSentenceCounts[activeParagraph];
-      previousTenButton.disabled = activeIndex === 0;
+      previousParagraphButton.disabled = activeParagraph === 0;
       previousButton.disabled = activeIndex === 0;
       nextButton.disabled = activeIndex === sentences.length - 1;
-      nextTenButton.disabled = activeIndex === sentences.length - 1;
+      nextParagraphButton.disabled = activeParagraph === paragraphs.length - 1;
       let activeChapter = 0;
       chapterSentenceStarts.forEach((start, index) => {
         if (start <= activeIndex) activeChapter = index;
@@ -1001,14 +1001,20 @@
 
     previousButton.addEventListener("click", showPreviousSentence);
 
-    previousTenButton.addEventListener("click", () => {
-      renderCard(Math.max(0, activeIndex - 10));
+    previousParagraphButton.addEventListener("click", () => {
+      const activeParagraph = sentenceParagraphIndexes[activeIndex];
+      if (activeParagraph > 0) {
+        renderCard(paragraphSentenceStarts[activeParagraph - 1]);
+      }
     });
 
     nextButton.addEventListener("click", showNextSentence);
 
-    nextTenButton.addEventListener("click", () => {
-      renderCard(Math.min(sentences.length - 1, activeIndex + 10));
+    nextParagraphButton.addEventListener("click", () => {
+      const activeParagraph = sentenceParagraphIndexes[activeIndex];
+      if (activeParagraph < paragraphs.length - 1) {
+        renderCard(paragraphSentenceStarts[activeParagraph + 1]);
+      }
     });
 
     const swipeThreshold = 50;
