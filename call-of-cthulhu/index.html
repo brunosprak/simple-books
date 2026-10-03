@@ -164,11 +164,20 @@
     }
 
     .reading-mode-switch {
+      position: sticky;
+      top: 0.5rem;
+      z-index: 20;
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 0.45rem;
       margin: -1rem 0 2rem;
+      padding: 0.45rem;
+      background: color-mix(in srgb, var(--paper) 92%, transparent);
+      border: 1px solid color-mix(in srgb, var(--rule) 72%, transparent);
+      border-radius: 999px;
+      box-shadow: 0 0.35rem 1.2rem rgb(20 25 22 / 8%);
       font-family: system-ui, sans-serif;
+      backdrop-filter: blur(0.6rem);
     }
 
     .reading-mode-button {
@@ -911,12 +920,17 @@
       option.textContent = chapter.title;
       return option;
     }));
-    const activeCardStorageKey = `simple-ja-books:active-card:v1:${bookData?.source_file || location.pathname}`;
+    const storageScope = bookData?.source_file || location.pathname;
+    const activeCardStorageKey = `simple-ja-books:active-card:v1:${storageScope}`;
     let activeIndex = loadActiveIndex();
-    let chapterReaderIndex = activeChapterForIndex(activeIndex);
     let furiganaVisible = true;
     const readingModeStorageKey = "simple-ja-books:reading-mode:v1";
     let readingMode = loadReadingMode();
+    const readingPositionsStorageKey = `simple-ja-books:reading-positions:v1:${storageScope}`;
+    let readingPositions = loadReadingPositions();
+    let chapterReaderIndex = readingPositions[readingMode === "sentence" ? "continuous" : readingMode].chapterIndex;
+    let restoringReadingPosition = false;
+    let positionSaveFrame = null;
     const fontPercentages = [80, 90, 100, 110, 120, 140, 160];
     const defaultFontLevelIndex = 2;
     const minFontLevel = -defaultFontLevelIndex;
@@ -943,6 +957,71 @@
       } catch (_error) {
         return 0;
       }
+    }
+
+    function loadReadingPositions() {
+      const fallbackChapter = activeChapterForIndex(activeIndex);
+      const defaults = {
+        sentence: { chapterIndex: fallbackChapter, pageScrollY: 0, scrollLeft: null },
+        continuous: { chapterIndex: fallbackChapter, pageScrollY: 0, scrollLeft: null },
+        vertical: { chapterIndex: fallbackChapter, pageScrollY: 0, scrollLeft: null }
+      };
+      try {
+        const stored = JSON.parse(localStorage.getItem(readingPositionsStorageKey) || "{}");
+        Object.keys(defaults).forEach((mode) => {
+          const position = stored[mode];
+          if (!position || typeof position !== "object") return;
+          if (Number.isInteger(position.chapterIndex)) {
+            defaults[mode].chapterIndex = Math.min(Math.max(position.chapterIndex, 0), chapters.length - 1);
+          }
+          if (Number.isFinite(position.pageScrollY)) {
+            defaults[mode].pageScrollY = Math.max(position.pageScrollY, 0);
+          }
+          if (Number.isFinite(position.scrollLeft)) {
+            defaults[mode].scrollLeft = position.scrollLeft;
+          }
+        });
+      } catch (_error) {
+        // Invalid or unavailable storage falls back to the current sentence chapter.
+      }
+      return defaults;
+    }
+
+    function saveReadingPositions() {
+      try {
+        localStorage.setItem(readingPositionsStorageKey, JSON.stringify(readingPositions));
+      } catch (_error) {
+        // The reader remains usable when storage is unavailable.
+      }
+    }
+
+    function captureReadingPosition(mode = readingMode) {
+      if (restoringReadingPosition) return;
+      const position = readingPositions[mode];
+      position.pageScrollY = Math.max(window.scrollY, 0);
+      if (mode === "sentence") {
+        position.chapterIndex = activeChapterForIndex(activeIndex);
+      } else {
+        position.chapterIndex = chapterReaderIndex;
+        position.scrollLeft = chapterReadingViewport.scrollLeft;
+      }
+      saveReadingPositions();
+    }
+
+    function scheduleReadingPositionSave() {
+      if (restoringReadingPosition || positionSaveFrame !== null) return;
+      positionSaveFrame = requestAnimationFrame(() => {
+        positionSaveFrame = null;
+        captureReadingPosition();
+      });
+    }
+
+    function restoreSentencePosition() {
+      restoringReadingPosition = true;
+      requestAnimationFrame(() => {
+        window.scrollTo(0, readingPositions.sentence.pageScrollY);
+        restoringReadingPosition = false;
+      });
     }
 
     function saveActiveIndex() {
@@ -1090,8 +1169,16 @@
       chapterFuriganaToggle.textContent = toggleLabel;
     }
 
-    function renderFullChapter(chapterIndex) {
+    function renderFullChapter(chapterIndex, restorePosition = true) {
+      const storedPosition = readingPositions[readingMode];
+      const sameChapter = storedPosition.chapterIndex === chapterIndex;
+      if (!restorePosition || !sameChapter) {
+        storedPosition.pageScrollY = 0;
+        storedPosition.scrollLeft = null;
+      }
       chapterReaderIndex = chapterIndex;
+      storedPosition.chapterIndex = chapterIndex;
+      saveReadingPositions();
       chapterSelect.value = String(chapterIndex);
       chapterReaderTitle.textContent = chapters[chapterIndex].title;
       chapterPreviousButton.disabled = chapterIndex === 0;
@@ -1107,18 +1194,23 @@
         chapterReadingText.append(paragraphElement);
       });
       updateFuriganaState();
-      chapterReadingViewport.scrollTop = 0;
-      if (readingMode === "vertical") {
-        requestAnimationFrame(() => {
-          chapterReadingViewport.scrollLeft = chapterReadingViewport.scrollWidth;
-        });
-      } else {
-        chapterReadingViewport.scrollLeft = 0;
-      }
+      const targetPageScrollY = storedPosition.pageScrollY;
+      const targetScrollLeft = storedPosition.scrollLeft;
+      restoringReadingPosition = true;
+      requestAnimationFrame(() => {
+        chapterReadingViewport.scrollTop = 0;
+        chapterReadingViewport.scrollLeft = readingMode === "vertical"
+          ? (Number.isFinite(targetScrollLeft) ? targetScrollLeft : chapterReadingViewport.scrollWidth)
+          : 0;
+        window.scrollTo(0, targetPageScrollY);
+        restoringReadingPosition = false;
+        captureReadingPosition();
+      });
     }
 
     function setReadingMode(mode, persist = true) {
       const previousMode = readingMode;
+      if (persist) captureReadingPosition(previousMode);
       readingMode = mode;
       if (persist) {
         try {
@@ -1136,18 +1228,19 @@
       chapterReader.hidden = sentenceMode;
       if (sentenceMode) {
         renderCard(activeIndex);
+        restoreSentencePosition();
       } else {
-        const chapterIndex = previousMode === "sentence"
-          ? activeChapterForIndex(activeIndex)
-          : chapterReaderIndex;
-        renderFullChapter(chapterIndex);
+        renderFullChapter(readingPositions[mode].chapterIndex);
       }
     }
 
     function navigateChapter(offset) {
       const currentChapter = chapterReaderIndex;
       const targetChapter = Math.min(Math.max(currentChapter + offset, 0), chapters.length - 1);
-      if (targetChapter !== currentChapter) renderFullChapter(targetChapter);
+      if (targetChapter !== currentChapter) {
+        captureReadingPosition();
+        renderFullChapter(targetChapter, false);
+      }
     }
 
     function renderCard(index) {
@@ -1345,7 +1438,8 @@
       if (readingMode === "sentence") {
         renderCard(chapterSentenceStarts[chapterIndex]);
       } else {
-        renderFullChapter(chapterIndex);
+        captureReadingPosition();
+        renderFullChapter(chapterIndex, false);
       }
     });
 
@@ -1412,6 +1506,10 @@
       event.preventDefault();
       event.stopPropagation();
     }, true);
+
+    window.addEventListener("scroll", scheduleReadingPositionSave, { passive: true });
+    chapterReadingViewport.addEventListener("scroll", scheduleReadingPositionSave, { passive: true });
+    window.addEventListener("pagehide", () => captureReadingPosition());
 
     updateGlossCount();
     updateFuriganaState();
