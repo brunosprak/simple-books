@@ -87,13 +87,10 @@ Produce natural Japanese fiction, not a sentence-by-sentence rendering of Englis
 - Never create a chunk whose Japanese surface consists only of punctuation, such as `。`, `、`, `！`, or `？`. Attach sentence-final or adjacent punctuation to the preceding lexical or grammatical chunk in both the surface and reading fields; keep that chunk's lexical gloss instead of adding a punctuation gloss.
 - During review, inspect the rendered card at large font sizes. If a chunk becomes a multi-line sentence-like block, re-evaluate whether it should be split further.
 
-## Reader Behavior and Compatibility
+## Reader Development
 
-- The shared reader template supports three modes: `Frases`, `Corrido`, and `Vertical`. `Frases` navigates sentence cards and paragraphs; `Corrido` shows the whole current chapter without chunks or interlinear translation; `Vertical` presents the same chapter with Japanese vertical writing.
-- Clicking Japanese text toggles furigana in every mode. Font controls must affect every mode. Sentence-mode swipes move by sentence; continuous-mode swipes move by chapter; vertical text scrolls horizontally, with chapter swipes confined to the toolbar so the gestures do not conflict.
-- In `Frases`, keep the previous/next-paragraph controls and show paragraph-boundary markers directly below the Japanese sentence and before chunks or Portuguese translation. Keep the mode selector available while scrolling.
-- Keep the positions of all three modes independent. Sentence index, continuous scroll, vertical horizontal position, current chapter, and furigana preference persist per book; the active mode and font level also survive reloads and are currently shared across readers.
-- The JSON backup downloaded as `dados-de-leitura.json` uses backup schema version `2` and contains marked glosses plus reader state. Imports must remain compatible with legacy schema version `1` gloss-only files. Apply version `2` reader state only to the matching `source_file`, validate the entire payload before mutating local state, and keep imports atomic on validation failure.
+- The reader's functional and compatibility requirements live in `docs/reader.md`. Read that document before changing reader behavior, browser storage, navigation, gestures, import/export, or accessibility-related UI.
+- Treat the rules in `docs/reader.md` as product invariants and cover behavior changes with tests. Do not use `AGENTS.md` as the sole specification for reader business rules.
 - `site/reader.template.html` is shared by every book. After changing it, regenerate and check every existing book reader, not only the book named in the request.
 
 ## Verification and Publishing
