@@ -97,6 +97,7 @@ Produce natural Japanese fiction, not a sentence-by-sentence rendering of Englis
 
 - After canonical JSON, builder, template, or generated-output changes, run `python3 -m unittest discover -s tests` and `git diff --check` in addition to each affected `tools/build_reader.py ... --check` command.
 - When JavaScript in the reader template changes, extract the generated module script and run `node --check` on it, or perform an equivalent syntax check. For interaction changes, verify the affected behavior in a locally served generated reader when practical.
+- Use `A Princess of Mars` (`site/princess-of-mars/`) as the reference book for manual and browser-based reader tests unless the work specifically requires different book data.
 - When asked to publish, commit the canonical source, template or builder changes, tests, and generated artifacts together. The repository workflow deploys `site/` after a successful push to `main`.
 - If the available GitHub credential cannot push `main` because it lacks `workflow` permission, do not alter or remove `.github/workflows/pages.yml` to work around it. Report the rejected `main` push and publish the committed `site/` snapshot directly with `git subtree split --prefix=site HEAD` followed by a non-force push of that commit to `gh-pages`.
 

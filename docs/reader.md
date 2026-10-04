@@ -31,8 +31,9 @@ The mode selector remains available while the reader scrolls and exposes three m
 
 - Shows the entire current chapter using Japanese vertical writing.
 - Preserves the same content and paragraph structure as `Corrido`.
-- The text area scrolls horizontally through the vertical columns.
-- Chapter-swipe gestures are limited to the toolbar so they do not conflict with horizontal text scrolling.
+- The vertical columns are divided into viewport-sized pages instead of exposing free horizontal scrolling.
+- Previous and next page controls, horizontal swipes over the text, and the left and right arrow keys turn pages.
+- Chapter-swipe gestures are limited to the toolbar so they do not conflict with page-turn gestures.
 
 ## Furigana and font size
 
@@ -48,7 +49,7 @@ Each mode keeps an independent reading position:
 
 - `Frases`: active sentence index and its chapter.
 - `Corrido`: current chapter and vertical page position.
-- `Vertical`: current chapter, page position, and horizontal column position.
+- `Vertical`: current chapter, page position, and vertical-writing page number.
 
 Switching modes restores the last position used in the destination mode. Reloading the page restores the active mode and that mode's saved position. Sentence and chapter positions are scoped to the current book; the active mode is currently shared across readers.
 
