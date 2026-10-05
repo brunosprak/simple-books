@@ -11,7 +11,7 @@ This document defines the user-visible behavior and compatibility requirements o
 
 ## Reading modes
 
-The mode selector remains available while the reader scrolls and exposes three modes.
+The mode selector appears in the normal document flow and exposes three modes.
 
 ### Frases
 

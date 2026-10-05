@@ -79,7 +79,7 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('>Frases</button>', first)
         self.assertIn('>Corrido</button>', first)
         self.assertIn('>Vertical</button>', first)
-        self.assertIn(".reading-mode-switch {\n      position: sticky;", first)
+        self.assertIn(".reading-mode-switch {", first)
         self.assertIn(".study-controls {", first)
         self.assertIn('class="study-controls"', first)
         self.assertNotIn(".study-controls {\n      position: sticky;", first)
@@ -139,7 +139,7 @@ class BuildReaderTests(unittest.TestCase):
         self.assertNotIn('content: "✓"', first)
         self.assertNotIn('id="reading-text"', first)
         self.assertIn("visibility: hidden", first)
-        self.assertIn("position: sticky", first)
+        self.assertNotIn("position: sticky", first)
         self.assertLess(
             first.index('id="study-previous"'),
             first.index('id="furigana-toggle"'),
