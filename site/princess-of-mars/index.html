@@ -494,6 +494,20 @@
 
     .selected-sentence.paragraph-start { text-indent: 1em; }
 
+    .next-paragraph-preview {
+      display: inline-block;
+      margin-inline-start: 0.4em;
+      color: var(--muted);
+      font-weight: 400;
+      text-indent: 0;
+      white-space: nowrap;
+    }
+
+    .next-paragraph-preview.measure {
+      margin: 0;
+      visibility: hidden;
+    }
+
     .selected-sentence:focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 0.35rem;
@@ -967,6 +981,7 @@
     let chapterReaderIndex = readingPositions[readingMode === "sentence" ? "continuous" : readingMode].chapterIndex;
     let restoringReadingPosition = false;
     let positionSaveFrame = null;
+    let nextParagraphPreviewFrame = null;
     const fontPercentages = [85, 100, 115, 130, 150];
     const defaultFontLevelIndex = 1;
     const minFontLevel = -defaultFontLevelIndex;
@@ -1130,6 +1145,9 @@
       if (readingMode === "vertical" && !chapterReader.hidden && chapterReadingText.childElementCount) {
         requestAnimationFrame(() => resetVerticalPagination(verticalPageIndex));
       }
+      if (readingMode === "sentence" && selectedSentence.childNodes.length) {
+        scheduleNextParagraphPreview();
+      }
     }
 
     fontDecrease.addEventListener("click", () => {
@@ -1226,6 +1244,9 @@
       const toggleLabel = "ふりがな " + (furiganaVisible ? "ON" : "OFF");
       furiganaToggle.textContent = toggleLabel;
       chapterFuriganaToggle.textContent = toggleLabel;
+      if (readingMode === "sentence" && selectedSentence.childNodes.length) {
+        scheduleNextParagraphPreview();
+      }
     }
 
     function renderFullChapter(chapterIndex, restorePosition = true) {
@@ -1374,6 +1395,84 @@
       captureReadingPosition();
     }
 
+    function finalBaseCharacterRect() {
+      const walker = document.createTreeWalker(selectedSentence, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          if (!node.nodeValue || node.parentElement?.closest("rt, .next-paragraph-preview")) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      let node = null;
+      let lastNode = null;
+      while ((node = walker.nextNode())) lastNode = node;
+      if (!lastNode) return null;
+
+      const range = document.createRange();
+      range.setStart(lastNode, lastNode.nodeValue.length - 1);
+      range.setEnd(lastNode, lastNode.nodeValue.length);
+      const rects = range.getClientRects();
+      return rects.length ? rects[rects.length - 1] : null;
+    }
+
+    function fittingPreviewPrefix(text, availableWidth) {
+      const measure = document.createElement("span");
+      measure.className = "next-paragraph-preview measure";
+      measure.setAttribute("aria-hidden", "true");
+      selectedSentence.append(measure);
+
+      let low = 0;
+      let high = [...text].length;
+      const characters = [...text];
+      while (low < high) {
+        const middle = Math.ceil((low + high) / 2);
+        measure.textContent = characters.slice(0, middle).join("");
+        if (measure.getBoundingClientRect().width <= availableWidth) {
+          low = middle;
+        } else {
+          high = middle - 1;
+        }
+      }
+      measure.remove();
+      return characters.slice(0, low).join("");
+    }
+
+    function renderNextParagraphPreview() {
+      selectedSentence.querySelector(".next-paragraph-preview")?.remove();
+      const activeParagraph = sentenceParagraphIndexes[activeIndex];
+      const sentenceInParagraph = activeIndex - paragraphSentenceStarts[activeParagraph];
+      const sentencesInParagraph = paragraphSentenceCounts[activeParagraph];
+      if (sentenceInParagraph !== sentencesInParagraph - 1 || activeIndex >= sentences.length - 1) return;
+
+      const finalCharacterRect = finalBaseCharacterRect();
+      if (!finalCharacterRect) return;
+      const sentenceRect = selectedSentence.getBoundingClientRect();
+      const fontSize = Number.parseFloat(getComputedStyle(selectedSentence).fontSize);
+      const gapWidth = fontSize * 0.4;
+      const availableWidth = sentenceRect.right - finalCharacterRect.right - gapWidth - 1;
+      if (availableWidth <= 0) return;
+
+      const previewText = fittingPreviewPrefix(sentences[activeIndex + 1].text, availableWidth);
+      if (!previewText) return;
+      const preview = document.createElement("span");
+      preview.className = "next-paragraph-preview";
+      preview.setAttribute("aria-hidden", "true");
+      preview.textContent = previewText;
+      selectedSentence.append(preview);
+    }
+
+    function scheduleNextParagraphPreview() {
+      if (nextParagraphPreviewFrame !== null) cancelAnimationFrame(nextParagraphPreviewFrame);
+      const renderedIndex = activeIndex;
+      nextParagraphPreviewFrame = requestAnimationFrame(() => {
+        nextParagraphPreviewFrame = null;
+        if (readingMode === "sentence" && activeIndex === renderedIndex) {
+          renderNextParagraphPreview();
+        }
+      });
+    }
+
     function renderCard(index) {
       activeIndex = index;
       saveActiveIndex();
@@ -1410,6 +1509,7 @@
       if (cursor < sentence.text.length) {
         selectedSentence.append(document.createTextNode(sentence.text.slice(cursor)));
       }
+      scheduleNextParagraphPreview();
 
       sentenceTranslation.textContent = sentence.pt;
       interlinear.replaceChildren();
@@ -1733,6 +1833,7 @@
     chapterReadingViewport.addEventListener("scroll", scheduleReadingPositionSave, { passive: true });
     window.addEventListener("resize", () => {
       if (readingMode === "vertical") requestAnimationFrame(() => resetVerticalPagination(verticalPageIndex));
+      if (readingMode === "sentence") scheduleNextParagraphPreview();
     });
     window.addEventListener("pagehide", () => captureReadingPosition());
 

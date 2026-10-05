@@ -153,6 +153,12 @@ class BuildReaderTests(unittest.TestCase):
             'selectedSentence.classList.toggle("paragraph-start", sentenceInParagraph === 0)',
             first,
         )
+        self.assertIn(".next-paragraph-preview {", first)
+        self.assertIn("function fittingPreviewPrefix", first)
+        self.assertIn("function renderNextParagraphPreview", first)
+        self.assertIn("sentenceInParagraph !== sentencesInParagraph - 1", first)
+        self.assertIn('preview.setAttribute("aria-hidden", "true")', first)
+        self.assertIn("scheduleNextParagraphPreview();", first)
         self.assertLess(
             first.index('id="selected-sentence"'),
             first.index('id="paragraph-end"'),
