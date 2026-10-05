@@ -143,7 +143,8 @@ class BuildReaderTests(unittest.TestCase):
             "Deslize para a direita para Frases ou para a esquerda para Vertical.",
             first,
         )
-        self.assertIn('id="paragraph-boundary"', first)
+        self.assertNotIn('id="paragraph-boundary"', first)
+        self.assertNotIn("Novo parágrafo", first)
         self.assertNotIn('id="paragraph-end"', first)
         self.assertNotIn("Fim do parágrafo", first)
         self.assertIn(".paragraph-end-mark {", first)
