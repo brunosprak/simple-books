@@ -494,7 +494,7 @@
 
     .selected-sentence.paragraph-start { text-indent: 1em; }
 
-    .next-paragraph-preview {
+    .next-sentence-preview {
       display: inline-block;
       margin-inline-start: 0.4em;
       color: var(--muted);
@@ -503,7 +503,7 @@
       white-space: nowrap;
     }
 
-    .next-paragraph-preview.measure {
+    .next-sentence-preview.measure {
       margin: 0;
       visibility: hidden;
     }
@@ -976,7 +976,7 @@
     let chapterReaderIndex = readingPositions[readingMode === "sentence" ? "continuous" : readingMode].chapterIndex;
     let restoringReadingPosition = false;
     let positionSaveFrame = null;
-    let nextParagraphPreviewFrame = null;
+    let nextSentencePreviewFrame = null;
     const fontPercentages = __FONT_LEVELS_JSON__;
     const defaultFontLevelIndex = __DEFAULT_FONT_INDEX__;
     const minFontLevel = -defaultFontLevelIndex;
@@ -1141,7 +1141,7 @@
         requestAnimationFrame(() => resetVerticalPagination(verticalPageIndex));
       }
       if (readingMode === "sentence" && selectedSentence.childNodes.length) {
-        scheduleNextParagraphPreview();
+        scheduleNextSentencePreview();
       }
     }
 
@@ -1240,7 +1240,7 @@
       furiganaToggle.textContent = toggleLabel;
       chapterFuriganaToggle.textContent = toggleLabel;
       if (readingMode === "sentence" && selectedSentence.childNodes.length) {
-        scheduleNextParagraphPreview();
+        scheduleNextSentencePreview();
       }
     }
 
@@ -1393,7 +1393,7 @@
     function finalBaseCharacterRect() {
       const walker = document.createTreeWalker(selectedSentence, NodeFilter.SHOW_TEXT, {
         acceptNode(node) {
-          if (!node.nodeValue || node.parentElement?.closest("rt, .next-paragraph-preview")) {
+          if (!node.nodeValue || node.parentElement?.closest("rt, .next-sentence-preview")) {
             return NodeFilter.FILTER_REJECT;
           }
           return NodeFilter.FILTER_ACCEPT;
@@ -1413,7 +1413,7 @@
 
     function fittingPreviewPrefix(text, availableWidth) {
       const measure = document.createElement("span");
-      measure.className = "next-paragraph-preview measure";
+      measure.className = "next-sentence-preview measure";
       measure.setAttribute("aria-hidden", "true");
       selectedSentence.append(measure);
 
@@ -1433,12 +1433,12 @@
       return characters.slice(0, low).join("");
     }
 
-    function renderNextParagraphPreview() {
-      selectedSentence.querySelector(".next-paragraph-preview")?.remove();
+    function renderNextSentencePreview() {
+      selectedSentence.querySelector(".next-sentence-preview")?.remove();
       const activeParagraph = sentenceParagraphIndexes[activeIndex];
       const sentenceInParagraph = activeIndex - paragraphSentenceStarts[activeParagraph];
       const sentencesInParagraph = paragraphSentenceCounts[activeParagraph];
-      if (sentenceInParagraph !== sentencesInParagraph - 1 || activeIndex >= sentences.length - 1) return;
+      if (sentenceInParagraph >= sentencesInParagraph - 1 || activeIndex >= sentences.length - 1) return;
 
       const finalCharacterRect = finalBaseCharacterRect();
       if (!finalCharacterRect) return;
@@ -1451,19 +1451,19 @@
       const previewText = fittingPreviewPrefix(sentences[activeIndex + 1].text, availableWidth);
       if (!previewText) return;
       const preview = document.createElement("span");
-      preview.className = "next-paragraph-preview";
+      preview.className = "next-sentence-preview";
       preview.setAttribute("aria-hidden", "true");
       preview.textContent = previewText;
       selectedSentence.append(preview);
     }
 
-    function scheduleNextParagraphPreview() {
-      if (nextParagraphPreviewFrame !== null) cancelAnimationFrame(nextParagraphPreviewFrame);
+    function scheduleNextSentencePreview() {
+      if (nextSentencePreviewFrame !== null) cancelAnimationFrame(nextSentencePreviewFrame);
       const renderedIndex = activeIndex;
-      nextParagraphPreviewFrame = requestAnimationFrame(() => {
-        nextParagraphPreviewFrame = null;
+      nextSentencePreviewFrame = requestAnimationFrame(() => {
+        nextSentencePreviewFrame = null;
         if (readingMode === "sentence" && activeIndex === renderedIndex) {
-          renderNextParagraphPreview();
+          renderNextSentencePreview();
         }
       });
     }
@@ -1504,7 +1504,7 @@
       if (cursor < sentence.text.length) {
         selectedSentence.append(document.createTextNode(sentence.text.slice(cursor)));
       }
-      scheduleNextParagraphPreview();
+      scheduleNextSentencePreview();
 
       sentenceTranslation.textContent = sentence.pt;
       interlinear.replaceChildren();
@@ -1828,7 +1828,7 @@
     chapterReadingViewport.addEventListener("scroll", scheduleReadingPositionSave, { passive: true });
     window.addEventListener("resize", () => {
       if (readingMode === "vertical") requestAnimationFrame(() => resetVerticalPagination(verticalPageIndex));
-      if (readingMode === "sentence") scheduleNextParagraphPreview();
+      if (readingMode === "sentence") scheduleNextSentencePreview();
     });
     window.addEventListener("pagehide", () => captureReadingPosition());
 
