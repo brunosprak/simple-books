@@ -464,21 +464,16 @@
       content: "";
     }
 
-    .paragraph-end {
-      margin: 1.25rem 0 0;
-      padding-top: 0.75rem;
+    .paragraph-end-mark {
+      margin-inline-start: 0.25em;
       color: var(--muted);
-      border-top: 1px solid var(--rule);
       font-family: system-ui, sans-serif;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-align: center;
-      text-transform: uppercase;
+      font-size: 0.72em;
+      font-weight: 500;
+      white-space: nowrap;
     }
 
-    .paragraph-boundary[hidden],
-    .paragraph-end[hidden] {
+    .paragraph-boundary[hidden] {
       display: none;
     }
 
@@ -857,7 +852,6 @@
         </div>
         <p class="paragraph-boundary" id="paragraph-boundary" hidden>Novo parágrafo</p>
         <p class="selected-sentence" id="selected-sentence" lang="ja" role="button" tabindex="0" aria-label="Alternar furigana" aria-pressed="true"></p>
-        <p class="paragraph-end" id="paragraph-end" hidden>Fim do parágrafo</p>
         <div class="interlinear" id="interlinear"></div>
         <p class="sentence-translation" id="sentence-translation" lang="pt-BR"></p>
       </section>
@@ -902,7 +896,6 @@
     const panel = document.querySelector("#study-panel");
     const label = document.querySelector("#study-label");
     const paragraphBoundary = document.querySelector("#paragraph-boundary");
-    const paragraphEnd = document.querySelector("#paragraph-end");
     const selectedSentence = document.querySelector("#selected-sentence");
     const sentenceTranslation = document.querySelector("#sentence-translation");
     const interlinear = document.querySelector("#interlinear");
@@ -1486,7 +1479,6 @@
       chapterSelect.value = String(activeChapter);
       label.textContent = `Parágrafo ${activeParagraph + 1} de ${paragraphs.length} · frase ${sentenceInParagraph + 1} de ${sentencesInParagraph}`;
       paragraphBoundary.hidden = activeParagraph === 0 || sentenceInParagraph !== 0;
-      paragraphEnd.hidden = sentenceInParagraph !== sentencesInParagraph - 1;
       selectedSentence.classList.toggle("paragraph-start", sentenceInParagraph === 0);
       selectedSentence.replaceChildren();
 
@@ -1503,6 +1495,13 @@
 
       if (cursor < sentence.text.length) {
         selectedSentence.append(document.createTextNode(sentence.text.slice(cursor)));
+      }
+      if (sentenceInParagraph === sentencesInParagraph - 1) {
+        const paragraphEndMark = document.createElement("span");
+        paragraphEndMark.className = "paragraph-end-mark";
+        paragraphEndMark.setAttribute("aria-hidden", "true");
+        paragraphEndMark.textContent = "\u2060¶";
+        selectedSentence.append(paragraphEndMark);
       }
       scheduleNextSentencePreview();
 
