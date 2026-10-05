@@ -1243,7 +1243,7 @@
       verticalPageControls.hidden = readingMode !== "vertical";
       chapterSwipeHint.textContent = readingMode === "vertical"
         ? "Deslize o texto para a direita para avançar; deslize na barra acima para trocar de capítulo."
-        : "Deslize para trocar de capítulo.";
+        : "Deslize para a direita para Frases ou para a esquerda para Vertical.";
       if (readingMode !== "vertical") {
         chapterReadingViewport.style.width = "";
         chapterReadingText.style.paddingLeft = "";
@@ -1678,7 +1678,11 @@
       event.preventDefault();
       suppressChapterClick = true;
       setTimeout(() => { suppressChapterClick = false; }, 0);
-      navigateChapter(horizontalDistance < 0 ? 1 : -1);
+      if (readingMode === "continuous") {
+        setReadingMode(horizontalDistance < 0 ? "vertical" : "sentence");
+      } else {
+        navigateChapter(horizontalDistance < 0 ? 1 : -1);
+      }
     });
 
     chapterReader.addEventListener("pointercancel", (event) => {
