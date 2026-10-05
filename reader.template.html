@@ -841,9 +841,9 @@
           <div class="chapter-reading-text" id="chapter-reading-text" lang="ja" role="button" tabindex="0" aria-label="Alternar furigana" aria-pressed="true"></div>
         </div>
         <nav class="vertical-page-controls" id="vertical-page-controls" aria-label="Navegação entre páginas" hidden>
-          <button class="chapter-nav-button" id="vertical-page-previous" type="button" aria-label="Página anterior">Anterior</button>
-          <p class="vertical-page-status" id="vertical-page-status" aria-live="polite">Página 1 de 1</p>
           <button class="chapter-nav-button" id="vertical-page-next" type="button" aria-label="Próxima página">Próxima</button>
+          <p class="vertical-page-status" id="vertical-page-status" aria-live="polite">Página 1 de 1</p>
+          <button class="chapter-nav-button" id="vertical-page-previous" type="button" aria-label="Página anterior">Anterior</button>
         </nav>
         <p class="chapter-swipe-hint" id="chapter-swipe-hint">Deslize para trocar de capítulo.</p>
       </section>
@@ -1230,6 +1230,25 @@
       chapterPreviousButton.disabled = chapterIndex === 0;
       chapterNextButton.disabled = chapterIndex === chapters.length - 1;
       chapterReader.classList.toggle("vertical", readingMode === "vertical");
+      if (readingMode === "vertical") {
+        chapterNextButton.textContent = "← 章";
+        chapterPreviousButton.textContent = "章 →";
+        chapterReaderToolbar.append(
+          chapterNextButton,
+          chapterReaderTitle,
+          chapterFuriganaToggle,
+          chapterPreviousButton
+        );
+      } else {
+        chapterPreviousButton.textContent = "← 章";
+        chapterNextButton.textContent = "章 →";
+        chapterReaderToolbar.append(
+          chapterPreviousButton,
+          chapterReaderTitle,
+          chapterFuriganaToggle,
+          chapterNextButton
+        );
+      }
       verticalPageControls.hidden = readingMode !== "vertical";
       chapterSwipeHint.textContent = readingMode === "vertical"
         ? "Deslize o texto para a direita para avançar; deslize na barra acima para trocar de capítulo."
