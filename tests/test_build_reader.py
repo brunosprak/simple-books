@@ -150,8 +150,12 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn(".paragraph-end-mark {", first)
         self.assertIn('paragraphEndMark.textContent = "\\u2060¶"', first)
         self.assertIn("paragraphSentenceStarts", first)
+        self.assertIn("chapterParagraphStarts", first)
+        self.assertIn("chapterParagraphCounts", first)
         self.assertIn("sentenceParagraphIndexes", first)
         self.assertIn("sentenceInParagraph + 1", first)
+        self.assertIn("paragraphInChapter + 1", first)
+        self.assertIn("chapterParagraphCounts[activeChapter]", first)
         self.assertIn(".selected-sentence.paragraph-start { text-indent: 1em; }", first)
         self.assertIn(
             'selectedSentence.classList.toggle("paragraph-start", sentenceInParagraph === 0)',
