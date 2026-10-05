@@ -907,6 +907,8 @@
       document.querySelector("#page-footer").textContent = bookData.page.footer;
     }
     const chapterSentenceStarts = [];
+    const chapterParagraphStarts = [];
+    const chapterParagraphCounts = [];
     const paragraphSentenceStarts = [];
     const paragraphSentenceCounts = [];
     const sentenceParagraphIndexes = [];
@@ -914,6 +916,8 @@
     let sentenceTotal = 0;
     chapters.forEach((chapter) => {
       chapterSentenceStarts.push(sentenceTotal);
+      chapterParagraphStarts.push(paragraphs.length);
+      chapterParagraphCounts.push(chapter.paragraphs.length);
       chapter.paragraphs.forEach((paragraph) => {
         const paragraphIndex = paragraphs.length;
         paragraphSentenceStarts.push(sentenceTotal);
@@ -1449,8 +1453,9 @@
       chapterSentenceStarts.forEach((start, index) => {
         if (start <= activeIndex) activeChapter = index;
       });
+      const paragraphInChapter = activeParagraph - chapterParagraphStarts[activeChapter];
       chapterSelect.value = String(activeChapter);
-      label.textContent = `Parágrafo ${activeParagraph + 1} de ${paragraphs.length} · frase ${sentenceInParagraph + 1} de ${sentencesInParagraph}`;
+      label.textContent = `Parágrafo ${paragraphInChapter + 1} de ${chapterParagraphCounts[activeChapter]} · frase ${sentenceInParagraph + 1} de ${sentencesInParagraph}`;
       selectedSentence.classList.toggle("paragraph-start", sentenceInParagraph === 0);
       selectedSentence.replaceChildren();
 
