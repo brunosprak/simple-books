@@ -80,6 +80,14 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('>Corrido</button>', first)
         self.assertIn('>Vertical</button>', first)
         self.assertIn(".reading-mode-switch {", first)
+        self.assertGreater(
+            first.index('id="font-decrease"'),
+            first.index("</article>"),
+        )
+        self.assertLess(
+            first.index('id="font-increase"'),
+            first.index('id="page-footer"'),
+        )
         self.assertIn(".study-controls {", first)
         self.assertIn('class="study-controls"', first)
         self.assertNotIn(".study-controls {\n      position: sticky;", first)

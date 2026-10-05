@@ -44,6 +44,7 @@ The mode selector appears in the normal document flow and exposes three modes.
 - Clicking or activating Japanese text toggles furigana in every mode.
 - The explicit furigana control and the Japanese text remain synchronized.
 - Furigana visibility persists per book across mode changes and page reloads.
+- The font-size controls appear at the end of the reader content, immediately before the page footer.
 - Font-size controls affect Japanese text in all three modes.
 - The selected font level survives mode changes and page reloads and is currently shared across readers.
 
