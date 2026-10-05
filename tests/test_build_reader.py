@@ -80,6 +80,13 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('>Corrido</button>', first)
         self.assertIn('>Vertical</button>', first)
         self.assertIn(".reading-mode-switch {\n      position: sticky;", first)
+        self.assertIn(".study-sticky-controls {\n      position: sticky;", first)
+        self.assertIn("top: 4.4rem;", first)
+        self.assertIn('class="study-sticky-controls"', first)
+        self.assertLess(
+            first.index('class="study-topline"'),
+            first.index('class="gloss-tools"'),
+        )
         self.assertIn("simple-ja-books:reading-positions:v1:", first)
         self.assertIn("function captureReadingPosition", first)
         self.assertIn("function restoreSentencePosition", first)
