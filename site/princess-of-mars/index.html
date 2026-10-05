@@ -58,6 +58,11 @@
       text-transform: uppercase;
     }
 
+    .eyebrow:empty,
+    .study-hint:empty {
+      display: none;
+    }
+
     h1 {
       margin: 0;
       font-size: clamp(2.2rem, 8vw, 4.25rem);
@@ -373,17 +378,9 @@
       touch-action: pan-y;
     }
 
-    .study-sticky-controls {
-      position: sticky;
-      top: 4.4rem;
-      z-index: 19;
+    .study-controls {
       margin: -0.75rem -0.75rem 1rem;
       padding: 0.75rem;
-      background: color-mix(in srgb, var(--panel) 96%, transparent);
-      border: 1px solid color-mix(in srgb, var(--rule) 72%, transparent);
-      border-radius: 0.5rem;
-      box-shadow: 0 0.35rem 1.2rem rgb(20 25 22 / 8%);
-      backdrop-filter: blur(0.6rem);
     }
 
     .study-topline {
@@ -809,7 +806,7 @@
 <body>
   <main>
     <header>
-      <p class="eyebrow" id="page-eyebrow">日本語で読む世界の名作</p>
+      <p class="eyebrow" id="page-eyebrow"></p>
       <h1 id="page-title">火星のプリンセス</h1>
       <p class="author" id="page-author">エドガー・ライス・バローズ</p>
       <div class="reader-controls" aria-label="Controles de tamanho do texto">
@@ -829,12 +826,12 @@
         <button class="reading-mode-button" type="button" data-reading-mode="vertical" aria-pressed="false">Vertical</button>
       </nav>
 
-      <p class="study-hint" id="study-hint">文を選ぶと、日本語の読み方とポルトガル語の意味を確認できます。</p>
+      <p class="study-hint" id="study-hint"></p>
 
       <noscript><p>このページを表示するにはJavaScriptを有効にしてください。</p></noscript>
 
       <section class="study-panel" id="study-panel" aria-live="polite">
-        <div class="study-sticky-controls">
+        <div class="study-controls">
           <div class="study-topline">
             <p class="study-label" id="study-label">Interlinear</p>
             <div class="study-actions" aria-label="Navegação entre frases e parágrafos">

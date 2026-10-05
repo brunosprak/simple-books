@@ -54,12 +54,13 @@ def validate_data(data: Any) -> dict[str, Any]:
     for key in (
         "title",
         "author",
-        "eyebrow",
         "description",
-        "study_hint",
         "footer",
     ):
         require_string(page, key, "page")
+    for key in ("eyebrow", "study_hint"):
+        if not isinstance(page.get(key), str):
+            raise BuildError(f"page.{key} must be a string")
 
     levels = page.get("font_levels_percent")
     if (

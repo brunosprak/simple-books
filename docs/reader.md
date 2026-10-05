@@ -16,7 +16,7 @@ The mode selector remains available while the reader scrolls and exposes three m
 ### Frases
 
 - Shows one Japanese sentence at a time with furigana, interlinear chunks, concise Portuguese glosses, and the full Portuguese translation.
-- The sentence/paragraph navigation and gloss import/export row remain fixed below the mode selector while the sentence content scrolls.
+- The sentence/paragraph navigation and gloss import/export row appear in the normal document flow before the sentence content.
 - Previous and next controls move by sentence.
 - `−1¶` and `＋1¶` move to the previous or next paragraph.
 - A horizontal swipe moves by sentence.

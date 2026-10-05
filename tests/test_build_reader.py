@@ -80,9 +80,9 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('>Corrido</button>', first)
         self.assertIn('>Vertical</button>', first)
         self.assertIn(".reading-mode-switch {\n      position: sticky;", first)
-        self.assertIn(".study-sticky-controls {\n      position: sticky;", first)
-        self.assertIn("top: 4.4rem;", first)
-        self.assertIn('class="study-sticky-controls"', first)
+        self.assertIn(".study-controls {", first)
+        self.assertIn('class="study-controls"', first)
+        self.assertNotIn(".study-controls {\n      position: sticky;", first)
         self.assertLess(
             first.index('class="study-topline"'),
             first.index('class="gloss-tools"'),
@@ -158,6 +158,18 @@ class BuildReaderTests(unittest.TestCase):
             build_reader.BuildError, "uncovered text|absent or out of order"
         ):
             build_reader.validate_data(invalid)
+
+    def test_optional_page_labels_may_be_empty(self) -> None:
+        data = copy.deepcopy(self.data)
+        data["page"]["eyebrow"] = ""
+        data["page"]["study_hint"] = ""
+
+        validated = build_reader.validate_data(data)
+        output = build_reader.render(validated, self.template)
+
+        self.assertIn('<p class="eyebrow" id="page-eyebrow"></p>', output)
+        self.assertIn('<p class="study-hint" id="study-hint"></p>', output)
+        self.assertIn(".eyebrow:empty", output)
 
     def test_validation_rejects_uncovered_sentence_text(self) -> None:
         invalid = copy.deepcopy(self.data)
