@@ -373,15 +373,25 @@
       touch-action: pan-y;
     }
 
-    .study-topline {
+    .study-sticky-controls {
       position: sticky;
-      top: 0.5rem;
-      z-index: 10;
+      top: 4.4rem;
+      z-index: 19;
+      margin: -0.75rem -0.75rem 1rem;
+      padding: 0.75rem;
+      background: color-mix(in srgb, var(--panel) 96%, transparent);
+      border: 1px solid color-mix(in srgb, var(--rule) 72%, transparent);
+      border-radius: 0.5rem;
+      box-shadow: 0 0.35rem 1.2rem rgb(20 25 22 / 8%);
+      backdrop-filter: blur(0.6rem);
+    }
+
+    .study-topline {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
-      margin: -0.75rem -0.75rem 1rem;
+      margin: 0 0 0.75rem;
       padding: 0.75rem;
       background: color-mix(in srgb, var(--panel) 94%, transparent);
       border: 1px solid color-mix(in srgb, var(--rule) 72%, transparent);
@@ -579,7 +589,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 0.35rem;
-      margin: 0 0 0.9rem;
+      margin: 0;
       color: var(--muted);
       font-family: system-ui, sans-serif;
       font-size: 0.75rem;
@@ -655,7 +665,7 @@
       }
 
       .study-topline {
-        margin-bottom: 1.75rem;
+        margin-bottom: 1rem;
       }
 
       .study-nav {
@@ -824,21 +834,23 @@
       <noscript><p>このページを表示するにはJavaScriptを有効にしてください。</p></noscript>
 
       <section class="study-panel" id="study-panel" aria-live="polite">
-        <div class="study-topline">
-          <p class="study-label" id="study-label">Interlinear</p>
-          <div class="study-actions" aria-label="Navegação entre frases e parágrafos">
-            <button class="study-nav" id="study-previous-paragraph" type="button" aria-label="Parágrafo anterior" title="Parágrafo anterior">−1¶</button>
-            <button class="study-nav" id="study-previous" type="button" aria-label="Frase anterior">←</button>
-            <button class="study-nav furigana-toggle" id="furigana-toggle" type="button" aria-pressed="true">ふりがな ON</button>
-            <button class="study-nav" id="study-next" type="button" aria-label="Próxima frase">→</button>
-            <button class="study-nav" id="study-next-paragraph" type="button" aria-label="Próximo parágrafo" title="Próximo parágrafo">＋1¶</button>
+        <div class="study-sticky-controls">
+          <div class="study-topline">
+            <p class="study-label" id="study-label">Interlinear</p>
+            <div class="study-actions" aria-label="Navegação entre frases e parágrafos">
+              <button class="study-nav" id="study-previous-paragraph" type="button" aria-label="Parágrafo anterior" title="Parágrafo anterior">−1¶</button>
+              <button class="study-nav" id="study-previous" type="button" aria-label="Frase anterior">←</button>
+              <button class="study-nav furigana-toggle" id="furigana-toggle" type="button" aria-pressed="true">ふりがな ON</button>
+              <button class="study-nav" id="study-next" type="button" aria-label="Próxima frase">→</button>
+              <button class="study-nav" id="study-next-paragraph" type="button" aria-label="Próximo parágrafo" title="Próximo parágrafo">＋1¶</button>
+            </div>
           </div>
-        </div>
-        <div class="gloss-tools" aria-label="Glosses marcados">
-          <span class="gloss-count" id="gloss-count">0 glosses marcados</span>
-          <button class="gloss-tool-button" id="gloss-export" type="button" aria-label="Exportar dados de leitura em JSON" title="Exportar dados de leitura em JSON">↓ JSON</button>
-          <button class="gloss-tool-button" id="gloss-import" type="button" aria-label="Importar dados de leitura em JSON" title="Importar dados de leitura em JSON">↑ JSON</button>
-          <input id="gloss-import-file" type="file" accept="application/json,.json" hidden>
+          <div class="gloss-tools" aria-label="Glosses marcados">
+            <span class="gloss-count" id="gloss-count">0 glosses marcados</span>
+            <button class="gloss-tool-button" id="gloss-export" type="button" aria-label="Exportar dados de leitura em JSON" title="Exportar dados de leitura em JSON">↓ JSON</button>
+            <button class="gloss-tool-button" id="gloss-import" type="button" aria-label="Importar dados de leitura em JSON" title="Importar dados de leitura em JSON">↑ JSON</button>
+            <input id="gloss-import-file" type="file" accept="application/json,.json" hidden>
+          </div>
         </div>
         <p class="paragraph-boundary" id="paragraph-boundary" hidden>Novo parágrafo</p>
         <p class="selected-sentence" id="selected-sentence" lang="ja" role="button" tabindex="0" aria-label="Alternar furigana" aria-pressed="true"></p>
