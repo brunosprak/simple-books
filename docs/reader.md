@@ -18,8 +18,9 @@ The mode selector appears in the normal document flow and exposes three modes.
 - Shows one Japanese sentence at a time with furigana, interlinear chunks, concise Portuguese glosses, and the full Portuguese translation.
 - The sentence/paragraph navigation and gloss import/export row appear in the normal document flow before the sentence content.
 - Previous and next controls move by sentence.
-- `−1¶` and `＋1¶` move to the previous or next paragraph.
+- `−¶` and `＋¶` move to the previous or next paragraph.
 - A horizontal swipe moves by sentence.
+- The Japanese sentence has a first-line indent only when it is the first sentence of a paragraph.
 - Paragraph-boundary markers appear directly below the Japanese sentence and before the chunks or Portuguese translation.
 
 ### Corrido

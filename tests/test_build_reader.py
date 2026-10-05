@@ -40,6 +40,10 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('id="study-next"', first)
         self.assertIn('id="study-previous-paragraph"', first)
         self.assertIn('id="study-next-paragraph"', first)
+        self.assertIn('>−¶</button>', first)
+        self.assertIn('>＋¶</button>', first)
+        self.assertNotIn('>−1¶</button>', first)
+        self.assertNotIn('>＋1¶</button>', first)
         self.assertIn('id="chapter-select"', first)
         self.assertIn('id="furigana-toggle"', first)
         self.assertIn('id="gloss-export"', first)
@@ -144,6 +148,11 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn("paragraphSentenceStarts", first)
         self.assertIn("sentenceParagraphIndexes", first)
         self.assertIn("sentenceInParagraph + 1", first)
+        self.assertIn(".selected-sentence.paragraph-start { text-indent: 1em; }", first)
+        self.assertIn(
+            'selectedSentence.classList.toggle("paragraph-start", sentenceInParagraph === 0)',
+            first,
+        )
         self.assertLess(
             first.index('id="selected-sentence"'),
             first.index('id="paragraph-end"'),
