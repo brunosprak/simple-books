@@ -169,20 +169,15 @@
     }
 
     .reading-mode-switch {
-      position: sticky;
-      top: 0.5rem;
-      z-index: 20;
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 0.45rem;
       margin: -1rem 0 2rem;
       padding: 0.45rem;
-      background: color-mix(in srgb, var(--paper) 92%, transparent);
+      background: var(--paper);
       border: 1px solid color-mix(in srgb, var(--rule) 72%, transparent);
       border-radius: 999px;
-      box-shadow: 0 0.35rem 1.2rem rgb(20 25 22 / 8%);
       font-family: system-ui, sans-serif;
-      backdrop-filter: blur(0.6rem);
     }
 
     .reading-mode-button {
