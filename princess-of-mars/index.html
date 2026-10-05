@@ -489,7 +489,10 @@
       font-weight: 600;
       line-height: 2.5;
       text-align: left;
+      text-indent: 0;
     }
+
+    .selected-sentence.paragraph-start { text-indent: 1em; }
 
     .selected-sentence:focus-visible {
       outline: 2px solid var(--accent);
@@ -824,11 +827,11 @@
           <div class="study-topline">
             <p class="study-label" id="study-label">Interlinear</p>
             <div class="study-actions" aria-label="Navegação entre frases e parágrafos">
-              <button class="study-nav" id="study-previous-paragraph" type="button" aria-label="Parágrafo anterior" title="Parágrafo anterior">−1¶</button>
+              <button class="study-nav" id="study-previous-paragraph" type="button" aria-label="Parágrafo anterior" title="Parágrafo anterior">−¶</button>
               <button class="study-nav" id="study-previous" type="button" aria-label="Frase anterior">←</button>
               <button class="study-nav furigana-toggle" id="furigana-toggle" type="button" aria-pressed="true">ふりがな ON</button>
               <button class="study-nav" id="study-next" type="button" aria-label="Próxima frase">→</button>
-              <button class="study-nav" id="study-next-paragraph" type="button" aria-label="Próximo parágrafo" title="Próximo parágrafo">＋1¶</button>
+              <button class="study-nav" id="study-next-paragraph" type="button" aria-label="Próximo parágrafo" title="Próximo parágrafo">＋¶</button>
             </div>
           </div>
           <div class="gloss-tools" aria-label="Glosses marcados">
@@ -1390,6 +1393,7 @@
       label.textContent = `Parágrafo ${activeParagraph + 1} de ${paragraphs.length} · frase ${sentenceInParagraph + 1} de ${sentencesInParagraph}`;
       paragraphBoundary.hidden = activeParagraph === 0 || sentenceInParagraph !== 0;
       paragraphEnd.hidden = sentenceInParagraph !== sentencesInParagraph - 1;
+      selectedSentence.classList.toggle("paragraph-start", sentenceInParagraph === 0);
       selectedSentence.replaceChildren();
 
       let cursor = 0;
