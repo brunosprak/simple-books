@@ -804,12 +804,6 @@
       <p class="eyebrow" id="page-eyebrow">{{EYEBROW}}</p>
       <h1 id="page-title">{{TITLE}}</h1>
       <p class="author" id="page-author">{{AUTHOR}}</p>
-      <div class="reader-controls" aria-label="Controles de tamanho do texto">
-        <span class="reader-controls-label">文字サイズ</span>
-        <button class="font-button" id="font-decrease" type="button" aria-label="Diminuir o texto japonês">A−</button>
-        <output class="font-level" id="font-level" aria-live="polite">100%</output>
-        <button class="font-button" id="font-increase" type="button" aria-label="Aumentar o texto japonês">A＋</button>
-      </div>
     </header>
 
     <article>
@@ -869,6 +863,13 @@
         <p class="chapter-swipe-hint" id="chapter-swipe-hint">Deslize para trocar de capítulo.</p>
       </section>
     </article>
+
+    <div class="reader-controls" aria-label="Controles de tamanho do texto">
+      <span class="reader-controls-label">文字サイズ</span>
+      <button class="font-button" id="font-decrease" type="button" aria-label="Diminuir o texto japonês">A−</button>
+      <output class="font-level" id="font-level" aria-live="polite">100%</output>
+      <button class="font-button" id="font-increase" type="button" aria-label="Aumentar o texto japonês">A＋</button>
+    </div>
 
     <footer id="page-footer">{{FOOTER}}</footer>
   </main>
