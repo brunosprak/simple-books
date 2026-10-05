@@ -32,7 +32,9 @@ The mode selector remains available while the reader scrolls and exposes three m
 - Shows the entire current chapter using Japanese vertical writing.
 - Preserves the same content and paragraph structure as `Corrido`.
 - The vertical columns are divided into viewport-sized pages instead of exposing free horizontal scrolling.
-- Previous and next page controls, horizontal swipes over the text, and the left and right arrow keys turn pages.
+- Page boundaries always fall between complete vertical columns; a column is never clipped or divided between pages.
+- Swiping the text to the right or pressing the right arrow advances to the next page; the opposite directions return to the previous page.
+- Previous and next page controls provide the same navigation without gestures.
 - Chapter-swipe gestures are limited to the toolbar so they do not conflict with page-turn gestures.
 
 ## Furigana and font size
