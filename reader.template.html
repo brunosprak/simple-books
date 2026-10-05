@@ -274,24 +274,28 @@
     .chapter-reading-text.furigana-hidden rt { visibility: hidden; }
     .chapter-reader.vertical { touch-action: auto; }
     .chapter-reader.vertical .chapter-reading-viewport {
+      position: relative;
       height: min(72vh, 44rem);
       overflow-x: hidden;
       overflow-y: hidden;
-      padding: 0.5rem;
+      margin-inline: auto;
       overscroll-behavior-x: contain;
       touch-action: pan-y;
     }
     .chapter-reader.vertical .chapter-reading-text {
+      position: absolute;
+      top: 0;
+      right: 0;
       width: max-content;
       min-width: 100%;
       height: 100%;
-      padding-left: 1rem;
       line-height: 2.25;
       text-orientation: mixed;
+      transform: translateX(0);
       writing-mode: vertical-rl;
     }
     .chapter-reader.vertical .chapter-reading-text p {
-      margin: 0 0 0 2em;
+      margin: 0 0 0 2.25em;
       text-align: justify;
     }
     .vertical-page-controls {
@@ -1233,8 +1237,12 @@
       chapterReader.classList.toggle("vertical", readingMode === "vertical");
       verticalPageControls.hidden = readingMode !== "vertical";
       chapterSwipeHint.textContent = readingMode === "vertical"
-        ? "Vire a página pelos botões ou deslizando o texto; deslize na barra acima para trocar de capítulo."
+        ? "Deslize o texto para a direita para avançar; deslize na barra acima para trocar de capítulo."
         : "Deslize para trocar de capítulo.";
+      if (readingMode !== "vertical") {
+        chapterReadingViewport.style.width = "";
+        chapterReadingText.style.transform = "";
+      }
       chapterReadingText.replaceChildren();
       chapters[chapterIndex].paragraphs.forEach((paragraph) => {
         const paragraphElement = document.createElement("p");
@@ -1296,7 +1304,7 @@
 
     let verticalPageIndex = readingPositions.vertical.verticalPageIndex;
     let verticalPageCount = 1;
-    let verticalStartScrollLeft = 0;
+    let verticalPageWidth = 1;
 
     function updateVerticalPageControls() {
       verticalPagePrevious.disabled = verticalPageIndex === 0;
@@ -1305,20 +1313,23 @@
     }
 
     function applyVerticalPage(pageIndex) {
-      const pageWidth = Math.max(chapterReadingViewport.clientWidth, 1);
-      const overflowWidth = Math.max(chapterReadingViewport.scrollWidth - pageWidth, 0);
-      verticalPageCount = Math.max(1, Math.ceil(chapterReadingViewport.scrollWidth / pageWidth));
       verticalPageIndex = Math.min(Math.max(pageIndex, 0), verticalPageCount - 1);
-      const offset = Math.min(verticalPageIndex * pageWidth, overflowWidth);
-      chapterReadingViewport.scrollLeft = verticalStartScrollLeft - offset;
+      chapterReadingText.style.transform = `translateX(${verticalPageIndex * verticalPageWidth}px)`;
       readingPositions.vertical.verticalPageIndex = verticalPageIndex;
       updateVerticalPageControls();
     }
 
     function resetVerticalPagination(pageIndex = verticalPageIndex) {
       if (readingMode !== "vertical") return;
-      chapterReadingViewport.scrollLeft = chapterReadingViewport.scrollWidth;
-      verticalStartScrollLeft = chapterReadingViewport.scrollLeft;
+      chapterReadingText.style.transform = "translateX(0)";
+      chapterReadingViewport.style.width = "";
+      const availableWidth = Math.max(chapterReadingViewport.clientWidth, 1);
+      const columnWidth = Math.max(Number.parseFloat(getComputedStyle(chapterReadingText).lineHeight), 1);
+      const columnsPerPage = Math.max(Math.floor(availableWidth / columnWidth), 1);
+      verticalPageWidth = columnsPerPage * columnWidth;
+      chapterReadingViewport.style.width = `${verticalPageWidth}px`;
+      verticalPageCount = Math.max(1, Math.ceil(chapterReadingText.scrollWidth / verticalPageWidth));
+      chapterReadingViewport.scrollLeft = 0;
       applyVerticalPage(pageIndex);
     }
 
@@ -1601,10 +1612,10 @@
     chapterFuriganaToggle.addEventListener("click", toggleFurigana);
     chapterReadingText.addEventListener("click", toggleFurigana);
     chapterReadingText.addEventListener("keydown", (event) => {
-      if (event.key === "ArrowLeft" && readingMode === "vertical") {
+      if (event.key === "ArrowRight" && readingMode === "vertical") {
         event.preventDefault();
         navigateVerticalPage(1);
-      } else if (event.key === "ArrowRight" && readingMode === "vertical") {
+      } else if (event.key === "ArrowLeft" && readingMode === "vertical") {
         event.preventDefault();
         navigateVerticalPage(-1);
       } else if (event.key === "Enter" || event.key === " ") {
@@ -1671,7 +1682,7 @@
       event.preventDefault();
       suppressChapterClick = true;
       setTimeout(() => { suppressChapterClick = false; }, 0);
-      navigateVerticalPage(horizontalDistance < 0 ? 1 : -1);
+      navigateVerticalPage(horizontalDistance > 0 ? 1 : -1);
     });
 
     chapterReadingViewport.addEventListener("pointercancel", (event) => {
