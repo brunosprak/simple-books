@@ -274,7 +274,7 @@
     .chapter-reading-text.furigana-hidden rt { visibility: hidden; }
     .chapter-reader.vertical { touch-action: auto; }
     .chapter-reader.vertical .chapter-reading-viewport {
-      position: relative;
+      --vertical-page-gutter: 0px;
       height: min(72vh, 44rem);
       overflow-x: hidden;
       overflow-y: hidden;
@@ -283,15 +283,11 @@
       touch-action: pan-y;
     }
     .chapter-reader.vertical .chapter-reading-text {
-      position: absolute;
-      top: 0;
-      right: 0;
       width: max-content;
-      min-width: 100%;
+      min-width: 0;
       height: 100%;
       line-height: 2.25;
       text-orientation: mixed;
-      transform: translateX(0);
       writing-mode: vertical-rl;
     }
     .chapter-reader.vertical .chapter-reading-text p {
@@ -1246,7 +1242,8 @@
         : "Deslize para trocar de capítulo.";
       if (readingMode !== "vertical") {
         chapterReadingViewport.style.width = "";
-        chapterReadingText.style.transform = "";
+        chapterReadingText.style.paddingLeft = "";
+        chapterReadingText.style.paddingRight = "";
       }
       chapterReadingText.replaceChildren();
       chapters[chapterIndex].paragraphs.forEach((paragraph) => {
@@ -1310,6 +1307,7 @@
     let verticalPageIndex = readingPositions.vertical.verticalPageIndex;
     let verticalPageCount = 1;
     let verticalPageWidth = 1;
+    let verticalStartScrollLeft = 0;
 
     function updateVerticalPageControls() {
       verticalPagePrevious.disabled = verticalPageIndex === 0;
@@ -1317,24 +1315,48 @@
       verticalPageStatus.textContent = `Página ${verticalPageIndex + 1} de ${verticalPageCount}`;
     }
 
+    function hideClippedVerticalFurigana() {
+      const viewportRect = chapterReadingViewport.getBoundingClientRect();
+      chapterReadingText.querySelectorAll("rt").forEach((annotation) => {
+        annotation.style.visibility = "";
+        if (!furiganaVisible) return;
+        const rect = annotation.getBoundingClientRect();
+        const verticallyVisible = rect.bottom > viewportRect.top && rect.top < viewportRect.bottom;
+        if (verticallyVisible && (rect.left < viewportRect.left || rect.right > viewportRect.right)) {
+          annotation.style.visibility = "hidden";
+        }
+      });
+    }
+
     function applyVerticalPage(pageIndex) {
       verticalPageIndex = Math.min(Math.max(pageIndex, 0), verticalPageCount - 1);
-      chapterReadingText.style.transform = `translateX(${verticalPageIndex * verticalPageWidth}px)`;
+      chapterReadingViewport.scrollLeft = verticalStartScrollLeft - (verticalPageIndex * verticalPageWidth);
+      hideClippedVerticalFurigana();
       readingPositions.vertical.verticalPageIndex = verticalPageIndex;
       updateVerticalPageControls();
     }
 
     function resetVerticalPagination(pageIndex = verticalPageIndex) {
       if (readingMode !== "vertical") return;
-      chapterReadingText.style.transform = "translateX(0)";
+      chapterReadingText.style.paddingLeft = "0px";
+      chapterReadingText.style.paddingRight = "0px";
       chapterReadingViewport.style.width = "";
       const availableWidth = Math.max(chapterReadingViewport.clientWidth, 1);
       const columnWidth = Math.max(Number.parseFloat(getComputedStyle(chapterReadingText).lineHeight), 1);
-      const columnsPerPage = Math.max(Math.floor(availableWidth / columnWidth), 1);
-      verticalPageWidth = columnsPerPage * columnWidth;
-      chapterReadingViewport.style.width = `${verticalPageWidth}px`;
-      verticalPageCount = Math.max(1, Math.ceil(chapterReadingText.scrollWidth / verticalPageWidth));
-      chapterReadingViewport.scrollLeft = 0;
+      const availableColumns = Math.max(Math.floor(availableWidth / columnWidth), 1);
+      const gutterColumns = availableColumns >= 3 ? 1 : 0;
+      const readableColumns = Math.max(availableColumns - (gutterColumns * 2), 1);
+      const gutterWidth = gutterColumns * columnWidth;
+      verticalPageWidth = readableColumns * columnWidth;
+      chapterReadingViewport.style.width = `${verticalPageWidth + (gutterWidth * 2)}px`;
+      chapterReadingViewport.style.setProperty("--vertical-page-gutter", `${gutterWidth}px`);
+      const contentWidth = chapterReadingText.scrollWidth;
+      verticalPageCount = Math.max(1, Math.ceil(contentWidth / verticalPageWidth));
+      const paddedPagesWidth = (verticalPageCount * verticalPageWidth) + (gutterWidth * 2);
+      chapterReadingText.style.paddingRight = `${gutterWidth}px`;
+      chapterReadingText.style.paddingLeft = `${Math.max(paddedPagesWidth - contentWidth - gutterWidth, gutterWidth)}px`;
+      chapterReadingViewport.scrollLeft = chapterReadingViewport.scrollWidth;
+      verticalStartScrollLeft = chapterReadingViewport.scrollLeft;
       applyVerticalPage(pageIndex);
     }
 
