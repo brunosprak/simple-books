@@ -121,7 +121,16 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn("renderFullChapter", first)
         self.assertIn("appendSentenceWithRuby(paragraphElement, sentence)", first)
         self.assertIn('chapterReadingText.addEventListener("click", toggleFurigana)', first)
+        self.assertIn('if (readingMode === "continuous")', first)
+        self.assertIn(
+            'setReadingMode(horizontalDistance < 0 ? "vertical" : "sentence")',
+            first,
+        )
         self.assertIn("navigateChapter(horizontalDistance < 0 ? 1 : -1)", first)
+        self.assertIn(
+            "Deslize para a direita para Frases ou para a esquerda para Vertical.",
+            first,
+        )
         self.assertIn('id="paragraph-boundary"', first)
         self.assertIn('id="paragraph-end"', first)
         self.assertIn("paragraphSentenceStarts", first)

@@ -26,7 +26,8 @@ The mode selector appears in the normal document flow and exposes three modes.
 
 - Shows the entire current chapter as continuous Japanese prose.
 - Preserves paragraph breaks but does not show chunks, interlinear glosses, or Portuguese translations.
-- A horizontal swipe moves to the previous or next chapter.
+- Swiping to the right changes to `Frases`; swiping to the left changes to `Vertical`.
+- Previous and next chapter controls remain available without gestures.
 
 ### Vertical
 
@@ -94,6 +95,7 @@ The importer continues to accept schema version 1 files containing only marked g
 
 ## Accessibility and interaction
 
+- All reader controls and navigation sections remain in the normal document flow. No reader element uses `position: sticky` or `position: fixed` to remain suspended while the page scrolls.
 - Controls use descriptive accessible names and expose pressed or disabled state where applicable.
 - Keyboard activation works for furigana toggles and interactive Japanese text.
 - Touch gestures do not suppress ordinary vertical page scrolling.
