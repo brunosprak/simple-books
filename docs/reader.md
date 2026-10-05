@@ -22,7 +22,8 @@ The mode selector appears in the normal document flow and exposes three modes.
 - A horizontal swipe moves by sentence.
 - The Japanese sentence has a first-line indent only when it is the first sentence of a paragraph.
 - Except on the last sentence of a paragraph, the beginning of the following sentence appears in gray after the current sentence only when it fits in the remaining space on the same final line. The preview never wraps, clips a character, or becomes part of the accessible sentence content.
-- Paragraph-boundary markers appear directly below the Japanese sentence and before the chunks or Portuguese translation.
+- A muted `¶` immediately follows the text of the last sentence instead of a separate end-of-paragraph label.
+- The new-paragraph marker appears before the Japanese sentence and before the chunks or Portuguese translation.
 
 ### Corrido
 

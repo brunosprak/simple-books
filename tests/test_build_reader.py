@@ -144,7 +144,10 @@ class BuildReaderTests(unittest.TestCase):
             first,
         )
         self.assertIn('id="paragraph-boundary"', first)
-        self.assertIn('id="paragraph-end"', first)
+        self.assertNotIn('id="paragraph-end"', first)
+        self.assertNotIn("Fim do parágrafo", first)
+        self.assertIn(".paragraph-end-mark {", first)
+        self.assertIn('paragraphEndMark.textContent = "\\u2060¶"', first)
         self.assertIn("paragraphSentenceStarts", first)
         self.assertIn("sentenceParagraphIndexes", first)
         self.assertIn("sentenceInParagraph + 1", first)
@@ -161,10 +164,6 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn("scheduleNextSentencePreview();", first)
         self.assertLess(
             first.index('id="selected-sentence"'),
-            first.index('id="paragraph-end"'),
-        )
-        self.assertLess(
-            first.index('id="paragraph-end"'),
             first.index('id="interlinear"'),
         )
         self.assertNotIn('id="gloss-status"', first)
