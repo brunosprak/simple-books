@@ -39,7 +39,8 @@ The mode selector appears in the normal document flow and exposes three modes.
 - The vertical columns are divided into viewport-sized pages instead of exposing free horizontal scrolling.
 - Page boundaries always fall between complete vertical columns, with a one-column edge gutter preventing base text or furigana from being clipped or divided between pages.
 - Swiping the text to the right or pressing the right arrow advances to the next page; the opposite directions return to the previous page.
-- Previous and next page controls provide the same navigation without gestures.
+- The upper toolbar places the next-chapter control on the left and the previous-chapter control on the right.
+- The controls below the text place the next-page control on the left and the previous-page control on the right.
 - Chapter-swipe gestures are limited to the toolbar so they do not conflict with page-turn gestures.
 
 ## Furigana and font size

@@ -114,6 +114,16 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('id="vertical-page-controls"', first)
         self.assertIn('id="vertical-page-previous"', first)
         self.assertIn('id="vertical-page-next"', first)
+        self.assertLess(
+            first.index('id="vertical-page-next"'),
+            first.index('id="vertical-page-previous"'),
+        )
+        self.assertIn('chapterNextButton.textContent = "← 章"', first)
+        self.assertIn('chapterPreviousButton.textContent = "章 →"', first)
+        self.assertIn(
+            "chapterNextButton,\n          chapterReaderTitle,\n          chapterFuriganaToggle,\n          chapterPreviousButton",
+            first,
+        )
         self.assertIn("function navigateVerticalPage", first)
         self.assertIn("function hideClippedVerticalFurigana", first)
         self.assertIn('annotation.style.visibility = "hidden"', first)
