@@ -408,6 +408,71 @@
       gap: 0.4rem;
     }
 
+    .sentence-audio-controls {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0 0 0.55rem;
+      padding: 0.45rem 0.55rem;
+      color: var(--muted);
+      background: color-mix(in srgb, var(--paper) 60%, transparent);
+      border: 1px solid color-mix(in srgb, var(--rule) 72%, transparent);
+      border-radius: 0.5rem;
+      font-family: system-ui, sans-serif;
+      font-size: 0.75rem;
+    }
+
+    .sentence-audio-controls[hidden] {
+      display: none;
+    }
+
+    .sentence-audio-button {
+      min-width: 5.8rem;
+      padding: 0.42rem 0.7rem;
+      color: var(--paper);
+      background: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .sentence-audio-button:hover,
+    .sentence-audio-button:focus-visible {
+      color: var(--ink);
+      background: var(--accent-soft);
+      outline: none;
+    }
+
+    .sentence-audio-speed {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-left: auto;
+    }
+
+    .sentence-audio-speed select {
+      min-height: 2rem;
+      padding: 0.2rem 0.45rem;
+      color: var(--ink);
+      background: var(--panel);
+      border: 1px solid var(--rule);
+      border-radius: 0.35rem;
+      font: inherit;
+    }
+
+    .sentence-audio-status {
+      flex-basis: 100%;
+      min-height: 1em;
+      color: var(--muted);
+    }
+
+    .sentence-audio-status:empty {
+      display: none;
+    }
+
     .study-nav {
       display: inline-flex;
       align-items: center;
@@ -772,6 +837,10 @@
       .furigana-toggle {
         flex: 1.65;
       }
+
+      .sentence-audio-speed {
+        margin-left: 0;
+      }
     }
 
     @media (prefers-color-scheme: dark) {
@@ -832,6 +901,15 @@
               <button class="study-nav" id="study-next" type="button" aria-label="Próxima frase">→</button>
               <button class="study-nav" id="study-next-paragraph" type="button" aria-label="Próximo parágrafo" title="Próximo parágrafo">＋¶</button>
             </div>
+          </div>
+          <div class="sentence-audio-controls" id="sentence-audio-controls" aria-label="Áudio da frase" hidden>
+            <button class="sentence-audio-button" id="sentence-audio-toggle" type="button" aria-pressed="false">▶ Ouvir</button>
+            <span id="sentence-audio-voice"></span>
+            <label class="sentence-audio-speed" for="sentence-audio-speed">
+              Velocidade
+              <select id="sentence-audio-speed" aria-label="Velocidade do áudio"></select>
+            </label>
+            <span class="sentence-audio-status" id="sentence-audio-status" aria-live="polite"></span>
           </div>
           <div class="gloss-tools" aria-label="Glosses marcados">
             <span class="gloss-count" id="gloss-count">0 glosses marcados</span>
@@ -897,6 +975,11 @@
     const glossExport = document.querySelector("#gloss-export");
     const glossImport = document.querySelector("#gloss-import");
     const glossImportFile = document.querySelector("#gloss-import-file");
+    const sentenceAudioControls = document.querySelector("#sentence-audio-controls");
+    const sentenceAudioToggle = document.querySelector("#sentence-audio-toggle");
+    const sentenceAudioVoice = document.querySelector("#sentence-audio-voice");
+    const sentenceAudioSpeed = document.querySelector("#sentence-audio-speed");
+    const sentenceAudioStatus = document.querySelector("#sentence-audio-status");
     const studyHint = document.querySelector("#study-hint");
     const modeButtons = [...document.querySelectorAll("[data-reading-mode]")];
     const chapterReader = document.querySelector("#chapter-reader");
@@ -969,6 +1052,112 @@
     let currentFontLevel = Number.parseInt(localStorage.getItem("reading-font-level") || "0", 10);
     const markedGlossesStorageKey = "simple-ja-books:marked-glosses:v1";
     let markedGlosses = loadMarkedGlosses();
+    const audioConfig = bookData?.page?.audio || null;
+    const sentenceAudio = audioConfig ? new Audio() : null;
+    const audioSpeedStorageKey = `simple-ja-books:audio-speed:v1:${storageScope}`;
+    let currentAudioSpeedPercent = loadAudioSpeed();
+    let activeSentenceAudioPath = "";
+    let loadedSentenceAudioPath = "";
+    if (sentenceAudio) {
+      sentenceAudio.preload = "none";
+      sentenceAudio.preservesPitch = true;
+      sentenceAudioControls.hidden = false;
+      sentenceAudioVoice.textContent = `Voz: ${audioConfig.voice}`;
+      sentenceAudioSpeed.replaceChildren(...audioConfig.speed_levels_percent.map((percent) => {
+        const option = document.createElement("option");
+        option.value = String(percent);
+        option.textContent = `${(percent / 100).toLocaleString("pt-BR", { maximumFractionDigits: 2 })}×`;
+        return option;
+      }));
+      sentenceAudioSpeed.value = String(currentAudioSpeedPercent);
+      sentenceAudio.playbackRate = currentAudioSpeedPercent / 100;
+    }
+
+    function loadAudioSpeed() {
+      if (!audioConfig) return 100;
+      try {
+        const stored = Number.parseInt(localStorage.getItem(audioSpeedStorageKey) || "", 10);
+        return audioConfig.speed_levels_percent.includes(stored)
+          ? stored
+          : audioConfig.default_speed_percent;
+      } catch (_error) {
+        return audioConfig.default_speed_percent;
+      }
+    }
+
+    function sentenceAudioPath(chapter, paragraph, sentence) {
+      const base = audioConfig.base_url.replace(/\/+$/, "");
+      return `${base}/chapter-${String(chapter + 1).padStart(2, "0")}/paragraph-${String(paragraph + 1).padStart(3, "0")}/sentence-${String(sentence + 1).padStart(3, "0")}.mp3`;
+    }
+
+    function updateSentenceAudioButton(playing = false) {
+      sentenceAudioToggle.setAttribute("aria-pressed", String(playing));
+      sentenceAudioToggle.textContent = playing ? "❚❚ Pausar" : "▶ Ouvir";
+    }
+
+    function stopSentenceAudio() {
+      if (!sentenceAudio) return;
+      sentenceAudio.pause();
+      sentenceAudio.currentTime = 0;
+      updateSentenceAudioButton(false);
+      sentenceAudioStatus.textContent = "";
+    }
+
+    function prepareSentenceAudio(chapter, paragraph, sentence) {
+      if (!sentenceAudio) return;
+      stopSentenceAudio();
+      activeSentenceAudioPath = sentenceAudioPath(chapter, paragraph, sentence);
+      if (loadedSentenceAudioPath !== activeSentenceAudioPath) {
+        sentenceAudio.removeAttribute("src");
+        loadedSentenceAudioPath = "";
+      }
+    }
+
+    async function toggleSentenceAudio() {
+      if (!sentenceAudio) return;
+      if (!sentenceAudio.paused) {
+        sentenceAudio.pause();
+        return;
+      }
+      try {
+        if (loadedSentenceAudioPath !== activeSentenceAudioPath) {
+          sentenceAudio.src = activeSentenceAudioPath;
+          loadedSentenceAudioPath = activeSentenceAudioPath;
+        }
+        sentenceAudio.playbackRate = currentAudioSpeedPercent / 100;
+        sentenceAudioStatus.textContent = "Carregando…";
+        await sentenceAudio.play();
+      } catch (_error) {
+        updateSentenceAudioButton(false);
+        sentenceAudioStatus.textContent = "Não foi possível carregar o áudio desta frase.";
+      }
+    }
+
+    sentenceAudioToggle.addEventListener("click", toggleSentenceAudio);
+    sentenceAudioSpeed.addEventListener("change", () => {
+      const selected = Number.parseInt(sentenceAudioSpeed.value, 10);
+      if (!audioConfig?.speed_levels_percent.includes(selected)) return;
+      currentAudioSpeedPercent = selected;
+      if (sentenceAudio) sentenceAudio.playbackRate = selected / 100;
+      try {
+        localStorage.setItem(audioSpeedStorageKey, String(selected));
+      } catch (_error) {
+        // The selected speed still applies to the current page.
+      }
+    });
+    sentenceAudio?.addEventListener("playing", () => {
+      updateSentenceAudioButton(true);
+      sentenceAudioStatus.textContent = "";
+    });
+    sentenceAudio?.addEventListener("pause", () => updateSentenceAudioButton(false));
+    sentenceAudio?.addEventListener("ended", () => {
+      sentenceAudio.currentTime = 0;
+      updateSentenceAudioButton(false);
+    });
+    sentenceAudio?.addEventListener("error", () => {
+      updateSentenceAudioButton(false);
+      sentenceAudioStatus.textContent = "Não foi possível carregar o áudio desta frase.";
+    });
 
     function loadReadingMode() {
       try {
@@ -1319,6 +1508,7 @@
         renderCard(activeIndex);
         restoreSentencePosition();
       } else {
+        stopSentenceAudio();
         renderFullChapter(readingPositions[mode].chapterIndex);
       }
     }
@@ -1473,6 +1663,7 @@
     }
 
     function renderCard(index) {
+      stopSentenceAudio();
       activeIndex = index;
       saveActiveIndex();
       const sentence = sentences[activeIndex];
@@ -1488,6 +1679,7 @@
         if (start <= activeIndex) activeChapter = index;
       });
       const paragraphInChapter = activeParagraph - chapterParagraphStarts[activeChapter];
+      prepareSentenceAudio(activeChapter, paragraphInChapter, sentenceInParagraph);
       chapterSelect.value = String(activeChapter);
       label.textContent = `Parágrafo ${paragraphInChapter + 1} de ${chapterParagraphCounts[activeChapter]} · frase ${sentenceInParagraph + 1} de ${sentencesInParagraph}`;
       selectedSentence.classList.toggle("paragraph-start", sentenceInParagraph === 0);
