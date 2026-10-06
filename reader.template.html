@@ -4,6 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="{{META_DESCRIPTION}}">
+  <meta name="theme-color" content="#314f46">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="icon" href="../icons/icon-192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="../icons/icon-192.png">
   <title>{{TITLE}}</title>
   <style>
     :root {
@@ -1113,9 +1117,11 @@
                 <option value="off">Desligado</option>
                 <option value="sentence">Frase</option>
                 <option value="listening">Glosses + frase</option>
+                <option value="listening-ja">Glosses JP + frase</option>
                 <option value="translation">Tradução + frase</option>
                 <option value="paragraph">Parágrafo</option>
                 <option value="listening-paragraph">Glosses + parágrafo</option>
+                <option value="listening-ja-paragraph">Glosses JP + parágrafo</option>
                 <option value="translation-paragraph">Tradução + parágrafo</option>
               </select>
             </label>
@@ -1788,7 +1794,14 @@
     }
 
     function loopModeUsesGlosses(mode = sentenceAudioLoopMode) {
-      return mode === "listening" || mode === "listening-paragraph";
+      return mode === "listening"
+        || mode === "listening-ja"
+        || mode === "listening-paragraph"
+        || mode === "listening-ja-paragraph";
+    }
+
+    function loopModeUsesJapaneseOnlyGlosses(mode = sentenceAudioLoopMode) {
+      return mode === "listening-ja" || mode === "listening-ja-paragraph";
     }
 
     function loopModeUsesTranslation(mode = sentenceAudioLoopMode) {
@@ -1798,6 +1811,7 @@
     function loopModeUsesParagraph(mode = sentenceAudioLoopMode) {
       return mode === "paragraph"
         || mode === "listening-paragraph"
+        || mode === "listening-ja-paragraph"
         || mode === "translation-paragraph";
     }
 
@@ -1829,20 +1843,25 @@
 
     function updateSentenceAudioLoop() {
       const listeningOption = sentenceAudioLoop.querySelector('option[value="listening"]');
+      const listeningJapaneseOption = sentenceAudioLoop.querySelector('option[value="listening-ja"]');
       const listeningParagraphOption = sentenceAudioLoop.querySelector('option[value="listening-paragraph"]');
+      const listeningJapaneseParagraphOption = sentenceAudioLoop.querySelector('option[value="listening-ja-paragraph"]');
       const translationOption = sentenceAudioLoop.querySelector('option[value="translation"]');
       const translationParagraphOption = sentenceAudioLoop.querySelector('option[value="translation-paragraph"]');
       const listeningAvailable = browserSpeechAvailable && currentSentenceListeningGlosses().length > 0;
       const listeningParagraphAvailable = browserSpeechAvailable && currentParagraphHasListeningGlosses();
       listeningOption.disabled = !listeningAvailable;
+      listeningJapaneseOption.disabled = !listeningAvailable;
       listeningParagraphOption.disabled = !listeningParagraphAvailable;
+      listeningJapaneseParagraphOption.disabled = !listeningParagraphAvailable;
       translationOption.disabled = !browserSpeechAvailable;
       translationParagraphOption.disabled = !browserSpeechAvailable;
-      if (sentenceAudioLoopMode === "listening" && !listeningAvailable) {
+      if (["listening", "listening-ja"].includes(sentenceAudioLoopMode) && !listeningAvailable) {
         clearSentenceAudioLoopTimer();
         if (sentenceAudioLoopSpeechActive) stopBrowserSpeech();
         sentenceAudioLoopMode = "sentence";
-      } else if (sentenceAudioLoopMode === "listening-paragraph" && !listeningParagraphAvailable) {
+      } else if (["listening-paragraph", "listening-ja-paragraph"].includes(sentenceAudioLoopMode)
+        && !listeningParagraphAvailable) {
         clearSentenceAudioLoopTimer();
         if (sentenceAudioLoopSpeechActive) stopBrowserSpeech();
         sentenceAudioLoopMode = "paragraph";
@@ -2163,18 +2182,25 @@
       }
     }
 
-    function startMarkedGlossSpeech(glosses, { loopSequence = false, onComplete = null } = {}) {
+    function startMarkedGlossSpeech(
+      glosses,
+      { loopSequence = false, japaneseOnly = false, onComplete = null } = {}
+    ) {
       stopBrowserSpeech();
       markedGlossSpeechRun += 1;
       const run = markedGlossSpeechRun;
-      markedGlossSpeechQueue = glosses.flatMap(({ term, portuguese }) => [
-        { text: term, lang: "ja-JP" },
-        { text: portuguese, lang: "pt-BR" },
-        { text: term, lang: "ja-JP" }
-      ]);
+      markedGlossSpeechQueue = japaneseOnly
+        ? glosses.map(({ term }) => ({ text: term, lang: "ja-JP" }))
+        : glosses.flatMap(({ term, portuguese }) => [
+            { text: term, lang: "ja-JP" },
+            { text: portuguese, lang: "pt-BR" },
+            { text: term, lang: "ja-JP" }
+          ]);
       markedGlossSpeechOnComplete = onComplete;
       sentenceAudioLoopSpeechActive = loopSequence;
-      if (loopSequence) sentenceAudioStatus.textContent = "Lendo glosses…";
+      if (loopSequence) {
+        sentenceAudioStatus.textContent = japaneseOnly ? "Lendo glosses JP…" : "Lendo glosses…";
+      }
       markedGlossSpeechActive = true;
       updateGlossSpeechButton(true);
       speakNextMarkedGlossPart(run);
@@ -2209,6 +2235,7 @@
       }
       startMarkedGlossSpeech(glosses, {
         loopSequence: true,
+        japaneseOnly: loopModeUsesJapaneseOnlyGlosses(expectedMode),
         onComplete: () => {
           if (sentenceAudioLoopMode === expectedMode) scheduleSentenceAudioLoopPlayback(expectedMode);
         }
@@ -2217,7 +2244,9 @@
 
     function scheduleGlossesThenSentence() {
       const expectedMode = sentenceAudioLoopMode;
-      sentenceAudioStatus.textContent = "Glosses em 0,5 s…";
+      sentenceAudioStatus.textContent = loopModeUsesJapaneseOnlyGlosses(expectedMode)
+        ? "Glosses JP em 0,5 s…"
+        : "Glosses em 0,5 s…";
       sentenceAudioLoopTimer = setTimeout(() => {
         sentenceAudioLoopTimer = null;
         if (sentenceAudioLoopMode !== expectedMode) return;

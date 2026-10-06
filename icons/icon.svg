@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#314f46"/>
+  <circle cx="392" cy="120" r="50" fill="#cf6b4f"/>
+  <path d="M112 116c48-18 96-13 144 15v273c-48-28-96-33-144-15z" fill="#f3efe4"/>
+  <path d="M400 116c-48-18-96-13-144 15v273c48-28 96-33 144-15z" fill="#e3dccb"/>
+  <path d="M256 131v273" stroke="#9f9788" stroke-width="10"/>
+  <text x="256" y="310" text-anchor="middle" font-family="serif" font-size="142" font-weight="700" fill="#314f46">火</text>
+</svg>

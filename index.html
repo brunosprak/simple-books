@@ -3,6 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Leitor de literatura japonesa com furigana, glosses, tradução e áudio.">
+  <meta name="theme-color" content="#314f46">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
   <title>Leituras em japonês</title>
   <style>
     :root { color-scheme: light; font-family: system-ui, sans-serif; }
@@ -25,5 +30,10 @@
       <a href="princess-of-mars/">火星のプリンセス<small>Uma Princesa de Marte</small></a>
     </nav>
   </main>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("offline-sw.js").catch(() => {});
+    }
+  </script>
 </body>
 </html>
