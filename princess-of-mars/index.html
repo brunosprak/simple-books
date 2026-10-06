@@ -575,31 +575,78 @@
     }
 
     .chunk {
-      display: inline-flex;
+      display: inline-grid;
       min-width: 3rem;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.25rem;
-      padding: 0.55rem 0.65rem 0.5rem;
+      grid-template-columns: minmax(0, 1fr) auto;
+      overflow: hidden;
       background: color-mix(in srgb, var(--paper) 72%, transparent);
       color: var(--ink);
       border: 1px solid transparent;
       border-radius: 0.35rem;
       font-family: inherit;
       text-align: center;
+    }
+
+    .chunk:focus-within {
+      border-color: var(--accent);
+    }
+
+    .chunk[data-vocabulary="true"] {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+    }
+
+    .chunk[data-listening="true"] {
+      box-shadow: inset 0 -0.2rem 0 var(--accent);
+    }
+
+    .chunk-vocabulary {
+      display: inline-flex;
+      min-width: 0;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
+      padding: 0.55rem 0.65rem 0.5rem;
+      color: inherit;
+      background: transparent;
+      border: 0;
+      font: inherit;
       cursor: pointer;
     }
 
-    .chunk:hover,
-    .chunk:focus-visible {
-      border-color: var(--accent);
-      outline: none;
+    .chunk-reasons {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-inline-start: 1px solid var(--rule);
     }
 
-    .chunk[aria-pressed="true"] {
+    .chunk-reason {
+      min-width: 2.15rem;
+      flex: 1;
+      padding: 0.3rem 0.35rem;
+      color: var(--muted);
+      background: transparent;
+      border: 0;
+      font: inherit;
+      font-size: 0.8em;
+      cursor: pointer;
+    }
+
+    .chunk-reason + .chunk-reason {
+      border-top: 1px solid var(--rule);
+    }
+
+    .chunk-reason[aria-pressed="true"] {
+      color: var(--ink);
       background: var(--accent-soft);
-      border-color: var(--accent);
-      box-shadow: inset 0 0 0 1px var(--accent);
+    }
+
+    .chunk-vocabulary:focus-visible,
+    .chunk-reason:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
     }
 
     .chunk-japanese {
@@ -740,7 +787,9 @@
 
       .chunk {
         min-width: 0;
-        justify-content: center;
+      }
+
+      .chunk-vocabulary {
         padding: 0.85rem 0.9rem 0.75rem;
       }
 
@@ -920,8 +969,8 @@
             <span class="sentence-audio-status" id="sentence-audio-status" aria-live="polite"></span>
           </div>
           <div class="gloss-tools" aria-label="Glosses marcados">
-            <span class="gloss-count" id="gloss-count">0 glosses marcados</span>
-            <button class="gloss-tool-button" id="gloss-speak" type="button" aria-label="Ouvir termos japoneses marcados com o sintetizador do navegador" aria-pressed="false" disabled>▶ Glosses</button>
+            <span class="gloss-count" id="gloss-count" aria-label="Nenhum gloss marcado">★ 0 · 🎧 0</span>
+            <button class="gloss-tool-button" id="gloss-speak" type="button" aria-label="Ouvir glosses de escuta da frase atual" aria-pressed="false" disabled>▶ Escuta</button>
             <button class="gloss-tool-button" id="gloss-export" type="button" aria-label="Exportar dados de leitura em JSON" title="Exportar dados de leitura em JSON">↓ JSON</button>
             <button class="gloss-tool-button" id="gloss-import" type="button" aria-label="Importar dados de leitura em JSON" title="Importar dados de leitura em JSON">↑ JSON</button>
             <input id="gloss-import-file" type="file" accept="application/json,.json" hidden>
@@ -1066,6 +1115,7 @@
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
     let currentFontLevel = Number.parseInt(localStorage.getItem("reading-font-level") || "0", 10);
     const markedGlossesStorageKey = "simple-ja-books:marked-glosses:v1";
+    const glossReasons = ["vocabulary", "listening"];
     let markedGlosses = loadMarkedGlosses();
     const browserSpeechAvailable = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
     let markedGlossSpeechActive = false;
@@ -1291,16 +1341,28 @@
       return JSON.stringify([term, portuguese]);
     }
 
+    function normalizeGlossEntry(entry) {
+      if (!entry || typeof entry.term !== "string" || !entry.term
+        || typeof entry.portuguese !== "string" || !entry.portuguese) return null;
+      const storedReasons = entry.reasons === undefined ? ["vocabulary"] : entry.reasons;
+      if (!Array.isArray(storedReasons) || storedReasons.length === 0
+        || storedReasons.some((reason) => !glossReasons.includes(reason))) return null;
+      return {
+        term: entry.term,
+        portuguese: entry.portuguese,
+        reasons: [...new Set(storedReasons)]
+      };
+    }
+
     function loadMarkedGlosses() {
       try {
         const stored = JSON.parse(localStorage.getItem(markedGlossesStorageKey) || "[]");
         if (!Array.isArray(stored)) return new Map();
-        return new Map(stored
-          .filter((entry) => entry && typeof entry.term === "string" && typeof entry.portuguese === "string")
-          .map((entry) => [glossKey(entry.term, entry.portuguese), {
-            term: entry.term,
-            portuguese: entry.portuguese
-          }]));
+        const normalized = stored.map(normalizeGlossEntry).filter(Boolean);
+        return new Map(normalized.map((entry) => [
+          glossKey(entry.term, entry.portuguese),
+          entry
+        ]));
       } catch (_error) {
         return new Map();
       }
@@ -1316,24 +1378,39 @@
       updateGlossCount();
     }
 
-    function currentSentenceMarkedGlosses() {
+    function hasGlossReason(term, portuguese, reason) {
+      return markedGlosses.get(glossKey(term, portuguese))?.reasons.includes(reason) || false;
+    }
+
+    function toggleGlossReason(term, portuguese, reason) {
+      const key = glossKey(term, portuguese);
+      const entry = markedGlosses.get(key) || { term, portuguese, reasons: [] };
+      const reasons = new Set(entry.reasons);
+      if (reasons.has(reason)) reasons.delete(reason);
+      else reasons.add(reason);
+      if (reasons.size === 0) markedGlosses.delete(key);
+      else markedGlosses.set(key, { term, portuguese, reasons: [...reasons] });
+      saveMarkedGlosses();
+    }
+
+    function currentSentenceListeningGlosses() {
       return sentences[activeIndex].chunks.flatMap(([term, _reading, portuguese]) =>
-        markedGlosses.has(glossKey(term, portuguese)) ? [{ term, portuguese }] : []
+        hasGlossReason(term, portuguese, "listening") ? [{ term, portuguese }] : []
       );
     }
 
     function updateGlossSpeechButton(speaking = false) {
-      glossSpeak.disabled = !browserSpeechAvailable || currentSentenceMarkedGlosses().length === 0;
+      glossSpeak.disabled = !browserSpeechAvailable || currentSentenceListeningGlosses().length === 0;
       glossSpeak.setAttribute("aria-pressed", String(speaking));
       glossSpeak.setAttribute(
         "aria-label",
         speaking
-          ? "Parar leitura do gloss marcado na frase atual"
-          : "Ouvir em japonês e português os glosses marcados na frase atual"
+          ? "Parar leitura dos glosses de escuta da frase atual"
+          : "Ouvir em japonês e português os glosses de escuta da frase atual"
       );
-      glossSpeak.textContent = speaking ? "■ Parar" : "▶ Glosses";
+      glossSpeak.textContent = speaking ? "■ Parar" : "▶ Escuta";
       glossSpeak.title = browserSpeechAvailable
-        ? "Ouvir em japonês e português os glosses marcados nesta frase"
+        ? "Ouvir os glosses marcados com dificuldade de escuta nesta frase"
         : "Síntese de voz indisponível neste navegador";
     }
 
@@ -1377,7 +1454,7 @@
     }
 
     function toggleMarkedGlossSpeech() {
-      const glosses = currentSentenceMarkedGlosses();
+      const glosses = currentSentenceListeningGlosses();
       if (!browserSpeechAvailable || glosses.length === 0) return;
       if (markedGlossSpeechActive) {
         stopMarkedGlossSpeech();
@@ -1396,8 +1473,14 @@
     }
 
     function updateGlossCount() {
-      const count = markedGlosses.size;
-      glossCount.textContent = `${count} ${count === 1 ? "gloss marcado" : "glosses marcados"}`;
+      const entries = [...markedGlosses.values()];
+      const vocabularyCount = entries.filter(({ reasons }) => reasons.includes("vocabulary")).length;
+      const listeningCount = entries.filter(({ reasons }) => reasons.includes("listening")).length;
+      glossCount.textContent = `★ ${vocabularyCount} · 🎧 ${listeningCount}`;
+      glossCount.setAttribute(
+        "aria-label",
+        `${vocabularyCount} ${vocabularyCount === 1 ? "palavra para estudar" : "palavras para estudar"}; ${listeningCount} ${listeningCount === 1 ? "dificuldade de escuta" : "dificuldades de escuta"}`
+      );
       updateGlossSpeechButton(markedGlossSpeechActive);
     }
 
@@ -1810,12 +1893,13 @@
       interlinear.replaceChildren();
 
       sentence.chunks.forEach(([surface, reading, gloss]) => {
-        const chunk = document.createElement("button");
+        const chunk = document.createElement("div");
         chunk.className = "chunk";
-        chunk.type = "button";
-        const key = glossKey(surface, gloss);
-        chunk.setAttribute("aria-pressed", String(markedGlosses.has(key)));
-        chunk.setAttribute("aria-label", `${surface}: ${gloss}. Marcar ou desmarcar gloss.`);
+
+        const vocabularyButton = document.createElement("button");
+        vocabularyButton.className = "chunk-vocabulary";
+        vocabularyButton.type = "button";
+        vocabularyButton.setAttribute("aria-label", `${surface}: ${gloss}. Alternar marcação de vocabulário.`);
 
         const japanese = document.createElement("span");
         japanese.className = "chunk-japanese";
@@ -1825,18 +1909,48 @@
         meaning.className = "gloss";
         meaning.lang = "pt-BR";
         meaning.textContent = gloss;
+        vocabularyButton.append(japanese, meaning);
 
-        chunk.append(japanese, meaning);
-        chunk.addEventListener("click", () => {
-          if (markedGlosses.has(key)) {
-            markedGlosses.delete(key);
-            chunk.setAttribute("aria-pressed", "false");
-          } else {
-            markedGlosses.set(key, { term: surface, portuguese: gloss });
-            chunk.setAttribute("aria-pressed", "true");
-          }
-          saveMarkedGlosses();
-        });
+        const reasonControls = document.createElement("div");
+        reasonControls.className = "chunk-reasons";
+        reasonControls.setAttribute("role", "group");
+        reasonControls.setAttribute("aria-label", `Motivos para marcar ${surface}`);
+
+        const vocabularyReason = document.createElement("button");
+        vocabularyReason.className = "chunk-reason";
+        vocabularyReason.type = "button";
+        vocabularyReason.textContent = "★";
+        vocabularyReason.title = "Vocabulário";
+        vocabularyReason.setAttribute("aria-label", `Marcar ${surface} como vocabulário`);
+
+        const listeningReason = document.createElement("button");
+        listeningReason.className = "chunk-reason";
+        listeningReason.type = "button";
+        listeningReason.textContent = "🎧";
+        listeningReason.title = "Dificuldade de escuta";
+        listeningReason.setAttribute("aria-label", `Marcar ${surface} como dificuldade de escuta`);
+        reasonControls.append(vocabularyReason, listeningReason);
+
+        function updateChunkReasons() {
+          const vocabularyMarked = hasGlossReason(surface, gloss, "vocabulary");
+          const listeningMarked = hasGlossReason(surface, gloss, "listening");
+          chunk.dataset.vocabulary = String(vocabularyMarked);
+          chunk.dataset.listening = String(listeningMarked);
+          vocabularyButton.setAttribute("aria-pressed", String(vocabularyMarked));
+          vocabularyReason.setAttribute("aria-pressed", String(vocabularyMarked));
+          listeningReason.setAttribute("aria-pressed", String(listeningMarked));
+        }
+
+        function toggleReason(reason) {
+          toggleGlossReason(surface, gloss, reason);
+          updateChunkReasons();
+        }
+
+        vocabularyButton.addEventListener("click", () => toggleReason("vocabulary"));
+        vocabularyReason.addEventListener("click", () => toggleReason("vocabulary"));
+        listeningReason.addEventListener("click", () => toggleReason("listening"));
+        updateChunkReasons();
+        chunk.append(vocabularyButton, reasonControls);
         interlinear.append(chunk);
       });
       updateGlossSpeechButton(false);
@@ -1845,7 +1959,7 @@
     glossExport.addEventListener("click", () => {
       captureReadingPosition();
       const payload = {
-        schema_version: 2,
+        schema_version: 3,
         source_file: bookData?.source_file || null,
         exported_at: new Date().toISOString(),
         reader_state: {
@@ -1873,17 +1987,16 @@
       if (!file) return;
       try {
         const payload = JSON.parse(await file.text());
-        if (![1, 2].includes(payload?.schema_version) || !Array.isArray(payload.glosses)) {
+        if (![1, 2, 3].includes(payload?.schema_version) || !Array.isArray(payload.glosses)) {
           throw new Error("Formato incompatível");
         }
         const imported = payload.glosses.map((entry) => {
-          if (!entry || typeof entry.term !== "string" || !entry.term || typeof entry.portuguese !== "string" || !entry.portuguese) {
-            throw new Error("Gloss inválido");
-          }
-          return entry;
+          const normalized = normalizeGlossEntry(entry);
+          if (!normalized) throw new Error("Gloss inválido");
+          return normalized;
         });
         let importedReaderState = null;
-        if (payload.schema_version === 2) {
+        if ([2, 3].includes(payload.schema_version)) {
           const state = payload.reader_state;
           if (payload.source_file !== bookData?.source_file
             || !state || typeof state !== "object"
@@ -1906,7 +2019,7 @@
 
         markedGlosses = new Map(imported.map((entry) => [
           glossKey(entry.term, entry.portuguese),
-          { term: entry.term, portuguese: entry.portuguese }
+          entry
         ]));
         saveMarkedGlosses();
 
