@@ -2,6 +2,10 @@
 
 This document defines the user-visible behavior and compatibility requirements of the static Japanese reader. Implementation guidance for agents belongs in `AGENTS.md`; reader product rules belong here and should be enforced by automated tests wherever practical.
 
+## Current book content
+
+`A Princess of Mars` has 28 source chapters. Chapters 1 through 3 are currently translated in full, comprising 94 source paragraphs and 354 Japanese sentence cards. The canonical content is `texts/princess-of-mars-ja.json`; the public JSON and reader HTML are generated from it.
+
 ## Generated architecture
 
 - `texts/<book-slug>-ja.json` is the canonical book and study data.
