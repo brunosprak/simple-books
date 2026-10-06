@@ -1584,6 +1584,916 @@
       "sentence": 3,
       "text_sha256": "422219f63d3afc5cdf0baad47bdc2f6e1187f2e707f671e931ac09947de8cfd2",
       "bytes": 54728
+    },
+    "chapter-03/paragraph-001/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 1,
+      "sentence": 1,
+      "text_sha256": "3cdafb3eaecebde6c8a11764a04936f5449ea8d571a9e64460f7afa2f4fe7399",
+      "bytes": 59775
+    },
+    "chapter-03/paragraph-001/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 1,
+      "sentence": 2,
+      "text_sha256": "2ee469910130f4d1a746dd7535e4bb74bfc741a4004a458fea31e7712f437351",
+      "bytes": 44952
+    },
+    "chapter-03/paragraph-001/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 1,
+      "sentence": 3,
+      "text_sha256": "1ce97f490320dadf0bad08c373f608dc51c4b951b877177ed4f6e8087d19a261",
+      "bytes": 71061
+    },
+    "chapter-03/paragraph-001/sentence-004.mp3": {
+      "chapter": 3,
+      "paragraph": 1,
+      "sentence": 4,
+      "text_sha256": "cdcf0ee15c191986ac3f8f8789217d9f79bb977a3befbc80e5585266c71e3385",
+      "bytes": 63078
+    },
+    "chapter-03/paragraph-001/sentence-005.mp3": {
+      "chapter": 3,
+      "paragraph": 1,
+      "sentence": 5,
+      "text_sha256": "3af4d8b5fdf0b42140fdbea63583589d4ca9059bd7f85b089e23484639465b2b",
+      "bytes": 112689
+    },
+    "chapter-03/paragraph-001/sentence-006.mp3": {
+      "chapter": 3,
+      "paragraph": 1,
+      "sentence": 6,
+      "text_sha256": "659ee08d6a9baadf76fed9a51917200cce6111da60393d8bf9e31301ef90a12f",
+      "bytes": 64519
+    },
+    "chapter-03/paragraph-002/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 2,
+      "sentence": 1,
+      "text_sha256": "c7d88ebeede98ac7c192ab6aab9a91843aa9120a573aa0a018b71040733238c9",
+      "bytes": 74870
+    },
+    "chapter-03/paragraph-002/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 2,
+      "sentence": 2,
+      "text_sha256": "76139197e835fc127546ade60d4a185b7db066bef1f5f6968f069e00252155ec",
+      "bytes": 64914
+    },
+    "chapter-03/paragraph-002/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 2,
+      "sentence": 3,
+      "text_sha256": "62afe5280ea491ee4178365049fef7ae91a0d546113a0a7c1684ad023b850469",
+      "bytes": 87026
+    },
+    "chapter-03/paragraph-003/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 3,
+      "sentence": 1,
+      "text_sha256": "dd72fe24a3bc1d11e11761f170be4799228f26603e649bf309c5fdffb9433dcd",
+      "bytes": 60783
+    },
+    "chapter-03/paragraph-003/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 3,
+      "sentence": 2,
+      "text_sha256": "ad847741352b0ca2b27d94a847c92ed41118c4e1fcf2a1ba0d1f1c25f62e987d",
+      "bytes": 94901
+    },
+    "chapter-03/paragraph-003/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 3,
+      "sentence": 3,
+      "text_sha256": "c0709fd3dea9d4bddc509ec458483864a44b569e4509d464a9e65cf4023ad923",
+      "bytes": 78052
+    },
+    "chapter-03/paragraph-003/sentence-004.mp3": {
+      "chapter": 3,
+      "paragraph": 3,
+      "sentence": 4,
+      "text_sha256": "3c2c1a70277400e732523a1c0bcf3b4569fb214a0e10f7624eaffe043dba22aa",
+      "bytes": 92550
+    },
+    "chapter-03/paragraph-003/sentence-005.mp3": {
+      "chapter": 3,
+      "paragraph": 3,
+      "sentence": 5,
+      "text_sha256": "206c71c8f50ee2147c1e5b768c6e2726cb6bb01a9ca089abf3c8f4942af42e62",
+      "bytes": 52181
+    },
+    "chapter-03/paragraph-003/sentence-006.mp3": {
+      "chapter": 3,
+      "paragraph": 3,
+      "sentence": 6,
+      "text_sha256": "f6846f4b6eecb395f0f6c2c4b3f4073a08f20aecba481f1b28f9da4e06bd099d",
+      "bytes": 59694
+    },
+    "chapter-03/paragraph-004/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 4,
+      "sentence": 1,
+      "text_sha256": "11b993f0190bc65751b19c231a46708004788aac0527465c44028ab89d419bad",
+      "bytes": 68867
+    },
+    "chapter-03/paragraph-004/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 4,
+      "sentence": 2,
+      "text_sha256": "79adb1555b58f1e994a5c08898a55e1d965e1d978b66189001f39c5ab1e0a307",
+      "bytes": 86496
+    },
+    "chapter-03/paragraph-004/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 4,
+      "sentence": 3,
+      "text_sha256": "ae41eaaaf365e31ad82f87eb8ec16f45667f4979018b4264022fd696da5f9fe5",
+      "bytes": 68740
+    },
+    "chapter-03/paragraph-004/sentence-004.mp3": {
+      "chapter": 3,
+      "paragraph": 4,
+      "sentence": 4,
+      "text_sha256": "2f4e3c02b9fdacb9870c4f0abc00fad174c629eb67f113a057c1b62733b8de96",
+      "bytes": 77530
+    },
+    "chapter-03/paragraph-004/sentence-005.mp3": {
+      "chapter": 3,
+      "paragraph": 4,
+      "sentence": 5,
+      "text_sha256": "836bb03aaee03b15499e2ee1a1a7049aa8f0ebfc97bfdad739a3c9355946dfb8",
+      "bytes": 130622
+    },
+    "chapter-03/paragraph-005/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 5,
+      "sentence": 1,
+      "text_sha256": "431b86042688ec37d05d2863bf6a6172b4686f21d04e36152272685d143c0bc2",
+      "bytes": 81863
+    },
+    "chapter-03/paragraph-005/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 5,
+      "sentence": 2,
+      "text_sha256": "f13bcd6cacbd8ca49ea47154875400a56446353a58b9fd6632a5d2a2291b8010",
+      "bytes": 58545
+    },
+    "chapter-03/paragraph-005/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 5,
+      "sentence": 3,
+      "text_sha256": "5a266eb3fb6642e89921b435aee08691a6f5103af54af2ad580f264633f7893b",
+      "bytes": 121426
+    },
+    "chapter-03/paragraph-006/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 6,
+      "sentence": 1,
+      "text_sha256": "3b38bee97a3f6af4afb2bc1ff616a8bc99fb3a39031d590aa0cd4df296934728",
+      "bytes": 88271
+    },
+    "chapter-03/paragraph-006/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 6,
+      "sentence": 2,
+      "text_sha256": "f75d491e5be9b3925f88ad6235dbd018796ddedab29ffe41a3b773cd3c5472c0",
+      "bytes": 88897
+    },
+    "chapter-03/paragraph-006/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 6,
+      "sentence": 3,
+      "text_sha256": "9d4c115b4556d628af1b74df098f5415cf6bed27e61270aa72b395df41666e74",
+      "bytes": 60499
+    },
+    "chapter-03/paragraph-007/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 7,
+      "sentence": 1,
+      "text_sha256": "6373b8003c08fd077169d091877504a48827e8357678758dcfaf46c4e876d264",
+      "bytes": 53276
+    },
+    "chapter-03/paragraph-007/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 7,
+      "sentence": 2,
+      "text_sha256": "3fecc44ffa4a54e6874867e16978233e4c583b37e744555826e07db217d3b540",
+      "bytes": 93705
+    },
+    "chapter-03/paragraph-007/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 7,
+      "sentence": 3,
+      "text_sha256": "804db5bdf487ca079c02185a2b9510390e9b932763635bc56c61ef6a3e02d6f4",
+      "bytes": 69653
+    },
+    "chapter-03/paragraph-008/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 8,
+      "sentence": 1,
+      "text_sha256": "dbae24b1b5fc98594905e23d4fa0f98ffb07455f1908a47335258db564c4c1ed",
+      "bytes": 79960
+    },
+    "chapter-03/paragraph-008/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 8,
+      "sentence": 2,
+      "text_sha256": "004cad52f27d954008a97c8360d2c4aff93129893641ab245ccf1e2341d4d486",
+      "bytes": 81521
+    },
+    "chapter-03/paragraph-008/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 8,
+      "sentence": 3,
+      "text_sha256": "585ff0ab3cb260eadddf6b1a9ef0798cf70a7b455b84419242b494d58bbd88df",
+      "bytes": 63028
+    },
+    "chapter-03/paragraph-009/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 9,
+      "sentence": 1,
+      "text_sha256": "00f144c79ece2c79afdf199be50db68bc2cf5b0ce5c48b959aab7ef86fb180cf",
+      "bytes": 116894
+    },
+    "chapter-03/paragraph-009/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 9,
+      "sentence": 2,
+      "text_sha256": "52d59c9f0a5fda405dfaef80b39707363f82356996e4015fd930b9852240d6a9",
+      "bytes": 87332
+    },
+    "chapter-03/paragraph-009/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 9,
+      "sentence": 3,
+      "text_sha256": "c068b1ed35004c4543893ed32e319f22afbdb5d2b83079824810aa534e92d6ee",
+      "bytes": 111357
+    },
+    "chapter-03/paragraph-009/sentence-004.mp3": {
+      "chapter": 3,
+      "paragraph": 9,
+      "sentence": 4,
+      "text_sha256": "da24678483784eb04ad38c994fcc131d9565f8ae9955f3e7a38a3517fbde098e",
+      "bytes": 65628
+    },
+    "chapter-03/paragraph-009/sentence-005.mp3": {
+      "chapter": 3,
+      "paragraph": 9,
+      "sentence": 5,
+      "text_sha256": "aba383220be14e36e83e7979771b6df440413a6a270fd1d524bc7ca12de467af",
+      "bytes": 89054
+    },
+    "chapter-03/paragraph-009/sentence-006.mp3": {
+      "chapter": 3,
+      "paragraph": 9,
+      "sentence": 6,
+      "text_sha256": "6b8912e67a685b3e466891892ddc70cbcce689501d5dbde804f1fe6cc49581ba",
+      "bytes": 96779
+    },
+    "chapter-03/paragraph-010/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 10,
+      "sentence": 1,
+      "text_sha256": "67864d1190b45ecf5e59709ee803cf8c4438943305f7f934d6c108524cb2d5e4",
+      "bytes": 55672
+    },
+    "chapter-03/paragraph-010/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 10,
+      "sentence": 2,
+      "text_sha256": "f6b4bb6bf55a7ad9ae8c5c8afab58b3ff470d87db8ce397046362656f7a113be",
+      "bytes": 85410
+    },
+    "chapter-03/paragraph-010/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 10,
+      "sentence": 3,
+      "text_sha256": "551d0a4eee6a5896dee55f4ebc4b2f28513f47c34f4cb3faacbdf23cad2fd736",
+      "bytes": 76751
+    },
+    "chapter-03/paragraph-011/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 11,
+      "sentence": 1,
+      "text_sha256": "c0c53ffdd4cf87928df48cd287498787a72f64536020f5e2f6c114b6a83c785d",
+      "bytes": 56141
+    },
+    "chapter-03/paragraph-011/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 11,
+      "sentence": 2,
+      "text_sha256": "e9ba586fcf8adac7278491fd16a98ff24397fd12ebdee23f2415c00556b2c1d5",
+      "bytes": 88225
+    },
+    "chapter-03/paragraph-011/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 11,
+      "sentence": 3,
+      "text_sha256": "e9f6a8c10f23a89efb7700eb241400f611d1ac0c687e762762b2fb3a3fbc146a",
+      "bytes": 72893
+    },
+    "chapter-03/paragraph-012/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 12,
+      "sentence": 1,
+      "text_sha256": "c24553c93579c7115c004159a482e881a26c15ed6f70bd8721914a0e4bfde37d",
+      "bytes": 63917
+    },
+    "chapter-03/paragraph-012/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 12,
+      "sentence": 2,
+      "text_sha256": "1ca409da2461a85a3cbb922c4d6b5d7dd2543a8faade9f9e32aa6aa962fc107c",
+      "bytes": 45608
+    },
+    "chapter-03/paragraph-012/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 12,
+      "sentence": 3,
+      "text_sha256": "46a48b6e28c2a6ce1dbe7b2680f847f8ad6818129db90e8a98f980fe8b5e05d4",
+      "bytes": 74192
+    },
+    "chapter-03/paragraph-012/sentence-004.mp3": {
+      "chapter": 3,
+      "paragraph": 12,
+      "sentence": 4,
+      "text_sha256": "2c5a1b38e22842e948e198920b722334e1fae336e2a075ed8be8cef51a26f052",
+      "bytes": 93021
+    },
+    "chapter-03/paragraph-012/sentence-005.mp3": {
+      "chapter": 3,
+      "paragraph": 12,
+      "sentence": 5,
+      "text_sha256": "ff171167ddd7938497763c479a2f2a871a272cfc5b836ce59f954a988c304f2a",
+      "bytes": 72290
+    },
+    "chapter-03/paragraph-012/sentence-006.mp3": {
+      "chapter": 3,
+      "paragraph": 12,
+      "sentence": 6,
+      "text_sha256": "d5c9a0e59da0ddea81fe6e5fc8765a6730ead75a4655a3b14b054f088f4a00d4",
+      "bytes": 88287
+    },
+    "chapter-03/paragraph-013/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 13,
+      "sentence": 1,
+      "text_sha256": "c7db171957b29f94b01803bf4781976f53498fd51ed7bf1b124e33dfe09f316f",
+      "bytes": 38771
+    },
+    "chapter-03/paragraph-013/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 13,
+      "sentence": 2,
+      "text_sha256": "2b56810331043f9a9d63c0d02e79c179fb1e69a9cc272f1a8680549de1e6167d",
+      "bytes": 67308
+    },
+    "chapter-03/paragraph-013/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 13,
+      "sentence": 3,
+      "text_sha256": "d6e3fcc4398d5cb2b76f5d3081792ce61e69caf52f55d5c4dd0e742a6b3dc264",
+      "bytes": 159479
+    },
+    "chapter-03/paragraph-014/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 14,
+      "sentence": 1,
+      "text_sha256": "f0aeaf37c32b5dc4040679f3669aec525b05fa89aad9f8fe3fa50fb1c72f512d",
+      "bytes": 56000
+    },
+    "chapter-03/paragraph-014/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 14,
+      "sentence": 2,
+      "text_sha256": "7fe94da44698ef25c4f274a279e796c656dc5b12553e51edd375910c7270869f",
+      "bytes": 102462
+    },
+    "chapter-03/paragraph-014/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 14,
+      "sentence": 3,
+      "text_sha256": "230cb5c638441e472e33c848ac45bcf72ebdd5eccca7a960d6508e623aa05a03",
+      "bytes": 75888
+    },
+    "chapter-03/paragraph-014/sentence-004.mp3": {
+      "chapter": 3,
+      "paragraph": 14,
+      "sentence": 4,
+      "text_sha256": "3a2391ef0cd7b1c617cbc0680bf18f5c5301cabe7f93ae6e5ac3c2850461f4dc",
+      "bytes": 69028
+    },
+    "chapter-03/paragraph-015/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 15,
+      "sentence": 1,
+      "text_sha256": "0bbc14b53b99ef66a244649fdb7ee5b3d21147c2a3be9feca6bf4c7bbafcb520",
+      "bytes": 93148
+    },
+    "chapter-03/paragraph-015/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 15,
+      "sentence": 2,
+      "text_sha256": "2db5c39ef59c89485e11debb0082f954aed3e51f70e6414520188d88141e0041",
+      "bytes": 144981
+    },
+    "chapter-03/paragraph-015/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 15,
+      "sentence": 3,
+      "text_sha256": "6691ad440f663d41aa634660f58196bf01107986dbb7d4314bbc9133a4ac71ac",
+      "bytes": 100165
+    },
+    "chapter-03/paragraph-015/sentence-004.mp3": {
+      "chapter": 3,
+      "paragraph": 15,
+      "sentence": 4,
+      "text_sha256": "60436c8120c5f7bb4b9e320c9eb227a6cc167546962bc6437662ab13dd792102",
+      "bytes": 137340
+    },
+    "chapter-03/paragraph-016/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 16,
+      "sentence": 1,
+      "text_sha256": "e4df0b905227691cf73e719b2b571ac4ab738d7d69b1a2ceea0e4abd53e1dc40",
+      "bytes": 96901
+    },
+    "chapter-03/paragraph-016/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 16,
+      "sentence": 2,
+      "text_sha256": "15838f12578937dc81a4a643c7142ac74ee45d376e0f7ad203f8f92f830c14e3",
+      "bytes": 102572
+    },
+    "chapter-03/paragraph-016/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 16,
+      "sentence": 3,
+      "text_sha256": "80eee2685720d6d47057d556e3a25103164049ddd27e546a2a9c08cb7f651bf6",
+      "bytes": 68346
+    },
+    "chapter-03/paragraph-016/sentence-004.mp3": {
+      "chapter": 3,
+      "paragraph": 16,
+      "sentence": 4,
+      "text_sha256": "7c64edb480da25dea8a21b64cbe7495e3b0f77c5cbaef23f42c5d3a80bfd477b",
+      "bytes": 94094
+    },
+    "chapter-03/paragraph-016/sentence-005.mp3": {
+      "chapter": 3,
+      "paragraph": 16,
+      "sentence": 5,
+      "text_sha256": "bb1fa679794e47743596904d8dab5196652ac9b1cf59f034f7552e333f447039",
+      "bytes": 59122
+    },
+    "chapter-03/paragraph-017/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 17,
+      "sentence": 1,
+      "text_sha256": "3584a39b4cd6f58df7741529bbd0eb4bb78ab3b8947fce10be4836e3ac7ead49",
+      "bytes": 88061
+    },
+    "chapter-03/paragraph-017/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 17,
+      "sentence": 2,
+      "text_sha256": "8a2deb29dffe9d6b701b67f061cfa2e832e67843ef534e653599359c4287174d",
+      "bytes": 59898
+    },
+    "chapter-03/paragraph-017/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 17,
+      "sentence": 3,
+      "text_sha256": "241f90fb43ea03e4d74ac94247de43089793a312c2e04ab2f32854b96c2b91b2",
+      "bytes": 87437
+    },
+    "chapter-03/paragraph-017/sentence-004.mp3": {
+      "chapter": 3,
+      "paragraph": 17,
+      "sentence": 4,
+      "text_sha256": "c169e5b891427b34eb425764caf641fffc154cd4dacda827574e44a010d7c15d",
+      "bytes": 91236
+    },
+    "chapter-03/paragraph-018/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 18,
+      "sentence": 1,
+      "text_sha256": "c78213a6042f6ce6104993b4a122a8414c9eea84007db92ddf84c79986022154",
+      "bytes": 84183
+    },
+    "chapter-03/paragraph-018/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 18,
+      "sentence": 2,
+      "text_sha256": "97af16a93e780f435d11f5892e59fa0fd3602b8c6aff292103c86134dd461300",
+      "bytes": 94791
+    },
+    "chapter-03/paragraph-018/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 18,
+      "sentence": 3,
+      "text_sha256": "2bca8eaf7a252aab2a8d0fc1085ead4ce14895255a8b56f776f1dc56df750bd2",
+      "bytes": 97192
+    },
+    "chapter-03/paragraph-018/sentence-004.mp3": {
+      "chapter": 3,
+      "paragraph": 18,
+      "sentence": 4,
+      "text_sha256": "954d27d3b7e63c58a4cbcc37c55337792b549b4b75de363e26168507929f4379",
+      "bytes": 69653
+    },
+    "chapter-03/paragraph-018/sentence-005.mp3": {
+      "chapter": 3,
+      "paragraph": 18,
+      "sentence": 5,
+      "text_sha256": "22fa6c2f870cf4542efed66809207e6f4849c0cf9b4ce9c7ddfb2f70342c8263",
+      "bytes": 127028
+    },
+    "chapter-03/paragraph-019/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 19,
+      "sentence": 1,
+      "text_sha256": "839c1606ff66067ed725875713d76e171a4e4416d576b98fc29bf477c44c9348",
+      "bytes": 73980
+    },
+    "chapter-03/paragraph-019/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 19,
+      "sentence": 2,
+      "text_sha256": "e8fc9b3a5f705093352416689597777fd3117a0a2c55f0ca878659f350b6842d",
+      "bytes": 127908
+    },
+    "chapter-03/paragraph-019/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 19,
+      "sentence": 3,
+      "text_sha256": "d8f6ddc59e8290dca9d5bf9dfcd39148b4bc2e16870ff52479aaec55fdb6d575",
+      "bytes": 116444
+    },
+    "chapter-03/paragraph-020/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 20,
+      "sentence": 1,
+      "text_sha256": "3ac9cb198ed43e3574a2baecf5a38d928ce031f71e1b3e67c52c1d4f7f0f52ef",
+      "bytes": 70222
+    },
+    "chapter-03/paragraph-020/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 20,
+      "sentence": 2,
+      "text_sha256": "eaddd762b7d17c76dcf4a605dd8cffc0ae3765d385d491f1dafd3d4463ac1291",
+      "bytes": 42604
+    },
+    "chapter-03/paragraph-020/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 20,
+      "sentence": 3,
+      "text_sha256": "22807681f6a988be3771d41024ccb1be633364470d2e408c76b4cb52cf2f0b1f",
+      "bytes": 122694
+    },
+    "chapter-03/paragraph-021/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 21,
+      "sentence": 1,
+      "text_sha256": "387fcfa15958de0b962403bcfa03d7fd0759e2034c95207cab044798d36ac81e",
+      "bytes": 85145
+    },
+    "chapter-03/paragraph-021/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 21,
+      "sentence": 2,
+      "text_sha256": "6afa1cdc0d7d628e3fde4e560958ce4eb66663913d892a57fdd7635210e7f257",
+      "bytes": 94876
+    },
+    "chapter-03/paragraph-022/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 22,
+      "sentence": 1,
+      "text_sha256": "37a712a42835c13c9ddc93163fe65a4252c7343f5893bee021f4de4d2ab7dc12",
+      "bytes": 86395
+    },
+    "chapter-03/paragraph-022/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 22,
+      "sentence": 2,
+      "text_sha256": "ad09d5be449f58b2f7dffc1e17e054f3a9a39ad13b004defd7ee004408a27c70",
+      "bytes": 70334
+    },
+    "chapter-03/paragraph-022/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 22,
+      "sentence": 3,
+      "text_sha256": "acb9ada55fe936482caf2bf467e26a62bf6d6b66f3fa9a842d68493ab98ea3e1",
+      "bytes": 76704
+    },
+    "chapter-03/paragraph-023/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 23,
+      "sentence": 1,
+      "text_sha256": "206b31d985036c8f4ca8ef0bfee0681e6abcf519a9e3b17af4df21b398e301ee",
+      "bytes": 68890
+    },
+    "chapter-03/paragraph-023/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 23,
+      "sentence": 2,
+      "text_sha256": "0c28b1aeaa6a6304ad9c65fb10680d1fb052d981d83304efb884ab2103744171",
+      "bytes": 99067
+    },
+    "chapter-03/paragraph-023/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 23,
+      "sentence": 3,
+      "text_sha256": "e0394a65ef2bb7b628a24d2069716aa4400ce92480eaeea31605ebec4e793589",
+      "bytes": 94800
+    },
+    "chapter-03/paragraph-024/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 24,
+      "sentence": 1,
+      "text_sha256": "6a12899a0fb6b4ade7687a7aa9be6bdd12841223e6df4d7343bcd37cec437591",
+      "bytes": 114561
+    },
+    "chapter-03/paragraph-024/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 24,
+      "sentence": 2,
+      "text_sha256": "059cb80449173253e8e9a2006414c1a2e675b7715dd52e54d00674467902fb9c",
+      "bytes": 92623
+    },
+    "chapter-03/paragraph-024/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 24,
+      "sentence": 3,
+      "text_sha256": "ad811f42856eebbd8940dac6e61fd82c1ce51788efb647df137d24be8d2fe4c5",
+      "bytes": 128806
+    },
+    "chapter-03/paragraph-025/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 25,
+      "sentence": 1,
+      "text_sha256": "faf0bd211be6bcc7cbc2adce7916755de04c64ca657b53b4ab618c9dd6a2ad4e",
+      "bytes": 94832
+    },
+    "chapter-03/paragraph-025/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 25,
+      "sentence": 2,
+      "text_sha256": "42a67f09aa095a393bfa2fd72c3dcbb3ad3cf140df2795bace0cdbd90ceb6d52",
+      "bytes": 94450
+    },
+    "chapter-03/paragraph-026/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 26,
+      "sentence": 1,
+      "text_sha256": "92c3d5e9112b0c0eb1f9e1e13ab45af98f7db3217d209368cbb7121e2caca55a",
+      "bytes": 119712
+    },
+    "chapter-03/paragraph-026/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 26,
+      "sentence": 2,
+      "text_sha256": "0a9f09dc87d61932ed065f8fe4132b6a64754be1c74a39ffdd2467a4a9656cba",
+      "bytes": 97515
+    },
+    "chapter-03/paragraph-027/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 27,
+      "sentence": 1,
+      "text_sha256": "a56a464edf9f35b77e4f47f0e63c2aa9d90a7149f0ecbedaff13422a74e09d01",
+      "bytes": 60604
+    },
+    "chapter-03/paragraph-027/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 27,
+      "sentence": 2,
+      "text_sha256": "1cd7a0bddaa41d3a98349e962d6e82f2bbd92740b6288899d974e39657441ea1",
+      "bytes": 64857
+    },
+    "chapter-03/paragraph-027/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 27,
+      "sentence": 3,
+      "text_sha256": "2b95a4b753cc5ebc1a21aae2e1d59df6c639e0609f12b6e5c8fd92dd4a3b8450",
+      "bytes": 62954
+    },
+    "chapter-03/paragraph-028/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 28,
+      "sentence": 1,
+      "text_sha256": "aa1210fc67f170b5b33c1c9a1785d46c4152477dbee256d152ace6fab6fef091",
+      "bytes": 59772
+    },
+    "chapter-03/paragraph-028/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 28,
+      "sentence": 2,
+      "text_sha256": "5a1357714e36dc7e68b470b75891eaa03e669850caceca27b9649c7e0b045113",
+      "bytes": 106712
+    },
+    "chapter-03/paragraph-028/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 28,
+      "sentence": 3,
+      "text_sha256": "1882522c27eecf1a456078fc397f497777fb8c7a592ea620dbebeae104ae7ae5",
+      "bytes": 121800
+    },
+    "chapter-03/paragraph-028/sentence-004.mp3": {
+      "chapter": 3,
+      "paragraph": 28,
+      "sentence": 4,
+      "text_sha256": "b5867f79e8af230931b95df94131b11681754139b33232e01540ad93cb482734",
+      "bytes": 132971
+    },
+    "chapter-03/paragraph-028/sentence-005.mp3": {
+      "chapter": 3,
+      "paragraph": 28,
+      "sentence": 5,
+      "text_sha256": "abe2edc7cae78ed5fd8d0a9707c1cf070dfe79c10ea98a9d201ab79177e54fd4",
+      "bytes": 132563
+    },
+    "chapter-03/paragraph-029/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 29,
+      "sentence": 1,
+      "text_sha256": "cb9626bb7868f183737d5f1e1002d3249518adec073e72187921a2fd4728cecf",
+      "bytes": 63028
+    },
+    "chapter-03/paragraph-029/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 29,
+      "sentence": 2,
+      "text_sha256": "6911826edb26088d9d0a1078c91bbc29b4a134e8410fc391b25364ad1c4295d5",
+      "bytes": 112420
+    },
+    "chapter-03/paragraph-030/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 30,
+      "sentence": 1,
+      "text_sha256": "5d0a13a6c8d7a8b985d145f1ff9dc455671371e6632476065e52845d53b10011",
+      "bytes": 90301
+    },
+    "chapter-03/paragraph-030/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 30,
+      "sentence": 2,
+      "text_sha256": "ddf43adc2159eb90548a71a18e2d53e6d6a716d5bd679e55bf47da09f8928ae0",
+      "bytes": 98290
+    },
+    "chapter-03/paragraph-031/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 31,
+      "sentence": 1,
+      "text_sha256": "e26a346ad2c8ae65a5a7089fd547be7c6f62108d9ff63eede27a4f6c12bf9524",
+      "bytes": 71110
+    },
+    "chapter-03/paragraph-031/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 31,
+      "sentence": 2,
+      "text_sha256": "23fef5d125e66f56febeb2b0a1b0db55cd44bf7e6ea32a2e640eb871063ac22e",
+      "bytes": 84917
+    },
+    "chapter-03/paragraph-031/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 31,
+      "sentence": 3,
+      "text_sha256": "85b0ae565cab43dbc629045b7d1fb8add7575699e880b1f932a3ec760ff21b00",
+      "bytes": 82584
+    },
+    "chapter-03/paragraph-031/sentence-004.mp3": {
+      "chapter": 3,
+      "paragraph": 31,
+      "sentence": 4,
+      "text_sha256": "42f1e9b542e465f67d05f1bf29f9edbf7ea2f821dd1e571449eff0ab31caa1ab",
+      "bytes": 113732
+    },
+    "chapter-03/paragraph-032/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 32,
+      "sentence": 1,
+      "text_sha256": "d3f57ff024e7f059793821c21de4eb195e3ef923ac41ecee554473b507463134",
+      "bytes": 102995
+    },
+    "chapter-03/paragraph-032/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 32,
+      "sentence": 2,
+      "text_sha256": "13e251388dc25341d5f6e962721f03df77c3a7b9aa1acd6c5a7fa237dfcb1106",
+      "bytes": 80712
+    },
+    "chapter-03/paragraph-032/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 32,
+      "sentence": 3,
+      "text_sha256": "d518ea207b1b71e4dcb949a32b8796dac72ffd65864bf717005ba99696c0b135",
+      "bytes": 90122
+    },
+    "chapter-03/paragraph-033/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 33,
+      "sentence": 1,
+      "text_sha256": "9b181e4bfab503942b099530271f42adb47efd4af0a60425f0eb9fefe7e6a235",
+      "bytes": 68813
+    },
+    "chapter-03/paragraph-033/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 33,
+      "sentence": 2,
+      "text_sha256": "d456504cd7b2f380abf4a50bb631690ec5afe5b19d7fa242d1fd06c27f0e844b",
+      "bytes": 45241
+    },
+    "chapter-03/paragraph-033/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 33,
+      "sentence": 3,
+      "text_sha256": "58a6e48e1423ba89a3145c5508e9aafd1d984f0dbb971eee2a7b80fac9f6c8cc",
+      "bytes": 124371
+    },
+    "chapter-03/paragraph-034/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 34,
+      "sentence": 1,
+      "text_sha256": "3efed72b65066fc2f690d9d95532c25fe967768a9f9db4fc0ad40d1bf7c812d6",
+      "bytes": 156135
+    },
+    "chapter-03/paragraph-034/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 34,
+      "sentence": 2,
+      "text_sha256": "f9532b6b55690d83e7741005945f5870ddf5ce664624262c3668e3e93dcbdf37",
+      "bytes": 73463
+    },
+    "chapter-03/paragraph-034/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 34,
+      "sentence": 3,
+      "text_sha256": "13f4ed0c52a23e78f81778bc20703e534e8a3a80967c9240fc5a89b12ddcabac",
+      "bytes": 54418
+    },
+    "chapter-03/paragraph-035/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 35,
+      "sentence": 1,
+      "text_sha256": "d7dbc95663df6fc1b696cd6c21da96e265daed6376f1587cc7b79fe6201f6484",
+      "bytes": 78701
+    },
+    "chapter-03/paragraph-035/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 35,
+      "sentence": 2,
+      "text_sha256": "9fc720b7433c54b4ad8af3558f7c62bfde9b56bf7718b3763fd9a81096370674",
+      "bytes": 62554
+    },
+    "chapter-03/paragraph-035/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 35,
+      "sentence": 3,
+      "text_sha256": "929382e01e8e7d601757456d3a1783eb1dc47fe94dd83d90d88b13337917b93d",
+      "bytes": 92670
+    },
+    "chapter-03/paragraph-035/sentence-004.mp3": {
+      "chapter": 3,
+      "paragraph": 35,
+      "sentence": 4,
+      "text_sha256": "0967d68af919488939f2ca15ea3e355fe72e5b8c77927d9e4b3d7fbfe95248e7",
+      "bytes": 99895
+    },
+    "chapter-03/paragraph-035/sentence-005.mp3": {
+      "chapter": 3,
+      "paragraph": 35,
+      "sentence": 5,
+      "text_sha256": "5bd58e3fea53e169782cd9bcc0204e91fbaca6386de121a0738a5f0572509ec6",
+      "bytes": 86031
+    },
+    "chapter-03/paragraph-036/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 36,
+      "sentence": 1,
+      "text_sha256": "c30c266d4a955470ad242abe62ab86bed311c61e0647bbc9aca30fb0df26a92e",
+      "bytes": 115859
+    },
+    "chapter-03/paragraph-036/sentence-002.mp3": {
+      "chapter": 3,
+      "paragraph": 36,
+      "sentence": 2,
+      "text_sha256": "95bc1b990a256ba88de56953391a43f38b18768aa828466484ee8aae3c9942ae",
+      "bytes": 86970
+    },
+    "chapter-03/paragraph-036/sentence-003.mp3": {
+      "chapter": 3,
+      "paragraph": 36,
+      "sentence": 3,
+      "text_sha256": "5c51d4cd4208deb2079b77040b397d664fde6ccce1e151a954466636efa6c08b",
+      "bytes": 87305
+    },
+    "chapter-03/paragraph-037/sentence-001.mp3": {
+      "chapter": 3,
+      "paragraph": 37,
+      "sentence": 1,
+      "text_sha256": "54627a06b17c8fe77ee7e1c80f6939b8b72fcea098589e1e4871257696a8b3bf",
+      "bytes": 57756
     }
   }
 }
