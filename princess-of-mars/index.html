@@ -1115,6 +1115,7 @@
                 <option value="listening">Glosses + frase</option>
                 <option value="paragraph">Parágrafo</option>
                 <option value="listening-paragraph">Glosses + parágrafo</option>
+                <option value="translation-paragraph">Tradução + parágrafo</option>
               </select>
             </label>
             <span id="sentence-audio-voice"></span>
@@ -1296,7 +1297,7 @@
     let positionSaveFrame = null;
     let nextSentencePreviewFrame = null;
     const fontPercentages = [85, 100, 115, 130, 150];
-    const offlineVersion = "73662df4d6b824d8";
+    const offlineVersion = "ad1672785bc9ddb9";
     const defaultFontLevelIndex = 1;
     const minFontLevel = -defaultFontLevelIndex;
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
@@ -1311,6 +1312,7 @@
     let markedGlossSpeechOnComplete = null;
     let translationSpeechActive = false;
     let translationSpeechRun = 0;
+    let translationSpeechOnComplete = null;
     const audioConfig = bookData?.page?.audio || null;
     const sentenceAudio = audioConfig ? new Audio() : null;
     const sentenceAudioLoopDelayMs = 500;
@@ -1664,17 +1666,29 @@
       return mode === "listening" || mode === "listening-paragraph";
     }
 
+    function loopModeUsesTranslation(mode = sentenceAudioLoopMode) {
+      return mode === "translation-paragraph";
+    }
+
     function loopModeUsesParagraph(mode = sentenceAudioLoopMode) {
-      return mode === "paragraph" || mode === "listening-paragraph";
+      return mode === "paragraph"
+        || mode === "listening-paragraph"
+        || mode === "translation-paragraph";
     }
 
     function startSentenceAudioCycle({ restart = false } = {}) {
       if (!sentenceAudio) return;
       clearSentenceAudioLoopTimer();
       if (restart) sentenceAudio.currentTime = 0;
-      if (loopModeUsesGlosses() && sentenceAudio.currentTime === 0) {
-        startGlossesThenSentence();
-        return;
+      if (sentenceAudio.currentTime === 0) {
+        if (loopModeUsesGlosses()) {
+          startGlossesThenSentence();
+          return;
+        }
+        if (loopModeUsesTranslation()) {
+          startTranslationThenSentence();
+          return;
+        }
       }
       playSentenceAudio({ restart });
     }
@@ -1691,15 +1705,21 @@
     function updateSentenceAudioLoop() {
       const listeningOption = sentenceAudioLoop.querySelector('option[value="listening"]');
       const listeningParagraphOption = sentenceAudioLoop.querySelector('option[value="listening-paragraph"]');
+      const translationParagraphOption = sentenceAudioLoop.querySelector('option[value="translation-paragraph"]');
       const listeningAvailable = browserSpeechAvailable && currentSentenceListeningGlosses().length > 0;
       const listeningParagraphAvailable = browserSpeechAvailable && currentParagraphHasListeningGlosses();
       listeningOption.disabled = !listeningAvailable;
       listeningParagraphOption.disabled = !listeningParagraphAvailable;
+      translationParagraphOption.disabled = !browserSpeechAvailable;
       if (sentenceAudioLoopMode === "listening" && !listeningAvailable) {
         clearSentenceAudioLoopTimer();
         if (sentenceAudioLoopSpeechActive) stopBrowserSpeech();
         sentenceAudioLoopMode = "sentence";
       } else if (sentenceAudioLoopMode === "listening-paragraph" && !listeningParagraphAvailable) {
+        clearSentenceAudioLoopTimer();
+        if (sentenceAudioLoopSpeechActive) stopBrowserSpeech();
+        sentenceAudioLoopMode = "paragraph";
+      } else if (sentenceAudioLoopMode === "translation-paragraph" && !browserSpeechAvailable) {
         clearSentenceAudioLoopTimer();
         if (sentenceAudioLoopSpeechActive) stopBrowserSpeech();
         sentenceAudioLoopMode = "paragraph";
@@ -1962,6 +1982,7 @@
       sentenceAudioLoopSpeechActive = false;
       translationSpeechRun += 1;
       translationSpeechActive = false;
+      translationSpeechOnComplete = null;
       updateGlossSpeechButton(false);
       updateTranslationSpeechButton(false);
     }
@@ -2079,6 +2100,7 @@
         renderCard(nextSentenceInCurrentParagraph());
         if (sentenceAudioLoopMode !== expectedMode) return;
         if (loopModeUsesGlosses(expectedMode)) startGlossesThenSentence();
+        else if (loopModeUsesTranslation(expectedMode)) startTranslationThenSentence();
         else playSentenceAudio({ restart: true });
       }, sentenceAudioLoopDelayMs);
     }
@@ -2094,13 +2116,7 @@
       }
     }
 
-    function toggleTranslationSpeech() {
-      if (!browserSpeechAvailable) return;
-      if (translationSpeechActive) {
-        stopBrowserSpeech();
-        return;
-      }
-      stopSentenceAudio();
+    function startTranslationSpeech({ loopSequence = false, onComplete = null } = {}) {
       stopBrowserSpeech();
       const run = translationSpeechRun;
       const utterance = new SpeechSynthesisUtterance(sentences[activeIndex].pt);
@@ -2112,10 +2128,17 @@
         (candidate) => candidate.lang.toLowerCase().startsWith("pt")
       );
       if (voice) utterance.voice = voice;
+      translationSpeechOnComplete = onComplete;
+      sentenceAudioLoopSpeechActive = loopSequence;
+      if (loopSequence) sentenceAudioStatus.textContent = "Lendo tradução…";
       const finish = () => {
         if (run !== translationSpeechRun) return;
+        const completed = translationSpeechOnComplete;
         translationSpeechActive = false;
+        translationSpeechOnComplete = null;
+        sentenceAudioLoopSpeechActive = false;
         updateTranslationSpeechButton(false);
+        if (completed) completed();
       };
       utterance.addEventListener("end", finish);
       utterance.addEventListener("error", finish);
@@ -2126,6 +2149,26 @@
       } catch (_error) {
         finish();
       }
+    }
+
+    function startTranslationThenSentence() {
+      const expectedMode = sentenceAudioLoopMode;
+      startTranslationSpeech({
+        loopSequence: true,
+        onComplete: () => {
+          if (sentenceAudioLoopMode === expectedMode) scheduleSentenceAudioLoopPlayback(expectedMode);
+        }
+      });
+    }
+
+    function toggleTranslationSpeech() {
+      if (!browserSpeechAvailable) return;
+      if (translationSpeechActive) {
+        stopBrowserSpeech();
+        return;
+      }
+      stopSentenceAudio();
+      startTranslationSpeech();
     }
 
     function updateGlossCount() {
