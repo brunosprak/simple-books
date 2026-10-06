@@ -466,14 +466,19 @@
       outline: none;
     }
 
-    .sentence-audio-speed {
+    .sentence-audio-speed,
+    .sentence-audio-loop {
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
+    }
+
+    .sentence-audio-speed {
       margin-left: auto;
     }
 
-    .sentence-audio-speed select {
+    .sentence-audio-speed select,
+    .sentence-audio-loop select {
       min-height: 2rem;
       padding: 0.2rem 0.45rem;
       color: var(--ink);
@@ -1021,7 +1026,14 @@
           <div class="sentence-audio-controls" id="sentence-audio-controls" aria-label="Áudio da frase" hidden>
             <button class="sentence-audio-button" id="sentence-audio-toggle" type="button" aria-pressed="false">▶ Ouvir</button>
             <button class="sentence-audio-action" id="sentence-audio-restart" type="button" aria-label="Reproduzir a frase desde o início" title="Reproduzir desde o início">↺ Início</button>
-            <button class="sentence-audio-action" id="sentence-audio-loop" type="button" aria-label="Ativar repetição da frase" aria-pressed="false" title="Repetir a frase continuamente">↻ Loop</button>
+            <label class="sentence-audio-loop" for="sentence-audio-loop">
+              ↻ Loop
+              <select id="sentence-audio-loop" aria-label="Modo de repetição do áudio">
+                <option value="off">Desligado</option>
+                <option value="sentence">Frase</option>
+                <option value="listening">Glosses + frase</option>
+              </select>
+            </label>
             <span id="sentence-audio-voice"></span>
             <label class="sentence-audio-speed" for="sentence-audio-speed">
               Velocidade
@@ -1188,6 +1200,7 @@
     let markedGlossSpeechActive = false;
     let markedGlossSpeechQueue = [];
     let markedGlossSpeechRun = 0;
+    let markedGlossSpeechOnComplete = null;
     let translationSpeechActive = false;
     let translationSpeechRun = 0;
     const audioConfig = bookData?.page?.audio || null;
@@ -1197,8 +1210,9 @@
     let currentAudioSpeedPercent = loadAudioSpeed();
     let activeSentenceAudioPath = "";
     let loadedSentenceAudioPath = "";
-    let sentenceAudioLoopEnabled = false;
+    let sentenceAudioLoopMode = "off";
     let sentenceAudioLoopTimer = null;
+    let sentenceAudioLoopSpeechActive = false;
     if (sentenceAudio) {
       sentenceAudio.preload = "none";
       sentenceAudio.preservesPitch = true;
@@ -1290,23 +1304,24 @@
     }
 
     function updateSentenceAudioLoop() {
-      const looping = sentenceAudioLoopEnabled;
-      sentenceAudioLoop.setAttribute("aria-pressed", String(looping));
-      sentenceAudioLoop.setAttribute(
-        "aria-label",
-        looping ? "Desativar repetição da frase" : "Ativar repetição da frase"
-      );
-      sentenceAudioLoop.title = looping
-        ? "Desativar repetição contínua"
-        : "Repetir a frase continuamente";
+      const listeningOption = sentenceAudioLoop.querySelector('option[value="listening"]');
+      const listeningAvailable = browserSpeechAvailable && currentSentenceListeningGlosses().length > 0;
+      listeningOption.disabled = !listeningAvailable;
+      if (sentenceAudioLoopMode === "listening" && !listeningAvailable) {
+        clearSentenceAudioLoopTimer();
+        if (sentenceAudioLoopSpeechActive) stopBrowserSpeech();
+        sentenceAudioLoopMode = "sentence";
+      }
+      sentenceAudioLoop.value = sentenceAudioLoopMode;
     }
 
     sentenceAudioToggle.addEventListener("click", toggleSentenceAudio);
     sentenceAudioRestart.addEventListener("click", () => playSentenceAudio({ restart: true }));
-    sentenceAudioLoop.addEventListener("click", () => {
-      if (!sentenceAudio) return;
-      sentenceAudioLoopEnabled = !sentenceAudioLoopEnabled;
-      if (!sentenceAudioLoopEnabled) clearSentenceAudioLoopTimer();
+    sentenceAudioLoop.addEventListener("change", () => {
+      clearSentenceAudioLoopTimer();
+      if (sentenceAudioLoopSpeechActive) stopBrowserSpeech();
+      sentenceAudioLoopMode = sentenceAudioLoop.value;
+      sentenceAudioStatus.textContent = "";
       updateSentenceAudioLoop();
     });
     sentenceAudioSpeed.addEventListener("change", () => {
@@ -1328,13 +1343,7 @@
     sentenceAudio?.addEventListener("ended", () => {
       sentenceAudio.currentTime = 0;
       updateSentenceAudioButton(false);
-      if (!sentenceAudioLoopEnabled) return;
-      sentenceAudioStatus.textContent = "Repetindo em 0,5 s…";
-      sentenceAudioLoopTimer = setTimeout(() => {
-        sentenceAudioLoopTimer = null;
-        if (!sentenceAudioLoopEnabled) return;
-        playSentenceAudio({ restart: true });
-      }, sentenceAudioLoopDelayMs);
+      continueSentenceAudioLoop();
     });
     sentenceAudio?.addEventListener("error", () => {
       updateSentenceAudioButton(false);
@@ -1518,7 +1527,7 @@
         "aria-label",
         speaking
           ? "Parar leitura dos glosses de escuta da frase atual"
-          : "Ouvir em japonês e português os glosses de escuta da frase atual"
+          : "Ouvir em japonês, português e japonês novamente os glosses de escuta da frase atual"
       );
       glossSpeak.textContent = speaking ? "■ Parar" : "▶ Escuta";
       glossSpeak.title = browserSpeechAvailable
@@ -1544,6 +1553,8 @@
       markedGlossSpeechRun += 1;
       markedGlossSpeechActive = false;
       markedGlossSpeechQueue = [];
+      markedGlossSpeechOnComplete = null;
+      sentenceAudioLoopSpeechActive = false;
       translationSpeechRun += 1;
       translationSpeechActive = false;
       updateGlossSpeechButton(false);
@@ -1554,8 +1565,12 @@
       if (run !== markedGlossSpeechRun) return;
       const next = markedGlossSpeechQueue.shift();
       if (!next) {
+        const onComplete = markedGlossSpeechOnComplete;
         markedGlossSpeechActive = false;
+        markedGlossSpeechOnComplete = null;
+        sentenceAudioLoopSpeechActive = false;
         updateGlossSpeechButton(false);
+        if (run === markedGlossSpeechRun && onComplete) onComplete();
         return;
       }
       const utterance = new SpeechSynthesisUtterance(next.text);
@@ -1581,6 +1596,23 @@
       }
     }
 
+    function startMarkedGlossSpeech(glosses, { loopSequence = false, onComplete = null } = {}) {
+      stopBrowserSpeech();
+      markedGlossSpeechRun += 1;
+      const run = markedGlossSpeechRun;
+      markedGlossSpeechQueue = glosses.flatMap(({ term, portuguese }) => [
+        { text: term, lang: "ja-JP" },
+        { text: portuguese, lang: "pt-BR" },
+        { text: term, lang: "ja-JP" }
+      ]);
+      markedGlossSpeechOnComplete = onComplete;
+      sentenceAudioLoopSpeechActive = loopSequence;
+      if (loopSequence) sentenceAudioStatus.textContent = "Lendo glosses…";
+      markedGlossSpeechActive = true;
+      updateGlossSpeechButton(true);
+      speakNextMarkedGlossPart(run);
+    }
+
     function toggleMarkedGlossSpeech() {
       const glosses = currentSentenceListeningGlosses();
       if (!browserSpeechAvailable || glosses.length === 0) return;
@@ -1589,16 +1621,42 @@
         return;
       }
       stopSentenceAudio();
-      stopBrowserSpeech();
-      markedGlossSpeechRun += 1;
-      const run = markedGlossSpeechRun;
-      markedGlossSpeechQueue = glosses.flatMap(({ term, portuguese }) => [
-        { text: term, lang: "ja-JP" },
-        { text: portuguese, lang: "pt-BR" }
-      ]);
-      markedGlossSpeechActive = true;
-      updateGlossSpeechButton(true);
-      speakNextMarkedGlossPart(run);
+      startMarkedGlossSpeech(glosses);
+    }
+
+    function scheduleSentenceAudioLoopPlayback() {
+      sentenceAudioStatus.textContent = "Frase em 0,5 s…";
+      sentenceAudioLoopTimer = setTimeout(() => {
+        sentenceAudioLoopTimer = null;
+        if (sentenceAudioLoopMode === "off") return;
+        playSentenceAudio({ restart: true });
+      }, sentenceAudioLoopDelayMs);
+    }
+
+    function continueSentenceAudioLoop() {
+      if (sentenceAudioLoopMode === "off") return;
+      if (sentenceAudioLoopMode === "sentence") {
+        scheduleSentenceAudioLoopPlayback();
+        return;
+      }
+      const glosses = currentSentenceListeningGlosses();
+      if (!browserSpeechAvailable || glosses.length === 0) {
+        sentenceAudioLoopMode = "sentence";
+        updateSentenceAudioLoop();
+        scheduleSentenceAudioLoopPlayback();
+        return;
+      }
+      sentenceAudioStatus.textContent = "Glosses em 0,5 s…";
+      sentenceAudioLoopTimer = setTimeout(() => {
+        sentenceAudioLoopTimer = null;
+        if (sentenceAudioLoopMode !== "listening") return;
+        startMarkedGlossSpeech(glosses, {
+          loopSequence: true,
+          onComplete: () => {
+            if (sentenceAudioLoopMode === "listening") scheduleSentenceAudioLoopPlayback();
+          }
+        });
+      }, sentenceAudioLoopDelayMs);
     }
 
     function toggleTranslationSpeech() {
@@ -1645,6 +1703,7 @@
         `${vocabularyCount} ${vocabularyCount === 1 ? "palavra para estudar" : "palavras para estudar"}; ${listeningCount} ${listeningCount === 1 ? "dificuldade de escuta" : "dificuldades de escuta"}`
       );
       updateGlossSpeechButton(markedGlossSpeechActive);
+      updateSentenceAudioLoop();
     }
 
     glossSpeak.addEventListener("click", toggleMarkedGlossSpeech);
@@ -2118,6 +2177,7 @@
         interlinear.append(chunk);
       });
       updateGlossSpeechButton(false);
+      updateSentenceAudioLoop();
     }
 
     glossExport.addEventListener("click", () => {
