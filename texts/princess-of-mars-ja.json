@@ -26,11 +26,19 @@
       "base_url": "audio",
       "voice": "Nise",
       "speed_levels_percent": [
+        70,
+        75,
         80,
+        85,
         90,
+        95,
         100,
+        105,
         110,
-        120
+        115,
+        120,
+        125,
+        130
       ],
       "default_speed_percent": 100
     }

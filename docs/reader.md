@@ -88,6 +88,8 @@ Switching modes restores the last position used in the destination mode. Reloadi
 - Interlinear chunks can be marked or unmarked in `Frases`.
 - The marked-gloss count updates immediately.
 - Marked glosses persist in browser storage and are included in exported reader data.
+- When at least one gloss is marked and the browser supports the Web Speech API, `▶ Glosses` reads the marked Japanese terms in selection order with the browser's Japanese speech synthesizer. The same button stops the utterance while it is active.
+- Browser-synthesized gloss speech is an optional convenience and is separate from the pinned Nise sentence MP3s; voice quality and availability depend on the operating system and browser.
 
 ## Import and export
 

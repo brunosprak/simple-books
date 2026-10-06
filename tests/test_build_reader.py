@@ -49,6 +49,11 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('id="gloss-export"', first)
         self.assertIn('id="gloss-import"', first)
         self.assertIn('id="gloss-import-file"', first)
+        self.assertIn('id="gloss-speak"', first)
+        self.assertIn('function toggleMarkedGlossSpeech', first)
+        self.assertIn('new SpeechSynthesisUtterance', first)
+        self.assertIn('utterance.lang = "ja-JP"', first)
+        self.assertIn('window.speechSynthesis.speak(utterance)', first)
         self.assertIn('id="sentence-audio-controls"', first)
         self.assertIn('id="sentence-audio-toggle"', first)
         self.assertIn('id="sentence-audio-speed"', first)
@@ -242,6 +247,13 @@ class BuildReaderTests(unittest.TestCase):
         validated = build_reader.validate_data(data)
 
         self.assertEqual(validated["page"]["audio"]["voice"], "Nise")
+
+    def test_princess_audio_speeds_cover_seventy_to_one_thirty(self) -> None:
+        self.assertEqual(
+            self.data["page"]["audio"]["speed_levels_percent"],
+            list(range(70, 131, 5)),
+        )
+        self.assertEqual(self.data["page"]["audio"]["default_speed_percent"], 100)
 
     def test_audio_default_speed_must_be_an_allowed_speed(self) -> None:
         invalid = copy.deepcopy(self.data)

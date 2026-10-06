@@ -11,7 +11,7 @@ The reader's sentence audio is generated from the canonical Japanese JSON and st
 - one file for every sentence currently present in the canonical JSON;
 - a manifest that pins the source text hash, voice/model settings, encoding settings, and file size;
 - automated checks for path stability, complete sentence coverage, stale hashes, missing files, obsolete files, and manifest drift;
-- a `Frases` player with play/pause and `0.8×`, `0.9×`, `1.0×`, `1.1×`, and `1.2×` playback choices;
+- a `Frases` player with play/pause and playback choices from `0.70×` through `1.30×` in `0.05×` increments;
 - per-book speed persistence, immediate speed changes during playback, and automatic stop when sentence or reading mode changes.
 
 Voice-comparison samples remain separate from published book audio under `samples/audio/`. They are reference artifacts and are not loaded by the reader.
@@ -26,7 +26,7 @@ The canonical `texts/<book-slug>-ja.json` enables audio with optional page metad
     "audio": {
       "base_url": "audio",
       "voice": "Nise",
-      "speed_levels_percent": [80, 90, 100, 110, 120],
+      "speed_levels_percent": [70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130],
       "default_speed_percent": 100
     }
   }
@@ -83,6 +83,10 @@ python3 tools/build_audio.py \
 ```
 
 Run the reader builder and test suite after changing canonical text, audio metadata, the shared template, or audio tooling. The reader builder validates the optional audio metadata independently from the MP3 manifest.
+
+## Browser-synthesized marked glosses
+
+The `▶ Glosses` control is intentionally separate from static sentence narration. It sends only the marked Japanese terms to the browser's built-in Web Speech API, selects an available `ja` voice when possible, and requires no network speech API. Its voice, pronunciation, and availability vary by browser and operating system, so it is a convenience for comparison rather than a reproducible audio asset.
 
 ## Future roadmap
 

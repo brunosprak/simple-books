@@ -658,6 +658,14 @@
       outline: none;
     }
 
+    .gloss-tool-button:disabled {
+      color: var(--muted);
+      background: transparent;
+      border-color: var(--rule);
+      cursor: not-allowed;
+      opacity: 0.45;
+    }
+
     footer {
       margin-top: 4rem;
       padding-top: 1.5rem;
@@ -913,6 +921,7 @@
           </div>
           <div class="gloss-tools" aria-label="Glosses marcados">
             <span class="gloss-count" id="gloss-count">0 glosses marcados</span>
+            <button class="gloss-tool-button" id="gloss-speak" type="button" aria-label="Ouvir termos japoneses marcados com o sintetizador do navegador" aria-pressed="false" disabled>▶ Glosses</button>
             <button class="gloss-tool-button" id="gloss-export" type="button" aria-label="Exportar dados de leitura em JSON" title="Exportar dados de leitura em JSON">↓ JSON</button>
             <button class="gloss-tool-button" id="gloss-import" type="button" aria-label="Importar dados de leitura em JSON" title="Importar dados de leitura em JSON">↑ JSON</button>
             <input id="gloss-import-file" type="file" accept="application/json,.json" hidden>
@@ -977,6 +986,7 @@
     const nextParagraphButton = document.querySelector("#study-next-paragraph");
     const furiganaToggle = document.querySelector("#furigana-toggle");
     const glossCount = document.querySelector("#gloss-count");
+    const glossSpeak = document.querySelector("#gloss-speak");
     const glossExport = document.querySelector("#gloss-export");
     const glossImport = document.querySelector("#gloss-import");
     const glossImportFile = document.querySelector("#gloss-import-file");
@@ -1057,6 +1067,8 @@
     let currentFontLevel = Number.parseInt(localStorage.getItem("reading-font-level") || "0", 10);
     const markedGlossesStorageKey = "simple-ja-books:marked-glosses:v1";
     let markedGlosses = loadMarkedGlosses();
+    const browserSpeechAvailable = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+    let markedGlossUtterance = null;
     const audioConfig = bookData?.page?.audio || null;
     const sentenceAudio = audioConfig ? new Audio() : null;
     const audioSpeedStorageKey = `simple-ja-books:audio-speed:v1:${storageScope}`;
@@ -1124,6 +1136,7 @@
         sentenceAudio.pause();
         return;
       }
+      stopMarkedGlossSpeech();
       try {
         if (loadedSentenceAudioPath !== activeSentenceAudioPath) {
           sentenceAudio.src = activeSentenceAudioPath;
@@ -1292,6 +1305,7 @@
     }
 
     function saveMarkedGlosses() {
+      if (markedGlossUtterance) stopMarkedGlossSpeech();
       try {
         localStorage.setItem(markedGlossesStorageKey, JSON.stringify([...markedGlosses.values()]));
       } catch (_error) {
@@ -1300,10 +1314,65 @@
       updateGlossCount();
     }
 
+    function updateGlossSpeechButton(speaking = false) {
+      glossSpeak.disabled = !browserSpeechAvailable || markedGlosses.size === 0;
+      glossSpeak.setAttribute("aria-pressed", String(speaking));
+      glossSpeak.setAttribute(
+        "aria-label",
+        speaking
+          ? "Parar leitura dos termos japoneses marcados"
+          : "Ouvir termos japoneses marcados com o sintetizador do navegador"
+      );
+      glossSpeak.textContent = speaking ? "■ Parar" : "▶ Glosses";
+      glossSpeak.title = browserSpeechAvailable
+        ? "Ouvir os termos japoneses marcados"
+        : "Síntese de voz indisponível neste navegador";
+    }
+
+    function stopMarkedGlossSpeech() {
+      if (browserSpeechAvailable) window.speechSynthesis.cancel();
+      markedGlossUtterance = null;
+      updateGlossSpeechButton(false);
+    }
+
+    function toggleMarkedGlossSpeech() {
+      if (!browserSpeechAvailable || markedGlosses.size === 0) return;
+      if (markedGlossUtterance) {
+        stopMarkedGlossSpeech();
+        return;
+      }
+      stopSentenceAudio();
+      const utterance = new SpeechSynthesisUtterance(
+        [...markedGlosses.values()].map(({ term }) => term).join("。")
+      );
+      utterance.lang = "ja-JP";
+      utterance.rate = 0.9;
+      const japaneseVoice = window.speechSynthesis.getVoices()
+        .find((voice) => voice.lang.toLowerCase().startsWith("ja"));
+      if (japaneseVoice) utterance.voice = japaneseVoice;
+      const finish = () => {
+        if (markedGlossUtterance !== utterance) return;
+        markedGlossUtterance = null;
+        updateGlossSpeechButton(false);
+      };
+      utterance.addEventListener("end", finish);
+      utterance.addEventListener("error", finish);
+      markedGlossUtterance = utterance;
+      updateGlossSpeechButton(true);
+      try {
+        window.speechSynthesis.speak(utterance);
+      } catch (_error) {
+        finish();
+      }
+    }
+
     function updateGlossCount() {
       const count = markedGlosses.size;
       glossCount.textContent = `${count} ${count === 1 ? "gloss marcado" : "glosses marcados"}`;
+      updateGlossSpeechButton(Boolean(markedGlossUtterance));
     }
+
+    glossSpeak.addEventListener("click", toggleMarkedGlossSpeech);
 
     if (!Number.isInteger(currentFontLevel) || currentFontLevel < minFontLevel || currentFontLevel > maxFontLevel) {
       currentFontLevel = 0;
@@ -1514,6 +1583,7 @@
         restoreSentencePosition();
       } else {
         stopSentenceAudio();
+        stopMarkedGlossSpeech();
         renderFullChapter(readingPositions[mode].chapterIndex);
       }
     }
@@ -2030,7 +2100,11 @@
       if (readingMode === "vertical") requestAnimationFrame(() => resetVerticalPagination(verticalPageIndex));
       if (readingMode === "sentence") scheduleNextSentencePreview();
     });
-    window.addEventListener("pagehide", () => captureReadingPosition());
+    window.addEventListener("pagehide", () => {
+      captureReadingPosition();
+      stopSentenceAudio();
+      stopMarkedGlossSpeech();
+    });
 
     updateGlossCount();
     updateFuriganaState();
