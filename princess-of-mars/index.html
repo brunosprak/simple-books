@@ -446,6 +446,26 @@
       outline: none;
     }
 
+    .sentence-audio-action {
+      padding: 0.42rem 0.65rem;
+      color: var(--accent);
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .sentence-audio-action:hover,
+    .sentence-audio-action:focus-visible,
+    .sentence-audio-action[aria-pressed="true"] {
+      color: var(--ink);
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      outline: none;
+    }
+
     .sentence-audio-speed {
       display: inline-flex;
       align-items: center;
@@ -961,6 +981,8 @@
           </div>
           <div class="sentence-audio-controls" id="sentence-audio-controls" aria-label="Áudio da frase" hidden>
             <button class="sentence-audio-button" id="sentence-audio-toggle" type="button" aria-pressed="false">▶ Ouvir</button>
+            <button class="sentence-audio-action" id="sentence-audio-restart" type="button" aria-label="Reproduzir a frase desde o início" title="Reproduzir desde o início">↺ Início</button>
+            <button class="sentence-audio-action" id="sentence-audio-loop" type="button" aria-label="Ativar repetição da frase" aria-pressed="false" title="Repetir a frase continuamente">↻ Loop</button>
             <span id="sentence-audio-voice"></span>
             <label class="sentence-audio-speed" for="sentence-audio-speed">
               Velocidade
@@ -1041,6 +1063,8 @@
     const glossImportFile = document.querySelector("#gloss-import-file");
     const sentenceAudioControls = document.querySelector("#sentence-audio-controls");
     const sentenceAudioToggle = document.querySelector("#sentence-audio-toggle");
+    const sentenceAudioRestart = document.querySelector("#sentence-audio-restart");
+    const sentenceAudioLoop = document.querySelector("#sentence-audio-loop");
     const sentenceAudioVoice = document.querySelector("#sentence-audio-voice");
     const sentenceAudioSpeed = document.querySelector("#sentence-audio-speed");
     const sentenceAudioStatus = document.querySelector("#sentence-audio-status");
@@ -1182,18 +1206,15 @@
       }
     }
 
-    async function toggleSentenceAudio() {
+    async function playSentenceAudio({ restart = false } = {}) {
       if (!sentenceAudio) return;
-      if (!sentenceAudio.paused) {
-        sentenceAudio.pause();
-        return;
-      }
       stopMarkedGlossSpeech();
       try {
         if (loadedSentenceAudioPath !== activeSentenceAudioPath) {
           sentenceAudio.src = activeSentenceAudioPath;
           loadedSentenceAudioPath = activeSentenceAudioPath;
         }
+        if (restart) sentenceAudio.currentTime = 0;
         sentenceAudio.playbackRate = currentAudioSpeedPercent / 100;
         sentenceAudioStatus.textContent = "Carregando…";
         await sentenceAudio.play();
@@ -1203,7 +1224,34 @@
       }
     }
 
+    function toggleSentenceAudio() {
+      if (!sentenceAudio) return;
+      if (!sentenceAudio.paused) {
+        sentenceAudio.pause();
+        return;
+      }
+      playSentenceAudio();
+    }
+
+    function updateSentenceAudioLoop() {
+      const looping = Boolean(sentenceAudio?.loop);
+      sentenceAudioLoop.setAttribute("aria-pressed", String(looping));
+      sentenceAudioLoop.setAttribute(
+        "aria-label",
+        looping ? "Desativar repetição da frase" : "Ativar repetição da frase"
+      );
+      sentenceAudioLoop.title = looping
+        ? "Desativar repetição contínua"
+        : "Repetir a frase continuamente";
+    }
+
     sentenceAudioToggle.addEventListener("click", toggleSentenceAudio);
+    sentenceAudioRestart.addEventListener("click", () => playSentenceAudio({ restart: true }));
+    sentenceAudioLoop.addEventListener("click", () => {
+      if (!sentenceAudio) return;
+      sentenceAudio.loop = !sentenceAudio.loop;
+      updateSentenceAudioLoop();
+    });
     sentenceAudioSpeed.addEventListener("change", () => {
       const selected = Number.parseInt(sentenceAudioSpeed.value, 10);
       if (!audioConfig?.speed_levels_percent.includes(selected)) return;
