@@ -89,9 +89,13 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('<option value="listening">Glosses + frase</option>', first)
         self.assertIn('<option value="paragraph">Parágrafo</option>', first)
         self.assertIn('<option value="listening-paragraph">Glosses + parágrafo</option>', first)
+        self.assertIn('<option value="translation-paragraph">Tradução + parágrafo</option>', first)
         self.assertIn('sentenceAudioLoopMode = sentenceAudioLoop.value', first)
         self.assertIn('function continueSentenceAudioLoop', first)
         self.assertIn('function startGlossesThenSentence', first)
+        self.assertIn('function startTranslationThenSentence', first)
+        self.assertIn('function startTranslationSpeech', first)
+        self.assertIn('Lendo tradução…', first)
         self.assertIn('function nextSentenceInCurrentParagraph', first)
         self.assertIn('function scheduleNextParagraphSentence', first)
         self.assertIn('renderCard(nextSentenceInCurrentParagraph())', first)
@@ -382,6 +386,10 @@ class BuildReaderTests(unittest.TestCase):
         pattern = re.compile(r'const offlineVersion = "([0-9a-f]{16})";')
 
         self.assertNotEqual(pattern.search(first).group(1), pattern.search(second).group(1))
+
+        changed_template = self.template.replace("Leitura offline", "Leitura sem rede", 1)
+        third = build_reader.render(first_data, changed_template)
+        self.assertNotEqual(pattern.search(first).group(1), pattern.search(third).group(1))
 
     def test_offline_worker_uses_network_fallback_and_cached_assets(self) -> None:
         worker = (ROOT / "site" / "offline-sw.js").read_text(encoding="utf-8")

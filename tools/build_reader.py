@@ -192,7 +192,8 @@ def render(
     levels = page["font_levels_percent"]
     default_index = levels.index(page["default_font_level_percent"])
 
-    offline_version = hashlib.sha256(render_public_json(data).encode("utf-8")).hexdigest()[:16]
+    offline_payload = render_public_json(data) + "\0" + template
+    offline_version = hashlib.sha256(offline_payload.encode("utf-8")).hexdigest()[:16]
     replacements = {
         "{{META_DESCRIPTION}}": html.escape(page["description"], quote=True),
         "{{TITLE}}": html.escape(page["title"]),
