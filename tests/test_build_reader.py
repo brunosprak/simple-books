@@ -49,6 +49,14 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('id="gloss-export"', first)
         self.assertIn('id="gloss-import"', first)
         self.assertIn('id="gloss-import-file"', first)
+        self.assertIn('id="sentence-audio-controls"', first)
+        self.assertIn('id="sentence-audio-toggle"', first)
+        self.assertIn('id="sentence-audio-speed"', first)
+        self.assertIn('audioConfig ? new Audio() : null', first)
+        self.assertIn('simple-ja-books:audio-speed:v1:', first)
+        self.assertIn('function sentenceAudioPath', first)
+        self.assertIn('prepareSentenceAudio(activeChapter, paragraphInChapter, sentenceInParagraph)', first)
+        self.assertIn('stopSentenceAudio();', first)
         self.assertIn('simple-ja-books:marked-glosses:v1', first)
         self.assertIn('simple-ja-books:active-card:v1:', first)
         self.assertIn('saveActiveIndex()', first)
@@ -221,6 +229,43 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('<p class="eyebrow" id="page-eyebrow"></p>', output)
         self.assertIn('<p class="study-hint" id="study-hint"></p>', output)
         self.assertIn(".eyebrow:empty", output)
+
+    def test_optional_audio_metadata_is_validated(self) -> None:
+        data = copy.deepcopy(self.data)
+        data["page"]["audio"] = {
+            "base_url": "audio",
+            "voice": "Nise",
+            "speed_levels_percent": [80, 90, 100, 120],
+            "default_speed_percent": 100,
+        }
+
+        validated = build_reader.validate_data(data)
+
+        self.assertEqual(validated["page"]["audio"]["voice"], "Nise")
+
+    def test_audio_default_speed_must_be_an_allowed_speed(self) -> None:
+        invalid = copy.deepcopy(self.data)
+        invalid["page"]["audio"] = {
+            "base_url": "audio",
+            "voice": "Nise",
+            "speed_levels_percent": [80, 100, 120],
+            "default_speed_percent": 90,
+        }
+
+        with self.assertRaisesRegex(build_reader.BuildError, "default_speed_percent"):
+            build_reader.validate_data(invalid)
+
+    def test_audio_speeds_must_be_unique_ascending_positive_integers(self) -> None:
+        invalid = copy.deepcopy(self.data)
+        invalid["page"]["audio"] = {
+            "base_url": "audio",
+            "voice": "Nise",
+            "speed_levels_percent": [100, 80, 100],
+            "default_speed_percent": 100,
+        }
+
+        with self.assertRaisesRegex(build_reader.BuildError, "speed_levels_percent"):
+            build_reader.validate_data(invalid)
 
     def test_validation_rejects_uncovered_sentence_text(self) -> None:
         invalid = copy.deepcopy(self.data)

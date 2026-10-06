@@ -7,6 +7,8 @@ This document defines the user-visible behavior and compatibility requirements o
 - `texts/<book-slug>-ja.json` is the canonical book and study data.
 - `site/books/<book-slug>-ja.json` is its generated public copy.
 - `site/<book-slug>/index.html` is generated from the shared `site/reader.template.html` and loads the public JSON at runtime.
+- Optional `page.audio` metadata enables sentence audio for a book and defines its base URL, voice label, allowed playback speeds, and default speed.
+- `site/<book-slug>/audio/` contains generated MP3 files and their manifest when audio is enabled.
 - A translation-only change may update the public JSON without changing the generated HTML bytes.
 
 ## Reading modes
@@ -18,6 +20,7 @@ The mode selector appears in the normal document flow and exposes three modes.
 - Shows one Japanese sentence at a time with furigana, interlinear chunks, concise Portuguese glosses, and the full Portuguese translation.
 - The sentence/paragraph navigation and gloss import/export row appear in the normal document flow before the sentence content.
 - Previous and next controls move by sentence.
+- When the current book declares audio metadata, a play/pause control and playback-speed selector appear for the active sentence. Books without audio metadata do not show an inactive player.
 - `−¶` and `＋¶` move to the previous or next paragraph.
 - The paragraph counter is relative to the current chapter, while the sentence counter is relative to the current paragraph.
 - A horizontal swipe moves by sentence.
@@ -68,6 +71,17 @@ Switching modes restores the last position used in the destination mode. Reloadi
 - A chunk represents a lexical or grammatical study unit and never consists only of punctuation.
 - Adjacent or sentence-final punctuation belongs to the preceding chunk's surface and reading. It does not receive a separate gloss.
 - The ordered concatenation of chunk surfaces, allowing only deliberately uncovered formatting gaps accepted by the validator, reproduces the Japanese sentence text.
+
+## Sentence audio
+
+- Audio is optional per book and is generated ahead of time; the browser never calls a speech-synthesis service.
+- One MP3 maps to exactly one sentence through one-based chapter, paragraph, and sentence numbers. The runtime path is `audio/chapter-XX/paragraph-XXX/sentence-XXX.mp3` relative to the book reader.
+- The player is available only in `Frases` and never starts automatically.
+- Navigating to another sentence or leaving `Frases` stops playback and returns it to the beginning.
+- The selectable speeds come from the book metadata. Changing speed updates the current playback immediately without selecting or generating another MP3.
+- Playback speed persists per book. The generated source remains at `1.0×`, and the browser preserves pitch while changing playback rate where supported.
+- Loading and playback failures remain local to the player and do not block reading or navigation.
+- Voice generation, manifest verification, storage layout, and the audio roadmap are specified in `docs/audio.md`.
 
 ## Marked glosses
 

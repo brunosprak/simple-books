@@ -78,6 +78,32 @@ def validate_data(data: Any) -> dict[str, Any]:
             "page.default_font_level_percent must occur in font_levels_percent"
         )
 
+    audio = page.get("audio")
+    if audio is not None:
+        if not isinstance(audio, dict):
+            raise BuildError("page.audio must be an object")
+        require_string(audio, "base_url", "page.audio")
+        require_string(audio, "voice", "page.audio")
+        speed_levels = audio.get("speed_levels_percent")
+        if (
+            not isinstance(speed_levels, list)
+            or not speed_levels
+            or any(
+                not isinstance(value, int) or value <= 0
+                for value in speed_levels
+            )
+            or speed_levels != sorted(set(speed_levels))
+        ):
+            raise BuildError(
+                "page.audio.speed_levels_percent must contain unique ascending "
+                "positive integers"
+            )
+        if audio.get("default_speed_percent") not in speed_levels:
+            raise BuildError(
+                "page.audio.default_speed_percent must occur in "
+                "speed_levels_percent"
+            )
+
     chapters = data.get("chapters")
     if not isinstance(chapters, list) or not chapters:
         raise BuildError("chapters must be a non-empty array")

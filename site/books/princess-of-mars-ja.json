@@ -21,7 +21,19 @@
       130,
       150
     ],
-    "default_font_level_percent": 100
+    "default_font_level_percent": 100,
+    "audio": {
+      "base_url": "audio",
+      "voice": "Nise",
+      "speed_levels_percent": [
+        80,
+        90,
+        100,
+        110,
+        120
+      ],
+      "default_speed_percent": 100
+    }
   },
   "chapters": [
     {
