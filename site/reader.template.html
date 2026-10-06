@@ -2057,6 +2057,16 @@
       saveMarkedGlosses();
     }
 
+    function toggleAllGlossReasons(term, portuguese) {
+      const key = glossKey(term, portuguese);
+      const allMarked = glossReasons.every((reason) =>
+        hasGlossReason(term, portuguese, reason)
+      );
+      if (allMarked) markedGlosses.delete(key);
+      else markedGlosses.set(key, { term, portuguese, reasons: [...glossReasons] });
+      saveMarkedGlosses();
+    }
+
     function sentenceListeningGlosses(index) {
       return sentences[index].chunks.flatMap(([term, _reading, portuguese]) =>
         hasGlossReason(term, portuguese, "listening") ? [{ term, portuguese }] : []
@@ -2745,7 +2755,7 @@
         const vocabularyButton = document.createElement("button");
         vocabularyButton.className = "chunk-vocabulary";
         vocabularyButton.type = "button";
-        vocabularyButton.setAttribute("aria-label", `${surface}: ${gloss}. Alternar marcação de vocabulário.`);
+        vocabularyButton.setAttribute("aria-label", `${surface}: ${gloss}. Alternar vocabulário e dificuldade de escuta.`);
 
         const japanese = document.createElement("span");
         japanese.className = "chunk-japanese";
@@ -2782,7 +2792,7 @@
           const listeningMarked = hasGlossReason(surface, gloss, "listening");
           chunk.dataset.vocabulary = String(vocabularyMarked);
           chunk.dataset.listening = String(listeningMarked);
-          vocabularyButton.setAttribute("aria-pressed", String(vocabularyMarked));
+          vocabularyButton.setAttribute("aria-pressed", String(vocabularyMarked && listeningMarked));
           vocabularyReason.setAttribute("aria-pressed", String(vocabularyMarked));
           listeningReason.setAttribute("aria-pressed", String(listeningMarked));
         }
@@ -2792,7 +2802,10 @@
           updateChunkReasons();
         }
 
-        vocabularyButton.addEventListener("click", () => toggleReason("vocabulary"));
+        vocabularyButton.addEventListener("click", () => {
+          toggleAllGlossReasons(surface, gloss);
+          updateChunkReasons();
+        });
         vocabularyReason.addEventListener("click", () => toggleReason("vocabulary"));
         listeningReason.addEventListener("click", () => toggleReason("listening"));
         updateChunkReasons();

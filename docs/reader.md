@@ -4,7 +4,7 @@ This document defines the user-visible behavior and compatibility requirements o
 
 ## Current book content
 
-`A Princess of Mars` has 28 source chapters. Chapters 1 through 3 are currently translated in full, comprising 94 source paragraphs and 354 Japanese sentence cards. The canonical content is `texts/princess-of-mars-ja.json`; the public JSON and reader HTML are generated from it.
+`A Princess of Mars` has 28 source chapters. Chapters 1 through 4 are currently translated in full, comprising 122 source paragraphs and 462 Japanese sentence cards. The canonical content is `texts/princess-of-mars-ja.json`; the public JSON and reader HTML are generated from it.
 
 ## Generated architecture
 
@@ -93,7 +93,7 @@ Switching modes restores the last position used in the destination mode. Reloadi
 ## Marked glosses
 
 - Each interlinear chunk has two independent reasons: `★` for unknown or study-worthy vocabulary and `🎧` for a term that was difficult to recognize in sentence audio. A gloss may have either reason, both, or neither.
-- Clicking the main body of a chunk continues to toggle `★`, preserving the original interaction. The two compact reason buttons expose both states explicitly.
+- Clicking the main body of a chunk marks both `★` and `🎧` together when either is absent; clicking it again while both are active removes both. The two compact reason buttons on the right continue to toggle vocabulary and listening independently.
 - The compact summary displays global totals as `★ vocabulary · 🎧 listening` and updates immediately.
 - Marked glosses persist in browser storage and are included in exported reader data with a `reasons` array.
 - Stored or imported glosses without `reasons` are treated as `vocabulary`, preserving all marks created before the two-reason model.
