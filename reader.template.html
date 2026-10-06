@@ -774,8 +774,89 @@
       opacity: 0.45;
     }
 
+    .offline-downloads {
+      margin-top: 3rem;
+      padding: 1rem;
+      color: var(--muted);
+      background: color-mix(in srgb, var(--panel) 72%, transparent);
+      border: 1px solid var(--rule);
+      border-radius: 0.5rem;
+      font-family: system-ui, sans-serif;
+    }
+
+    .offline-downloads h2 {
+      margin: 0 0 0.35rem;
+      color: var(--ink);
+      font-size: 0.95rem;
+      letter-spacing: 0;
+    }
+
+    .offline-description,
+    .offline-status,
+    .offline-storage {
+      margin: 0.35rem 0;
+      font-size: 0.75rem;
+      line-height: 1.5;
+    }
+
+    .offline-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.75rem;
+    }
+
+    .offline-button {
+      min-height: 2.1rem;
+      padding: 0.35rem 0.65rem;
+      color: var(--accent);
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font: inherit;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .offline-button:hover,
+    .offline-button:focus-visible,
+    .offline-button[aria-expanded="true"] {
+      color: var(--ink);
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    .offline-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+    }
+
+    .offline-progress {
+      width: 100%;
+      height: 0.5rem;
+      margin-top: 0.75rem;
+      accent-color: var(--accent);
+    }
+
+    .offline-progress[hidden],
+    .offline-manage-panel[hidden] {
+      display: none;
+    }
+
+    .offline-manage-panel {
+      margin-top: 0.75rem;
+      padding-top: 0.65rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    .offline-remove {
+      color: #a34a42;
+    }
+
     footer {
-      margin-top: 4rem;
+      margin-top: 2rem;
       padding-top: 1.5rem;
       border-top: 1px solid var(--rule);
       color: var(--muted);
@@ -1085,6 +1166,22 @@
       <button class="font-button" id="font-increase" type="button" aria-label="Aumentar o texto japonês">A＋</button>
     </div>
 
+    <section class="offline-downloads" aria-labelledby="offline-title">
+      <h2 id="offline-title">Leitura offline</h2>
+      <p class="offline-description">Salve os textos e os áudios Nise neste navegador. As vozes de síntese dependem do dispositivo.</p>
+      <div class="offline-actions">
+        <button class="offline-button" id="offline-chapter-download" type="button">↓ Capítulo atual</button>
+        <button class="offline-button" id="offline-book-download" type="button">↓ Livro completo</button>
+        <button class="offline-button" id="offline-manage" type="button" aria-expanded="false" aria-controls="offline-manage-panel">Gerenciar</button>
+      </div>
+      <progress class="offline-progress" id="offline-progress" value="0" max="1" hidden></progress>
+      <p class="offline-status" id="offline-status" aria-live="polite">Verificando disponibilidade…</p>
+      <div class="offline-manage-panel" id="offline-manage-panel" hidden>
+        <p class="offline-storage" id="offline-storage"></p>
+        <button class="offline-button offline-remove" id="offline-remove" type="button">Remover arquivos offline</button>
+      </div>
+    </section>
+
     <footer id="page-footer">{{FOOTER}}</footer>
   </main>
   <script type="module">
@@ -1120,6 +1217,14 @@
     const sentenceAudioVoice = document.querySelector("#sentence-audio-voice");
     const sentenceAudioSpeed = document.querySelector("#sentence-audio-speed");
     const sentenceAudioStatus = document.querySelector("#sentence-audio-status");
+    const offlineChapterDownload = document.querySelector("#offline-chapter-download");
+    const offlineBookDownload = document.querySelector("#offline-book-download");
+    const offlineManage = document.querySelector("#offline-manage");
+    const offlineManagePanel = document.querySelector("#offline-manage-panel");
+    const offlineProgress = document.querySelector("#offline-progress");
+    const offlineStatus = document.querySelector("#offline-status");
+    const offlineStorage = document.querySelector("#offline-storage");
+    const offlineRemove = document.querySelector("#offline-remove");
     const studyHint = document.querySelector("#study-hint");
     const modeButtons = [...document.querySelectorAll("[data-reading-mode]")];
     const chapterReader = document.querySelector("#chapter-reader");
@@ -1186,6 +1291,7 @@
     let positionSaveFrame = null;
     let nextSentencePreviewFrame = null;
     const fontPercentages = __FONT_LEVELS_JSON__;
+    const offlineVersion = __OFFLINE_VERSION_JSON__;
     const defaultFontLevelIndex = __DEFAULT_FONT_INDEX__;
     const minFontLevel = -defaultFontLevelIndex;
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
@@ -1224,6 +1330,264 @@
       sentenceAudioSpeed.value = String(currentAudioSpeedPercent);
       sentenceAudio.playbackRate = currentAudioSpeedPercent / 100;
     }
+
+    const offlineSupported = "serviceWorker" in navigator && "caches" in window;
+    const offlineWorkerUrl = new URL("../offline-sw.js", document.baseURI).href;
+    const offlineCachePrefix = `simple-ja-books-offline:v1:${encodeURIComponent(storageScope)}:`;
+    const offlineCacheName = `${offlineCachePrefix}${offlineVersion}`;
+    const offlineStateStorageKey = `simple-ja-books:offline-state:v1:${storageScope}`;
+    let offlineBusy = false;
+    let offlineState = loadOfflineState();
+
+    function emptyOfflineState() {
+      return { version: offlineVersion, chapters: [], bookComplete: false };
+    }
+
+    function loadOfflineState() {
+      try {
+        const stored = JSON.parse(localStorage.getItem(offlineStateStorageKey) || "null");
+        if (!stored || stored.version !== offlineVersion || !Array.isArray(stored.chapters)) {
+          return emptyOfflineState();
+        }
+        return {
+          version: offlineVersion,
+          chapters: [...new Set(stored.chapters.filter((index) =>
+            Number.isInteger(index) && index >= 0 && index < chapters.length
+          ))],
+          bookComplete: stored.bookComplete === true
+        };
+      } catch (_error) {
+        return emptyOfflineState();
+      }
+    }
+
+    function saveOfflineState() {
+      try {
+        localStorage.setItem(offlineStateStorageKey, JSON.stringify(offlineState));
+      } catch (_error) {
+        // Cached files remain available when local metadata cannot be persisted.
+      }
+    }
+
+    function currentOfflineChapterIndex() {
+      const selected = Number.parseInt(chapterSelect.value, 10);
+      return Number.isInteger(selected) ? selected : activeChapterForIndex(activeIndex);
+    }
+
+    function canonicalPageUrl() {
+      const url = new URL(".", location.href);
+      url.search = "";
+      url.hash = "";
+      return url.href;
+    }
+
+    function offlineUrlsForChapters(chapterIndexes, includeLibrary = false) {
+      const urls = new Set([canonicalPageUrl(), offlineWorkerUrl]);
+      if (bookDataUrl) urls.add(new URL(bookDataUrl, document.baseURI).href);
+      if (includeLibrary) urls.add(new URL("../", document.baseURI).href);
+      if (audioConfig) {
+        const audioBase = audioConfig.base_url.replace(/\/+$/, "");
+        urls.add(new URL(`${audioBase}/manifest.json`, document.baseURI).href);
+        chapterIndexes.forEach((chapterIndex) => {
+          chapters[chapterIndex].paragraphs.forEach((paragraph, paragraphIndex) => {
+            paragraph.forEach((_sentence, sentenceIndex) => {
+              urls.add(new URL(
+                sentenceAudioPath(chapterIndex, paragraphIndex, sentenceIndex),
+                document.baseURI
+              ).href);
+            });
+          });
+        });
+      }
+      return [...urls];
+    }
+
+    function formatOfflineBytes(bytes) {
+      if (!Number.isFinite(bytes) || bytes <= 0) return "indisponível";
+      const units = ["B", "KB", "MB", "GB"];
+      let value = bytes;
+      let unit = 0;
+      while (value >= 1024 && unit < units.length - 1) {
+        value /= 1024;
+        unit += 1;
+      }
+      return `${value.toLocaleString("pt-BR", { maximumFractionDigits: 1 })} ${units[unit]}`;
+    }
+
+    async function updateOfflineStorageEstimate() {
+      if (!navigator.storage?.estimate) {
+        offlineStorage.textContent = "O navegador não informa o espaço utilizado.";
+        return;
+      }
+      const estimate = await navigator.storage.estimate();
+      offlineStorage.textContent = `Armazenamento usado por este site: ${formatOfflineBytes(estimate.usage)}.`;
+    }
+
+    function setOfflineBusy(busy) {
+      offlineBusy = busy;
+      offlineChapterDownload.disabled = busy || !offlineSupported;
+      offlineBookDownload.disabled = busy || !offlineSupported;
+      offlineManage.disabled = busy || !offlineSupported;
+      offlineRemove.disabled = busy || !offlineSupported;
+    }
+
+    async function updateOfflineControls() {
+      if (!offlineSupported) {
+        offlineStatus.textContent = "O modo offline não é compatível com este navegador.";
+        setOfflineBusy(false);
+        return;
+      }
+      const cacheExists = (await caches.keys()).includes(offlineCacheName);
+      if (!cacheExists && (offlineState.bookComplete || offlineState.chapters.length)) {
+        offlineState = emptyOfflineState();
+        saveOfflineState();
+      }
+      const chapterIndex = currentOfflineChapterIndex();
+      const chapterReady = offlineState.bookComplete || offlineState.chapters.includes(chapterIndex);
+      offlineChapterDownload.textContent = chapterReady ? "✓ Capítulo offline" : "↓ Capítulo atual";
+      offlineBookDownload.textContent = offlineState.bookComplete ? "✓ Livro offline" : "↓ Livro completo";
+      if (offlineState.bookComplete) {
+        offlineStatus.textContent = "Livro completo disponível offline neste navegador.";
+      } else if (offlineState.chapters.length) {
+        const count = offlineState.chapters.length;
+        offlineStatus.textContent = `${count} ${count === 1 ? "capítulo disponível" : "capítulos disponíveis"} offline neste navegador.`;
+      } else {
+        offlineStatus.textContent = "Nenhum conteúdo deste livro foi salvo para uso offline.";
+      }
+      setOfflineBusy(offlineBusy);
+      if (!offlineManagePanel.hidden) void updateOfflineStorageEstimate();
+    }
+
+    async function ensureOfflineWorker() {
+      if (!offlineSupported) throw new Error("offline unsupported");
+      await navigator.serviceWorker.register(offlineWorkerUrl);
+      await navigator.serviceWorker.ready;
+    }
+
+    async function cacheOfflineUrls(urls) {
+      const cache = await caches.open(offlineCacheName);
+      let nextIndex = 0;
+      let completed = 0;
+      offlineProgress.max = urls.length;
+      offlineProgress.value = 0;
+      offlineProgress.hidden = false;
+
+      async function cacheWorker() {
+        while (nextIndex < urls.length) {
+          const index = nextIndex;
+          nextIndex += 1;
+          const url = urls[index];
+          let response;
+          try {
+            response = await fetch(url, { cache: "reload", credentials: "same-origin" });
+            if (!response.ok) throw new Error(`HTTP ${response.status}: ${url}`);
+          } catch (error) {
+            const existing = await cache.match(url);
+            if (!existing) throw error;
+            response = null;
+          }
+          if (response) await cache.put(url, response);
+          completed += 1;
+          offlineProgress.value = completed;
+          offlineStatus.textContent = `Salvando ${completed} de ${urls.length} arquivos…`;
+        }
+      }
+
+      const workers = Array.from(
+        { length: Math.min(6, urls.length) },
+        () => cacheWorker()
+      );
+      const results = await Promise.allSettled(workers);
+      const failure = results.find((result) => result.status === "rejected");
+      if (failure) throw failure.reason;
+    }
+
+    async function removeObsoleteOfflineCaches() {
+      const cacheNames = await caches.keys();
+      await Promise.all(cacheNames
+        .filter((name) => name.startsWith(offlineCachePrefix) && name !== offlineCacheName)
+        .map((name) => caches.delete(name)));
+    }
+
+    async function downloadOffline(scope) {
+      if (offlineBusy || !offlineSupported) return;
+      const chapterIndex = currentOfflineChapterIndex();
+      const chapterIndexes = scope === "book"
+        ? chapters.map((_chapter, index) => index)
+        : [chapterIndex];
+      const urls = offlineUrlsForChapters(chapterIndexes, scope === "book");
+      setOfflineBusy(true);
+      offlineStatus.textContent = "Preparando download offline…";
+      let failureMessage = "";
+      try {
+        if (navigator.storage?.persist) void navigator.storage.persist().catch(() => {});
+        await ensureOfflineWorker();
+        await cacheOfflineUrls(urls);
+        await removeObsoleteOfflineCaches();
+        if (scope === "book") {
+          offlineState = {
+            version: offlineVersion,
+            chapters: chapters.map((_chapter, index) => index),
+            bookComplete: true
+          };
+        } else {
+          offlineState.chapters = [...new Set([...offlineState.chapters, chapterIndex])].sort((a, b) => a - b);
+        }
+        saveOfflineState();
+        offlineStatus.textContent = scope === "book"
+          ? "Livro completo salvo para uso offline."
+          : `Capítulo “${chapters[chapterIndex].title}” salvo para uso offline.`;
+      } catch (_error) {
+        failureMessage = "O download foi interrompido. Conecte-se à internet e tente novamente.";
+      } finally {
+        offlineProgress.hidden = true;
+        setOfflineBusy(false);
+        await updateOfflineControls();
+        if (failureMessage) offlineStatus.textContent = failureMessage;
+      }
+    }
+
+    async function removeOfflineFiles() {
+      if (offlineBusy || !offlineSupported) return;
+      if (!window.confirm("Remover os arquivos offline deste livro neste navegador?")) return;
+      setOfflineBusy(true);
+      try {
+        const cacheNames = await caches.keys();
+        await Promise.all(cacheNames
+          .filter((name) => name.startsWith(offlineCachePrefix))
+          .map((name) => caches.delete(name)));
+        localStorage.removeItem(offlineStateStorageKey);
+        offlineState = emptyOfflineState();
+        offlineStatus.textContent = "Arquivos offline removidos deste navegador.";
+      } finally {
+        setOfflineBusy(false);
+        await updateOfflineControls();
+      }
+    }
+
+    async function initializeOfflineControls() {
+      setOfflineBusy(false);
+      if (!offlineSupported) {
+        await updateOfflineControls();
+        return;
+      }
+      try {
+        await ensureOfflineWorker();
+      } catch (_error) {
+        offlineStatus.textContent = "Não foi possível ativar o modo offline neste navegador.";
+      }
+      await updateOfflineControls();
+    }
+
+    offlineChapterDownload.addEventListener("click", () => void downloadOffline("chapter"));
+    offlineBookDownload.addEventListener("click", () => void downloadOffline("book"));
+    offlineManage.addEventListener("click", () => {
+      const expanded = offlineManage.getAttribute("aria-expanded") === "true";
+      offlineManage.setAttribute("aria-expanded", String(!expanded));
+      offlineManagePanel.hidden = expanded;
+      if (!expanded) void updateOfflineStorageEstimate();
+    });
+    offlineRemove.addEventListener("click", () => void removeOfflineFiles());
 
     function loadAudioSpeed() {
       if (!audioConfig) return 100;
@@ -1905,6 +2269,7 @@
       storedPosition.chapterIndex = chapterIndex;
       saveReadingPositions();
       chapterSelect.value = String(chapterIndex);
+      void updateOfflineControls();
       chapterReaderTitle.textContent = chapters[chapterIndex].title;
       chapterPreviousButton.disabled = chapterIndex === 0;
       chapterNextButton.disabled = chapterIndex === chapters.length - 1;
@@ -2158,6 +2523,7 @@
       const paragraphInChapter = activeParagraph - chapterParagraphStarts[activeChapter];
       prepareSentenceAudio(activeChapter, paragraphInChapter, sentenceInParagraph);
       chapterSelect.value = String(activeChapter);
+      void updateOfflineControls();
       label.textContent = `Parágrafo ${paragraphInChapter + 1} de ${chapterParagraphCounts[activeChapter]} · frase ${sentenceInParagraph + 1} de ${sentencesInParagraph}`;
       selectedSentence.classList.toggle("paragraph-start", sentenceInParagraph === 0);
       selectedSentence.replaceChildren();
@@ -2542,6 +2908,7 @@
 
     updateGlossCount();
     updateTranslationSpeechButton(false);
+    void initializeOfflineControls();
     updateFuriganaState();
     setReadingMode(readingMode, false);
   </script>
