@@ -39,12 +39,12 @@
     main {
       width: min(100% - 2.5rem, 45rem);
       margin: 0 auto;
-      padding: clamp(4rem, 12vw, 8rem) 0 8rem;
+      padding: clamp(2.5rem, 8vw, 5rem) 0 5rem;
     }
 
     header {
-      margin-bottom: 4rem;
-      padding-bottom: 2.25rem;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.4rem;
       border-bottom: 1px solid var(--rule);
     }
 
@@ -72,7 +72,7 @@
     }
 
     .author {
-      margin: 1.25rem 0 0;
+      margin: 0.75rem 0 0;
       color: var(--muted);
       font-size: 0.95rem;
       letter-spacing: 0.08em;
@@ -132,7 +132,7 @@
     }
 
     h2 {
-      margin: 0 0 2.25rem;
+      margin: 0 0 1.4rem;
       color: var(--accent);
       font-size: 1.25rem;
       font-weight: 600;
@@ -171,9 +171,9 @@
     .reading-mode-switch {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.45rem;
-      margin: -1rem 0 2rem;
-      padding: 0.45rem;
+      gap: 0.35rem;
+      margin: -0.55rem 0 1.25rem;
+      padding: 0.3rem;
       background: var(--paper);
       border: 1px solid color-mix(in srgb, var(--rule) 72%, transparent);
       border-radius: 999px;
@@ -181,8 +181,8 @@
     }
 
     .reading-mode-button {
-      min-height: 2.6rem;
-      padding: 0.45rem 0.65rem;
+      min-height: 2.4rem;
+      padding: 0.3rem 0.55rem;
       color: var(--accent);
       background: transparent;
       border: 1px solid var(--rule);
@@ -364,7 +364,7 @@
 
     .study-panel {
       margin: 0.5rem 0 2.5rem;
-      padding: clamp(1.25rem, 4vw, 2rem);
+      padding: clamp(0.85rem, 3vw, 1.35rem);
       background: var(--panel);
       border: 1px solid var(--rule);
       border-radius: 0.45rem;
@@ -374,17 +374,17 @@
     }
 
     .study-controls {
-      margin: -0.75rem -0.75rem 1rem;
-      padding: 0.75rem;
+      margin: -0.4rem -0.4rem 0.65rem;
+      padding: 0.4rem;
     }
 
     .study-topline {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 1rem;
-      margin: 0 0 0.75rem;
-      padding: 0.75rem;
+      gap: 0.6rem;
+      margin: 0 0 0.5rem;
+      padding: 0.55rem;
       background: color-mix(in srgb, var(--panel) 94%, transparent);
       border: 1px solid color-mix(in srgb, var(--rule) 72%, transparent);
       border-radius: 0.5rem;
@@ -409,6 +409,9 @@
     }
 
     .study-nav {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       min-width: 2rem;
       height: 2rem;
       padding: 0 0.55rem;
@@ -420,6 +423,7 @@
       font-size: 1rem;
       font-weight: 700;
       line-height: 1;
+      white-space: nowrap;
       cursor: pointer;
     }
 
@@ -443,45 +447,6 @@
       opacity: 0.35;
     }
 
-    .paragraph-boundary {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin: 0.25rem 0 1rem;
-      color: var(--muted);
-      font-family: system-ui, sans-serif;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .paragraph-boundary::before,
-    .paragraph-boundary::after {
-      height: 1px;
-      flex: 1;
-      background: var(--rule);
-      content: "";
-    }
-
-    .paragraph-end {
-      margin: 1.25rem 0 0;
-      padding-top: 0.75rem;
-      color: var(--muted);
-      border-top: 1px solid var(--rule);
-      font-family: system-ui, sans-serif;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-align: center;
-      text-transform: uppercase;
-    }
-
-    .paragraph-boundary[hidden],
-    .paragraph-end[hidden] {
-      display: none;
-    }
-
     .selected-sentence {
       margin: 0 0 0.65rem;
       cursor: pointer;
@@ -489,6 +454,23 @@
       font-weight: 600;
       line-height: 2.5;
       text-align: left;
+      text-indent: 0;
+    }
+
+    .selected-sentence.paragraph-start { text-indent: 1em; }
+
+    .next-sentence-preview {
+      display: inline-block;
+      margin-inline-start: 0.4em;
+      color: var(--muted);
+      font-weight: 400;
+      text-indent: 0;
+      white-space: nowrap;
+    }
+
+    .next-sentence-preview.measure {
+      margin: 0;
+      visibility: hidden;
     }
 
     .selected-sentence:focus-visible {
@@ -699,12 +681,12 @@
     @media (max-width: 36rem) {
       main {
         width: min(100% - 1.25rem, 45rem);
-        padding-top: 1rem;
+        padding-top: 0.65rem;
       }
 
       header {
-        margin-bottom: 1.25rem;
-        padding-bottom: 1rem;
+        margin-bottom: 0.8rem;
+        padding-bottom: 0.65rem;
       }
 
       .eyebrow {
@@ -714,12 +696,12 @@
       }
 
       h1 {
-        font-size: clamp(1.85rem, 9vw, 2.6rem);
+        font-size: clamp(1.7rem, 8vw, 2.3rem);
         line-height: 1.15;
       }
 
       .author {
-        margin-top: 0.5rem;
+        margin-top: 0.3rem;
         font-size: 0.82rem;
       }
 
@@ -745,8 +727,24 @@
       }
 
       h2 {
-        margin-bottom: 1rem;
+        margin-bottom: 0.65rem;
         font-size: 1.05rem;
+      }
+
+      .chapter-select {
+        padding-top: 0.1rem;
+        padding-bottom: 0.1rem;
+      }
+
+      .reading-mode-switch {
+        margin-top: -0.25rem;
+        margin-bottom: 0.75rem;
+        padding: 0.25rem;
+      }
+
+      .reading-mode-button {
+        min-height: 2.35rem;
+        padding-block: 0.25rem;
       }
 
       .study-hint {
@@ -756,6 +754,8 @@
       .study-topline {
         align-items: flex-start;
         flex-direction: column;
+        gap: 0.4rem;
+        padding: 0.45rem;
       }
 
       .study-actions {
@@ -764,7 +764,9 @@
 
       .study-nav {
         flex: 1;
-        min-height: 2.75rem;
+        min-height: 2.4rem;
+        height: 2.4rem;
+        padding-inline: 0.35rem;
       }
 
       .furigana-toggle {
@@ -824,11 +826,11 @@
           <div class="study-topline">
             <p class="study-label" id="study-label">Interlinear</p>
             <div class="study-actions" aria-label="Navegação entre frases e parágrafos">
-              <button class="study-nav" id="study-previous-paragraph" type="button" aria-label="Parágrafo anterior" title="Parágrafo anterior">−1¶</button>
+              <button class="study-nav" id="study-previous-paragraph" type="button" aria-label="Parágrafo anterior" title="Parágrafo anterior">−¶</button>
               <button class="study-nav" id="study-previous" type="button" aria-label="Frase anterior">←</button>
               <button class="study-nav furigana-toggle" id="furigana-toggle" type="button" aria-pressed="true">ふりがな ON</button>
               <button class="study-nav" id="study-next" type="button" aria-label="Próxima frase">→</button>
-              <button class="study-nav" id="study-next-paragraph" type="button" aria-label="Próximo parágrafo" title="Próximo parágrafo">＋1¶</button>
+              <button class="study-nav" id="study-next-paragraph" type="button" aria-label="Próximo parágrafo" title="Próximo parágrafo">＋¶</button>
             </div>
           </div>
           <div class="gloss-tools" aria-label="Glosses marcados">
@@ -838,9 +840,7 @@
             <input id="gloss-import-file" type="file" accept="application/json,.json" hidden>
           </div>
         </div>
-        <p class="paragraph-boundary" id="paragraph-boundary" hidden>Novo parágrafo</p>
         <p class="selected-sentence" id="selected-sentence" lang="ja" role="button" tabindex="0" aria-label="Alternar furigana" aria-pressed="true"></p>
-        <p class="paragraph-end" id="paragraph-end" hidden>Fim do parágrafo</p>
         <div class="interlinear" id="interlinear"></div>
         <p class="sentence-translation" id="sentence-translation" lang="pt-BR"></p>
       </section>
@@ -856,9 +856,9 @@
           <div class="chapter-reading-text" id="chapter-reading-text" lang="ja" role="button" tabindex="0" aria-label="Alternar furigana" aria-pressed="true"></div>
         </div>
         <nav class="vertical-page-controls" id="vertical-page-controls" aria-label="Navegação entre páginas" hidden>
-          <button class="chapter-nav-button" id="vertical-page-previous" type="button" aria-label="Página anterior">Anterior</button>
-          <p class="vertical-page-status" id="vertical-page-status" aria-live="polite">Página 1 de 1</p>
           <button class="chapter-nav-button" id="vertical-page-next" type="button" aria-label="Próxima página">Próxima</button>
+          <p class="vertical-page-status" id="vertical-page-status" aria-live="polite">Página 1 de 1</p>
+          <button class="chapter-nav-button" id="vertical-page-previous" type="button" aria-label="Página anterior">Anterior</button>
         </nav>
         <p class="chapter-swipe-hint" id="chapter-swipe-hint">Deslize para trocar de capítulo.</p>
       </section>
@@ -889,8 +889,6 @@
     const fontLevel = document.querySelector("#font-level");
     const panel = document.querySelector("#study-panel");
     const label = document.querySelector("#study-label");
-    const paragraphBoundary = document.querySelector("#paragraph-boundary");
-    const paragraphEnd = document.querySelector("#paragraph-end");
     const selectedSentence = document.querySelector("#selected-sentence");
     const sentenceTranslation = document.querySelector("#sentence-translation");
     const interlinear = document.querySelector("#interlinear");
@@ -929,6 +927,8 @@
       document.querySelector("#page-footer").textContent = bookData.page.footer;
     }
     const chapterSentenceStarts = [];
+    const chapterParagraphStarts = [];
+    const chapterParagraphCounts = [];
     const paragraphSentenceStarts = [];
     const paragraphSentenceCounts = [];
     const sentenceParagraphIndexes = [];
@@ -936,6 +936,8 @@
     let sentenceTotal = 0;
     chapters.forEach((chapter) => {
       chapterSentenceStarts.push(sentenceTotal);
+      chapterParagraphStarts.push(paragraphs.length);
+      chapterParagraphCounts.push(chapter.paragraphs.length);
       chapter.paragraphs.forEach((paragraph) => {
         const paragraphIndex = paragraphs.length;
         paragraphSentenceStarts.push(sentenceTotal);
@@ -964,6 +966,7 @@
     let chapterReaderIndex = readingPositions[readingMode === "sentence" ? "continuous" : readingMode].chapterIndex;
     let restoringReadingPosition = false;
     let positionSaveFrame = null;
+    let nextSentencePreviewFrame = null;
     const fontPercentages = [80, 90, 100, 110, 120, 140, 160];
     const defaultFontLevelIndex = 2;
     const minFontLevel = -defaultFontLevelIndex;
@@ -1127,6 +1130,9 @@
       if (readingMode === "vertical" && !chapterReader.hidden && chapterReadingText.childElementCount) {
         requestAnimationFrame(() => resetVerticalPagination(verticalPageIndex));
       }
+      if (readingMode === "sentence" && selectedSentence.childNodes.length) {
+        scheduleNextSentencePreview();
+      }
     }
 
     fontDecrease.addEventListener("click", () => {
@@ -1223,6 +1229,9 @@
       const toggleLabel = "ふりがな " + (furiganaVisible ? "ON" : "OFF");
       furiganaToggle.textContent = toggleLabel;
       chapterFuriganaToggle.textContent = toggleLabel;
+      if (readingMode === "sentence" && selectedSentence.childNodes.length) {
+        scheduleNextSentencePreview();
+      }
     }
 
     function renderFullChapter(chapterIndex, restorePosition = true) {
@@ -1241,6 +1250,25 @@
       chapterPreviousButton.disabled = chapterIndex === 0;
       chapterNextButton.disabled = chapterIndex === chapters.length - 1;
       chapterReader.classList.toggle("vertical", readingMode === "vertical");
+      if (readingMode === "vertical") {
+        chapterNextButton.textContent = "← 章";
+        chapterPreviousButton.textContent = "章 →";
+        chapterReaderToolbar.append(
+          chapterNextButton,
+          chapterReaderTitle,
+          chapterFuriganaToggle,
+          chapterPreviousButton
+        );
+      } else {
+        chapterPreviousButton.textContent = "← 章";
+        chapterNextButton.textContent = "章 →";
+        chapterReaderToolbar.append(
+          chapterPreviousButton,
+          chapterReaderTitle,
+          chapterFuriganaToggle,
+          chapterNextButton
+        );
+      }
       verticalPageControls.hidden = readingMode !== "vertical";
       chapterSwipeHint.textContent = readingMode === "vertical"
         ? "Deslize o texto para a direita para avançar; deslize na barra acima para trocar de capítulo."
@@ -1371,6 +1399,84 @@
       captureReadingPosition();
     }
 
+    function finalBaseCharacterRect() {
+      const walker = document.createTreeWalker(selectedSentence, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          if (!node.nodeValue || node.parentElement?.closest("rt, .next-sentence-preview")) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      let node = null;
+      let lastNode = null;
+      while ((node = walker.nextNode())) lastNode = node;
+      if (!lastNode) return null;
+
+      const range = document.createRange();
+      range.setStart(lastNode, lastNode.nodeValue.length - 1);
+      range.setEnd(lastNode, lastNode.nodeValue.length);
+      const rects = range.getClientRects();
+      return rects.length ? rects[rects.length - 1] : null;
+    }
+
+    function fittingPreviewPrefix(text, availableWidth) {
+      const measure = document.createElement("span");
+      measure.className = "next-sentence-preview measure";
+      measure.setAttribute("aria-hidden", "true");
+      selectedSentence.append(measure);
+
+      let low = 0;
+      let high = [...text].length;
+      const characters = [...text];
+      while (low < high) {
+        const middle = Math.ceil((low + high) / 2);
+        measure.textContent = characters.slice(0, middle).join("");
+        if (measure.getBoundingClientRect().width <= availableWidth) {
+          low = middle;
+        } else {
+          high = middle - 1;
+        }
+      }
+      measure.remove();
+      return characters.slice(0, low).join("");
+    }
+
+    function renderNextSentencePreview() {
+      selectedSentence.querySelector(".next-sentence-preview")?.remove();
+      const activeParagraph = sentenceParagraphIndexes[activeIndex];
+      const sentenceInParagraph = activeIndex - paragraphSentenceStarts[activeParagraph];
+      const sentencesInParagraph = paragraphSentenceCounts[activeParagraph];
+      if (sentenceInParagraph >= sentencesInParagraph - 1 || activeIndex >= sentences.length - 1) return;
+
+      const finalCharacterRect = finalBaseCharacterRect();
+      if (!finalCharacterRect) return;
+      const sentenceRect = selectedSentence.getBoundingClientRect();
+      const fontSize = Number.parseFloat(getComputedStyle(selectedSentence).fontSize);
+      const gapWidth = fontSize * 0.4;
+      const availableWidth = sentenceRect.right - finalCharacterRect.right - gapWidth - 1;
+      if (availableWidth <= 0) return;
+
+      const previewText = fittingPreviewPrefix(sentences[activeIndex + 1].text, availableWidth);
+      if (!previewText) return;
+      const preview = document.createElement("span");
+      preview.className = "next-sentence-preview";
+      preview.setAttribute("aria-hidden", "true");
+      preview.textContent = previewText;
+      selectedSentence.append(preview);
+    }
+
+    function scheduleNextSentencePreview() {
+      if (nextSentencePreviewFrame !== null) cancelAnimationFrame(nextSentencePreviewFrame);
+      const renderedIndex = activeIndex;
+      nextSentencePreviewFrame = requestAnimationFrame(() => {
+        nextSentencePreviewFrame = null;
+        if (readingMode === "sentence" && activeIndex === renderedIndex) {
+          renderNextSentencePreview();
+        }
+      });
+    }
+
     function renderCard(index) {
       activeIndex = index;
       saveActiveIndex();
@@ -1386,10 +1492,10 @@
       chapterSentenceStarts.forEach((start, index) => {
         if (start <= activeIndex) activeChapter = index;
       });
+      const paragraphInChapter = activeParagraph - chapterParagraphStarts[activeChapter];
       chapterSelect.value = String(activeChapter);
-      label.textContent = `Parágrafo ${activeParagraph + 1} de ${paragraphs.length} · frase ${sentenceInParagraph + 1} de ${sentencesInParagraph}`;
-      paragraphBoundary.hidden = activeParagraph === 0 || sentenceInParagraph !== 0;
-      paragraphEnd.hidden = sentenceInParagraph !== sentencesInParagraph - 1;
+      label.textContent = `Parágrafo ${paragraphInChapter + 1} de ${chapterParagraphCounts[activeChapter]} · frase ${sentenceInParagraph + 1} de ${sentencesInParagraph}`;
+      selectedSentence.classList.toggle("paragraph-start", sentenceInParagraph === 0);
       selectedSentence.replaceChildren();
 
       let cursor = 0;
@@ -1406,6 +1512,7 @@
       if (cursor < sentence.text.length) {
         selectedSentence.append(document.createTextNode(sentence.text.slice(cursor)));
       }
+      scheduleNextSentencePreview();
 
       sentenceTranslation.textContent = sentence.pt;
       interlinear.replaceChildren();
@@ -1729,6 +1836,7 @@
     chapterReadingViewport.addEventListener("scroll", scheduleReadingPositionSave, { passive: true });
     window.addEventListener("resize", () => {
       if (readingMode === "vertical") requestAnimationFrame(() => resetVerticalPagination(verticalPageIndex));
+      if (readingMode === "sentence") scheduleNextSentencePreview();
     });
     window.addEventListener("pagehide", () => captureReadingPosition());
 
