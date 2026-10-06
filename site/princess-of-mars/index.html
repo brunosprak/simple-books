@@ -1113,6 +1113,7 @@
                 <option value="off">Desligado</option>
                 <option value="sentence">Frase</option>
                 <option value="listening">Glosses + frase</option>
+                <option value="translation">Tradução + frase</option>
                 <option value="paragraph">Parágrafo</option>
                 <option value="listening-paragraph">Glosses + parágrafo</option>
                 <option value="translation-paragraph">Tradução + parágrafo</option>
@@ -1297,7 +1298,7 @@
     let positionSaveFrame = null;
     let nextSentencePreviewFrame = null;
     const fontPercentages = [85, 100, 115, 130, 150];
-    const offlineVersion = "ad1672785bc9ddb9";
+    const offlineVersion = "69982011a77b7700";
     const defaultFontLevelIndex = 1;
     const minFontLevel = -defaultFontLevelIndex;
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
@@ -1667,7 +1668,7 @@
     }
 
     function loopModeUsesTranslation(mode = sentenceAudioLoopMode) {
-      return mode === "translation-paragraph";
+      return mode === "translation" || mode === "translation-paragraph";
     }
 
     function loopModeUsesParagraph(mode = sentenceAudioLoopMode) {
@@ -1705,11 +1706,13 @@
     function updateSentenceAudioLoop() {
       const listeningOption = sentenceAudioLoop.querySelector('option[value="listening"]');
       const listeningParagraphOption = sentenceAudioLoop.querySelector('option[value="listening-paragraph"]');
+      const translationOption = sentenceAudioLoop.querySelector('option[value="translation"]');
       const translationParagraphOption = sentenceAudioLoop.querySelector('option[value="translation-paragraph"]');
       const listeningAvailable = browserSpeechAvailable && currentSentenceListeningGlosses().length > 0;
       const listeningParagraphAvailable = browserSpeechAvailable && currentParagraphHasListeningGlosses();
       listeningOption.disabled = !listeningAvailable;
       listeningParagraphOption.disabled = !listeningParagraphAvailable;
+      translationOption.disabled = !browserSpeechAvailable;
       translationParagraphOption.disabled = !browserSpeechAvailable;
       if (sentenceAudioLoopMode === "listening" && !listeningAvailable) {
         clearSentenceAudioLoopTimer();
@@ -1723,6 +1726,10 @@
         clearSentenceAudioLoopTimer();
         if (sentenceAudioLoopSpeechActive) stopBrowserSpeech();
         sentenceAudioLoopMode = "paragraph";
+      } else if (sentenceAudioLoopMode === "translation" && !browserSpeechAvailable) {
+        clearSentenceAudioLoopTimer();
+        if (sentenceAudioLoopSpeechActive) stopBrowserSpeech();
+        sentenceAudioLoopMode = "sentence";
       }
       sentenceAudioLoop.value = sentenceAudioLoopMode;
     }
@@ -2084,6 +2091,16 @@
       }, sentenceAudioLoopDelayMs);
     }
 
+    function scheduleTranslationThenSentence() {
+      const expectedMode = sentenceAudioLoopMode;
+      sentenceAudioStatus.textContent = "Tradução em 0,5 s…";
+      sentenceAudioLoopTimer = setTimeout(() => {
+        sentenceAudioLoopTimer = null;
+        if (sentenceAudioLoopMode !== expectedMode) return;
+        startTranslationThenSentence();
+      }, sentenceAudioLoopDelayMs);
+    }
+
     function nextSentenceInCurrentParagraph() {
       const paragraph = sentenceParagraphIndexes[activeIndex];
       const start = paragraphSentenceStarts[paragraph];
@@ -2111,6 +2128,8 @@
         scheduleNextParagraphSentence();
       } else if (loopModeUsesGlosses()) {
         scheduleGlossesThenSentence();
+      } else if (loopModeUsesTranslation()) {
+        scheduleTranslationThenSentence();
       } else {
         scheduleSentenceAudioLoopPlayback();
       }
