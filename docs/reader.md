@@ -85,34 +85,36 @@ Switching modes restores the last position used in the destination mode. Reloadi
 
 ## Marked glosses
 
-- Interlinear chunks can be marked or unmarked in `Frases`.
-- The marked-gloss count updates immediately.
-- Marked glosses persist in browser storage and are included in exported reader data.
-- When at least one gloss in the current sentence is marked and the browser supports the Web Speech API, `▶ Glosses` reads only those visible marked glosses in sentence order. For each gloss it reads the Japanese term first and its Portuguese meaning immediately afterward, using separate language settings. The same button stops the sequence while it is active.
+- Each interlinear chunk has two independent reasons: `★` for unknown or study-worthy vocabulary and `🎧` for a term that was difficult to recognize in sentence audio. A gloss may have either reason, both, or neither.
+- Clicking the main body of a chunk continues to toggle `★`, preserving the original interaction. The two compact reason buttons expose both states explicitly.
+- The compact summary displays global totals as `★ vocabulary · 🎧 listening` and updates immediately.
+- Marked glosses persist in browser storage and are included in exported reader data with a `reasons` array.
+- Stored or imported glosses without `reasons` are treated as `vocabulary`, preserving all marks created before the two-reason model.
+- When at least one gloss in the current sentence has `🎧` and the browser supports the Web Speech API, `▶ Escuta` reads only those glosses in sentence order. For each gloss it reads the Japanese term first and its Portuguese meaning immediately afterward, using separate language settings. The same button stops the sequence while it is active.
 - Browser-synthesized gloss speech is an optional convenience and is separate from the pinned Nise sentence MP3s; voice quality and availability depend on the operating system and browser.
 
 ## Import and export
 
 The reader downloads its backup as `dados-de-leitura.json`.
 
-### Backup schema version 2
+### Backup schema version 3
 
-Version 2 contains:
+Version 3 contains:
 
 - `source_file`, identifying the book;
 - export timestamp;
-- marked glosses;
+- marked glosses with one or both reasons (`vocabulary`, `listening`);
 - active reading mode;
 - active sentence index;
 - font level;
 - furigana visibility;
 - the independent positions for `Frases`, `Corrido`, and `Vertical`.
 
-Version 2 reader state may be applied only when `source_file` matches the currently open book. The complete payload is validated before any gloss or reader state is changed, so a failed import is atomic.
+Version 3 reader state may be applied only when `source_file` matches the currently open book. The complete payload is validated before any gloss or reader state is changed, so a failed import is atomic.
 
 ### Legacy compatibility
 
-The importer continues to accept schema version 1 files containing only marked glosses. Importing a version 1 file updates glosses without replacing reader positions or preferences.
+The importer continues to accept schema versions 1 and 2. Version 1 updates glosses without replacing reader positions or preferences; version 2 retains its reader state. In either legacy version, every gloss without a `reasons` field is migrated to `reasons: ["vocabulary"]`.
 
 ## Accessibility and interaction
 
