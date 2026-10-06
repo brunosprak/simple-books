@@ -79,7 +79,7 @@ Switching modes restores the last position used in the destination mode. Reloadi
 - The player is available only in `Frases` and never starts automatically.
 - `▶ Ouvir` alternates between play and pause, resuming from the paused position.
 - `↺ Início` immediately seeks to the beginning and plays, whether the sentence was paused or already playing.
-- `↻ Loop` toggles repetition of the current sentence. The first playback starts immediately; after each natural ending, the player waits 500 ms before starting again. It is off on every page load, remains active while navigating between sentences, and is visually exposed through `aria-pressed`. Turning loop off, navigating away, or leaving `Frases` cancels a pending repetition.
+- `↻ Loop` offers `Desligado`, `Frase`, and `Glosses + frase`. The first playback starts immediately. `Frase` waits 500 ms after each natural ending and repeats the MP3. `Glosses + frase` alternates the MP3 and the current sentence's listening-marked glosses, with 500 ms between each phase. The combined mode is available only when browser speech synthesis and at least one listening gloss are available. Navigating away, leaving `Frases`, or changing the loop mode cancels a pending phase.
 - Navigating to another sentence or leaving `Frases` stops playback and returns it to the beginning.
 - The selectable speeds come from the book metadata. Changing speed updates the current playback immediately without selecting or generating another MP3.
 - Playback speed persists per book. The generated source remains at `1.0×`, and the browser preserves pitch while changing playback rate where supported.
@@ -93,7 +93,7 @@ Switching modes restores the last position used in the destination mode. Reloadi
 - The compact summary displays global totals as `★ vocabulary · 🎧 listening` and updates immediately.
 - Marked glosses persist in browser storage and are included in exported reader data with a `reasons` array.
 - Stored or imported glosses without `reasons` are treated as `vocabulary`, preserving all marks created before the two-reason model.
-- When at least one gloss in the current sentence has `🎧` and the browser supports the Web Speech API, `▶ Escuta` reads only those glosses in sentence order. For each gloss it reads the Japanese term first and its Portuguese meaning immediately afterward, using separate language settings. The same button stops the sequence while it is active.
+- When at least one gloss in the current sentence has `🎧` and the browser supports the Web Speech API, `▶ Escuta` reads only those glosses in sentence order. For each gloss it reads Japanese, Portuguese, and Japanese again, using separate language settings. The same button stops the sequence while it is active.
 - Browser-synthesized gloss speech is an optional convenience and is separate from the pinned Nise sentence MP3s; voice quality and availability depend on the operating system and browser.
 - `▶ PT`, beside the full Portuguese translation at the end of the sentence card, reads only that translation with the browser's `pt-BR` speech synthesis. While active it becomes `■ PT`; pressing it again stops playback. Starting sentence audio, gloss speech, navigation, or another reading mode also stops it.
 

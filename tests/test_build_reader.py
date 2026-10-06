@@ -75,10 +75,23 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('playSentenceAudio({ restart: true })', first)
         self.assertIn('if (restart) sentenceAudio.currentTime = 0', first)
         self.assertIn('const sentenceAudioLoopDelayMs = 500', first)
-        self.assertIn('sentenceAudioLoopEnabled = !sentenceAudioLoopEnabled', first)
+        self.assertIn('<option value="sentence">Frase</option>', first)
+        self.assertIn('<option value="listening">Glosses + frase</option>', first)
+        self.assertIn('sentenceAudioLoopMode = sentenceAudioLoop.value', first)
+        self.assertIn('function continueSentenceAudioLoop', first)
         self.assertIn('sentenceAudioLoopTimer = setTimeout', first)
         self.assertIn('function clearSentenceAudioLoopTimer', first)
         self.assertIn('function updateSentenceAudioLoop', first)
+        self.assertIn('function startMarkedGlossSpeech', first)
+        self.assertIn(
+            '{ text: term, lang: "ja-JP" },\n'
+            '        { text: portuguese, lang: "pt-BR" },\n'
+            '        { text: term, lang: "ja-JP" }',
+            first,
+        )
+        self.assertIn('loopSequence: true', first)
+        self.assertIn('Frase em 0,5 s…', first)
+        self.assertIn('Glosses em 0,5 s…', first)
         self.assertIn('audioConfig ? new Audio() : null', first)
         self.assertIn('simple-ja-books:audio-speed:v1:', first)
         self.assertIn('function sentenceAudioPath', first)
