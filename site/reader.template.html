@@ -1063,7 +1063,9 @@
     const markedGlossesStorageKey = "simple-ja-books:marked-glosses:v1";
     let markedGlosses = loadMarkedGlosses();
     const browserSpeechAvailable = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
-    let markedGlossUtterance = null;
+    let markedGlossSpeechActive = false;
+    let markedGlossSpeechQueue = [];
+    let markedGlossSpeechRun = 0;
     const audioConfig = bookData?.page?.audio || null;
     const sentenceAudio = audioConfig ? new Audio() : null;
     const audioSpeedStorageKey = `simple-ja-books:audio-speed:v1:${storageScope}`;
@@ -1300,7 +1302,7 @@
     }
 
     function saveMarkedGlosses() {
-      if (markedGlossUtterance) stopMarkedGlossSpeech();
+      if (markedGlossSpeechActive) stopMarkedGlossSpeech();
       try {
         localStorage.setItem(markedGlossesStorageKey, JSON.stringify([...markedGlosses.values()]));
       } catch (_error) {
@@ -1309,62 +1311,89 @@
       updateGlossCount();
     }
 
+    function currentSentenceMarkedGlosses() {
+      return sentences[activeIndex].chunks.flatMap(([term, _reading, portuguese]) =>
+        markedGlosses.has(glossKey(term, portuguese)) ? [{ term, portuguese }] : []
+      );
+    }
+
     function updateGlossSpeechButton(speaking = false) {
-      glossSpeak.disabled = !browserSpeechAvailable || markedGlosses.size === 0;
+      glossSpeak.disabled = !browserSpeechAvailable || currentSentenceMarkedGlosses().length === 0;
       glossSpeak.setAttribute("aria-pressed", String(speaking));
       glossSpeak.setAttribute(
         "aria-label",
         speaking
-          ? "Parar leitura dos termos japoneses marcados"
-          : "Ouvir termos japoneses marcados com o sintetizador do navegador"
+          ? "Parar leitura do gloss marcado na frase atual"
+          : "Ouvir em japonês e português os glosses marcados na frase atual"
       );
       glossSpeak.textContent = speaking ? "■ Parar" : "▶ Glosses";
       glossSpeak.title = browserSpeechAvailable
-        ? "Ouvir os termos japoneses marcados"
+        ? "Ouvir em japonês e português os glosses marcados nesta frase"
         : "Síntese de voz indisponível neste navegador";
     }
 
     function stopMarkedGlossSpeech() {
       if (browserSpeechAvailable) window.speechSynthesis.cancel();
-      markedGlossUtterance = null;
+      markedGlossSpeechRun += 1;
+      markedGlossSpeechActive = false;
+      markedGlossSpeechQueue = [];
       updateGlossSpeechButton(false);
     }
 
+    function speakNextMarkedGlossPart(run) {
+      if (run !== markedGlossSpeechRun) return;
+      const next = markedGlossSpeechQueue.shift();
+      if (!next) {
+        markedGlossSpeechActive = false;
+        updateGlossSpeechButton(false);
+        return;
+      }
+      const utterance = new SpeechSynthesisUtterance(next.text);
+      utterance.lang = next.lang;
+      utterance.rate = 0.9;
+      const language = next.lang.toLowerCase();
+      const voices = window.speechSynthesis.getVoices();
+      const voice = voices.find(
+        (candidate) => candidate.lang.toLowerCase() === language
+      ) || voices.find(
+        (candidate) => candidate.lang.toLowerCase().startsWith(language.split("-")[0])
+      );
+      if (voice) utterance.voice = voice;
+      const advance = () => {
+        if (run === markedGlossSpeechRun) speakNextMarkedGlossPart(run);
+      };
+      utterance.addEventListener("end", advance);
+      utterance.addEventListener("error", advance);
+      try {
+        window.speechSynthesis.speak(utterance);
+      } catch (_error) {
+        advance();
+      }
+    }
+
     function toggleMarkedGlossSpeech() {
-      if (!browserSpeechAvailable || markedGlosses.size === 0) return;
-      if (markedGlossUtterance) {
+      const glosses = currentSentenceMarkedGlosses();
+      if (!browserSpeechAvailable || glosses.length === 0) return;
+      if (markedGlossSpeechActive) {
         stopMarkedGlossSpeech();
         return;
       }
       stopSentenceAudio();
-      const utterance = new SpeechSynthesisUtterance(
-        [...markedGlosses.values()].map(({ term }) => term).join("。")
-      );
-      utterance.lang = "ja-JP";
-      utterance.rate = 0.9;
-      const japaneseVoice = window.speechSynthesis.getVoices()
-        .find((voice) => voice.lang.toLowerCase().startsWith("ja"));
-      if (japaneseVoice) utterance.voice = japaneseVoice;
-      const finish = () => {
-        if (markedGlossUtterance !== utterance) return;
-        markedGlossUtterance = null;
-        updateGlossSpeechButton(false);
-      };
-      utterance.addEventListener("end", finish);
-      utterance.addEventListener("error", finish);
-      markedGlossUtterance = utterance;
+      markedGlossSpeechRun += 1;
+      const run = markedGlossSpeechRun;
+      markedGlossSpeechQueue = glosses.flatMap(({ term, portuguese }) => [
+        { text: term, lang: "ja-JP" },
+        { text: portuguese, lang: "pt-BR" }
+      ]);
+      markedGlossSpeechActive = true;
       updateGlossSpeechButton(true);
-      try {
-        window.speechSynthesis.speak(utterance);
-      } catch (_error) {
-        finish();
-      }
+      speakNextMarkedGlossPart(run);
     }
 
     function updateGlossCount() {
       const count = markedGlosses.size;
       glossCount.textContent = `${count} ${count === 1 ? "gloss marcado" : "glosses marcados"}`;
-      updateGlossSpeechButton(Boolean(markedGlossUtterance));
+      updateGlossSpeechButton(markedGlossSpeechActive);
     }
 
     glossSpeak.addEventListener("click", toggleMarkedGlossSpeech);
@@ -1734,6 +1763,7 @@
 
     function renderCard(index) {
       stopSentenceAudio();
+      stopMarkedGlossSpeech();
       activeIndex = index;
       saveActiveIndex();
       const sentence = sentences[activeIndex];
@@ -1804,6 +1834,7 @@
         });
         interlinear.append(chunk);
       });
+      updateGlossSpeechButton(false);
     }
 
     glossExport.addEventListener("click", () => {

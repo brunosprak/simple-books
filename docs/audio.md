@@ -86,7 +86,7 @@ Run the reader builder and test suite after changing canonical text, audio metad
 
 ## Browser-synthesized marked glosses
 
-The `▶ Glosses` control is intentionally separate from static sentence narration. It sends only the marked Japanese terms to the browser's built-in Web Speech API, selects an available `ja` voice when possible, and requires no network speech API. Its voice, pronunciation, and availability vary by browser and operating system, so it is a convenience for comparison rather than a reproducible audio asset.
+The `▶ Glosses` control is intentionally separate from static sentence narration. It sends only the marked glosses in the current sentence to the browser's built-in Web Speech API. Each gloss is queued as a Japanese term (`ja-JP`) followed by its Portuguese meaning (`pt-BR`), selecting matching installed voices when possible. It requires no network speech API. Voice quality, pronunciation, and availability vary by browser and operating system, so it is a convenience for comparison rather than a reproducible audio asset.
 
 ## Future roadmap
 
