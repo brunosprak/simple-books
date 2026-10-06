@@ -1032,6 +1032,8 @@
                 <option value="off">Desligado</option>
                 <option value="sentence">Frase</option>
                 <option value="listening">Glosses + frase</option>
+                <option value="paragraph">Parágrafo</option>
+                <option value="listening-paragraph">Glosses + parágrafo</option>
               </select>
             </label>
             <span id="sentence-audio-voice"></span>
@@ -1294,29 +1296,55 @@
       }
     }
 
+    function loopModeUsesGlosses(mode = sentenceAudioLoopMode) {
+      return mode === "listening" || mode === "listening-paragraph";
+    }
+
+    function loopModeUsesParagraph(mode = sentenceAudioLoopMode) {
+      return mode === "paragraph" || mode === "listening-paragraph";
+    }
+
+    function startSentenceAudioCycle({ restart = false } = {}) {
+      if (!sentenceAudio) return;
+      clearSentenceAudioLoopTimer();
+      if (restart) sentenceAudio.currentTime = 0;
+      if (loopModeUsesGlosses() && sentenceAudio.currentTime === 0) {
+        startGlossesThenSentence();
+        return;
+      }
+      playSentenceAudio({ restart });
+    }
+
     function toggleSentenceAudio() {
       if (!sentenceAudio) return;
       if (!sentenceAudio.paused) {
         sentenceAudio.pause();
         return;
       }
-      playSentenceAudio();
+      startSentenceAudioCycle();
     }
 
     function updateSentenceAudioLoop() {
       const listeningOption = sentenceAudioLoop.querySelector('option[value="listening"]');
+      const listeningParagraphOption = sentenceAudioLoop.querySelector('option[value="listening-paragraph"]');
       const listeningAvailable = browserSpeechAvailable && currentSentenceListeningGlosses().length > 0;
+      const listeningParagraphAvailable = browserSpeechAvailable && currentParagraphHasListeningGlosses();
       listeningOption.disabled = !listeningAvailable;
+      listeningParagraphOption.disabled = !listeningParagraphAvailable;
       if (sentenceAudioLoopMode === "listening" && !listeningAvailable) {
         clearSentenceAudioLoopTimer();
         if (sentenceAudioLoopSpeechActive) stopBrowserSpeech();
         sentenceAudioLoopMode = "sentence";
+      } else if (sentenceAudioLoopMode === "listening-paragraph" && !listeningParagraphAvailable) {
+        clearSentenceAudioLoopTimer();
+        if (sentenceAudioLoopSpeechActive) stopBrowserSpeech();
+        sentenceAudioLoopMode = "paragraph";
       }
       sentenceAudioLoop.value = sentenceAudioLoopMode;
     }
 
     sentenceAudioToggle.addEventListener("click", toggleSentenceAudio);
-    sentenceAudioRestart.addEventListener("click", () => playSentenceAudio({ restart: true }));
+    sentenceAudioRestart.addEventListener("click", () => startSentenceAudioCycle({ restart: true }));
     sentenceAudioLoop.addEventListener("change", () => {
       clearSentenceAudioLoopTimer();
       if (sentenceAudioLoopSpeechActive) stopBrowserSpeech();
@@ -1514,9 +1542,22 @@
       saveMarkedGlosses();
     }
 
-    function currentSentenceListeningGlosses() {
-      return sentences[activeIndex].chunks.flatMap(([term, _reading, portuguese]) =>
+    function sentenceListeningGlosses(index) {
+      return sentences[index].chunks.flatMap(([term, _reading, portuguese]) =>
         hasGlossReason(term, portuguese, "listening") ? [{ term, portuguese }] : []
+      );
+    }
+
+    function currentSentenceListeningGlosses() {
+      return sentenceListeningGlosses(activeIndex);
+    }
+
+    function currentParagraphHasListeningGlosses() {
+      const paragraph = sentenceParagraphIndexes[activeIndex];
+      const start = paragraphSentenceStarts[paragraph];
+      const end = start + paragraphSentenceCounts[paragraph];
+      return sentences.slice(start, end).some((_sentence, offset) =>
+        sentenceListeningGlosses(start + offset).length > 0
       );
     }
 
@@ -1624,39 +1665,69 @@
       startMarkedGlossSpeech(glosses);
     }
 
-    function scheduleSentenceAudioLoopPlayback() {
+    function scheduleSentenceAudioLoopPlayback(expectedMode = sentenceAudioLoopMode) {
       sentenceAudioStatus.textContent = "Frase em 0,5 s…";
       sentenceAudioLoopTimer = setTimeout(() => {
         sentenceAudioLoopTimer = null;
-        if (sentenceAudioLoopMode === "off") return;
+        if (sentenceAudioLoopMode !== expectedMode) return;
         playSentenceAudio({ restart: true });
+      }, sentenceAudioLoopDelayMs);
+    }
+
+    function startGlossesThenSentence() {
+      const expectedMode = sentenceAudioLoopMode;
+      const glosses = currentSentenceListeningGlosses();
+      if (!browserSpeechAvailable || glosses.length === 0) {
+        playSentenceAudio({ restart: true });
+        return;
+      }
+      startMarkedGlossSpeech(glosses, {
+        loopSequence: true,
+        onComplete: () => {
+          if (sentenceAudioLoopMode === expectedMode) scheduleSentenceAudioLoopPlayback(expectedMode);
+        }
+      });
+    }
+
+    function scheduleGlossesThenSentence() {
+      const expectedMode = sentenceAudioLoopMode;
+      sentenceAudioStatus.textContent = "Glosses em 0,5 s…";
+      sentenceAudioLoopTimer = setTimeout(() => {
+        sentenceAudioLoopTimer = null;
+        if (sentenceAudioLoopMode !== expectedMode) return;
+        startGlossesThenSentence();
+      }, sentenceAudioLoopDelayMs);
+    }
+
+    function nextSentenceInCurrentParagraph() {
+      const paragraph = sentenceParagraphIndexes[activeIndex];
+      const start = paragraphSentenceStarts[paragraph];
+      const end = start + paragraphSentenceCounts[paragraph];
+      return activeIndex + 1 < end ? activeIndex + 1 : start;
+    }
+
+    function scheduleNextParagraphSentence() {
+      const expectedMode = sentenceAudioLoopMode;
+      sentenceAudioStatus.textContent = "Próxima frase em 0,5 s…";
+      sentenceAudioLoopTimer = setTimeout(() => {
+        sentenceAudioLoopTimer = null;
+        if (sentenceAudioLoopMode !== expectedMode) return;
+        renderCard(nextSentenceInCurrentParagraph());
+        if (sentenceAudioLoopMode !== expectedMode) return;
+        if (loopModeUsesGlosses(expectedMode)) startGlossesThenSentence();
+        else playSentenceAudio({ restart: true });
       }, sentenceAudioLoopDelayMs);
     }
 
     function continueSentenceAudioLoop() {
       if (sentenceAudioLoopMode === "off") return;
-      if (sentenceAudioLoopMode === "sentence") {
+      if (loopModeUsesParagraph()) {
+        scheduleNextParagraphSentence();
+      } else if (loopModeUsesGlosses()) {
+        scheduleGlossesThenSentence();
+      } else {
         scheduleSentenceAudioLoopPlayback();
-        return;
       }
-      const glosses = currentSentenceListeningGlosses();
-      if (!browserSpeechAvailable || glosses.length === 0) {
-        sentenceAudioLoopMode = "sentence";
-        updateSentenceAudioLoop();
-        scheduleSentenceAudioLoopPlayback();
-        return;
-      }
-      sentenceAudioStatus.textContent = "Glosses em 0,5 s…";
-      sentenceAudioLoopTimer = setTimeout(() => {
-        sentenceAudioLoopTimer = null;
-        if (sentenceAudioLoopMode !== "listening") return;
-        startMarkedGlossSpeech(glosses, {
-          loopSequence: true,
-          onComplete: () => {
-            if (sentenceAudioLoopMode === "listening") scheduleSentenceAudioLoopPlayback();
-          }
-        });
-      }, sentenceAudioLoopDelayMs);
     }
 
     function toggleTranslationSpeech() {
