@@ -11,7 +11,7 @@ The reader's sentence audio is generated from the canonical Japanese JSON and st
 - one file for every sentence currently present in the canonical JSON;
 - a manifest that pins the source text hash, voice/model settings, encoding settings, and file size;
 - automated checks for path stability, complete sentence coverage, stale hashes, missing files, obsolete files, and manifest drift;
-- a `Frases` player with play/pause, play-from-start, sentence and paragraph loop modes, optionally reading listening glosses or the full Portuguese translation before each MP3, with a 500 ms gap between phases, and playback choices from `0.70×` through `1.30×` in `0.05×` increments;
+- a `Frases` player with play/pause, play-from-start, sentence and paragraph loop modes, optionally reading listening glosses as Japanese–Portuguese–Japanese, each Japanese gloss once, or the full Portuguese translation before each MP3, with a 500 ms gap between phases, and playback choices from `0.70×` through `1.30×` in `0.05×` increments;
 - per-book speed persistence, immediate speed changes during playback, loop-mode continuity across sentence navigation, and automatic stop when sentence or reading mode changes.
 - chapter-scoped or full-book offline caching of the public JSON, audio manifest, and sentence MP3s through the reader’s final-page controls.
 
@@ -87,7 +87,7 @@ Run the reader builder and test suite after changing canonical text, audio metad
 
 ## Browser-synthesized marked glosses
 
-The `▶ Escuta` control is intentionally separate from static sentence narration. It sends only glosses carrying the `listening` reason in the current sentence to the browser's built-in Web Speech API. Each gloss is queued as a Japanese term (`ja-JP`) followed by its Portuguese meaning (`pt-BR`), selecting matching installed voices when possible. Vocabulary-only marks are never spoken. It requires no network speech API. Voice quality, pronunciation, and availability vary by browser and operating system, so it is a convenience for comparison rather than a reproducible audio asset.
+The `▶ Escuta` control is intentionally separate from static sentence narration. It sends only glosses carrying the `listening` reason in the current sentence to the browser's built-in Web Speech API. The standalone button queues each gloss as Japanese (`ja-JP`), Portuguese (`pt-BR`), then Japanese again, selecting matching installed voices when possible. The `Glosses JP` loop modes instead speak each marked Japanese surface exactly once before the sentence MP3. Vocabulary-only marks are never spoken. It requires no network speech API. Voice quality, pronunciation, and availability vary by browser and operating system, so it is a convenience for comparison rather than a reproducible audio asset.
 
 ## Future roadmap
 

@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import json
 import re
+import struct
 import sys
 import unittest
 from pathlib import Path
@@ -91,13 +92,19 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('const sentenceAudioLoopDelayMs = 500', first)
         self.assertIn('<option value="sentence">Frase</option>', first)
         self.assertIn('<option value="listening">Glosses + frase</option>', first)
+        self.assertIn('<option value="listening-ja">Glosses JP + frase</option>', first)
         self.assertIn('<option value="translation">Tradução + frase</option>', first)
         self.assertIn('<option value="paragraph">Parágrafo</option>', first)
         self.assertIn('<option value="listening-paragraph">Glosses + parágrafo</option>', first)
+        self.assertIn('<option value="listening-ja-paragraph">Glosses JP + parágrafo</option>', first)
         self.assertIn('<option value="translation-paragraph">Tradução + parágrafo</option>', first)
         self.assertIn('sentenceAudioLoopMode = sentenceAudioLoop.value', first)
         self.assertIn('function continueSentenceAudioLoop', first)
         self.assertIn('function startGlossesThenSentence', first)
+        self.assertIn('function loopModeUsesJapaneseOnlyGlosses', first)
+        self.assertIn('japaneseOnly: loopModeUsesJapaneseOnlyGlosses(expectedMode)', first)
+        self.assertIn('glosses.map(({ term }) => ({ text: term, lang: "ja-JP" }))', first)
+        self.assertIn('Lendo glosses JP…', first)
         self.assertIn('function startTranslationThenSentence', first)
         self.assertIn('function scheduleTranslationThenSentence', first)
         self.assertIn('Tradução em 0,5 s…', first)
@@ -116,17 +123,13 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('function clearSentenceAudioLoopTimer', first)
         self.assertIn('function updateSentenceAudioLoop', first)
         self.assertIn('function startMarkedGlossSpeech', first)
-        self.assertIn(
-            '{ text: term, lang: "ja-JP" },\n'
-            '        { text: portuguese, lang: "pt-BR" },\n'
-            '        { text: term, lang: "ja-JP" }',
-            first,
-        )
         self.assertIn('loopSequence: true', first)
         self.assertIn('Frase em 0,5 s…', first)
         self.assertIn('Glosses em 0,5 s…', first)
         self.assertIn('Próxima frase em 0,5 s…', first)
         self.assertIn('audioConfig ? new Audio() : null', first)
+        self.assertIn('<link rel="manifest" href="../manifest.webmanifest">', first)
+        self.assertIn('<meta name="theme-color" content="#314f46">', first)
         self.assertIn('simple-ja-books:audio-speed:v1:', first)
         self.assertIn('function sentenceAudioPath', first)
         self.assertIn('prepareSentenceAudio(activeChapter, paragraphInChapter, sentenceInParagraph)', first)
@@ -413,6 +416,31 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('findCachedResponse(request)', worker)
         self.assertIn('const response = await fetch(request)', worker)
         self.assertIn('event.respondWith(networkFirst(request))', worker)
+        self.assertIn('const PWA_CACHE_PREFIX', worker)
+        self.assertIn('const PWA_SHELL_URLS', worker)
+        self.assertIn('cache.addAll(PWA_SHELL_URLS)', worker)
+        self.assertIn('name.startsWith(PWA_CACHE_PREFIX)', worker)
+
+    def test_pwa_manifest_icons_and_library_registration(self) -> None:
+        manifest = json.loads(
+            (ROOT / "site" / "manifest.webmanifest").read_text(encoding="utf-8")
+        )
+        self.assertEqual(manifest["start_url"], "./princess-of-mars/")
+        self.assertEqual(manifest["scope"], "./")
+        self.assertEqual(manifest["display"], "standalone")
+        self.assertEqual(
+            [(icon["src"], icon["sizes"]) for icon in manifest["icons"]],
+            [("icons/icon-192.png", "192x192"), ("icons/icon-512.png", "512x512")],
+        )
+
+        library = (ROOT / "site" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('<link rel="manifest" href="manifest.webmanifest">', library)
+        self.assertIn('navigator.serviceWorker.register("offline-sw.js")', library)
+
+        for filename, expected_size in (("icon-192.png", 192), ("icon-512.png", 512)):
+            payload = (ROOT / "site" / "icons" / filename).read_bytes()
+            self.assertEqual(payload[:8], b"\x89PNG\r\n\x1a\n")
+            self.assertEqual(struct.unpack(">II", payload[16:24]), (expected_size, expected_size))
 
     def test_runtime_reader_fetches_json_without_embedding_book_text(self) -> None:
         validated = build_reader.validate_data(copy.deepcopy(self.data))
