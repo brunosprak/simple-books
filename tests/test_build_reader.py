@@ -17,7 +17,7 @@ class BuildReaderTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.data = json.loads(
-            (ROOT / "texts" / "call-of-cthulhu-ja.json").read_text(encoding="utf-8")
+            (ROOT / "texts" / "princess-of-mars-ja.json").read_text(encoding="utf-8")
         )
         cls.template = (ROOT / "site" / "reader.template.html").read_text(
             encoding="utf-8"
@@ -296,7 +296,7 @@ class BuildReaderTests(unittest.TestCase):
 
         output = build_reader.render_text(validated)
 
-        self.assertTrue(output.startswith("クトゥルフの呼び声\n\nH・P・ラヴクラフト\n\n"))
+        self.assertTrue(output.startswith("火星のプリンセス\n\nエドガー・ライス・バローズ\n\n"))
         self.assertIn(self.data["chapters"][0]["title"], output)
         self.assertIn(
             "".join(
@@ -313,11 +313,11 @@ class BuildReaderTests(unittest.TestCase):
         output = build_reader.render(
             validated,
             self.template,
-            data_url="../books/call-of-cthulhu-ja.json",
+            data_url="../books/princess-of-mars-ja.json",
         )
 
         self.assertIn('await fetch(bookDataUrl)', output)
-        self.assertIn('../books/call-of-cthulhu-ja.json', output)
+        self.assertIn('../books/princess-of-mars-ja.json', output)
         self.assertNotIn(self.first_sentence(self.data)["text"], output)
         self.assertIn('document.querySelector("#page-title")', output)
 
