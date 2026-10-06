@@ -84,6 +84,8 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('>Corrido</button>', first)
         self.assertIn('>Vertical</button>', first)
         self.assertIn(".reading-mode-switch {", first)
+        self.assertIn("margin: -0.55rem 0 1.25rem", first)
+        self.assertIn("min-height: 2.35rem", first)
         self.assertGreater(
             first.index('id="font-decrease"'),
             first.index("</article>"),
@@ -93,6 +95,9 @@ class BuildReaderTests(unittest.TestCase):
             first.index('id="page-footer"'),
         )
         self.assertIn(".study-controls {", first)
+        self.assertIn("margin: -0.4rem -0.4rem 0.65rem", first)
+        self.assertIn("min-height: 2.4rem", first)
+        self.assertIn("white-space: nowrap", first)
         self.assertIn('class="study-controls"', first)
         self.assertNotIn(".study-controls {\n      position: sticky;", first)
         self.assertLess(
@@ -157,8 +162,8 @@ class BuildReaderTests(unittest.TestCase):
         self.assertNotIn("Novo parágrafo", first)
         self.assertNotIn('id="paragraph-end"', first)
         self.assertNotIn("Fim do parágrafo", first)
-        self.assertIn(".paragraph-end-mark {", first)
-        self.assertIn('paragraphEndMark.textContent = "\\u2060¶"', first)
+        self.assertNotIn(".paragraph-end-mark {", first)
+        self.assertNotIn("paragraphEndMark", first)
         self.assertIn("paragraphSentenceStarts", first)
         self.assertIn("chapterParagraphStarts", first)
         self.assertIn("chapterParagraphCounts", first)

@@ -39,12 +39,12 @@
     main {
       width: min(100% - 2.5rem, 45rem);
       margin: 0 auto;
-      padding: clamp(4rem, 12vw, 8rem) 0 8rem;
+      padding: clamp(2.5rem, 8vw, 5rem) 0 5rem;
     }
 
     header {
-      margin-bottom: 4rem;
-      padding-bottom: 2.25rem;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.4rem;
       border-bottom: 1px solid var(--rule);
     }
 
@@ -72,7 +72,7 @@
     }
 
     .author {
-      margin: 1.25rem 0 0;
+      margin: 0.75rem 0 0;
       color: var(--muted);
       font-size: 0.95rem;
       letter-spacing: 0.08em;
@@ -132,7 +132,7 @@
     }
 
     h2 {
-      margin: 0 0 2.25rem;
+      margin: 0 0 1.4rem;
       color: var(--accent);
       font-size: 1.25rem;
       font-weight: 600;
@@ -171,9 +171,9 @@
     .reading-mode-switch {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.45rem;
-      margin: -1rem 0 2rem;
-      padding: 0.45rem;
+      gap: 0.35rem;
+      margin: -0.55rem 0 1.25rem;
+      padding: 0.3rem;
       background: var(--paper);
       border: 1px solid color-mix(in srgb, var(--rule) 72%, transparent);
       border-radius: 999px;
@@ -181,8 +181,8 @@
     }
 
     .reading-mode-button {
-      min-height: 2.6rem;
-      padding: 0.45rem 0.65rem;
+      min-height: 2.4rem;
+      padding: 0.3rem 0.55rem;
       color: var(--accent);
       background: transparent;
       border: 1px solid var(--rule);
@@ -364,7 +364,7 @@
 
     .study-panel {
       margin: 0.5rem 0 2.5rem;
-      padding: clamp(1.25rem, 4vw, 2rem);
+      padding: clamp(0.85rem, 3vw, 1.35rem);
       background: var(--panel);
       border: 1px solid var(--rule);
       border-radius: 0.45rem;
@@ -374,17 +374,17 @@
     }
 
     .study-controls {
-      margin: -0.75rem -0.75rem 1rem;
-      padding: 0.75rem;
+      margin: -0.4rem -0.4rem 0.65rem;
+      padding: 0.4rem;
     }
 
     .study-topline {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 1rem;
-      margin: 0 0 0.75rem;
-      padding: 0.75rem;
+      gap: 0.6rem;
+      margin: 0 0 0.5rem;
+      padding: 0.55rem;
       background: color-mix(in srgb, var(--panel) 94%, transparent);
       border: 1px solid color-mix(in srgb, var(--rule) 72%, transparent);
       border-radius: 0.5rem;
@@ -409,6 +409,9 @@
     }
 
     .study-nav {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       min-width: 2rem;
       height: 2rem;
       padding: 0 0.55rem;
@@ -420,6 +423,7 @@
       font-size: 1rem;
       font-weight: 700;
       line-height: 1;
+      white-space: nowrap;
       cursor: pointer;
     }
 
@@ -441,15 +445,6 @@
       border-color: var(--rule);
       cursor: not-allowed;
       opacity: 0.35;
-    }
-
-    .paragraph-end-mark {
-      margin-inline-start: 0.25em;
-      color: var(--muted);
-      font-family: system-ui, sans-serif;
-      font-size: 0.72em;
-      font-weight: 500;
-      white-space: nowrap;
     }
 
     .selected-sentence {
@@ -686,12 +681,12 @@
     @media (max-width: 36rem) {
       main {
         width: min(100% - 1.25rem, 45rem);
-        padding-top: 1rem;
+        padding-top: 0.65rem;
       }
 
       header {
-        margin-bottom: 1.25rem;
-        padding-bottom: 1rem;
+        margin-bottom: 0.8rem;
+        padding-bottom: 0.65rem;
       }
 
       .eyebrow {
@@ -701,12 +696,12 @@
       }
 
       h1 {
-        font-size: clamp(1.85rem, 9vw, 2.6rem);
+        font-size: clamp(1.7rem, 8vw, 2.3rem);
         line-height: 1.15;
       }
 
       .author {
-        margin-top: 0.5rem;
+        margin-top: 0.3rem;
         font-size: 0.82rem;
       }
 
@@ -732,8 +727,24 @@
       }
 
       h2 {
-        margin-bottom: 1rem;
+        margin-bottom: 0.65rem;
         font-size: 1.05rem;
+      }
+
+      .chapter-select {
+        padding-top: 0.1rem;
+        padding-bottom: 0.1rem;
+      }
+
+      .reading-mode-switch {
+        margin-top: -0.25rem;
+        margin-bottom: 0.75rem;
+        padding: 0.25rem;
+      }
+
+      .reading-mode-button {
+        min-height: 2.35rem;
+        padding-block: 0.25rem;
       }
 
       .study-hint {
@@ -743,6 +754,8 @@
       .study-topline {
         align-items: flex-start;
         flex-direction: column;
+        gap: 0.4rem;
+        padding: 0.45rem;
       }
 
       .study-actions {
@@ -751,7 +764,9 @@
 
       .study-nav {
         flex: 1;
-        min-height: 2.75rem;
+        min-height: 2.4rem;
+        height: 2.4rem;
+        padding-inline: 0.35rem;
       }
 
       .furigana-toggle {
@@ -1496,13 +1511,6 @@
 
       if (cursor < sentence.text.length) {
         selectedSentence.append(document.createTextNode(sentence.text.slice(cursor)));
-      }
-      if (sentenceInParagraph === sentencesInParagraph - 1) {
-        const paragraphEndMark = document.createElement("span");
-        paragraphEndMark.className = "paragraph-end-mark";
-        paragraphEndMark.setAttribute("aria-hidden", "true");
-        paragraphEndMark.textContent = "\u2060¶";
-        selectedSentence.append(paragraphEndMark);
       }
       scheduleNextSentencePreview();
 
