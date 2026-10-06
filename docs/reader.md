@@ -77,6 +77,9 @@ Switching modes restores the last position used in the destination mode. Reloadi
 - Audio is optional per book and is generated ahead of time; the browser never calls a speech-synthesis service.
 - One MP3 maps to exactly one sentence through one-based chapter, paragraph, and sentence numbers. The runtime path is `audio/chapter-XX/paragraph-XXX/sentence-XXX.mp3` relative to the book reader.
 - The player is available only in `Frases` and never starts automatically.
+- `▶ Ouvir` alternates between play and pause, resuming from the paused position.
+- `↺ Início` immediately seeks to the beginning and plays, whether the sentence was paused or already playing.
+- `↻ Loop` toggles continuous repetition of the current sentence. It is off on every page load, remains active while navigating between sentences, and is visually exposed through `aria-pressed`.
 - Navigating to another sentence or leaving `Frases` stops playback and returns it to the beginning.
 - The selectable speeds come from the book metadata. Changing speed updates the current playback immediately without selecting or generating another MP3.
 - Playback speed persists per book. The generated source remains at `1.0×`, and the browser preserves pitch while changing playback rate where supported.
