@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+import re
 import sys
 import unittest
 from pathlib import Path
@@ -63,6 +64,15 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('>▶ Escuta</button>', first)
         self.assertIn('toggleReason("vocabulary")', first)
         self.assertIn('toggleReason("listening")', first)
+        self.assertIn('id="offline-chapter-download"', first)
+        self.assertIn('id="offline-book-download"', first)
+        self.assertIn('id="offline-manage"', first)
+        self.assertIn('id="offline-remove"', first)
+        self.assertIn('function downloadOffline', first)
+        self.assertIn('function offlineUrlsForChapters', first)
+        self.assertIn('navigator.serviceWorker.register(offlineWorkerUrl)', first)
+        self.assertIn('await cacheOfflineUrls(urls)', first)
+        self.assertIn('const offlineVersion = "', first)
         self.assertIn('id="translation-speak"', first)
         self.assertIn('function toggleTranslationSpeech', first)
         self.assertIn('new SpeechSynthesisUtterance(sentences[activeIndex].pt)', first)
@@ -362,6 +372,27 @@ class BuildReaderTests(unittest.TestCase):
         )
         self.assertTrue(output.endswith("\n"))
 
+    def test_offline_version_changes_with_public_book_data(self) -> None:
+        first_data = build_reader.validate_data(copy.deepcopy(self.data))
+        second_data = copy.deepcopy(first_data)
+        self.first_sentence(second_data)["pt"] += " Atualizada."
+
+        first = build_reader.render(first_data, self.template)
+        second = build_reader.render(second_data, self.template)
+        pattern = re.compile(r'const offlineVersion = "([0-9a-f]{16})";')
+
+        self.assertNotEqual(pattern.search(first).group(1), pattern.search(second).group(1))
+
+    def test_offline_worker_uses_network_fallback_and_cached_assets(self) -> None:
+        worker = (ROOT / "site" / "offline-sw.js").read_text(encoding="utf-8")
+
+        self.assertIn('self.addEventListener("install"', worker)
+        self.assertIn('self.addEventListener("activate"', worker)
+        self.assertIn('self.addEventListener("fetch"', worker)
+        self.assertIn('findCachedResponse(request)', worker)
+        self.assertIn('const response = await fetch(request)', worker)
+        self.assertIn('event.respondWith(networkFirst(request))', worker)
+
     def test_runtime_reader_fetches_json_without_embedding_book_text(self) -> None:
         validated = build_reader.validate_data(copy.deepcopy(self.data))
 
@@ -373,6 +404,7 @@ class BuildReaderTests(unittest.TestCase):
 
         self.assertIn('await fetch(bookDataUrl)', output)
         self.assertIn('../books/princess-of-mars-ja.json', output)
+        self.assertIn('const bookDataUrl = "../books/princess-of-mars-ja.json"', output)
         self.assertNotIn(self.first_sentence(self.data)["text"], output)
         self.assertIn('document.querySelector("#page-title")', output)
 

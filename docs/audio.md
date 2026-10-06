@@ -13,6 +13,7 @@ The reader's sentence audio is generated from the canonical Japanese JSON and st
 - automated checks for path stability, complete sentence coverage, stale hashes, missing files, obsolete files, and manifest drift;
 - a `Frases` player with play/pause, play-from-start, sentence and paragraph loop modes, optionally reading listening glosses before each MP3, with a 500 ms gap between phases, and playback choices from `0.70×` through `1.30×` in `0.05×` increments;
 - per-book speed persistence, immediate speed changes during playback, loop-mode continuity across sentence navigation, and automatic stop when sentence or reading mode changes.
+- chapter-scoped or full-book offline caching of the public JSON, audio manifest, and sentence MP3s through the reader’s final-page controls.
 
 Voice-comparison samples remain separate from published book audio under `samples/audio/`. They are reference artifacts and are not loaded by the reader.
 

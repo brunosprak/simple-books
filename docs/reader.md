@@ -120,6 +120,16 @@ Version 3 reader state may be applied only when `source_file` matches the curren
 
 The importer continues to accept schema versions 1 and 2. Version 1 updates glosses without replacing reader positions or preferences; version 2 retains its reader state. In either legacy version, every gloss without a `reasons` field is migrated to `reasons: ["vocabulary"]`.
 
+## Offline reading
+
+- The final page section exposes `↓ Capítulo atual`, `↓ Livro completo`, and `Gerenciar` controls when Service Worker and Cache Storage APIs are available.
+- A chapter download stores the current reader page, public book JSON, offline worker, audio manifest, and every sentence MP3 in the selected chapter. A full-book download stores the same shell plus every chapter MP3 and the library page.
+- Download progress is announced and shown visually. A scope is marked available only after every required file has been cached successfully; interrupted downloads remain retryable.
+- Offline files are versioned from the canonical public JSON. Completing a download removes older caches for the same book so text and audio from different versions are not mixed.
+- The current chapter follows the active chapter in all reading modes. Downloaded chapters and full-book state persist per book in the current browser.
+- `Gerenciar` reports origin-level browser storage usage and can remove every offline cache for the current book. Removing offline files does not remove reading position, gloss marks, or other reader preferences.
+- Browser speech voices are not site assets and may remain unavailable offline. Pre-generated sentence MP3s continue to work.
+
 ## Accessibility and interaction
 
 - All reader controls and navigation sections remain in the normal document flow. No reader element uses `position: sticky` or `position: fixed` to remain suspended while the page scrolls.

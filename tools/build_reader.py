@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import html
 import json
 import os
@@ -191,6 +192,7 @@ def render(
     levels = page["font_levels_percent"]
     default_index = levels.index(page["default_font_level_percent"])
 
+    offline_version = hashlib.sha256(render_public_json(data).encode("utf-8")).hexdigest()[:16]
     replacements = {
         "{{META_DESCRIPTION}}": html.escape(page["description"], quote=True),
         "{{TITLE}}": html.escape(page["title"]),
@@ -200,6 +202,7 @@ def render(
         "{{FOOTER}}": html.escape(page["footer"]),
         "__FONT_LEVELS_JSON__": javascript_json(levels),
         "__DEFAULT_FONT_INDEX__": str(default_index),
+        "__OFFLINE_VERSION_JSON__": javascript_json(offline_version),
     }
 
     output = template
@@ -227,6 +230,7 @@ def render(
             "    // BOOK_DATA_START\n"
             f"    const chapters = {indented.lstrip()};\n"
             "    const bookData = null;\n"
+            "    const bookDataUrl = null;\n"
             "    // BOOK_DATA_END"
         )
     output, replacements_count = DATA_BLOCK.subn(
