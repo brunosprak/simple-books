@@ -1135,6 +1135,7 @@
           <div class="gloss-tools" aria-label="Glosses marcados">
             <span class="gloss-count" id="gloss-count" aria-label="Nenhum gloss marcado">★ 0 · 🎧 0</span>
             <button class="gloss-tool-button" id="gloss-speak" type="button" aria-label="Ouvir glosses de escuta da frase atual" aria-pressed="false" disabled>▶ Escuta</button>
+            <button class="gloss-tool-button" id="gloss-speak-ja" type="button" aria-label="Ouvir somente em japonês os glosses de escuta da frase atual" aria-pressed="false" disabled>▶ JP</button>
             <button class="gloss-tool-button" id="gloss-export" type="button" aria-label="Exportar dados de leitura em JSON" title="Exportar dados de leitura em JSON">↓ JSON</button>
             <button class="gloss-tool-button" id="gloss-import" type="button" aria-label="Importar dados de leitura em JSON" title="Importar dados de leitura em JSON">↑ JSON</button>
             <input id="gloss-import-file" type="file" accept="application/json,.json" hidden>
@@ -1215,6 +1216,7 @@
     const furiganaToggle = document.querySelector("#furigana-toggle");
     const glossCount = document.querySelector("#gloss-count");
     const glossSpeak = document.querySelector("#gloss-speak");
+    const glossSpeakJapanese = document.querySelector("#gloss-speak-ja");
     const glossExport = document.querySelector("#gloss-export");
     const glossImport = document.querySelector("#gloss-import");
     const glossImportFile = document.querySelector("#gloss-import-file");
@@ -1288,6 +1290,8 @@
     const storageScope = bookData?.source_file || location.pathname;
     const activeCardStorageKey = `simple-ja-books:active-card:v1:${storageScope}`;
     let activeIndex = loadActiveIndex();
+    const sentenceChapterPositionsStorageKey = `simple-ja-books:sentence-chapter-positions:v1:${storageScope}`;
+    let sentenceChapterPositions = loadSentenceChapterPositions();
     const furiganaStorageKey = `simple-ja-books:furigana-visible:v1:${storageScope}`;
     let furiganaVisible = loadFuriganaVisibility();
     const readingModeStorageKey = "simple-ja-books:reading-mode:v1";
@@ -1309,6 +1313,7 @@
     let markedGlosses = loadMarkedGlosses();
     const browserSpeechAvailable = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
     let markedGlossSpeechActive = false;
+    let markedGlossSpeechMode = null;
     let markedGlossSpeechQueue = [];
     let markedGlossSpeechRun = 0;
     let markedGlossSpeechOnComplete = null;
@@ -1932,6 +1937,45 @@
       }
     }
 
+    function validSentenceIndexForChapter(index, chapterIndex) {
+      const start = chapterSentenceStarts[chapterIndex];
+      const end = chapterIndex + 1 < chapterSentenceStarts.length
+        ? chapterSentenceStarts[chapterIndex + 1]
+        : sentences.length;
+      return Number.isInteger(index) && index >= start && index < end;
+    }
+
+    function validSentenceChapterPositions(values) {
+      return Array.isArray(values)
+        && values.length <= chapters.length
+        && values.every((index, chapterIndex) =>
+          validSentenceIndexForChapter(index, chapterIndex)
+        );
+    }
+
+    function normalizeSentenceChapterPositions(stored, fallbackIndex = activeIndex) {
+      const positions = [...chapterSentenceStarts];
+      if (Array.isArray(stored)) {
+        stored.forEach((index, chapterIndex) => {
+          if (chapterIndex < chapters.length
+            && validSentenceIndexForChapter(index, chapterIndex)) {
+            positions[chapterIndex] = index;
+          }
+        });
+      }
+      positions[activeChapterForIndex(fallbackIndex)] = fallbackIndex;
+      return positions;
+    }
+
+    function loadSentenceChapterPositions() {
+      try {
+        const stored = JSON.parse(localStorage.getItem(sentenceChapterPositionsStorageKey) || "null");
+        return normalizeSentenceChapterPositions(stored);
+      } catch (_error) {
+        return normalizeSentenceChapterPositions(null);
+      }
+    }
+
     function normalizeReadingPositions(stored) {
       const fallbackChapter = activeChapterForIndex(activeIndex);
       const defaults = {
@@ -2013,8 +2057,13 @@
     }
 
     function saveActiveIndex() {
+      sentenceChapterPositions[activeChapterForIndex(activeIndex)] = activeIndex;
       try {
         localStorage.setItem(activeCardStorageKey, String(activeIndex));
+        localStorage.setItem(
+          sentenceChapterPositionsStorageKey,
+          JSON.stringify(sentenceChapterPositions)
+        );
       } catch (_error) {
         // The reader remains usable when storage is unavailable.
       }
@@ -2105,18 +2154,33 @@
       );
     }
 
-    function updateGlossSpeechButton(speaking = false) {
-      glossSpeak.disabled = !browserSpeechAvailable || currentSentenceListeningGlosses().length === 0;
-      glossSpeak.setAttribute("aria-pressed", String(speaking));
+    function updateGlossSpeechButton(mode = null) {
+      const available = browserSpeechAvailable && currentSentenceListeningGlosses().length > 0;
+      const fullSpeaking = mode === "full";
+      const japaneseSpeaking = mode === "ja";
+      glossSpeak.disabled = !available;
+      glossSpeakJapanese.disabled = !available;
+      glossSpeak.setAttribute("aria-pressed", String(fullSpeaking));
       glossSpeak.setAttribute(
         "aria-label",
-        speaking
+        fullSpeaking
           ? "Parar leitura dos glosses de escuta da frase atual"
           : "Ouvir em japonês, português e japonês novamente os glosses de escuta da frase atual"
       );
-      glossSpeak.textContent = speaking ? "■ Parar" : "▶ Escuta";
+      glossSpeak.textContent = fullSpeaking ? "■ Parar" : "▶ Escuta";
       glossSpeak.title = browserSpeechAvailable
         ? "Ouvir os glosses marcados com dificuldade de escuta nesta frase"
+        : "Síntese de voz indisponível neste navegador";
+      glossSpeakJapanese.setAttribute("aria-pressed", String(japaneseSpeaking));
+      glossSpeakJapanese.setAttribute(
+        "aria-label",
+        japaneseSpeaking
+          ? "Parar leitura em japonês dos glosses de escuta da frase atual"
+          : "Ouvir somente em japonês os glosses de escuta da frase atual"
+      );
+      glossSpeakJapanese.textContent = japaneseSpeaking ? "■ JP" : "▶ JP";
+      glossSpeakJapanese.title = browserSpeechAvailable
+        ? "Ouvir uma vez, somente em japonês, os glosses marcados para escuta nesta frase"
         : "Síntese de voz indisponível neste navegador";
     }
 
@@ -2137,13 +2201,14 @@
       if (browserSpeechAvailable) window.speechSynthesis.cancel();
       markedGlossSpeechRun += 1;
       markedGlossSpeechActive = false;
+      markedGlossSpeechMode = null;
       markedGlossSpeechQueue = [];
       markedGlossSpeechOnComplete = null;
       sentenceAudioLoopSpeechActive = false;
       translationSpeechRun += 1;
       translationSpeechActive = false;
       translationSpeechOnComplete = null;
-      updateGlossSpeechButton(false);
+      updateGlossSpeechButton(null);
       updateTranslationSpeechButton(false);
     }
 
@@ -2153,9 +2218,10 @@
       if (!next) {
         const onComplete = markedGlossSpeechOnComplete;
         markedGlossSpeechActive = false;
+        markedGlossSpeechMode = null;
         markedGlossSpeechOnComplete = null;
         sentenceAudioLoopSpeechActive = false;
-        updateGlossSpeechButton(false);
+        updateGlossSpeechButton(null);
         if (run === markedGlossSpeechRun && onComplete) onComplete();
         return;
       }
@@ -2202,19 +2268,21 @@
         sentenceAudioStatus.textContent = japaneseOnly ? "Lendo glosses JP…" : "Lendo glosses…";
       }
       markedGlossSpeechActive = true;
-      updateGlossSpeechButton(true);
+      markedGlossSpeechMode = japaneseOnly ? "ja" : "full";
+      updateGlossSpeechButton(markedGlossSpeechMode);
       speakNextMarkedGlossPart(run);
     }
 
-    function toggleMarkedGlossSpeech() {
+    function toggleMarkedGlossSpeech(japaneseOnly = false) {
       const glosses = currentSentenceListeningGlosses();
       if (!browserSpeechAvailable || glosses.length === 0) return;
-      if (markedGlossSpeechActive) {
+      const requestedMode = japaneseOnly ? "ja" : "full";
+      if (markedGlossSpeechActive && markedGlossSpeechMode === requestedMode) {
         stopBrowserSpeech();
         return;
       }
       stopSentenceAudio();
-      startMarkedGlossSpeech(glosses);
+      startMarkedGlossSpeech(glosses, { japaneseOnly });
     }
 
     function scheduleSentenceAudioLoopPlayback(expectedMode = sentenceAudioLoopMode) {
@@ -2362,11 +2430,12 @@
         "aria-label",
         `${vocabularyCount} ${vocabularyCount === 1 ? "palavra para estudar" : "palavras para estudar"}; ${listeningCount} ${listeningCount === 1 ? "dificuldade de escuta" : "dificuldades de escuta"}`
       );
-      updateGlossSpeechButton(markedGlossSpeechActive);
+      updateGlossSpeechButton(markedGlossSpeechMode);
       updateSentenceAudioLoop();
     }
 
-    glossSpeak.addEventListener("click", toggleMarkedGlossSpeech);
+    glossSpeak.addEventListener("click", () => toggleMarkedGlossSpeech(false));
+    glossSpeakJapanese.addEventListener("click", () => toggleMarkedGlossSpeech(true));
     translationSpeak.addEventListener("click", toggleTranslationSpeech);
 
     if (!Number.isInteger(currentFontLevel) || currentFontLevel < minFontLevel || currentFontLevel > maxFontLevel) {
@@ -2854,6 +2923,7 @@
         reader_state: {
           reading_mode: readingMode,
           active_sentence_index: activeIndex,
+          sentence_chapter_positions: sentenceChapterPositions,
           font_level: currentFontLevel,
           furigana_visible: furiganaVisible,
           positions: readingPositions
@@ -2887,18 +2957,29 @@
         let importedReaderState = null;
         if ([2, 3].includes(payload.schema_version)) {
           const state = payload.reader_state;
+          const storedSentenceChapterPositions = state?.sentence_chapter_positions;
           if (payload.source_file !== bookData?.source_file
             || !state || typeof state !== "object"
             || !["sentence", "continuous", "vertical"].includes(state.reading_mode)
             || !Number.isInteger(state.active_sentence_index)
+            || (storedSentenceChapterPositions !== undefined
+              && !validSentenceChapterPositions(storedSentenceChapterPositions))
             || !Number.isInteger(state.font_level)
             || state.font_level < minFontLevel || state.font_level > maxFontLevel
             || typeof state.furigana_visible !== "boolean"
             || !state.positions || typeof state.positions !== "object") {
             throw new Error("Estado de leitura inválido");
           }
+          const importedActiveIndex = Math.min(
+            Math.max(state.active_sentence_index, 0),
+            sentences.length - 1
+          );
           importedReaderState = {
-            activeIndex: Math.min(Math.max(state.active_sentence_index, 0), sentences.length - 1),
+            activeIndex: importedActiveIndex,
+            sentenceChapterPositions: normalizeSentenceChapterPositions(
+              storedSentenceChapterPositions,
+              importedActiveIndex
+            ),
             readingMode: state.reading_mode,
             fontLevel: state.font_level,
             furiganaVisible: state.furigana_visible,
@@ -2914,6 +2995,7 @@
 
         if (importedReaderState) {
           activeIndex = importedReaderState.activeIndex;
+          sentenceChapterPositions = importedReaderState.sentenceChapterPositions;
           readingMode = importedReaderState.readingMode;
           currentFontLevel = importedReaderState.fontLevel;
           furiganaVisible = importedReaderState.furiganaVisible;
@@ -3015,7 +3097,7 @@
     chapterSelect.addEventListener("change", () => {
       const chapterIndex = Number(chapterSelect.value);
       if (readingMode === "sentence") {
-        renderCard(chapterSentenceStarts[chapterIndex]);
+        renderCard(sentenceChapterPositions[chapterIndex]);
       } else {
         captureReadingPosition();
         renderFullChapter(chapterIndex, false);
