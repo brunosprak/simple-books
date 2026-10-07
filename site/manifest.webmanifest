@@ -1,10 +1,10 @@
 {
-  "id": "./princess-of-mars/",
-  "name": "Leituras em Japonês — Uma Princesa de Marte",
+  "id": "./",
+  "name": "Leituras em Japonês",
   "short_name": "Leituras JP",
   "description": "Leitor de literatura japonesa com furigana, glosses, tradução e áudio.",
   "lang": "pt-BR",
-  "start_url": "./princess-of-mars/",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#f3efe4",

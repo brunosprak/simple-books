@@ -130,8 +130,8 @@ The importer continues to accept schema versions 1 and 2. Version 1 updates glos
 ## Offline reading
 
 - The site is an installable PWA with a web app manifest, 192 px and 512 px icons, standalone display, theme colors, and a root-scoped Service Worker. Installation is offered by compatible browsers through their normal install interface.
-- Installing the PWA caches only the application shell: library page, reader, public book JSON, manifest, and icons. Sentence MP3s remain opt-in through the chapter and full-book download controls, avoiding an automatic download of the complete audio collection.
-- The installed app starts directly in `A Princess of Mars`; ordinary browser use and the library page remain available.
+- Installing the PWA caches only the application shell: the library page, every available reader and public book JSON, the manifest, and icons. Sentence MP3s remain opt-in through the chapter and full-book download controls, avoiding an automatic download of the complete audio collection.
+- The installed app starts at the library page, where every available book can be selected.
 - The final page section exposes `↓ Capítulo atual`, `↓ Livro completo`, and `Gerenciar` controls when Service Worker and Cache Storage APIs are available.
 - A chapter download stores the current reader page, public book JSON, offline worker, audio manifest, and every sentence MP3 in the selected chapter. A full-book download stores the same shell plus every chapter MP3 and the library page.
 - Download progress is announced and shown visually. A scope is marked available only after every required file has been cached successfully; interrupted downloads remain retryable.

@@ -9,10 +9,10 @@
   "page": {
     "title": "SPQR　古代ローマ史",
     "author": "メアリー・ビアード",
-    "eyebrow": "第一章・第二章の要約",
-    "description": "メアリー・ビアード『SPQR』第一章と第二章の内容を、読みやすい現代日本語でまとめた学習用リーダーです。",
+    "eyebrow": "第一章から第三章の要約",
+    "description": "メアリー・ビアード『SPQR』第一章から第三章の内容を、読みやすい現代日本語でまとめた学習用リーダーです。",
     "study_hint": "各文を選ぶと、語句の読み方と短いポルトガル語訳を確認できます。",
-    "footer": "原作：SPQR: A History of Ancient Rome（第一章・第二章の要約）",
+    "footer": "原作：SPQR: A History of Ancient Rome（第一章から第三章の要約）",
     "font_levels_percent": [
       85,
       100,
@@ -3445,6 +3445,1871 @@
                 "数少ない物的証拠なのである。",
                 "かずすくないぶってきしょうこなのである。",
                 "é rara prova material"
+              ]
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "第三章　ローマの王たち（要約）",
+      "paragraphs": [
+        [
+          {
+            "text": "フォルムの黒い石の下から見つかった古い碑文には、「王へ」を意味するラテン語が刻まれていた。",
+            "pt": "A antiga inscrição encontrada sob a pedra negra do Fórum continha uma palavra latina que significava “ao rei”.",
+            "chunks": [
+              [
+                "フォルムの黒い石の下から",
+                "フォルムのくろいいしのしたから",
+                "sob a pedra negra do Fórum"
+              ],
+              [
+                "見つかった",
+                "みつかった",
+                "encontrada"
+              ],
+              [
+                "古い碑文には、",
+                "ふるいひぶんには、",
+                "na antiga inscrição"
+              ],
+              [
+                "「王へ」を意味する",
+                "おうへをいみする",
+                "que significa ao rei"
+              ],
+              [
+                "ラテン語が",
+                "ラテンごが",
+                "uma palavra latina"
+              ],
+              [
+                "刻まれていた。",
+                "きざまれていた。",
+                "estava gravada"
+              ]
+            ]
+          },
+          {
+            "text": "文章の大部分は失われ、古い文字も難しいため、碑文全体の意味は今もわからない。",
+            "pt": "Como grande parte do texto se perdeu e a escrita arcaica é difícil, o sentido completo da inscrição continua desconhecido.",
+            "chunks": [
+              [
+                "文章の大部分は",
+                "ぶんしょうのだいぶぶんは",
+                "grande parte do texto"
+              ],
+              [
+                "失われ、",
+                "うしなわれ、",
+                "se perdeu"
+              ],
+              [
+                "古い文字も",
+                "ふるいもじも",
+                "a escrita arcaica também"
+              ],
+              [
+                "難しいため、",
+                "むずかしいため、",
+                "como é difícil"
+              ],
+              [
+                "碑文全体の意味は",
+                "ひぶんぜんたいのいみは",
+                "o sentido completo"
+              ],
+              [
+                "今もわからない。",
+                "いまもわからない。",
+                "continua desconhecido"
+              ]
+            ]
+          },
+          {
+            "text": "それでもこの一語は、初期ローマに何らかの王がいたという伝承を強く支える。",
+            "pt": "Ainda assim, essa única palavra sustenta fortemente a tradição de que havia algum tipo de rei na Roma primitiva.",
+            "chunks": [
+              [
+                "それでも",
+                "それでも",
+                "ainda assim"
+              ],
+              [
+                "この一語は、",
+                "このいちごは、",
+                "essa única palavra"
+              ],
+              [
+                "初期ローマに",
+                "しょきローマに",
+                "na Roma primitiva"
+              ],
+              [
+                "何らかの王が",
+                "なんらかのおうが",
+                "algum tipo de rei"
+              ],
+              [
+                "いたという伝承を",
+                "いたというでんしょうを",
+                "a tradição de que havia"
+              ],
+              [
+                "強く支える。",
+                "つよくささえる。",
+                "sustenta fortemente"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "ローマの伝承では、ロムルスからタルクィニウス・スペルブスまで七人の王が約二百五十年間統治した。",
+            "pt": "Segundo a tradição romana, sete reis, de Rômulo a Tarquínio, o Soberbo, governaram por cerca de 250 anos.",
+            "chunks": [
+              [
+                "ローマの伝承では、",
+                "ローマのでんしょうでは、",
+                "segundo a tradição romana"
+              ],
+              [
+                "ロムルスから",
+                "ロムルスから",
+                "de Rômulo"
+              ],
+              [
+                "タルクィニウス・スペルブスまで",
+                "タルクィニウス・スペルブスまで",
+                "a Tarquínio, o Soberbo"
+              ],
+              [
+                "七人の王が",
+                "ななにんのおうが",
+                "sete reis"
+              ],
+              [
+                "約二百五十年間",
+                "やくにひゃくごじゅうねんかん",
+                "por cerca de 250 anos"
+              ],
+              [
+                "統治した。",
+                "とうちした。",
+                "governaram"
+              ]
+            ]
+          },
+          {
+            "text": "一人当たりの治世が長すぎるため、実際には期間が短かったか、記録から消えた王がいた可能性が高い。",
+            "pt": "Como cada reinado seria longo demais, é provável que o período real tenha sido menor ou que alguns reis tenham desaparecido dos registros.",
+            "chunks": [
+              [
+                "一人当たりの治世が",
+                "ひとりあたりのちせいが",
+                "cada reinado"
+              ],
+              [
+                "長すぎるため、",
+                "ながすぎるため、",
+                "como seria longo demais"
+              ],
+              [
+                "実際には期間が短かったか、",
+                "じっさいにはきかんがみじかかったか、",
+                "o período real foi menor ou"
+              ],
+              [
+                "記録から消えた",
+                "きろくからきえた",
+                "desapareceram dos registros"
+              ],
+              [
+                "王がいた",
+                "おうがいた",
+                "houve reis"
+              ],
+              [
+                "可能性が高い。",
+                "かのうせいがたかい。",
+                "é provável"
+              ]
+            ]
+          },
+          {
+            "text": "十九世紀の研究者は王たちをほぼ神話と見たが、碑文の「王」という語は完全な否定を難しくした。",
+            "pt": "Estudiosos do século XIX viam os reis quase como mito, mas a palavra “rei” na inscrição tornou difícil rejeitá-los por completo.",
+            "chunks": [
+              [
+                "十九世紀の研究者は",
+                "じゅうきゅうせいきのけんきゅうしゃは",
+                "estudiosos do século XIX"
+              ],
+              [
+                "王たちを",
+                "おうたちを",
+                "os reis"
+              ],
+              [
+                "ほぼ神話と見たが、",
+                "ほぼしんわとみたが、",
+                "viam quase como mito, mas"
+              ],
+              [
+                "碑文の「王」という語は",
+                "ひぶんのおうというごは",
+                "a palavra rei na inscrição"
+              ],
+              [
+                "完全な否定を",
+                "かんぜんなひていを",
+                "rejeição completa"
+              ],
+              [
+                "難しくした。",
+                "むずかしくした。",
+                "tornou difícil"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "後世の歴史家は、初期の王たちに元老院、軍団、選挙など完成した国家制度を作らせた。",
+            "pt": "Historiadores posteriores atribuíram aos primeiros reis a criação de instituições completas, como Senado, legiões e eleições.",
+            "chunks": [
+              [
+                "後世の歴史家は、",
+                "こうせいのれきしかは、",
+                "historiadores posteriores"
+              ],
+              [
+                "初期の王たちに",
+                "しょきのおうたちに",
+                "aos primeiros reis"
+              ],
+              [
+                "元老院、軍団、選挙など",
+                "げんろういん、ぐんだん、せんきょなど",
+                "Senado, legiões e eleições"
+              ],
+              [
+                "完成した国家制度を",
+                "かんせいしたこっかせいどを",
+                "instituições completas"
+              ],
+              [
+                "作らせた。",
+                "つくらせた。",
+                "atribuíram a criação"
+              ]
+            ]
+          },
+          {
+            "text": "しかし当時のローマは数千人ほどの小さな共同体で、その描写は明らかに大げさである。",
+            "pt": "Mas Roma era então uma pequena comunidade de poucos milhares de pessoas, e essa descrição é claramente exagerada.",
+            "chunks": [
+              [
+                "しかし",
+                "しかし",
+                "mas"
+              ],
+              [
+                "当時のローマは",
+                "とうじのローマは",
+                "a Roma da época"
+              ],
+              [
+                "数千人ほどの",
+                "すうせんにんほどの",
+                "de poucos milhares"
+              ],
+              [
+                "小さな共同体で、",
+                "ちいさなきょうどうたいで、",
+                "era pequena comunidade"
+              ],
+              [
+                "その描写は",
+                "そのびょうしゃは",
+                "essa descrição"
+              ],
+              [
+                "明らかに大げさである。",
+                "あきらかにおおげさである。",
+                "é claramente exagerada"
+              ]
+            ]
+          },
+          {
+            "text": "実際の王は、強力な私兵を持つ有力者や族長に近かったのかもしれない。",
+            "pt": "Os reis reais talvez se parecessem mais com chefes locais ou homens poderosos que mantinham milícias privadas.",
+            "chunks": [
+              [
+                "実際の王は、",
+                "じっさいのおうは、",
+                "os reis reais"
+              ],
+              [
+                "強力な私兵を持つ",
+                "きょうりょくなしへいをもつ",
+                "com milícias privadas poderosas"
+              ],
+              [
+                "有力者や族長に",
+                "ゆうりょくしゃやぞくちょうに",
+                "chefes ou homens poderosos"
+              ],
+              [
+                "近かったのかもしれない。",
+                "ちかかったのかもしれない。",
+                "talvez se parecessem"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "王たちの物語は、ロムルスが始めた都市建設を何世代にもわたって完成させる建国物語でもあった。",
+            "pt": "As histórias dos reis também eram uma narrativa de fundação em que várias gerações completavam a cidade iniciada por Rômulo.",
+            "chunks": [
+              [
+                "王たちの物語は、",
+                "おうたちのものがたりは、",
+                "as histórias dos reis"
+              ],
+              [
+                "ロムルスが始めた",
+                "ロムルスがはじめた",
+                "iniciada por Rômulo"
+              ],
+              [
+                "都市建設を",
+                "としけんせつを",
+                "a construção da cidade"
+              ],
+              [
+                "何世代にもわたって",
+                "なんせだいにもわたって",
+                "por várias gerações"
+              ],
+              [
+                "完成させる",
+                "かんせいさせる",
+                "completavam"
+              ],
+              [
+                "建国物語でもあった。",
+                "けんこくものがたりでもあった。",
+                "também era narrativa fundadora"
+              ]
+            ]
+          },
+          {
+            "text": "王位は父から息子へ自動的に移らず、外国人や奴隷の子とされた人物も王になった。",
+            "pt": "O trono não passava automaticamente de pai para filho, e até homens tidos como estrangeiros ou filhos de escrava tornaram-se reis.",
+            "chunks": [
+              [
+                "王位は",
+                "おういは",
+                "o trono"
+              ],
+              [
+                "父から息子へ",
+                "ちちからむすこへ",
+                "de pai para filho"
+              ],
+              [
+                "自動的に移らず、",
+                "じどうてきにうつらず、",
+                "não passava automaticamente"
+              ],
+              [
+                "外国人や奴隷の子とされた",
+                "がいこくじんやどれいのことされた",
+                "tidos como estrangeiros ou filhos de escrava"
+              ],
+              [
+                "人物も",
+                "じんぶつも",
+                "até homens"
+              ],
+              [
+                "王になった。",
+                "おうになった。",
+                "tornaram-se reis"
+              ]
+            ]
+          },
+          {
+            "text": "一方で継承のたびに陰謀や殺人が起こり、七人のうち自然に死んだとされる王は二人だけだった。",
+            "pt": "Por outro lado, cada sucessão trazia conspirações e assassinatos, e apenas dois dos sete reis teriam morrido naturalmente.",
+            "chunks": [
+              [
+                "一方で",
+                "いっぽうで",
+                "por outro lado"
+              ],
+              [
+                "継承のたびに",
+                "けいしょうのたびに",
+                "a cada sucessão"
+              ],
+              [
+                "陰謀や殺人が起こり、",
+                "いんぼうやさつじんがおこり、",
+                "havia conspirações e assassinatos"
+              ],
+              [
+                "七人のうち",
+                "ななにんのうち",
+                "dos sete reis"
+              ],
+              [
+                "自然に死んだとされる王は",
+                "しぜんにしんだとされるおうは",
+                "teriam morrido naturalmente"
+              ],
+              [
+                "二人だけだった。",
+                "ふたりだけだった。",
+                "apenas dois"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "第二代の王ヌマは、ローマの宗教制度を整えた人物として語られた。",
+            "pt": "Numa, o segundo rei, foi lembrado como o homem que organizou as instituições religiosas de Roma.",
+            "chunks": [
+              [
+                "第二代の王ヌマは、",
+                "だいにだいのおうヌマは、",
+                "Numa, o segundo rei"
+              ],
+              [
+                "ローマの宗教制度を",
+                "ローマのしゅうきょうせいどを",
+                "instituições religiosas de Roma"
+              ],
+              [
+                "整えた人物として",
+                "ととのえたじんぶつとして",
+                "como quem organizou"
+              ],
+              [
+                "語られた。",
+                "かたられた。",
+                "foi lembrado"
+              ]
+            ]
+          },
+          {
+            "text": "ローマの宗教は信仰の教義より、神々の協力を得るために儀式を正しく行うことを重視した。",
+            "pt": "A religião romana valorizava menos uma doutrina de fé que a execução correta dos rituais para obter a cooperação dos deuses.",
+            "chunks": [
+              [
+                "ローマの宗教は",
+                "ローマのしゅうきょうは",
+                "a religião romana"
+              ],
+              [
+                "信仰の教義より、",
+                "しんこうのきょうぎより、",
+                "menos que doutrina de fé"
+              ],
+              [
+                "神々の協力を得るために",
+                "かみがみのきょうりょくをえるために",
+                "para obter cooperação dos deuses"
+              ],
+              [
+                "儀式を正しく行うことを",
+                "ぎしきをただしくおこなうことを",
+                "executar rituais corretamente"
+              ],
+              [
+                "重視した。",
+                "じゅうしした。",
+                "valorizava"
+              ]
+            ]
+          },
+          {
+            "text": "祭司団やウェスタの巫女たちも、ヌマが設けたと考えられていた。",
+            "pt": "Os colégios sacerdotais e as virgens vestais também eram considerados criações de Numa.",
+            "chunks": [
+              [
+                "祭司団や",
+                "さいしだんや",
+                "os colégios sacerdotais e"
+              ],
+              [
+                "ウェスタの巫女たちも、",
+                "ウェスタのみこたちも、",
+                "as virgens vestais também"
+              ],
+              [
+                "ヌマが",
+                "ヌマが",
+                "Numa"
+              ],
+              [
+                "設けたと",
+                "もうけたと",
+                "teria criado"
+              ],
+              [
+                "考えられていた。",
+                "かんがえられていた。",
+                "eram consideradas"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "ヌマは一年を十二か月に分け、祭りと公的活動の日程を定めたともされた。",
+            "pt": "Também se dizia que Numa dividira o ano em doze meses e fixara o calendário de festivais e atividades públicas.",
+            "chunks": [
+              [
+                "ヌマは",
+                "ヌマは",
+                "Numa"
+              ],
+              [
+                "一年を十二か月に",
+                "いちねんをじゅうにかげつに",
+                "o ano em doze meses"
+              ],
+              [
+                "分け、",
+                "わけ、",
+                "dividiu"
+              ],
+              [
+                "祭りと公的活動の",
+                "まつりとこうてきかつどうの",
+                "de festivais e atividades públicas"
+              ],
+              [
+                "日程を",
+                "にっていを",
+                "o calendário"
+              ],
+              [
+                "定めたともされた。",
+                "さだめたともされた。",
+                "também teria fixado"
+              ]
+            ]
+          },
+          {
+            "text": "現存する最古のローマ暦は後世のものだが、農業と戦争を中心とする非常に古い祭りを残している。",
+            "pt": "O calendário romano mais antigo preservado é posterior, mas conserva festivais muito antigos centrados na agricultura e na guerra.",
+            "chunks": [
+              [
+                "現存する最古のローマ暦は",
+                "げんぞんするさいこのローマれきは",
+                "o calendário romano mais antigo"
+              ],
+              [
+                "後世のものだが、",
+                "こうせいのものだが、",
+                "é posterior, mas"
+              ],
+              [
+                "農業と戦争を",
+                "のうぎょうとせんそうを",
+                "agricultura e guerra"
+              ],
+              [
+                "中心とする",
+                "ちゅうしんとする",
+                "centrados em"
+              ],
+              [
+                "非常に古い祭りを",
+                "ひじょうにふるいまつりを",
+                "festivais muito antigos"
+              ],
+              [
+                "残している。",
+                "のこしている。",
+                "conserva"
+              ]
+            ]
+          },
+          {
+            "text": "正確な由来は不明でも、初期ローマの生活が作物、家畜、季節、軍事に深く結びついていたことがわかる。",
+            "pt": "Mesmo sem conhecermos sua origem exata, vemos que a vida da Roma primitiva estava profundamente ligada a colheitas, animais, estações e guerra.",
+            "chunks": [
+              [
+                "正確な由来は",
+                "せいかくなゆらいは",
+                "a origem exata"
+              ],
+              [
+                "不明でも、",
+                "ふめいでも、",
+                "mesmo desconhecida"
+              ],
+              [
+                "初期ローマの生活が",
+                "しょきローマのせいかつが",
+                "a vida da Roma primitiva"
+              ],
+              [
+                "作物、家畜、季節、軍事に",
+                "さくもつ、かちく、きせつ、ぐんじに",
+                "a colheitas, animais, estações e guerra"
+              ],
+              [
+                "深く結びついていたことが",
+                "ふかくむすびついていたことが",
+                "estava profundamente ligada"
+              ],
+              [
+                "わかる。",
+                "わかる。",
+                "podemos ver"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "第六代の王セルウィウス・トゥッリウスには、市民を財産によって階級分けした制度が結びつけられた。",
+            "pt": "Ao sexto rei, Sérvio Túlio, atribuía-se um sistema que dividia os cidadãos em classes conforme sua riqueza.",
+            "chunks": [
+              [
+                "第六代の王",
+                "だいろくだいのおう",
+                "ao sexto rei"
+              ],
+              [
+                "セルウィウス・トゥッリウスには、",
+                "セルウィウス・トゥッリウスには、",
+                "Sérvio Túlio"
+              ],
+              [
+                "市民を",
+                "しみんを",
+                "os cidadãos"
+              ],
+              [
+                "財産によって",
+                "ざいさんによって",
+                "conforme a riqueza"
+              ],
+              [
+                "階級分けした制度が",
+                "かいきゅうわけしたせいどが",
+                "um sistema de classes"
+              ],
+              [
+                "結びつけられた。",
+                "むすびつけられた。",
+                "era atribuído"
+              ]
+            ]
+          },
+          {
+            "text": "財産調査は軍役を決めるためのもので、豊かな者ほど重い武装と大きな負担を求められた。",
+            "pt": "O censo de riqueza servia para definir o serviço militar, e os mais ricos deviam fornecer armas mais pesadas e assumir maiores encargos.",
+            "chunks": [
+              [
+                "財産調査は",
+                "ざいさんちょうさは",
+                "o censo de riqueza"
+              ],
+              [
+                "軍役を決めるためのもので、",
+                "ぐんえきをきめるためのもので、",
+                "servia para definir serviço militar"
+              ],
+              [
+                "豊かな者ほど",
+                "ゆたかなものほど",
+                "quanto mais ricos"
+              ],
+              [
+                "重い武装と",
+                "おもいぶそうと",
+                "armas mais pesadas e"
+              ],
+              [
+                "大きな負担を",
+                "おおきなふたんを",
+                "maiores encargos"
+              ],
+              [
+                "求められた。",
+                "もとめられた。",
+                "eram exigidos"
+              ]
+            ]
+          },
+          {
+            "text": "同じ区分が投票にも使われ、金持ちは多くを負担する代わりに政治で強い発言力を得た。",
+            "pt": "A mesma divisão era usada na votação, dando aos ricos maior poder político em troca de maiores obrigações.",
+            "chunks": [
+              [
+                "同じ区分が",
+                "おなじくぶんが",
+                "a mesma divisão"
+              ],
+              [
+                "投票にも使われ、",
+                "とうひょうにもつかわれ、",
+                "era usada na votação"
+              ],
+              [
+                "金持ちは",
+                "かねもちは",
+                "os ricos"
+              ],
+              [
+                "多くを負担する代わりに",
+                "おおくをふたんするかわりに",
+                "em troca de maiores obrigações"
+              ],
+              [
+                "政治で強い発言力を",
+                "せいじでつよいはつげんりょくを",
+                "maior poder político"
+              ],
+              [
+                "得た。",
+                "えた。",
+                "obtiveram"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "この複雑な制度が王政期に完成していたとは考えにくく、後世の仕組みを過去へ移した面が大きい。",
+            "pt": "É difícil crer que esse sistema complexo já estivesse completo no período monárquico; em grande parte, instituições posteriores foram projetadas no passado.",
+            "chunks": [
+              [
+                "この複雑な制度が",
+                "このふくざつなせいどが",
+                "esse sistema complexo"
+              ],
+              [
+                "王政期に",
+                "おうせいきに",
+                "no período monárquico"
+              ],
+              [
+                "完成していたとは",
+                "かんせいしていたとは",
+                "já estivesse completo"
+              ],
+              [
+                "考えにくく、",
+                "かんがえにくく、",
+                "é difícil crer"
+              ],
+              [
+                "後世の仕組みを過去へ移した",
+                "こうせいのしくみをかこへうつした",
+                "instituições posteriores projetadas no passado"
+              ],
+              [
+                "面が大きい。",
+                "めんがおおきい。",
+                "em grande parte"
+              ]
+            ]
+          },
+          {
+            "text": "それでもこの伝承は、財産、兵役、政治的権利がローマで密接につながっていたことを示している。",
+            "pt": "Ainda assim, a tradição mostra que riqueza, serviço militar e direitos políticos estavam intimamente ligados em Roma.",
+            "chunks": [
+              [
+                "それでも",
+                "それでも",
+                "ainda assim"
+              ],
+              [
+                "この伝承は、",
+                "このでんしょうは、",
+                "essa tradição"
+              ],
+              [
+                "財産、兵役、政治的権利が",
+                "ざいさん、へいえき、せいじてきけんりが",
+                "riqueza, serviço militar e direitos"
+              ],
+              [
+                "ローマで",
+                "ローマで",
+                "em Roma"
+              ],
+              [
+                "密接につながっていたことを",
+                "みっせつにつながっていたことを",
+                "estavam intimamente ligados"
+              ],
+              [
+                "示している。",
+                "しめしている。",
+                "mostra"
+              ]
+            ]
+          },
+          {
+            "text": "市民であることは単なる身分ではなく、国家への軍事的奉仕と結びついていた。",
+            "pt": "Ser cidadão não era apenas uma condição jurídica, mas estava ligado ao serviço militar prestado ao Estado.",
+            "chunks": [
+              [
+                "市民であることは",
+                "しみんであることは",
+                "ser cidadão"
+              ],
+              [
+                "単なる身分ではなく、",
+                "たんなるみぶんではなく、",
+                "não era apenas condição"
+              ],
+              [
+                "国家への",
+                "こっかへの",
+                "ao Estado"
+              ],
+              [
+                "軍事的奉仕と",
+                "ぐんじてきほうしと",
+                "ao serviço militar"
+              ],
+              [
+                "結びついていた。",
+                "むすびついていた。",
+                "estava ligado"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "最後の三人の王はエトルリア系とされ、名前も衣服もエトルリアとの結びつきを示す。",
+            "pt": "Os três últimos reis eram considerados etruscos, e seus nomes e vestimentas indicavam ligações com a Etrúria.",
+            "chunks": [
+              [
+                "最後の三人の王は",
+                "さいごのさんにんのおうは",
+                "os três últimos reis"
+              ],
+              [
+                "エトルリア系とされ、",
+                "エトルリアけいとされ、",
+                "eram considerados etruscos"
+              ],
+              [
+                "名前も衣服も",
+                "なまえもいふくも",
+                "nomes e vestimentas"
+              ],
+              [
+                "エトルリアとの結びつきを",
+                "エトルリアとのむすびつきを",
+                "ligações com a Etrúria"
+              ],
+              [
+                "示す。",
+                "しめす。",
+                "indicavam"
+              ]
+            ]
+          },
+          {
+            "text": "当時のエトルリアは豊かな都市文化を持ち、ローマはその南の境界近くに位置していた。",
+            "pt": "A Etrúria possuía então uma rica cultura urbana, e Roma ficava próxima de sua fronteira sul.",
+            "chunks": [
+              [
+                "当時のエトルリアは",
+                "とうじのエトルリアは",
+                "a Etrúria da época"
+              ],
+              [
+                "豊かな都市文化を",
+                "ゆたかなとしぶんかを",
+                "rica cultura urbana"
+              ],
+              [
+                "持ち、",
+                "もち、",
+                "possuía"
+              ],
+              [
+                "ローマは",
+                "ローマは",
+                "Roma"
+              ],
+              [
+                "その南の境界近くに",
+                "そのみなみのきょうかいちかくに",
+                "perto da fronteira sul"
+              ],
+              [
+                "位置していた。",
+                "いちしていた。",
+                "ficava"
+              ]
+            ]
+          },
+          {
+            "text": "しかしエトルリアがローマを征服して王朝を置いたという確かな証拠はない。",
+            "pt": "Contudo, não há prova segura de que a Etrúria tenha conquistado Roma e instalado uma dinastia.",
+            "chunks": [
+              [
+                "しかし",
+                "しかし",
+                "contudo"
+              ],
+              [
+                "エトルリアが",
+                "エトルリアが",
+                "a Etrúria"
+              ],
+              [
+                "ローマを征服して",
+                "ローマをせいふくして",
+                "conquistou Roma"
+              ],
+              [
+                "王朝を置いたという",
+                "おうちょうをおいたという",
+                "instalou uma dinastia"
+              ],
+              [
+                "確かな証拠はない。",
+                "たしかなしょうこはない。",
+                "não há prova segura"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "皇帝クラウディウスは、セルウィウスの本名はマスタルナで、エトルリアの武将の仲間だったと記した。",
+            "pt": "O imperador Cláudio escreveu que o verdadeiro nome de Sérvio era Mastarna e que ele fora companheiro de um guerreiro etrusco.",
+            "chunks": [
+              [
+                "皇帝クラウディウスは、",
+                "こうていクラウディウスは、",
+                "o imperador Cláudio"
+              ],
+              [
+                "セルウィウスの本名は",
+                "セルウィウスのほんみょうは",
+                "o nome verdadeiro de Sérvio"
+              ],
+              [
+                "マスタルナで、",
+                "マスタルナで、",
+                "era Mastarna"
+              ],
+              [
+                "エトルリアの武将の",
+                "エトルリアのぶしょうの",
+                "de um guerreiro etrusco"
+              ],
+              [
+                "仲間だったと",
+                "なかまだったと",
+                "fora companheiro"
+              ],
+              [
+                "記した。",
+                "しるした。",
+                "escreveu"
+              ]
+            ]
+          },
+          {
+            "text": "エトルリアの墓に残る絵にも、似た名前の戦士たちが血なまぐさい戦いをする場面が描かれている。",
+            "pt": "Pinturas preservadas numa tumba etrusca também mostram guerreiros de nomes semelhantes envolvidos numa luta sangrenta.",
+            "chunks": [
+              [
+                "エトルリアの墓に残る絵にも、",
+                "エトルリアのはかにのこるえにも、",
+                "em pinturas de tumba etrusca"
+              ],
+              [
+                "似た名前の",
+                "にたなまえの",
+                "de nomes semelhantes"
+              ],
+              [
+                "戦士たちが",
+                "せんしたちが",
+                "guerreiros"
+              ],
+              [
+                "血なまぐさい戦いをする",
+                "ちなまぐさいたたかいをする",
+                "numa luta sangrenta"
+              ],
+              [
+                "場面が描かれている。",
+                "ばめんがえがかれている。",
+                "são mostrados"
+              ]
+            ]
+          },
+          {
+            "text": "これは初期ローマの権力者が、民族の境界を越えて移動する武装集団と結びついていた可能性を示す。",
+            "pt": "Isso sugere que os líderes da Roma primitiva talvez estivessem ligados a grupos armados que atravessavam fronteiras étnicas.",
+            "chunks": [
+              [
+                "これは",
+                "これは",
+                "isso"
+              ],
+              [
+                "初期ローマの権力者が、",
+                "しょきローマのけんりょくしゃが、",
+                "os líderes da Roma primitiva"
+              ],
+              [
+                "民族の境界を越えて",
+                "みんぞくのきょうかいをこえて",
+                "atravessando fronteiras étnicas"
+              ],
+              [
+                "移動する武装集団と",
+                "いどうするぶそうしゅうだんと",
+                "a grupos armados móveis"
+              ],
+              [
+                "結びついていた可能性を",
+                "むすびついていたかのうせいを",
+                "talvez estivessem ligados"
+              ],
+              [
+                "示す。",
+                "しめす。",
+                "sugere"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "紀元前六世紀までに、ローマは公共空間と大きな建物を持つ都市へ成長していた。",
+            "pt": "Por volta do século VI a.C., Roma havia crescido e se tornado uma cidade com espaços públicos e grandes edifícios.",
+            "chunks": [
+              [
+                "紀元前六世紀までに、",
+                "きげんぜんろくせいきまでに、",
+                "por volta do século VI a.C."
+              ],
+              [
+                "ローマは",
+                "ローマは",
+                "Roma"
+              ],
+              [
+                "公共空間と",
+                "こうきょうくうかんと",
+                "espaços públicos e"
+              ],
+              [
+                "大きな建物を持つ",
+                "おおきなたてものをもつ",
+                "com grandes edifícios"
+              ],
+              [
+                "都市へ",
+                "としへ",
+                "em cidade"
+              ],
+              [
+                "成長していた。",
+                "せいちょうしていた。",
+                "havia crescido"
+              ]
+            ]
+          },
+          {
+            "text": "フォルムは水を抜かれて舗装され、丘の上には大規模な神殿が建てられた。",
+            "pt": "O Fórum foi drenado e pavimentado, e um grande templo foi construído no alto da colina.",
+            "chunks": [
+              [
+                "フォルムは",
+                "フォルムは",
+                "o Fórum"
+              ],
+              [
+                "水を抜かれて",
+                "みずをぬかれて",
+                "foi drenado"
+              ],
+              [
+                "舗装され、",
+                "ほそうされ、",
+                "e pavimentado"
+              ],
+              [
+                "丘の上には",
+                "おかのうえには",
+                "no alto da colina"
+              ],
+              [
+                "大規模な神殿が",
+                "だいきぼなしんでんが",
+                "um grande templo"
+              ],
+              [
+                "建てられた。",
+                "たてられた。",
+                "foi construído"
+              ]
+            ]
+          },
+          {
+            "text": "これらを特定の王の業績と断定はできないが、王政末期に大きな社会変化があったことは確かである。",
+            "pt": "Não podemos atribuir essas obras a reis específicos, mas é certo que ocorreram grandes mudanças sociais no fim da monarquia.",
+            "chunks": [
+              [
+                "これらを",
+                "これらを",
+                "essas obras"
+              ],
+              [
+                "特定の王の業績と",
+                "とくていのおうのぎょうせきと",
+                "a reis específicos"
+              ],
+              [
+                "断定はできないが、",
+                "だんていはできないが、",
+                "não podemos atribuir, mas"
+              ],
+              [
+                "王政末期に",
+                "おうせいまっきに",
+                "no fim da monarquia"
+              ],
+              [
+                "大きな社会変化があったことは",
+                "おおきなしゃかいへんかがあったことは",
+                "houve grandes mudanças sociais"
+              ],
+              [
+                "確かである。",
+                "たしかである。",
+                "é certo"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "伝承はタルクィニウス王たちに、下水道や神殿など大規模な工事を行わせた。",
+            "pt": "A tradição atribuía aos reis Tarquínios grandes obras, como esgotos e templos.",
+            "chunks": [
+              [
+                "伝承は",
+                "でんしょうは",
+                "a tradição"
+              ],
+              [
+                "タルクィニウス王たちに、",
+                "タルクィニウスおうたちに、",
+                "aos reis Tarquínios"
+              ],
+              [
+                "下水道や神殿など",
+                "げすいどうやしんでんなど",
+                "esgotos, templos e outros"
+              ],
+              [
+                "大規模な工事を",
+                "だいきぼなこうじを",
+                "grandes obras"
+              ],
+              [
+                "行わせた。",
+                "おこなわせた。",
+                "atribuía"
+              ]
+            ]
+          },
+          {
+            "text": "その建設には貧しい市民の厳しい労働が使われ、王の圧政を示す話にもなった。",
+            "pt": "A construção usava o trabalho pesado dos cidadãos pobres e tornou-se também uma história da opressão real.",
+            "chunks": [
+              [
+                "その建設には",
+                "そのけんせつには",
+                "nessa construção"
+              ],
+              [
+                "貧しい市民の",
+                "まずしいしみんの",
+                "dos cidadãos pobres"
+              ],
+              [
+                "厳しい労働が",
+                "きびしいろうどうが",
+                "o trabalho pesado"
+              ],
+              [
+                "使われ、",
+                "つかわれ、",
+                "era usado"
+              ],
+              [
+                "王の圧政を示す話にも",
+                "おうのあっせいをしめすはなしにも",
+                "história da opressão real"
+              ],
+              [
+                "なった。",
+                "なった。",
+                "também se tornou"
+              ]
+            ]
+          },
+          {
+            "text": "しかし王政を終わらせたとされた直接の原因は、労働ではなく女性への性暴力だった。",
+            "pt": "Mas a causa imediata apontada para o fim da monarquia não foi o trabalho forçado, e sim a violência sexual contra uma mulher.",
+            "chunks": [
+              [
+                "しかし",
+                "しかし",
+                "mas"
+              ],
+              [
+                "王政を終わらせたとされた",
+                "おうせいをおわらせたとされた",
+                "apontada para o fim da monarquia"
+              ],
+              [
+                "直接の原因は、",
+                "ちょくせつのげんいんは、",
+                "a causa imediata"
+              ],
+              [
+                "労働ではなく",
+                "ろうどうではなく",
+                "não foi o trabalho"
+              ],
+              [
+                "女性への性暴力だった。",
+                "じょせいへのせいぼうりょくだった。",
+                "foi violência sexual"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "王の息子セクストゥス・タルクィニウスは、貞節で名高い貴族女性ルクレティアを脅して強姦した。",
+            "pt": "Sexto Tarquínio, filho do rei, ameaçou e estuprou Lucrécia, uma aristocrata famosa por sua castidade.",
+            "chunks": [
+              [
+                "王の息子",
+                "おうのむすこ",
+                "o filho do rei"
+              ],
+              [
+                "セクストゥス・タルクィニウスは、",
+                "セクストゥス・タルクィニウスは、",
+                "Sexto Tarquínio"
+              ],
+              [
+                "貞節で名高い",
+                "ていせつでなだかい",
+                "famosa por sua castidade"
+              ],
+              [
+                "貴族女性ルクレティアを",
+                "きぞくじょせいルクレティアを",
+                "a aristocrata Lucrécia"
+              ],
+              [
+                "脅して",
+                "おどして",
+                "ameaçou e"
+              ],
+              [
+                "強姦した。",
+                "ごうかんした。",
+                "estuprou"
+              ]
+            ]
+          },
+          {
+            "text": "ルクレティアは夫と父に事件を告白し、復讐を誓わせた後、自ら命を絶った。",
+            "pt": "Lucrécia contou o crime ao marido e ao pai, fez com que jurassem vingança e depois tirou a própria vida.",
+            "chunks": [
+              [
+                "ルクレティアは",
+                "ルクレティアは",
+                "Lucrécia"
+              ],
+              [
+                "夫と父に",
+                "おっととちちに",
+                "ao marido e ao pai"
+              ],
+              [
+                "事件を告白し、",
+                "じけんをこくはくし、",
+                "contou o crime"
+              ],
+              [
+                "復讐を誓わせた後、",
+                "ふくしゅうをちかわせたあと、",
+                "após fazê-los jurar vingança"
+              ],
+              [
+                "自ら命を絶った。",
+                "みずからいのちをたった。",
+                "tirou a própria vida"
+              ]
+            ]
+          },
+          {
+            "text": "彼女の死を前に、ルキウス・ユニウス・ブルトゥスは王家を追放すると誓った。",
+            "pt": "Diante de sua morte, Lúcio Júnio Bruto jurou expulsar a família real.",
+            "chunks": [
+              [
+                "彼女の死を前に、",
+                "かのじょのしをまえに、",
+                "diante de sua morte"
+              ],
+              [
+                "ルキウス・ユニウス・ブルトゥスは",
+                "ルキウス・ユニウス・ブルトゥスは",
+                "Lúcio Júnio Bruto"
+              ],
+              [
+                "王家を",
+                "おうけを",
+                "a família real"
+              ],
+              [
+                "追放すると",
+                "ついほうすると",
+                "que expulsaria"
+              ],
+              [
+                "誓った。",
+                "ちかった。",
+                "jurou"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "ルクレティアは後世、女性の貞節と勇気の象徴として何度も語られた。",
+            "pt": "Nos séculos seguintes, Lucrécia foi repetidamente lembrada como símbolo de castidade e coragem femininas.",
+            "chunks": [
+              [
+                "ルクレティアは",
+                "ルクレティアは",
+                "Lucrécia"
+              ],
+              [
+                "後世、",
+                "こうせい、",
+                "nos séculos seguintes"
+              ],
+              [
+                "女性の貞節と勇気の",
+                "じょせいのていせつとゆうきの",
+                "de castidade e coragem femininas"
+              ],
+              [
+                "象徴として",
+                "しょうちょうとして",
+                "como símbolo"
+              ],
+              [
+                "何度も語られた。",
+                "なんどもかたられた。",
+                "foi repetidamente lembrada"
+              ]
+            ]
+          },
+          {
+            "text": "一方で、被害者が自殺しなければ純潔を証明できないという残酷な考えも、この物語には含まれている。",
+            "pt": "Ao mesmo tempo, a história contém a ideia cruel de que a vítima só poderia provar sua pureza cometendo suicídio.",
+            "chunks": [
+              [
+                "一方で、",
+                "いっぽうで、",
+                "ao mesmo tempo"
+              ],
+              [
+                "被害者が",
+                "ひがいしゃが",
+                "a vítima"
+              ],
+              [
+                "自殺しなければ",
+                "じさつしなければ",
+                "sem cometer suicídio"
+              ],
+              [
+                "純潔を証明できないという",
+                "じゅんけつをしょうめいできないという",
+                "não poderia provar sua pureza"
+              ],
+              [
+                "残酷な考えも、",
+                "ざんこくなかんがえも、",
+                "a ideia cruel também"
+              ],
+              [
+                "この物語には含まれている。",
+                "このものがたりにはふくまれている。",
+                "está contida na história"
+              ]
+            ]
+          },
+          {
+            "text": "個人への犯罪が政治革命を起こす筋書きは、家庭の道徳と国家の自由を強く結びつけた。",
+            "pt": "A trama em que um crime privado provoca uma revolução política ligou fortemente a moral doméstica à liberdade do Estado.",
+            "chunks": [
+              [
+                "個人への犯罪が",
+                "こじんへのはんざいが",
+                "um crime privado"
+              ],
+              [
+                "政治革命を起こす",
+                "せいじかくめいをおこす",
+                "provoca revolução política"
+              ],
+              [
+                "筋書きは、",
+                "すじがきは、",
+                "a trama"
+              ],
+              [
+                "家庭の道徳と",
+                "かていのどうとくと",
+                "a moral doméstica e"
+              ],
+              [
+                "国家の自由を",
+                "こっかのじゆうを",
+                "a liberdade do Estado"
+              ],
+              [
+                "強く結びつけた。",
+                "つよくむすびつけた。",
+                "ligou fortemente"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "追放されたタルクィニウスは王位を取り戻そうとし、ローマ内部の支持者や周辺の都市に助けを求めた。",
+            "pt": "Tarquínio, exilado, tentou recuperar o trono e buscou ajuda entre partidários em Roma e cidades vizinhas.",
+            "chunks": [
+              [
+                "追放されたタルクィニウスは",
+                "ついほうされたタルクィニウスは",
+                "Tarquínio exilado"
+              ],
+              [
+                "王位を取り戻そうとし、",
+                "おういをとりもどそうとし、",
+                "tentou recuperar o trono"
+              ],
+              [
+                "ローマ内部の支持者や",
+                "ローマないぶのしじしゃや",
+                "partidários em Roma e"
+              ],
+              [
+                "周辺の都市に",
+                "しゅうへんのとしに",
+                "cidades vizinhas"
+              ],
+              [
+                "助けを求めた。",
+                "たすけをもとめた。",
+                "buscou ajuda"
+              ]
+            ]
+          },
+          {
+            "text": "伝承には橋を一人で守る英雄や、敵王の前で自分の手を焼く勇者など、共和国を救う人物が次々に登場する。",
+            "pt": "A tradição apresenta sucessivos heróis que salvam a República, como o homem que defende sozinho uma ponte e o guerreiro que queima a própria mão diante do rei inimigo.",
+            "chunks": [
+              [
+                "伝承には",
+                "でんしょうには",
+                "na tradição"
+              ],
+              [
+                "橋を一人で守る英雄や、",
+                "はしをひとりでまもるえいゆうや、",
+                "herói que defende sozinho uma ponte"
+              ],
+              [
+                "敵王の前で",
+                "てきおうのまえで",
+                "diante do rei inimigo"
+              ],
+              [
+                "自分の手を焼く勇者など、",
+                "じぶんのてをやくゆうしゃなど、",
+                "guerreiro que queima a mão"
+              ],
+              [
+                "共和国を救う人物が",
+                "きょうわこくをすくうじんぶつが",
+                "heróis que salvam a República"
+              ],
+              [
+                "次々に登場する。",
+                "つぎつぎにとうじょうする。",
+                "aparecem sucessivamente"
+              ]
+            ]
+          },
+          {
+            "text": "物語は誇張されているが、王政の終わりが長く不安定な争いだった可能性を残している。",
+            "pt": "Embora exagerada, a narrativa deixa aberta a possibilidade de que o fim da monarquia tenha sido um conflito longo e instável.",
+            "chunks": [
+              [
+                "物語は",
+                "ものがたりは",
+                "a narrativa"
+              ],
+              [
+                "誇張されているが、",
+                "こちょうされているが、",
+                "embora exagerada"
+              ],
+              [
+                "王政の終わりが",
+                "おうせいのおわりが",
+                "o fim da monarquia"
+              ],
+              [
+                "長く不安定な争いだった",
+                "ながくふあんていなあらそいだった",
+                "foi conflito longo e instável"
+              ],
+              [
+                "可能性を残している。",
+                "かのうせいをのこしている。",
+                "deixa a possibilidade"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "王政の崩壊は、ローマ人にとって自由な共和国の誕生を意味した。",
+            "pt": "Para os romanos, a queda da monarquia significou o nascimento de uma República livre.",
+            "chunks": [
+              [
+                "王政の崩壊は、",
+                "おうせいのほうかいは、",
+                "a queda da monarquia"
+              ],
+              [
+                "ローマ人にとって",
+                "ローマじんにとって",
+                "para os romanos"
+              ],
+              [
+                "自由な共和国の",
+                "じゆうなきょうわこくの",
+                "de uma República livre"
+              ],
+              [
+                "誕生を",
+                "たんじょうを",
+                "o nascimento"
+              ],
+              [
+                "意味した。",
+                "いみした。",
+                "significou"
+              ]
+            ]
+          },
+          {
+            "text": "それ以後「王」は政治上の悪口となり、権力を独占しようとする者への最も危険な非難になった。",
+            "pt": "Desde então, “rei” tornou-se insulto político e a acusação mais perigosa contra quem tentasse monopolizar o poder.",
+            "chunks": [
+              [
+                "それ以後",
+                "それいご",
+                "desde então"
+              ],
+              [
+                "「王」は",
+                "おうは",
+                "rei"
+              ],
+              [
+                "政治上の悪口となり、",
+                "せいじじょうのわるくちとなり、",
+                "tornou-se insulto político"
+              ],
+              [
+                "権力を独占しようとする者への",
+                "けんりょくをどくせんしようとするものへの",
+                "contra quem monopolizasse o poder"
+              ],
+              [
+                "最も危険な非難になった。",
+                "もっともきけんなひなんになった。",
+                "virou a acusação mais perigosa"
+              ]
+            ]
+          },
+          {
+            "text": "しかし宗教儀礼には「王」の名を持つ祭司が残り、過去は完全には消えなかった。",
+            "pt": "Mas um sacerdote com o título de “rei” permaneceu nos rituais religiosos, e o passado nunca desapareceu por completo.",
+            "chunks": [
+              [
+                "しかし",
+                "しかし",
+                "mas"
+              ],
+              [
+                "宗教儀礼には",
+                "しゅうきょうぎれいには",
+                "nos rituais religiosos"
+              ],
+              [
+                "「王」の名を持つ",
+                "おうのなをもつ",
+                "com o título de rei"
+              ],
+              [
+                "祭司が残り、",
+                "さいしがのこり、",
+                "um sacerdote permaneceu"
+              ],
+              [
+                "過去は",
+                "かこは",
+                "o passado"
+              ],
+              [
+                "完全には消えなかった。",
+                "かんぜんにはきえなかった。",
+                "não desapareceu por completo"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "王の代わりに、任期一年の二人の執政官が最高の政治権力を分け合う制度が始まったとされた。",
+            "pt": "Dizia-se que, no lugar do rei, começou um sistema em que dois cônsules de mandato anual dividiam a autoridade suprema.",
+            "chunks": [
+              [
+                "王の代わりに、",
+                "おうのかわりに、",
+                "no lugar do rei"
+              ],
+              [
+                "任期一年の",
+                "にんきいちねんの",
+                "de mandato anual"
+              ],
+              [
+                "二人の執政官が",
+                "ふたりのしっせいかんが",
+                "dois cônsules"
+              ],
+              [
+                "最高の政治権力を",
+                "さいこうのせいじけんりょくを",
+                "a autoridade suprema"
+              ],
+              [
+                "分け合う制度が",
+                "わけあうせいどが",
+                "um sistema de divisão"
+              ],
+              [
+                "始まったとされた。",
+                "はじまったとされた。",
+                "teria começado"
+              ]
+            ]
+          },
+          {
+            "text": "執政官の名前はその年を表すためにも使われ、政治制度がローマ人の時間の数え方そのものになった。",
+            "pt": "Os nomes dos cônsules também identificavam o ano, fazendo do sistema político a própria maneira romana de contar o tempo.",
+            "chunks": [
+              [
+                "執政官の名前は",
+                "しっせいかんのなまえは",
+                "os nomes dos cônsules"
+              ],
+              [
+                "その年を表すためにも",
+                "そのとしをあらわすためにも",
+                "para identificar o ano"
+              ],
+              [
+                "使われ、",
+                "つかわれ、",
+                "eram usados"
+              ],
+              [
+                "政治制度が",
+                "せいじせいどが",
+                "o sistema político"
+              ],
+              [
+                "ローマ人の時間の数え方そのものに",
+                "ローマじんのじかんのかぞえかたそのものに",
+                "a própria contagem romana do tempo"
+              ],
+              [
+                "なった。",
+                "なった。",
+                "tornou-se"
+              ]
+            ]
+          },
+          {
+            "text": "神殿や島の由来まで共和国の最初の年に結びつけられ、政治、地理、記憶は一つに重なった。",
+            "pt": "Até as origens de templos e de uma ilha foram ligadas ao primeiro ano da República, unindo política, geografia e memória.",
+            "chunks": [
+              [
+                "神殿や島の由来まで",
+                "しんでんやしまのゆらいまで",
+                "até origens de templos e ilha"
+              ],
+              [
+                "共和国の最初の年に",
+                "きょうわこくのさいしょのとしに",
+                "ao primeiro ano da República"
+              ],
+              [
+                "結びつけられ、",
+                "むすびつけられ、",
+                "foram ligadas"
+              ],
+              [
+                "政治、地理、記憶は",
+                "せいじ、ちり、きおくは",
+                "política, geografia e memória"
+              ],
+              [
+                "一つに重なった。",
+                "ひとつにかさなった。",
+                "uniram-se"
+              ]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "ローマ人の自由は、現代の民主主義やすべての人の平等を意味しなかった。",
+            "pt": "A liberdade romana não significava democracia moderna nem igualdade para todos.",
+            "chunks": [
+              [
+                "ローマ人の自由は、",
+                "ローマじんのじゆうは、",
+                "a liberdade romana"
+              ],
+              [
+                "現代の民主主義や",
+                "げんだいのみんしゅしゅぎや",
+                "democracia moderna nem"
+              ],
+              [
+                "すべての人の平等を",
+                "すべてのひとのびょうどうを",
+                "igualdade para todos"
+              ],
+              [
+                "意味しなかった。",
+                "いみしなかった。",
+                "não significava"
+              ]
+            ]
+          },
+          {
+            "text": "その中心にあったのは、王の気まぐれに支配されず、共同体の法律の下で生きるという考えだった。",
+            "pt": "No centro estava a ideia de viver sob as leis da comunidade, sem ficar sujeito ao capricho de um rei.",
+            "chunks": [
+              [
+                "その中心にあったのは、",
+                "そのちゅうしんにあったのは、",
+                "no centro estava"
+              ],
+              [
+                "王の気まぐれに",
+                "おうのきまぐれに",
+                "ao capricho de um rei"
+              ],
+              [
+                "支配されず、",
+                "しはいされず、",
+                "sem ficar sujeito"
+              ],
+              [
+                "共同体の法律の下で",
+                "きょうどうたいのほうりつのもとで",
+                "sob as leis da comunidade"
+              ],
+              [
+                "生きるという考えだった。",
+                "いきるというかんがえだった。",
+                "a ideia de viver"
+              ]
+            ]
+          },
+          {
+            "text": "誰が自由な市民に含まれ、その自由を誰が守るのかという争いは、その後のローマ史を動かし続ける。",
+            "pt": "As disputas sobre quem contava como cidadão livre e quem protegeria essa liberdade continuariam movendo a história romana.",
+            "chunks": [
+              [
+                "誰が",
+                "だれが",
+                "quem"
+              ],
+              [
+                "自由な市民に含まれ、",
+                "じゆうなしみんにふくまれ、",
+                "contava como cidadão livre"
+              ],
+              [
+                "その自由を",
+                "そのじゆうを",
+                "essa liberdade"
+              ],
+              [
+                "誰が守るのかという争いは、",
+                "だれがまもるのかというあらそいは、",
+                "disputas sobre quem protegeria"
+              ],
+              [
+                "その後のローマ史を",
+                "そのごのローマしを",
+                "a história romana posterior"
+              ],
+              [
+                "動かし続ける。",
+                "うごかしつづける。",
+                "continuariam movendo"
               ]
             ]
           }

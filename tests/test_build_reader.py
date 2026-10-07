@@ -448,7 +448,8 @@ class BuildReaderTests(unittest.TestCase):
         manifest = json.loads(
             (ROOT / "site" / "manifest.webmanifest").read_text(encoding="utf-8")
         )
-        self.assertEqual(manifest["start_url"], "./princess-of-mars/")
+        self.assertEqual(manifest["id"], "./")
+        self.assertEqual(manifest["start_url"], "./")
         self.assertEqual(manifest["scope"], "./")
         self.assertEqual(manifest["display"], "standalone")
         self.assertEqual(
@@ -459,6 +460,16 @@ class BuildReaderTests(unittest.TestCase):
         library = (ROOT / "site" / "index.html").read_text(encoding="utf-8")
         self.assertIn('<link rel="manifest" href="manifest.webmanifest">', library)
         self.assertIn('navigator.serviceWorker.register("offline-sw.js")', library)
+
+        worker = (ROOT / "site" / "offline-sw.js").read_text(encoding="utf-8")
+        for shell_url in (
+            '"./"',
+            '"./princess-of-mars/"',
+            '"./books/princess-of-mars-ja.json"',
+            '"./mary-beard-spqr/"',
+            '"./books/mary-beard-spqr-ja.json"',
+        ):
+            self.assertIn(shell_url, worker)
 
         for filename, expected_size in (("icon-192.png", 192), ("icon-512.png", 512)):
             payload = (ROOT / "site" / "icons" / filename).read_bytes()
