@@ -4,7 +4,7 @@ This document defines the user-visible behavior and compatibility requirements o
 
 ## Current book content
 
-`A Princess of Mars` has 28 source chapters. Chapters 1 through 15 are currently translated in full, comprising 483 source paragraphs and 1,517 Japanese sentence cards. Every translated card has a matching pre-generated Nise MP3. The canonical content is `texts/princess-of-mars-ja.json`; the public JSON and reader HTML are generated from it.
+`A Princess of Mars` has 28 source chapters. Chapters 1 through 16 are currently translated in full, comprising 529 source paragraphs and 1,701 Japanese sentence cards. Every translated card has a matching pre-generated Nise MP3. The canonical content is `texts/princess-of-mars-ja.json`; the public JSON and reader HTML are generated from it.
 
 ## Generated architecture
 
@@ -129,9 +129,10 @@ The importer continues to accept schema versions 1 and 2. Version 1 updates glos
 
 ## Offline reading
 
-- The site is an installable PWA with a web app manifest, 192 px and 512 px icons, standalone display, theme colors, and a root-scoped Service Worker. Installation is offered by compatible browsers through their normal install interface.
+- The site is an installable PWA with a web app manifest, visible 192 px and 512 px icons, separate `any` and `maskable` icon declarations, standalone display, theme colors, and a root-scoped Service Worker. The library exposes an installation button; when a programmatic prompt is unavailable, it directs the reader to the browser’s “Install” or “Add to Home Screen” action.
 - Installing the PWA caches only the application shell: the library page, every available reader and public book JSON, the manifest, and icons. Sentence MP3s remain opt-in through the chapter and full-book download controls, avoiding an automatic download of the complete audio collection.
 - The installed app starts at the library page, where every available book can be selected.
+- Service Worker registration bypasses the HTTP cache when checking for an update. A new shell version replaces obsolete PWA shell caches, and an offline navigation that has no exact cached page falls back to the cached library rather than a browser error page.
 - The final page section exposes `↓ Capítulo atual`, `↓ Livro completo`, and `Gerenciar` controls when Service Worker and Cache Storage APIs are available.
 - A chapter download stores the current reader page, public book JSON, offline worker, audio manifest, and every sentence MP3 in the selected chapter. A full-book download stores the same shell plus every chapter MP3 and the library page.
 - Download progress is announced and shown visually. A scope is marked available only after every required file has been cached successfully; interrupted downloads remain retryable.

@@ -1375,7 +1375,7 @@
     let positionSaveFrame = null;
     let nextSentencePreviewFrame = null;
     const fontPercentages = [85, 100, 115, 130, 150];
-    const offlineVersion = "4631f963508883c9";
+    const offlineVersion = "f46de4d41966d078";
     const defaultFontLevelIndex = 1;
     const minFontLevel = -defaultFontLevelIndex;
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
@@ -1493,7 +1493,10 @@
     function offlineUrlsForChapters(chapterIndexes, includeLibrary = false) {
       const urls = new Set([canonicalPageUrl(), offlineWorkerUrl]);
       if (bookDataUrl) urls.add(new URL(bookDataUrl, document.baseURI).href);
-      if (includeLibrary) urls.add(new URL("../", document.baseURI).href);
+      if (includeLibrary) {
+        ["../", "../index.html", "../manifest.webmanifest", "../icons/icon-192.png", "../icons/icon-512.png", "../icons/icon.svg"]
+          .forEach((path) => urls.add(new URL(path, document.baseURI).href));
+      }
       if (audioConfig) {
         const audioBase = audioConfig.base_url.replace(/\/+$/, "");
         urls.add(new URL(`${audioBase}/manifest.json`, document.baseURI).href);
@@ -1589,7 +1592,10 @@
 
     async function ensureOfflineWorker() {
       if (!offlineSupported) throw new Error("offline unsupported");
-      await navigator.serviceWorker.register(offlineWorkerUrl);
+      const registration = await navigator.serviceWorker.register(offlineWorkerUrl, {
+        updateViaCache: "none",
+      });
+      await registration.update();
       await navigator.serviceWorker.ready;
     }
 

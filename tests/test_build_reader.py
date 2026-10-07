@@ -81,7 +81,8 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('id="offline-remove"', first)
         self.assertIn('function downloadOffline', first)
         self.assertIn('function offlineUrlsForChapters', first)
-        self.assertIn('navigator.serviceWorker.register(offlineWorkerUrl)', first)
+        self.assertIn('navigator.serviceWorker.register(offlineWorkerUrl, {', first)
+        self.assertIn('updateViaCache: "none"', first)
         self.assertIn('await cacheOfflineUrls(urls)', first)
         self.assertIn('const offlineVersion = "', first)
         self.assertIn('id="translation-speak"', first)
@@ -439,6 +440,8 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('findCachedResponse(request)', worker)
         self.assertIn('const response = await fetch(request)', worker)
         self.assertIn('event.respondWith(networkFirst(request))', worker)
+        self.assertIn('request.mode === "navigate"', worker)
+        self.assertIn('self.registration.scope', worker)
         self.assertIn('const PWA_CACHE_PREFIX', worker)
         self.assertIn('const PWA_SHELL_URLS', worker)
         self.assertIn('cache.addAll(PWA_SHELL_URLS)', worker)
@@ -452,18 +455,24 @@ class BuildReaderTests(unittest.TestCase):
         self.assertEqual(manifest["start_url"], "./")
         self.assertEqual(manifest["scope"], "./")
         self.assertEqual(manifest["display"], "standalone")
-        self.assertEqual(
-            [(icon["src"], icon["sizes"]) for icon in manifest["icons"]],
-            [("icons/icon-192.png", "192x192"), ("icons/icon-512.png", "512x512")],
-        )
+        icon_declarations = [
+            (icon["src"], icon["sizes"], icon["purpose"])
+            for icon in manifest["icons"]
+        ]
+        self.assertIn(("icons/icon-192.png", "192x192", "any"), icon_declarations)
+        self.assertIn(("icons/icon-512.png", "512x512", "maskable"), icon_declarations)
+        self.assertEqual(len(manifest["shortcuts"]), 2)
 
         library = (ROOT / "site" / "index.html").read_text(encoding="utf-8")
         self.assertIn('<link rel="manifest" href="manifest.webmanifest">', library)
-        self.assertIn('navigator.serviceWorker.register("offline-sw.js")', library)
+        self.assertIn('navigator.serviceWorker.register("offline-sw.js", { updateViaCache: "none" })', library)
+        self.assertIn('id="install-pwa"', library)
+        self.assertIn('src="icons/icon-192.png"', library)
 
         worker = (ROOT / "site" / "offline-sw.js").read_text(encoding="utf-8")
         for shell_url in (
             '"./"',
+            '"./index.html"',
             '"./princess-of-mars/"',
             '"./books/princess-of-mars-ja.json"',
             '"./mary-beard-spqr/"',
@@ -475,6 +484,17 @@ class BuildReaderTests(unittest.TestCase):
             payload = (ROOT / "site" / "icons" / filename).read_bytes()
             self.assertEqual(payload[:8], b"\x89PNG\r\n\x1a\n")
             self.assertEqual(struct.unpack(">II", payload[16:24]), (expected_size, expected_size))
+
+        for required in (
+            '"../index.html"',
+            '"../manifest.webmanifest"',
+            '"../icons/icon-192.png"',
+            '"../icons/icon-512.png"',
+            '"../icons/icon.svg"',
+            'updateViaCache: "none"',
+            "await registration.update()",
+        ):
+            self.assertIn(required, self.template)
 
     def test_runtime_reader_fetches_json_without_embedding_book_text(self) -> None:
         validated = build_reader.validate_data(copy.deepcopy(self.data))

@@ -1,15 +1,17 @@
 const OFFLINE_CACHE_PREFIX = "simple-ja-books-offline:v1:";
 const PWA_CACHE_PREFIX = "simple-ja-books-pwa:";
-const PWA_CACHE_NAME = `${PWA_CACHE_PREFIX}v2`;
+const PWA_CACHE_NAME = `${PWA_CACHE_PREFIX}v3`;
 const PWA_SHELL_URLS = [
   "./",
+  "./index.html",
   "./princess-of-mars/",
   "./books/princess-of-mars-ja.json",
   "./mary-beard-spqr/",
   "./books/mary-beard-spqr-ja.json",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
-  "./icons/icon-512.png"
+  "./icons/icon-512.png",
+  "./icons/icon.svg"
 ];
 
 self.addEventListener("install", (event) => {
@@ -51,6 +53,10 @@ async function networkFirst(request) {
   } catch (_error) {
     const cached = await findCachedResponse(request);
     if (cached) return cached;
+    if (request.mode === "navigate") {
+      const library = await findCachedResponse(new Request(new URL("./", self.registration.scope)));
+      if (library) return library;
+    }
     throw _error;
   }
 }

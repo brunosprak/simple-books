@@ -13,27 +13,73 @@
     :root { color-scheme: light; font-family: system-ui, sans-serif; }
     body { margin: 0; background: #eee8db; color: #213d35; }
     main { width: min(42rem, calc(100% - 2rem)); margin: 0 auto; padding: 4rem 0; }
-    h1 { font-family: Georgia, serif; font-weight: 500; font-size: clamp(2rem, 8vw, 3.5rem); }
+    .brand { display: flex; align-items: center; gap: 1rem; }
+    .brand img { width: 4.5rem; height: 4.5rem; border-radius: 1rem; }
+    h1 { margin: 0; font-family: Georgia, serif; font-weight: 500; font-size: clamp(2rem, 8vw, 3.5rem); }
     p { color: #58645f; line-height: 1.6; }
     nav { display: grid; gap: 1rem; margin-top: 2.5rem; }
     a { display: block; padding: 1.4rem; border: 1px solid #b9b2a3; border-radius: 1rem;
         background: #f8f3e8; color: inherit; text-decoration: none; font-size: 1.2rem; }
     a:hover, a:focus-visible { border-color: #315d51; box-shadow: 0 4px 18px #315d5122; }
     small { display: block; margin-top: .35rem; color: #68746f; }
+    button { margin-top: 1.5rem; padding: .75rem 1rem; border: 1px solid #315d51; border-radius: .7rem; background: #315d51; color: white; font: inherit; cursor: pointer; }
+    button:hover, button:focus-visible { background: #213d35; }
+    #install-status { min-height: 1.5em; font-size: .9rem; }
   </style>
 </head>
 <body>
   <main>
-    <h1>Leituras em japonês</h1>
+    <div class="brand">
+      <img src="icons/icon-192.png" width="72" height="72" alt="" aria-hidden="true">
+      <h1>Leituras em japonês</h1>
+    </div>
     <p>Traduções com furigana, glosses concisos e tradução para o português.</p>
+    <button id="install-pwa" type="button">Instalar aplicativo</button>
+    <p id="install-status" aria-live="polite"></p>
     <nav aria-label="Livros disponíveis">
       <a href="princess-of-mars/">火星のプリンセス<small>Uma Princesa de Marte</small></a>
       <a href="mary-beard-spqr/">SPQR　古代ローマ史<small>SPQR — resumo dos capítulos 1 a 3</small></a>
     </nav>
   </main>
   <script>
+    const installButton = document.querySelector("#install-pwa");
+    const installStatus = document.querySelector("#install-status");
+    let installPrompt = null;
+    const standalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+
+    if (standalone) {
+      installButton.hidden = true;
+      installStatus.textContent = "Aplicativo instalado. A biblioteca abre mesmo sem internet.";
+    }
+
+    window.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault();
+      installPrompt = event;
+      installButton.hidden = false;
+      installStatus.textContent = "Pronto para instalar neste dispositivo.";
+    });
+
+    window.addEventListener("appinstalled", () => {
+      installPrompt = null;
+      installButton.hidden = true;
+      installStatus.textContent = "Aplicativo instalado com sucesso.";
+    });
+
+    installButton.addEventListener("click", async () => {
+      if (!installPrompt) {
+        installStatus.textContent = "Use ‘Instalar aplicativo’ ou ‘Adicionar à tela inicial’ no menu do navegador.";
+        return;
+      }
+      installPrompt.prompt();
+      const choice = await installPrompt.userChoice;
+      installPrompt = null;
+      installStatus.textContent = choice.outcome === "accepted" ? "Instalação aceita." : "Instalação cancelada; você pode tentar novamente pelo menu do navegador.";
+    });
+
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("offline-sw.js").catch(() => {});
+      navigator.serviceWorker.register("offline-sw.js", { updateViaCache: "none" })
+        .then((registration) => registration.update())
+        .catch(() => { installStatus.textContent = "Não foi possível preparar o uso offline neste navegador."; });
     }
   </script>
 </body>

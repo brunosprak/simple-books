@@ -4,10 +4,10 @@ The reader's sentence audio is generated from the canonical Japanese JSON and st
 
 ## Current implemented state
 
-`A Princess of Mars` currently has a complete checked-in audio set for translated chapters 1 through 15:
+`A Princess of Mars` currently has a complete checked-in audio set for translated chapters 1 through 16:
 
-- 1,517 sentence MP3 files generated successfully;
-- approximately 154 MB total;
+- 1,701 sentence MP3 files generated successfully;
+- approximately 171 MB total;
 - one file for every sentence currently present in the canonical JSON;
 - a manifest that pins the source text hash, voice/model settings, encoding settings, and file size;
 - automated checks for path stability, complete sentence coverage, stale hashes, missing files, obsolete files, and manifest drift;
