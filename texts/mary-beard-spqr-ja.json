@@ -1,0 +1,1239 @@
+{
+  "schema_version": 2,
+  "source_file": "mary-beard-spqr.txt",
+  "languages": {
+    "source": "en",
+    "translation": "ja",
+    "gloss": "pt-BR"
+  },
+  "page": {
+    "title": "SPQR　古代ローマ史",
+    "author": "メアリー・ビアード",
+    "eyebrow": "第一章の要約",
+    "description": "メアリー・ビアード『SPQR』第一章の内容を、読みやすい現代日本語でまとめた学習用リーダーです。",
+    "study_hint": "各文を選ぶと、語句の読み方と短いポルトガル語訳を確認できます。",
+    "footer": "原作：SPQR: A History of Ancient Rome（第一章の要約）",
+    "font_levels_percent": [
+      85,
+      100,
+      115,
+      130,
+      150
+    ],
+    "default_font_level_percent": 100,
+    "audio": {
+      "base_url": "audio",
+      "voice": "Nise",
+      "speed_levels_percent": [
+        70,
+        75,
+        80,
+        85,
+        90,
+        95,
+        100,
+        105,
+        110,
+        115,
+        120,
+        125,
+        130
+      ],
+      "default_speed_percent": 100
+    }
+  },
+  "chapters": [
+    {
+      "title": "第一章　キケロ、最大の見せ場（要約）",
+      "paragraphs": [
+        [
+          {
+            "text": "この本のローマ史は、都市の建国から六百年以上たった紀元前六十三年に始まる。",
+            "pt": "A história de Roma neste livro começa em 63 a.C., mais de seiscentos anos depois da fundação da cidade.",
+            "chunks": [
+              ["この本の", "このほんの", "deste livro"],
+              ["ローマ史は、", "ローマしは、", "a história de Roma"],
+              ["都市の建国から", "としのけんこくから", "desde a fundação"],
+              ["六百年以上たった", "ろっぴゃくねんいじょうたった", "passados mais de 600 anos"],
+              ["紀元前六十三年に", "きげんぜんろくじゅうさんねんに", "em 63 a.C."],
+              ["始まる。", "はじまる。", "começa"]
+            ]
+          },
+          {
+            "text": "この年、ローマは内側からの反乱とテロの危機に直面した。",
+            "pt": "Nesse ano, Roma enfrentou uma crise de rebelião e terrorismo vinda de dentro.",
+            "chunks": [
+              ["この年、", "このとし、", "nesse ano"],
+              ["ローマは", "ローマは", "Roma"],
+              ["内側からの", "うちがわからの", "vinda de dentro"],
+              ["反乱と", "はんらんと", "rebelião e"],
+              ["テロの危機に", "テロのききに", "crise de terrorismo"],
+              ["直面した。", "ちょくめんした。", "enfrentou"]
+            ]
+          },
+          {
+            "text": "中心にいたのは、国家転覆を企てたとされたカティリナと、計画を暴いた執政官キケロである。",
+            "pt": "No centro estavam Catilina, acusado de planejar a derrubada do Estado, e o cônsul Cícero, que revelou o plano.",
+            "chunks": [
+              ["中心にいたのは、", "ちゅうしんにいたのは、", "no centro estavam"],
+              ["国家転覆を", "こっかてんぷくを", "derrubada do Estado"],
+              ["企てたとされた", "くわだてたとされた", "acusado de planejar"],
+              ["カティリナと、", "カティリナと、", "Catilina e"],
+              ["計画を暴いた", "けいかくをあばいた", "que revelou o plano"],
+              ["執政官キケロである。", "しっせいかんキケロである。", "o cônsul Cícero"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "当時のローマは百万人を超える大都市で、スペインからシリアまで広がる領土を支配していた。",
+            "pt": "Roma era então uma metrópole de mais de um milhão de habitantes e dominava territórios da Espanha à Síria.",
+            "chunks": [
+              ["当時のローマは", "とうじのローマは", "a Roma da época"],
+              ["百万人を超える", "ひゃくまんにんをこえる", "mais de um milhão"],
+              ["大都市で、", "だいとしで、", "era uma metrópole"],
+              ["スペインから", "スペインから", "da Espanha"],
+              ["シリアまで広がる", "シリアまでひろがる", "até a Síria"],
+              ["領土を", "りょうどを", "territórios"],
+              ["支配していた。", "しはいしていた。", "dominava"]
+            ]
+          },
+          {
+            "text": "そこには富と汚れ、自由と搾取、市民の誇りと内戦が同居していた。",
+            "pt": "Ali conviviam riqueza e sujeira, liberdade e exploração, orgulho cívico e guerra civil.",
+            "chunks": [
+              ["そこには", "そこには", "ali"],
+              ["富と汚れ、", "とみとよごれ、", "riqueza e sujeira"],
+              ["自由と搾取、", "じゆうとさくしゅ、", "liberdade e exploração"],
+              ["市民の誇りと", "しみんのほこりと", "orgulho cívico e"],
+              ["内戦が", "ないせんが", "guerra civil"],
+              ["同居していた。", "どうきょしていた。", "conviviam"]
+            ]
+          },
+          {
+            "text": "一世紀前半には手紙、演説、詩、哲学書など豊かな史料が残り、政治家の日常まで詳しく追うことができる。",
+            "pt": "Da primeira metade do século I restam cartas, discursos, poemas e obras filosóficas, permitindo acompanhar até o cotidiano dos políticos.",
+            "chunks": [
+              ["一世紀前半には", "いっせいきぜんはんには", "na primeira metade do século I"],
+              ["手紙、演説、詩、哲学書など", "てがみ、えんぜつ、し、てつがくしょなど", "cartas, discursos e obras"],
+              ["豊かな史料が", "ゆたかなしりょうが", "fontes abundantes"],
+              ["残り、", "のこり、", "restam"],
+              ["政治家の日常まで", "せいじかのにちじょうまで", "até o cotidiano político"],
+              ["詳しく追うことができる。", "くわしくおうことができる。", "podemos acompanhar em detalhe"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "この時代のローマ人は、自分たちの古い歴史を本格的に調べ始めた。",
+            "pt": "Os romanos dessa época começaram a investigar seriamente sua própria história antiga.",
+            "chunks": [
+              ["この時代の", "このじだいの", "dessa época"],
+              ["ローマ人は、", "ローマじんは、", "os romanos"],
+              ["自分たちの", "じぶんたちの", "sua própria"],
+              ["古い歴史を", "ふるいれきしを", "história antiga"],
+              ["本格的に", "ほんかくてきに", "seriamente"],
+              ["調べ始めた。", "しらべはじめた。", "começaram a investigar"]
+            ]
+          },
+          {
+            "text": "研究と想像を組み合わせて作られた彼らの物語は、今の私たちのローマ像にも強く影響している。",
+            "pt": "As narrativas que criaram combinando pesquisa e imaginação ainda influenciam fortemente nossa imagem de Roma.",
+            "chunks": [
+              ["研究と想像を", "けんきゅうとそうぞうを", "pesquisa e imaginação"],
+              ["組み合わせて", "くみあわせて", "combinando"],
+              ["作られた", "つくられた", "criadas"],
+              ["彼らの物語は、", "かれらのものがたりは、", "suas narrativas"],
+              ["今の私たちの", "いまのわたしたちの", "nossa atual"],
+              ["ローマ像にも", "ローマぞうにも", "imagem de Roma"],
+              ["強く影響している。", "つよくえいきょうしている。", "influenciam fortemente"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "カティリナは名門貴族の出身だったが、執政官選挙に続けて敗れ、多額の借金を抱えていた。",
+            "pt": "Catilina vinha de uma família aristocrática, mas perdeu repetidas eleições para cônsul e acumulou grandes dívidas.",
+            "chunks": [
+              ["カティリナは", "カティリナは", "Catilina"],
+              ["名門貴族の", "めいもんきぞくの", "aristocrática"],
+              ["出身だったが、", "しゅっしんだったが、", "vinha de família, mas"],
+              ["執政官選挙に", "しっせいかんせんきょに", "eleições para cônsul"],
+              ["続けて敗れ、", "つづけてやぶれ、", "perdeu repetidamente"],
+              ["多額の借金を", "たがくのしゃっきんを", "grandes dívidas"],
+              ["抱えていた。", "かかえていた。", "acumulava"]
+            ]
+          },
+          {
+            "text": "彼は困窮した貴族や貧しい市民を集め、借金の帳消しと急激な政治改革を訴えた。",
+            "pt": "Ele reuniu aristocratas em dificuldades e cidadãos pobres, defendendo o cancelamento das dívidas e uma reforma política radical.",
+            "chunks": [
+              ["彼は", "かれは", "ele"],
+              ["困窮した貴族や", "こんきゅうしたきぞくや", "aristocratas em dificuldades"],
+              ["貧しい市民を", "まずしいしみんを", "cidadãos pobres"],
+              ["集め、", "あつめ、", "reuniu"],
+              ["借金の帳消しと", "しゃっきんのちょうけしと", "cancelamento das dívidas e"],
+              ["急激な政治改革を", "きゅうげきなせいじかいかくを", "reforma política radical"],
+              ["訴えた。", "うったえた。", "defendeu"]
+            ]
+          },
+          {
+            "text": "キケロは地方都市出身の「新人」で、弁護士としての話術と人脈によって政界の頂点に上った。",
+            "pt": "Cícero era um “homem novo” vindo de uma cidade do interior e chegou ao topo da política graças à oratória jurídica e às suas relações.",
+            "chunks": [
+              ["キケロは", "キケロは", "Cícero"],
+              ["地方都市出身の", "ちほうとししゅっしんの", "vindo do interior"],
+              ["「新人」で、", "しんじんで、", "era um homem novo"],
+              ["弁護士としての", "べんごしとしての", "como advogado"],
+              ["話術と人脈によって", "わじゅつとじんみゃくによって", "pela oratória e relações"],
+              ["政界の頂点に", "せいかいのちょうてんに", "ao topo da política"],
+              ["上った。", "のぼった。", "chegou"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "紀元前六十三年、キケロは密告や手紙から反乱計画の情報を得た。",
+            "pt": "Em 63 a.C., Cícero obteve informações sobre o plano de revolta por meio de denúncias e cartas.",
+            "chunks": [
+              ["紀元前六十三年、", "きげんぜんろくじゅうさんねん、", "em 63 a.C."],
+              ["キケロは", "キケロは", "Cícero"],
+              ["密告や手紙から", "みっこくやてがみから", "por denúncias e cartas"],
+              ["反乱計画の", "はんらんけいかくの", "do plano de revolta"],
+              ["情報を得た。", "じょうほうをえた。", "obteve informações"]
+            ]
+          },
+          {
+            "text": "暗殺を逃れた後、十一月八日に元老院を招集し、カティリナの計画を激しい演説で告発した。",
+            "pt": "Após escapar de um assassinato, convocou o Senado em 8 de novembro e denunciou o plano de Catilina num discurso feroz.",
+            "chunks": [
+              ["暗殺を", "あんさつを", "um assassinato"],
+              ["逃れた後、", "のがれたあと、", "após escapar"],
+              ["十一月八日に", "じゅういちがつようかに", "em 8 de novembro"],
+              ["元老院を", "げんろういんを", "o Senado"],
+              ["招集し、", "しょうしゅうし、", "convocou"],
+              ["カティリナの計画を", "カティリナのけいかくを", "o plano de Catilina"],
+              ["激しい演説で", "はげしいえんぜつで", "num discurso feroz"],
+              ["告発した。", "こくはつした。", "denunciou"]
+            ]
+          },
+          {
+            "text": "立場を失ったカティリナは、その夜ローマを離れ、北方の軍勢に合流した。",
+            "pt": "Sem saída, Catilina deixou Roma naquela noite e juntou-se às forças no norte.",
+            "chunks": [
+              ["立場を失った", "たちばをうしなった", "sem saída"],
+              ["カティリナは、", "カティリナは、", "Catilina"],
+              ["その夜", "そのよる", "naquela noite"],
+              ["ローマを離れ、", "ローマをはなれ、", "deixou Roma"],
+              ["北方の軍勢に", "ほっぽうのぐんぜいに", "às forças do norte"],
+              ["合流した。", "ごうりゅうした。", "juntou-se"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "この元老院での対決は、後世の絵画では壮大な大理石の広間として描かれている。",
+            "pt": "O confronto no Senado foi retratado em pinturas posteriores como uma cena num grandioso salão de mármore.",
+            "chunks": [
+              ["この元老院での", "このげんろういんでの", "no Senado"],
+              ["対決は、", "たいけつは、", "o confronto"],
+              ["後世の絵画では", "こうせいのかいがでは", "em pinturas posteriores"],
+              ["壮大な", "そうだいな", "grandioso"],
+              ["大理石の広間として", "だいりせきのひろまとして", "como salão de mármore"],
+              ["描かれている。", "えがかれている。", "foi retratado"]
+            ]
+          },
+          {
+            "text": "しかし実際の会場は、暗く小さなユピテル神殿だった可能性が高い。",
+            "pt": "Mas o local real provavelmente era um pequeno e escuro templo de Júpiter.",
+            "chunks": [
+              ["しかし", "しかし", "mas"],
+              ["実際の会場は、", "じっさいのかいじょうは、", "o local real"],
+              ["暗く小さな", "くらくちいさな", "pequeno e escuro"],
+              ["ユピテル神殿だった", "ユピテルしんでんだった", "era templo de Júpiter"],
+              ["可能性が高い。", "かのうせいがたかい。", "provavelmente"]
+            ]
+          },
+          {
+            "text": "この違いは、古代ローマを後世の華やかなイメージだけで考えてはいけないことを示す。",
+            "pt": "Essa diferença mostra que não devemos pensar na Roma antiga apenas por meio de imagens grandiosas posteriores.",
+            "chunks": [
+              ["この違いは、", "このちがいは、", "essa diferença"],
+              ["古代ローマを", "こだいローマを", "a Roma antiga"],
+              ["後世の", "こうせいの", "posteriores"],
+              ["華やかなイメージだけで", "はなやかなイメージだけで", "só por imagens grandiosas"],
+              ["考えてはいけないことを", "かんがえてはいけないことを", "não devemos pensar"],
+              ["示す。", "しめす。", "mostra"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "反乱者の一部はローマで逮捕され、キケロの主導で裁判を受けずに処刑された。",
+            "pt": "Alguns rebeldes foram presos em Roma e, sob a liderança de Cícero, executados sem julgamento.",
+            "chunks": [
+              ["反乱者の一部は", "はんらんしゃのいちぶは", "alguns rebeldes"],
+              ["ローマで", "ローマで", "em Roma"],
+              ["逮捕され、", "たいほされ、", "foram presos"],
+              ["キケロの主導で", "キケロのしゅどうで", "sob Cícero"],
+              ["裁判を受けずに", "さいばんをうけずに", "sem julgamento"],
+              ["処刑された。", "しょけいされた。", "foram executados"]
+            ]
+          },
+          {
+            "text": "まもなくカティリナの軍も北イタリアで敗れ、彼自身も戦死した。",
+            "pt": "Pouco depois, o exército de Catilina foi derrotado no norte da Itália, e ele morreu em combate.",
+            "chunks": [
+              ["まもなく", "まもなく", "pouco depois"],
+              ["カティリナの軍も", "カティリナのぐんも", "o exército de Catilina"],
+              ["北イタリアで", "きたイタリアで", "no norte da Itália"],
+              ["敗れ、", "やぶれ、", "foi derrotado"],
+              ["彼自身も", "かれじしんも", "ele próprio"],
+              ["戦死した。", "せんしした。", "morreu em combate"]
+            ]
+          },
+          {
+            "text": "キケロは「祖国の父」とたたえられたが、法を無視した処刑は大きな政治問題として残った。",
+            "pt": "Cícero foi celebrado como “pai da pátria”, mas as execuções à margem da lei permaneceram um grave problema político.",
+            "chunks": [
+              ["キケロは", "キケロは", "Cícero"],
+              ["「祖国の父」と", "そこくのちちと", "pai da pátria"],
+              ["たたえられたが、", "たたえられたが、", "foi celebrado, mas"],
+              ["法を無視した", "ほうをむしした", "à margem da lei"],
+              ["処刑は", "しょけいは", "as execuções"],
+              ["大きな政治問題として", "おおきなせいじもんだいとして", "grave problema político"],
+              ["残った。", "のこった。", "permaneceram"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "四年後、政敵はこの処刑を理由にキケロを追放した。",
+            "pt": "Quatro anos depois, seus adversários usaram essas execuções para exilar Cícero.",
+            "chunks": [
+              ["四年後、", "よねんご、", "quatro anos depois"],
+              ["政敵は", "せいてきは", "os adversários"],
+              ["この処刑を理由に", "このしょけいをりゆうに", "por essas execuções"],
+              ["キケロを", "キケロを", "Cícero"],
+              ["追放した。", "ついほうした。", "exilaram"]
+            ]
+          },
+          {
+            "text": "この事件は、安全のためなら市民の権利をどこまで制限してよいのかという、今にも通じる問いを投げかける。",
+            "pt": "O episódio levanta uma questão ainda atual: até onde se podem limitar os direitos civis em nome da segurança.",
+            "chunks": [
+              ["この事件は、", "このじけんは、", "o episódio"],
+              ["安全のためなら", "あんぜんのためなら", "em nome da segurança"],
+              ["市民の権利を", "しみんのけんりを", "os direitos civis"],
+              ["どこまで", "どこまで", "até onde"],
+              ["制限してよいのかという、", "せいげんしてよいのかという、", "se podem limitar"],
+              ["今にも通じる問いを", "いまにもつうじるといを", "questão ainda atual"],
+              ["投げかける。", "なげかける。", "levanta"]
+            ]
+          },
+          {
+            "text": "また、元老院だけでなく、ローマ市民の意思も政治を動かす大きな力だった。",
+            "pt": "Além disso, não apenas o Senado, mas também a vontade dos cidadãos romanos era uma grande força política.",
+            "chunks": [
+              ["また、", "また、", "além disso"],
+              ["元老院だけでなく、", "げんろういんだけでなく、", "não apenas o Senado"],
+              ["ローマ市民の意思も", "ローマしみんのいしも", "também a vontade popular"],
+              ["政治を動かす", "せいじをうごかす", "que movia a política"],
+              ["大きな力だった。", "おおきなちからだった。", "era uma grande força"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "私たちが事件を詳しく知るのは、ローマ人自身が大量の文章を残したからである。",
+            "pt": "Conhecemos o episódio em detalhe porque os próprios romanos deixaram uma enorme quantidade de textos.",
+            "chunks": [
+              ["私たちが", "わたしたちが", "nós"],
+              ["事件を詳しく知るのは、", "じけんをくわしくしるのは、", "conhecemos o episódio em detalhe"],
+              ["ローマ人自身が", "ローマじんじしんが", "os próprios romanos"],
+              ["大量の文章を", "たいりょうのぶんしょうを", "muitos textos"],
+              ["残したからである。", "のこしたからである。", "porque deixaram"]
+            ]
+          },
+          {
+            "text": "歴史家サルスティウスの記録、キケロの手紙や詩、そして実際の演説文が主な材料となる。",
+            "pt": "As principais fontes são o relato do historiador Salústio, as cartas e poemas de Cícero e os textos de seus discursos.",
+            "chunks": [
+              ["歴史家サルスティウスの", "れきしかサルスティウスの", "do historiador Salústio"],
+              ["記録、", "きろく、", "o relato"],
+              ["キケロの手紙や詩、", "キケロのてがみやし、", "cartas e poemas de Cícero"],
+              ["そして", "そして", "e"],
+              ["実際の演説文が", "じっさいのえんぜつぶんが", "textos dos discursos"],
+              ["主な材料となる。", "おもなざいりょうとなる。", "são as fontes principais"]
+            ]
+          },
+          {
+            "text": "ただし古代の書物の多くは失われ、残った作品も写本の偶然によって伝わった。",
+            "pt": "Contudo, grande parte da literatura antiga se perdeu, e as obras sobreviventes chegaram até nós pelo acaso da transmissão manuscrita.",
+            "chunks": [
+              ["ただし", "ただし", "contudo"],
+              ["古代の書物の多くは", "こだいのしょもつのおおくは", "muitos livros antigos"],
+              ["失われ、", "うしなわれ、", "se perderam"],
+              ["残った作品も", "のこったさくひんも", "as obras sobreviventes"],
+              ["写本の偶然によって", "しゃほんのぐうぜんによって", "pelo acaso dos manuscritos"],
+              ["伝わった。", "つたわった。", "foram transmitidas"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "キケロの第一カティリナ弾劾演説は、「いつまで私たちの忍耐を試すのか」という有名な言葉で始まる。",
+            "pt": "O primeiro discurso de Cícero contra Catilina começa com a célebre pergunta: “Até quando abusarás de nossa paciência?”.",
+            "chunks": [
+              ["キケロの", "キケロの", "de Cícero"],
+              ["第一カティリナ弾劾演説は、", "だいいちカティリナだんがいえんぜつは、", "primeiro discurso contra Catilina"],
+              ["「いつまで", "いつまで", "até quando"],
+              ["私たちの忍耐を", "わたしたちのにんたいを", "nossa paciência"],
+              ["試すのか」という", "ためすのかという", "vais testar"],
+              ["有名な言葉で", "ゆうめいなことばで", "com a frase célebre"],
+              ["始まる。", "はじまる。", "começa"]
+            ]
+          },
+          {
+            "text": "この一節は二千年以上にわたり、政治的な敵を非難する決まり文句として何度も使われてきた。",
+            "pt": "Por mais de dois mil anos, essa passagem foi reutilizada como fórmula para condenar adversários políticos.",
+            "chunks": [
+              ["この一節は", "このいっせつは", "essa passagem"],
+              ["二千年以上にわたり、", "にせんねんいじょうにわたり、", "por mais de 2.000 anos"],
+              ["政治的な敵を", "せいじてきなてきを", "adversários políticos"],
+              ["非難する", "ひなんする", "para condenar"],
+              ["決まり文句として", "きまりもんくとして", "como fórmula"],
+              ["何度も使われてきた。", "なんどもつかわれてきた。", "foi reutilizada"]
+            ]
+          },
+          {
+            "text": "こうして紀元前六十三年の争いは、西洋政治の言葉とイメージの型になった。",
+            "pt": "Assim, o conflito de 63 a.C. tornou-se um modelo de linguagem e imagem para a política ocidental.",
+            "chunks": [
+              ["こうして", "こうして", "assim"],
+              ["紀元前六十三年の", "きげんぜんろくじゅうさんねんの", "de 63 a.C."],
+              ["争いは、", "あらそいは、", "o conflito"],
+              ["西洋政治の", "せいようせいじの", "da política ocidental"],
+              ["言葉とイメージの型に", "ことばとイメージのかたに", "modelo de linguagem e imagem"],
+              ["なった。", "なった。", "tornou-se"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "しかし、残された証拠の多くはキケロ自身の言葉であり、中立ではない。",
+            "pt": "Entretanto, grande parte das provas restantes vem das palavras do próprio Cícero e não é neutra.",
+            "chunks": [
+              ["しかし、", "しかし、", "entretanto"],
+              ["残された証拠の多くは", "のこされたしょうこのおおくは", "grande parte das provas"],
+              ["キケロ自身の言葉であり、", "キケロじしんのことばであり、", "vem do próprio Cícero"],
+              ["中立ではない。", "ちゅうりつではない。", "não é neutra"]
+            ]
+          },
+          {
+            "text": "公表された演説は、実際に話した内容を後から整え、自分を守るために強調を加えたものかもしれない。",
+            "pt": "Os discursos publicados podem ter sido revistos depois, com acréscimos destinados a proteger Cícero.",
+            "chunks": [
+              ["公表された演説は、", "こうひょうされたえんぜつは、", "os discursos publicados"],
+              ["実際に話した内容を", "じっさいにはなしたないようを", "o conteúdo falado"],
+              ["後から整え、", "あとからととのえ、", "revisto depois"],
+              ["自分を守るために", "じぶんをまもるために", "para se proteger"],
+              ["強調を加えたもの", "きょうちょうをくわえたもの", "com acréscimos"],
+              ["かもしれない。", "かもしれない。", "talvez"]
+            ]
+          },
+          {
+            "text": "そのため、カティリナ側から見た事件を想像し、史料を批判的に読む必要がある。",
+            "pt": "Por isso, é preciso imaginar o episódio do ponto de vista de Catilina e ler as fontes criticamente.",
+            "chunks": [
+              ["そのため、", "そのため、", "por isso"],
+              ["カティリナ側から見た", "カティリナがわからみた", "do ponto de vista de Catilina"],
+              ["事件を", "じけんを", "o episódio"],
+              ["想像し、", "そうぞうし、", "imaginar"],
+              ["史料を", "しりょうを", "as fontes"],
+              ["批判的に読む", "ひはんてきによむ", "ler criticamente"],
+              ["必要がある。", "ひつようがある。", "é preciso"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "当時は貨幣の発行量が急に減り、ローマ社会全体が深刻な金不足に苦しんでいたらしい。",
+            "pt": "Parece que a emissão de moedas caiu bruscamente e toda a sociedade romana sofria com uma grave falta de dinheiro.",
+            "chunks": [
+              ["当時は", "とうじは", "na época"],
+              ["貨幣の発行量が", "かへいのはっこうりょうが", "a emissão de moedas"],
+              ["急に減り、", "きゅうにへり、", "caiu bruscamente"],
+              ["ローマ社会全体が", "ローマしゃかいぜんたいが", "toda a sociedade romana"],
+              ["深刻な金不足に", "しんこくなかねぶそくに", "grave falta de dinheiro"],
+              ["苦しんでいたらしい。", "くるしんでいたらしい。", "parece que sofria"]
+            ]
+          },
+          {
+            "text": "貧富の差、劣悪な住環境、慢性的な空腹も、多くの人を急進的な運動へ向かわせた。",
+            "pt": "A desigualdade, as péssimas condições de moradia e a fome crônica também levaram muitos a movimentos radicais.",
+            "chunks": [
+              ["貧富の差、", "ひんぷのさ、", "desigualdade"],
+              ["劣悪な住環境、", "れつあくなじゅうかんきょう、", "moradia péssima"],
+              ["慢性的な空腹も、", "まんせいてきなくうふくも、", "fome crônica também"],
+              ["多くの人を", "おおくのひとを", "muitas pessoas"],
+              ["急進的な運動へ", "きゅうしんてきなうんどうへ", "a movimentos radicais"],
+              ["向かわせた。", "むかわせた。", "levaram"]
+            ]
+          },
+          {
+            "text": "カティリナの支持者は、すべてを失った犯罪者ではなく、都市に生活の基盤を持つ貧しい人々も含んでいたと考えられる。",
+            "pt": "É provável que os apoiadores de Catilina incluíssem não apenas criminosos sem nada a perder, mas também pobres que ainda tinham raízes na cidade.",
+            "chunks": [
+              ["カティリナの支持者は、", "カティリナのしじしゃは、", "os apoiadores de Catilina"],
+              ["すべてを失った", "すべてをうしなった", "sem nada a perder"],
+              ["犯罪者ではなく、", "はんざいしゃではなく、", "não só criminosos"],
+              ["都市に", "としに", "na cidade"],
+              ["生活の基盤を持つ", "せいかつのきばんをもつ", "com raízes de vida"],
+              ["貧しい人々も", "まずしいひとびとも", "também pobres"],
+              ["含んでいたと考えられる。", "ふくんでいたとかんがえられる。", "provavelmente incluíam"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "一方のキケロには、危機を大きく見せる理由があった。",
+            "pt": "Cícero, por sua vez, tinha motivos para fazer a crise parecer maior.",
+            "chunks": [
+              ["一方のキケロには、", "いっぽうのキケロには、", "Cícero, por sua vez"],
+              ["危機を", "ききを", "a crise"],
+              ["大きく見せる", "おおきくみせる", "fazer parecer maior"],
+              ["理由があった。", "りゆうがあった。", "tinha motivos"]
+            ]
+          },
+          {
+            "text": "古い名門に囲まれた彼は、国家を救った英雄となって自分の地位を固めたかったのである。",
+            "pt": "Cercado por antigas famílias nobres, ele queria firmar sua posição tornando-se o herói que salvara o Estado.",
+            "chunks": [
+              ["古い名門に", "ふるいめいもんに", "por antigas famílias nobres"],
+              ["囲まれた彼は、", "かこまれたかれは、", "ele, cercado"],
+              ["国家を救った", "こっかをすくった", "que salvou o Estado"],
+              ["英雄となって", "えいゆうとなって", "tornando-se herói"],
+              ["自分の地位を", "じぶんのちいを", "sua posição"],
+              ["固めたかったのである。", "かためたかったのである。", "queria firmar"]
+            ]
+          },
+          {
+            "text": "陰謀が完全な作り話だったとは考えにくいが、キケロが危険をどこまで誇張したかは今もわからない。",
+            "pt": "É difícil crer que a conspiração fosse inteiramente inventada, mas ainda não sabemos até que ponto Cícero exagerou o perigo.",
+            "chunks": [
+              ["陰謀が", "いんぼうが", "a conspiração"],
+              ["完全な作り話だったとは", "かんぜんなつくりばなしだったとは", "fosse inteiramente inventada"],
+              ["考えにくいが、", "かんがえにくいが、", "é difícil crer, mas"],
+              ["キケロが", "キケロが", "Cícero"],
+              ["危険を", "きけんを", "o perigo"],
+              ["どこまで誇張したかは", "どこまでこちょうしたかは", "até que ponto exagerou"],
+              ["今もわからない。", "いまもわからない。", "ainda não sabemos"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "キケロとカティリナの対立は、その後も政治劇や絵画、小説の題材として何度も作り直された。",
+            "pt": "O conflito entre Cícero e Catilina foi recriado repetidas vezes em peças políticas, pinturas e romances.",
+            "chunks": [
+              ["キケロとカティリナの", "キケロとカティリナの", "de Cícero e Catilina"],
+              ["対立は、", "たいりつは、", "o conflito"],
+              ["その後も", "そのごも", "depois também"],
+              ["政治劇や絵画、小説の", "せいじげきやかいが、しょうせつの", "em peças, pinturas e romances"],
+              ["題材として", "だいざいとして", "como tema"],
+              ["何度も作り直された。", "なんどもつくりなおされた。", "foi recriado muitas vezes"]
+            ]
+          },
+          {
+            "text": "作者の立場や時代によって、カティリナは革命家にも残酷な悪人にもなり、キケロの評価も変わった。",
+            "pt": "Conforme a posição do autor e a época, Catilina tornou-se ora revolucionário, ora vilão cruel, e a avaliação de Cícero também mudou.",
+            "chunks": [
+              ["作者の立場や", "さくしゃのたちばや", "a posição do autor e"],
+              ["時代によって、", "じだいによって、", "conforme a época"],
+              ["カティリナは", "カティリナは", "Catilina"],
+              ["革命家にも", "かくめいかにも", "ora revolucionário"],
+              ["残酷な悪人にもなり、", "ざんこくなあくにんにもなり、", "ora vilão cruel"],
+              ["キケロの評価も", "キケロのひょうかも", "a avaliação de Cícero também"],
+              ["変わった。", "かわった。", "mudou"]
+            ]
+          },
+          {
+            "text": "二人の争いは、国家の安全と市民の自由がぶつかる場面を考えるための型として、今も生き続けている。",
+            "pt": "O conflito entre os dois continua vivo como modelo para pensar os choques entre a segurança do Estado e a liberdade civil.",
+            "chunks": [
+              ["二人の争いは、", "ふたりのあらそいは、", "o conflito entre os dois"],
+              ["国家の安全と", "こっかのあんぜんと", "a segurança do Estado e"],
+              ["市民の自由が", "しみんのじゆうが", "a liberdade civil"],
+              ["ぶつかる場面を", "ぶつかるばめんを", "situações de choque"],
+              ["考えるための型として、", "かんがえるためのかたとして、", "como modelo para pensar"],
+              ["今も生き続けている。", "いまもいきつづけている。", "continua vivo"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "この章が示すのは、ローマ史では勝者の語りだけを信じず、別の見方を探す必要があるということだ。",
+            "pt": "O capítulo mostra que, na história romana, não devemos confiar apenas no relato dos vencedores e precisamos buscar outros pontos de vista.",
+            "chunks": [
+              ["この章が示すのは、", "このしょうがしめすのは、", "o capítulo mostra"],
+              ["ローマ史では", "ローマしでは", "na história romana"],
+              ["勝者の語りだけを", "しょうしゃのかたりだけを", "só no relato dos vencedores"],
+              ["信じず、", "しんじず、", "não confiar"],
+              ["別の見方を", "べつのみかたを", "outros pontos de vista"],
+              ["探す必要がある", "さがすひつようがある", "é preciso buscar"],
+              ["ということだ。", "ということだ。", "significa"]
+            ]
+          },
+          {
+            "text": "そして物語は、比較的よく記録された紀元前一世紀から、伝説に包まれたローマ建国の時代へさかのぼっていく。",
+            "pt": "A narrativa então recua do século I a.C., relativamente bem documentado, para a época lendária da fundação de Roma.",
+            "chunks": [
+              ["そして物語は、", "そしてものがたりは、", "a narrativa então"],
+              ["比較的よく記録された", "ひかくてきよくきろくされた", "relativamente bem documentado"],
+              ["紀元前一世紀から、", "きげんぜんいっせいきから、", "do século I a.C."],
+              ["伝説に包まれた", "でんせつにつつまれた", "envolta em lendas"],
+              ["ローマ建国の時代へ", "ローマけんこくのじだいへ", "à fundação de Roma"],
+              ["さかのぼっていく。", "さかのぼっていく。", "recua"]
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "第二章　始まりの時代（要約）",
+      "paragraphs": [
+        [
+          {
+            "text": "キケロがカティリナを告発したユピテル神殿は、伝説ではローマ建国者ロムルスが建てたとされた。",
+            "pt": "Segundo a tradição, o templo de Júpiter onde Cícero denunciou Catilina havia sido fundado por Rômulo.",
+            "chunks": [
+              ["キケロが", "キケロが", "Cícero"],
+              ["カティリナを告発した", "カティリナをこくはつした", "denunciou Catilina"],
+              ["ユピテル神殿は、", "ユピテルしんでんは、", "o templo de Júpiter"],
+              ["伝説では", "でんせつでは", "segundo a tradição"],
+              ["ローマ建国者ロムルスが", "ローマけんこくしゃロムルスが", "Rômulo, fundador de Roma"],
+              ["建てたとされた。", "たてたとされた。", "teria fundado"]
+            ]
+          },
+          {
+            "text": "ロムルスは、逃げずに敵へ立ち向かう力をローマ人に与えるよう神に祈ったという。",
+            "pt": "Dizia-se que Rômulo pedira ao deus que desse aos romanos a força de enfrentar o inimigo sem fugir.",
+            "chunks": [
+              ["ロムルスは、", "ロムルスは、", "Rômulo"],
+              ["逃げずに", "にげずに", "sem fugir"],
+              ["敵へ立ち向かう力を", "てきへたちむかうちからを", "força para enfrentar o inimigo"],
+              ["ローマ人に", "ローマじんに", "aos romanos"],
+              ["与えるよう", "あたえるよう", "que desse"],
+              ["神に祈ったという。", "かみにいのったという。", "teria pedido ao deus"]
+            ]
+          },
+          {
+            "text": "キケロはその場所を選ぶことで、自分を新しいロムルスとして見せようとした。",
+            "pt": "Ao escolher aquele lugar, Cícero tentou apresentar-se como um novo Rômulo.",
+            "chunks": [
+              ["キケロは", "キケロは", "Cícero"],
+              ["その場所を", "そのばしょを", "aquele lugar"],
+              ["選ぶことで、", "えらぶことで、", "ao escolher"],
+              ["自分を", "じぶんを", "a si mesmo"],
+              ["新しいロムルスとして", "あたらしいロムルスとして", "como novo Rômulo"],
+              ["見せようとした。", "みせようとした。", "tentou apresentar"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "雌オオカミに育てられた双子ロムルスとレムスは、今もローマ建国を表す有名な姿である。",
+            "pt": "Os gêmeos Rômulo e Remo, criados por uma loba, ainda são a imagem mais famosa da fundação de Roma.",
+            "chunks": [
+              ["雌オオカミに", "めすオオカミに", "por uma loba"],
+              ["育てられた", "そだてられた", "criados"],
+              ["双子ロムルスとレムスは、", "ふたごロムルスとレムスは、", "os gêmeos Rômulo e Remo"],
+              ["今も", "いまも", "ainda"],
+              ["ローマ建国を表す", "ローマけんこくをあらわす", "representa a fundação de Roma"],
+              ["有名な姿である。", "ゆうめいなすがたである。", "é a imagem famosa"]
+            ]
+          },
+          {
+            "text": "しかしその物語には、兄弟殺し、女性の誘拐、逃亡者や犯罪者の受け入れなど、不穏な要素が多い。",
+            "pt": "Mas a história contém muitos elementos perturbadores, como fratricídio, rapto de mulheres e acolhimento de fugitivos e criminosos.",
+            "chunks": [
+              ["しかし", "しかし", "mas"],
+              ["その物語には、", "そのものがたりには、", "nessa história"],
+              ["兄弟殺し、", "きょうだいごろし、", "fratricídio"],
+              ["女性の誘拐、", "じょせいのゆうかい、", "rapto de mulheres"],
+              ["逃亡者や犯罪者の受け入れなど、", "とうぼうしゃやはんざいしゃのうけいれなど、", "acolhimento de fugitivos"],
+              ["不穏な要素が多い。", "ふおんなようそがおおい。", "há elementos perturbadores"]
+            ]
+          },
+          {
+            "text": "それは敵が作った悪意ある話ではなく、ローマ人が自分たちの起源として語り続けた物語だった。",
+            "pt": "Não era propaganda hostil criada por inimigos, mas uma narrativa que os próprios romanos continuaram contando sobre suas origens.",
+            "chunks": [
+              ["それは", "それは", "isso"],
+              ["敵が作った", "てきがつくった", "criada por inimigos"],
+              ["悪意ある話ではなく、", "あくいあるはなしではなく、", "não era propaganda hostil"],
+              ["ローマ人が", "ローマじんが", "os romanos"],
+              ["自分たちの起源として", "じぶんたちのきげんとして", "como suas origens"],
+              ["語り続けた物語だった。", "かたりつづけたものがたりだった。", "continuaram contando"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "ロムルスの伝説には多くの異なる形があり、古代の著者たちも内容を自由に変えていた。",
+            "pt": "A lenda de Rômulo tinha muitas versões, e os autores antigos também modificavam livremente seus detalhes.",
+            "chunks": [
+              ["ロムルスの伝説には", "ロムルスのでんせつには", "a lenda de Rômulo"],
+              ["多くの", "おおくの", "muitas"],
+              ["異なる形があり、", "ことなるかたちがあり、", "tinha versões diferentes"],
+              ["古代の著者たちも", "こだいのちょしゃたちも", "os autores antigos também"],
+              ["内容を自由に", "ないようをじゆうに", "livremente os detalhes"],
+              ["変えていた。", "かえていた。", "modificavam"]
+            ]
+          },
+          {
+            "text": "キケロはロムルスを、川と海に近い場所を巧みに選び、国家の制度を作った立派な政治家として描いた。",
+            "pt": "Cícero retratou Rômulo como um grande estadista que escolheu habilmente um local próximo ao rio e ao mar e criou as instituições do Estado.",
+            "chunks": [
+              ["キケロはロムルスを、", "キケロはロムルスを、", "Cícero retratou Rômulo"],
+              ["川と海に近い場所を", "かわとうみにちかいばしょを", "local próximo ao rio e mar"],
+              ["巧みに選び、", "たくみにえらび、", "escolheu habilmente"],
+              ["国家の制度を", "こっかのせいどを", "instituições do Estado"],
+              ["作った", "つくった", "criou"],
+              ["立派な政治家として描いた。", "りっぱなせいじかとしてえがいた。", "como grande estadista"]
+            ]
+          },
+          {
+            "text": "一方、最も広く知られる形は、歴史家リウィウスがまとめた物語に基づいている。",
+            "pt": "Já a versão mais conhecida baseia-se no relato organizado pelo historiador Lívio.",
+            "chunks": [
+              ["一方、", "いっぽう、", "já"],
+              ["最も広く知られる形は、", "もっともひろくしられるかたちは、", "a versão mais conhecida"],
+              ["歴史家リウィウスが", "れきしかリウィウスが", "pelo historiador Lívio"],
+              ["まとめた物語に", "まとめたものがたりに", "no relato organizado"],
+              ["基づいている。", "もとづいている。", "baseia-se"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "双子の母レア・シルウィアは王家の娘で、叔父アムリウスによって処女の巫女にされた。",
+            "pt": "A mãe dos gêmeos, Reia Sílvia, era filha da família real e fora obrigada pelo tio Amúlio a tornar-se sacerdotisa virgem.",
+            "chunks": [
+              ["双子の母レア・シルウィアは", "ふたごのははレア・シルウィアは", "a mãe dos gêmeos, Reia Sílvia"],
+              ["王家の娘で、", "おうけのむすめで、", "era filha da família real"],
+              ["叔父アムリウスによって", "おじアムリウスによって", "pelo tio Amúlio"],
+              ["処女の巫女に", "しょじょのみこに", "sacerdotisa virgem"],
+              ["された。", "された。", "foi obrigada a tornar-se"]
+            ]
+          },
+          {
+            "text": "軍神マルスの子とされた双子は川へ捨てられたが、岸に流れ着き、オオカミに乳を与えられた。",
+            "pt": "Os gêmeos, tidos como filhos do deus Marte, foram lançados ao rio, mas chegaram à margem e foram amamentados por uma loba.",
+            "chunks": [
+              ["軍神マルスの子とされた", "ぐんしんマルスのことされた", "tidos como filhos de Marte"],
+              ["双子は", "ふたごは", "os gêmeos"],
+              ["川へ捨てられたが、", "かわへすてられたが、", "foram lançados ao rio, mas"],
+              ["岸に流れ着き、", "きしにながれつき、", "chegaram à margem"],
+              ["オオカミに", "オオカミに", "por uma loba"],
+              ["乳を与えられた。", "ちちをあたえられた。", "foram amamentados"]
+            ]
+          },
+          {
+            "text": "やがて羊飼いに育てられた二人は祖父を王位に戻し、自分たちの新しい都市を作ろうとした。",
+            "pt": "Criados por um pastor, os dois restauraram o avô no trono e decidiram fundar sua própria cidade.",
+            "chunks": [
+              ["やがて", "やがて", "mais tarde"],
+              ["羊飼いに育てられた", "ひつじかいにそだてられた", "criados por um pastor"],
+              ["二人は", "ふたりは", "os dois"],
+              ["祖父を王位に戻し、", "そふをおういにもどし、", "restauraram o avô no trono"],
+              ["自分たちの新しい都市を", "じぶんたちのあたらしいとしを", "sua própria cidade"],
+              ["作ろうとした。", "つくろうとした。", "decidiram fundar"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "建設場所と指導者をめぐって兄弟は争い、鳥の数による神のしるしにも合意できなかった。",
+            "pt": "Os irmãos discutiram sobre o local e a liderança e nem sequer concordaram quanto ao sinal divino dado pelo número de aves.",
+            "chunks": [
+              ["建設場所と指導者をめぐって", "けんせつばしょとしどうしゃをめぐって", "sobre local e liderança"],
+              ["兄弟は争い、", "きょうだいはあらそい、", "os irmãos discutiram"],
+              ["鳥の数による", "とりのかずによる", "pelo número de aves"],
+              ["神のしるしにも", "かみのしるしにも", "quanto ao sinal divino"],
+              ["合意できなかった。", "ごういできなかった。", "não concordaram"]
+            ]
+          },
+          {
+            "text": "レムスが新しい城壁を飛び越えて挑発すると、ロムルスは彼を殺した。",
+            "pt": "Quando Remo saltou a nova muralha em provocação, Rômulo o matou.",
+            "chunks": [
+              ["レムスが", "レムスが", "Remo"],
+              ["新しい城壁を", "あたらしいじょうへきを", "a nova muralha"],
+              ["飛び越えて", "とびこえて", "saltou"],
+              ["挑発すると、", "ちょうはつすると、", "quando provocou"],
+              ["ロムルスは", "ロムルスは", "Rômulo"],
+              ["彼を殺した。", "かれをころした。", "o matou"]
+            ]
+          },
+          {
+            "text": "こうしてローマの誕生には、最初から兄弟同士の暴力が刻まれた。",
+            "pt": "Assim, a violência entre irmãos ficou inscrita desde o início no nascimento de Roma.",
+            "chunks": [
+              ["こうして", "こうして", "assim"],
+              ["ローマの誕生には、", "ローマのたんじょうには、", "no nascimento de Roma"],
+              ["最初から", "さいしょから", "desde o início"],
+              ["兄弟同士の暴力が", "きょうだいどうしのぼうりょくが", "violência entre irmãos"],
+              ["刻まれた。", "きざまれた。", "ficou inscrita"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "住民を増やすため、ロムルスは町を避難所とし、外国人、逃亡者、犯罪者まで受け入れた。",
+            "pt": "Para aumentar a população, Rômulo transformou a cidade em refúgio e aceitou estrangeiros, fugitivos e até criminosos.",
+            "chunks": [
+              ["住民を増やすため、", "じゅうみんをふやすため、", "para aumentar a população"],
+              ["ロムルスは", "ロムルスは", "Rômulo"],
+              ["町を避難所とし、", "まちをひなんじょとし、", "fez da cidade um refúgio"],
+              ["外国人、逃亡者、", "がいこくじん、とうぼうしゃ、", "estrangeiros e fugitivos"],
+              ["犯罪者まで", "はんざいしゃまで", "até criminosos"],
+              ["受け入れた。", "うけいれた。", "aceitou"]
+            ]
+          },
+          {
+            "text": "しかし女性が足りなかったため、近隣のサビニ人を祭りに招き、その娘たちを力ずくで連れ去った。",
+            "pt": "Mas, como faltavam mulheres, convidou os sabinos vizinhos para um festival e levou suas filhas à força.",
+            "chunks": [
+              ["しかし", "しかし", "mas"],
+              ["女性が足りなかったため、", "じょせいがたりなかったため、", "como faltavam mulheres"],
+              ["近隣のサビニ人を", "きんりんのサビニじんを", "os sabinos vizinhos"],
+              ["祭りに招き、", "まつりにまねき、", "convidou ao festival"],
+              ["その娘たちを", "そのむすめたちを", "suas filhas"],
+              ["力ずくで連れ去った。", "ちからずくでつれさった。", "levou à força"]
+            ]
+          },
+          {
+            "text": "古代の著者はこれを結婚の始まりとして弁護したり、ローマの侵略性の証拠として批判したりした。",
+            "pt": "Autores antigos ora defenderam o episódio como origem do casamento, ora o criticaram como prova da agressividade romana.",
+            "chunks": [
+              ["古代の著者は", "こだいのちょしゃは", "autores antigos"],
+              ["これを", "これを", "o episódio"],
+              ["結婚の始まりとして", "けっこんのはじまりとして", "como origem do casamento"],
+              ["弁護したり、", "べんごしたり、", "ora defenderam"],
+              ["ローマの侵略性の証拠として", "ローマのしんりゃくせいのしょうことして", "como prova da agressividade romana"],
+              ["批判したりした。", "ひはんしたりした。", "ora criticaram"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "サビニ人が戦争を起こすと、連れ去られた女性たちは両軍の間に入り、父と夫の争いを止めた。",
+            "pt": "Quando os sabinos iniciaram a guerra, as mulheres raptadas colocaram-se entre os exércitos e interromperam a luta entre pais e maridos.",
+            "chunks": [
+              ["サビニ人が", "サビニじんが", "os sabinos"],
+              ["戦争を起こすと、", "せんそうをおこすと、", "quando iniciaram a guerra"],
+              ["連れ去られた女性たちは", "つれさられたじょせいたちは", "as mulheres raptadas"],
+              ["両軍の間に入り、", "りょうぐんのあいだにはいり、", "ficaram entre os exércitos"],
+              ["父と夫の争いを", "ちちとおっとのあらそいを", "a luta entre pais e maridos"],
+              ["止めた。", "とめた。", "interromperam"]
+            ]
+          },
+          {
+            "text": "その結果、ローマ人とサビニ人は一つの共同体となり、ロムルスはサビニ王と統治を分け合った。",
+            "pt": "Como resultado, romanos e sabinos formaram uma única comunidade, e Rômulo compartilhou o governo com o rei sabino.",
+            "chunks": [
+              ["その結果、", "そのけっか、", "como resultado"],
+              ["ローマ人とサビニ人は", "ローマじんとサビニじんは", "romanos e sabinos"],
+              ["一つの共同体となり、", "ひとつのきょうどうたいとなり、", "formaram uma comunidade"],
+              ["ロムルスは", "ロムルスは", "Rômulo"],
+              ["サビニ王と", "サビニおうと", "com o rei sabino"],
+              ["統治を分け合った。", "とうちをわけあった。", "compartilhou o governo"]
+            ]
+          },
+          {
+            "text": "暴力から始まった物語が、最後には外国人を市民へ変える物語になっている。",
+            "pt": "A história que começou com violência termina transformando estrangeiros em cidadãos.",
+            "chunks": [
+              ["暴力から始まった", "ぼうりょくからはじまった", "começou com violência"],
+              ["物語が、", "ものがたりが、", "a história"],
+              ["最後には", "さいごには", "no fim"],
+              ["外国人を", "がいこくじんを", "estrangeiros"],
+              ["市民へ変える物語に", "しみんへかえるものがたりに", "em cidadãos"],
+              ["なっている。", "なっている。", "transforma"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "ロムルスとレムスの争いは、ローマ人にとって内戦が国家の始まりから存在したという重い意味を持った。",
+            "pt": "Para os romanos, a disputa entre Rômulo e Remo sugeria de modo inquietante que a guerra civil existia desde o nascimento do Estado.",
+            "chunks": [
+              ["ロムルスとレムスの争いは、", "ロムルスとレムスのあらそいは、", "a disputa de Rômulo e Remo"],
+              ["ローマ人にとって", "ローマじんにとって", "para os romanos"],
+              ["内戦が", "ないせんが", "a guerra civil"],
+              ["国家の始まりから", "こっかのはじまりから", "desde o nascimento do Estado"],
+              ["存在したという", "そんざいしたという", "existia"],
+              ["重い意味を持った。", "おもいいみをもった。", "tinha sentido inquietante"]
+            ]
+          },
+          {
+            "text": "後の権力者たちはロムルスを英雄として利用したが、兄を殺した王との比較には危険もあった。",
+            "pt": "Governantes posteriores usaram Rômulo como herói, mas a comparação com um rei que matara o irmão também era perigosa.",
+            "chunks": [
+              ["後の権力者たちは", "のちのけんりょくしゃたちは", "governantes posteriores"],
+              ["ロムルスを", "ロムルスを", "Rômulo"],
+              ["英雄として利用したが、", "えいゆうとしてりようしたが、", "usaram como herói, mas"],
+              ["兄を殺した王との", "あにをころしたおうとの", "com um rei que matou o irmão"],
+              ["比較には", "ひかくには", "a comparação"],
+              ["危険もあった。", "きけんもあった。", "também era perigosa"]
+            ]
+          },
+          {
+            "text": "建国神話は、ローマの栄光だけでなく、政治に潜む暴力と対立も映していた。",
+            "pt": "O mito fundador refletia não apenas a glória de Roma, mas também a violência e o conflito presentes em sua política.",
+            "chunks": [
+              ["建国神話は、", "けんこくしんわは、", "o mito fundador"],
+              ["ローマの栄光だけでなく、", "ローマのえいこうだけでなく、", "não só a glória de Roma"],
+              ["政治に潜む", "せいじにひそむ", "presentes na política"],
+              ["暴力と対立も", "ぼうりょくとたいりつも", "violência e conflito também"],
+              ["映していた。", "うつしていた。", "refletia"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "避難所の伝説は、ローマが最初から外部の人々を取り込み、多様な市民を作ったことを強調する。",
+            "pt": "A lenda do refúgio ressalta que Roma incorporou gente de fora e criou uma cidadania diversa desde o início.",
+            "chunks": [
+              ["避難所の伝説は、", "ひなんじょのでんせつは、", "a lenda do refúgio"],
+              ["ローマが", "ローマが", "Roma"],
+              ["最初から", "さいしょから", "desde o início"],
+              ["外部の人々を取り込み、", "がいぶのひとびとをとりこみ、", "incorporou gente de fora"],
+              ["多様な市民を", "たようなしみんを", "cidadania diversa"],
+              ["作ったことを強調する。", "つくったことをきょうちょうする。", "ressalta que criou"]
+            ]
+          },
+          {
+            "text": "後のローマは征服した人々に市民権を広げ、属州出身者を元老院や皇帝の地位にまで迎えた。",
+            "pt": "Mais tarde, Roma estendeu a cidadania aos povos conquistados e recebeu provincianos até no Senado e no posto de imperador.",
+            "chunks": [
+              ["後のローマは", "のちのローマは", "mais tarde, Roma"],
+              ["征服した人々に", "せいふくしたひとびとに", "aos povos conquistados"],
+              ["市民権を広げ、", "しみんけんをひろげ、", "estendeu a cidadania"],
+              ["属州出身者を", "ぞくしゅうしゅっしんしゃを", "provincianos"],
+              ["元老院や皇帝の地位にまで", "げんろういんやこうていのちいにまで", "até o Senado e imperador"],
+              ["迎えた。", "むかえた。", "recebeu"]
+            ]
+          },
+          {
+            "text": "奴隷制度は残酷だったが、解放された奴隷がローマ市民となり、その子が公職に就く道も開かれていた。",
+            "pt": "A escravidão era brutal, mas escravos libertos podiam tornar-se cidadãos romanos, e seus filhos tinham acesso a cargos públicos.",
+            "chunks": [
+              ["奴隷制度は残酷だったが、", "どれいせいどはざんこくだったが、", "a escravidão era brutal, mas"],
+              ["解放された奴隷が", "かいほうされたどれいが", "escravos libertos"],
+              ["ローマ市民となり、", "ローマしみんとなり、", "tornavam-se cidadãos romanos"],
+              ["その子が", "そのこが", "seus filhos"],
+              ["公職に就く道も", "こうしょくにつくみちも", "acesso a cargos públicos"],
+              ["開かれていた。", "ひらかれていた。", "estava aberto"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "ローマ市内には、ロムルスの小屋、双子が流れ着いた木、オオカミの洞窟などが歴史の証拠として保存されていた。",
+            "pt": "Em Roma, a cabana de Rômulo, a árvore onde os gêmeos teriam chegado e a gruta da loba eram preservadas como provas históricas.",
+            "chunks": [
+              ["ローマ市内には、", "ローマしないには、", "em Roma"],
+              ["ロムルスの小屋、", "ロムルスのこや、", "a cabana de Rômulo"],
+              ["双子が流れ着いた木、", "ふたごがながれついたき、", "a árvore dos gêmeos"],
+              ["オオカミの洞窟などが", "オオカミのどうくつなどが", "a gruta da loba e outros"],
+              ["歴史の証拠として", "れきしのしょうことして", "como provas históricas"],
+              ["保存されていた。", "ほぞんされていた。", "eram preservados"]
+            ]
+          },
+          {
+            "text": "古代の学者は建国年を計算し、紀元前七五三年という日付を広く定着させた。",
+            "pt": "Estudiosos antigos calcularam o ano da fundação e difundiram amplamente a data de 753 a.C.",
+            "chunks": [
+              ["古代の学者は", "こだいのがくしゃは", "estudiosos antigos"],
+              ["建国年を", "けんこくねんを", "o ano da fundação"],
+              ["計算し、", "けいさんし、", "calcularam"],
+              ["紀元前七五三年という", "きげんぜんななひゃくごじゅうさんねんという", "a data de 753 a.C."],
+              ["日付を広く", "ひづけをひろく", "amplamente a data"],
+              ["定着させた。", "ていちゃくさせた。", "difundiram"]
+            ]
+          },
+          {
+            "text": "だが神話と歴史の境界は曖昧で、彼らにも建国期を直接示す確かな史料はほとんどなかった。",
+            "pt": "Mas a fronteira entre mito e história era vaga, e eles também quase não possuíam fontes seguras e diretas sobre a fundação.",
+            "chunks": [
+              ["だが", "だが", "mas"],
+              ["神話と歴史の境界は", "しんわとれきしのきょうかいは", "a fronteira entre mito e história"],
+              ["曖昧で、", "あいまいで、", "era vaga"],
+              ["彼らにも", "かれらにも", "eles também"],
+              ["建国期を直接示す", "けんこくきをちょくせつしめす", "diretas sobre a fundação"],
+              ["確かな史料はほとんどなかった。", "たしかなしりょうはほとんどなかった。", "quase não tinham fontes seguras"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "神話は固定された記録ではなく、時代の政治に合わせて意味を変えることができた。",
+            "pt": "O mito não era um registro fixo: seu significado podia mudar conforme a política de cada época.",
+            "chunks": [
+              ["神話は", "しんわは", "o mito"],
+              ["固定された記録ではなく、", "こていされたきろくではなく、", "não era registro fixo"],
+              ["時代の政治に合わせて", "じだいのせいじにあわせて", "conforme a política da época"],
+              ["意味を", "いみを", "o significado"],
+              ["変えることができた。", "かえることができた。", "podia mudar"]
+            ]
+          },
+          {
+            "text": "共和政を倒したアウグストゥスは、自分を第二のロムルスとしながら、兄弟殺しの印象は避けようとした。",
+            "pt": "Augusto, que derrubou a República, apresentou-se como um segundo Rômulo, mas tentou evitar a imagem do fratricídio.",
+            "chunks": [
+              ["共和政を倒した", "きょうわせいをたおした", "que derrubou a República"],
+              ["アウグストゥスは、", "アウグストゥスは、", "Augusto"],
+              ["自分を第二のロムルスとしながら、", "じぶんをだいにのロムルスとしながら、", "fez-se segundo Rômulo, mas"],
+              ["兄弟殺しの印象は", "きょうだいごろしのいんしょうは", "a imagem do fratricídio"],
+              ["避けようとした。", "さけようとした。", "tentou evitar"]
+            ]
+          },
+          {
+            "text": "建国伝説は事実の報告というより、ローマ社会の価値、矛盾、恐れを映す鏡なのである。",
+            "pt": "Mais que um relato factual, a lenda fundadora é um espelho dos valores, contradições e medos da sociedade romana.",
+            "chunks": [
+              ["建国伝説は", "けんこくでんせつは", "a lenda fundadora"],
+              ["事実の報告というより、", "じじつのほうこくというより、", "mais que relato factual"],
+              ["ローマ社会の", "ローマしゃかいの", "da sociedade romana"],
+              ["価値、矛盾、恐れを", "かち、むじゅん、おそれを", "valores, contradições e medos"],
+              ["映す鏡なのである。", "うつすかがみなのである。", "é um espelho"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "ローマにはもう一つ、トロイア戦争から逃れた英雄アイネイアスの建国伝説があった。",
+            "pt": "Roma possuía outra lenda fundadora: a do herói Eneias, que fugiu da Guerra de Troia.",
+            "chunks": [
+              ["ローマにはもう一つ、", "ローマにはもうひとつ、", "Roma tinha outra"],
+              ["トロイア戦争から", "トロイアせんそうから", "da Guerra de Troia"],
+              ["逃れた", "のがれた", "que fugiu"],
+              ["英雄アイネイアスの", "えいゆうアイネイアスの", "do herói Eneias"],
+              ["建国伝説があった。", "けんこくでんせつがあった。", "havia uma lenda fundadora"]
+            ]
+          },
+          {
+            "text": "彼はトロイアの神々と父を背負ってイタリアへ渡り、ローマ人の祖先になったとされた。",
+            "pt": "Dizia-se que ele levou os deuses troianos e o pai para a Itália e tornou-se ancestral dos romanos.",
+            "chunks": [
+              ["彼は", "かれは", "ele"],
+              ["トロイアの神々と父を", "トロイアのかみがみとちちを", "os deuses troianos e o pai"],
+              ["背負って", "せおって", "levando consigo"],
+              ["イタリアへ渡り、", "イタリアへわたり、", "foi à Itália"],
+              ["ローマ人の祖先に", "ローマじんのそせんに", "ancestral dos romanos"],
+              ["なったとされた。", "なったとされた。", "teria se tornado"]
+            ]
+          },
+          {
+            "text": "ウェルギリウスの叙事詩『アエネイス』はこの物語を有名にしたが、伝説自体はそれより何世紀も古い。",
+            "pt": "A epopeia Eneida, de Virgílio, tornou a história famosa, mas a lenda era muitos séculos mais antiga.",
+            "chunks": [
+              ["ウェルギリウスの", "ウェルギリウスの", "de Virgílio"],
+              ["叙事詩『アエネイス』は", "じょじしアエネイスは", "a epopeia Eneida"],
+              ["この物語を", "このものがたりを", "a história"],
+              ["有名にしたが、", "ゆうめいにしたが、", "tornou famosa, mas"],
+              ["伝説自体は", "でんせつじたいは", "a própria lenda"],
+              ["それより何世紀も古い。", "それよりなんせいきもふるい。", "era séculos mais antiga"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "古代の学者は、アイネイアスをロムルスの遠い祖先とすることで、二つの建国物語をつなげた。",
+            "pt": "Estudiosos antigos ligaram as duas narrativas tornando Eneias um ancestral distante de Rômulo.",
+            "chunks": [
+              ["古代の学者は、", "こだいのがくしゃは、", "estudiosos antigos"],
+              ["アイネイアスを", "アイネイアスを", "Eneias"],
+              ["ロムルスの遠い祖先とすることで、", "ロムルスのとおいそせんとすることで、", "como ancestral distante de Rômulo"],
+              ["二つの建国物語を", "ふたつのけんこくものがたりを", "as duas narrativas"],
+              ["つなげた。", "つなげた。", "ligaram"]
+            ]
+          },
+          {
+            "text": "この伝説ではローマ人は最初から外国人であり、異なる民族との結びつきから生まれたことになる。",
+            "pt": "Nessa lenda, os romanos eram estrangeiros desde o início e haviam nascido da união entre povos diferentes.",
+            "chunks": [
+              ["この伝説では", "このでんせつでは", "nessa lenda"],
+              ["ローマ人は", "ローマじんは", "os romanos"],
+              ["最初から外国人であり、", "さいしょからがいこくじんであり、", "eram estrangeiros desde o início"],
+              ["異なる民族との", "ことなるみんぞくとの", "entre povos diferentes"],
+              ["結びつきから", "むすびつきから", "da união"],
+              ["生まれたことになる。", "うまれたことになる。", "teriam nascido"]
+            ]
+          },
+          {
+            "text": "つまりローマの強さは、純粋な血筋ではなく、外から来た人々を受け入れる力にあると考えられた。",
+            "pt": "Assim, a força de Roma era atribuída não à pureza de sangue, mas à capacidade de acolher pessoas vindas de fora.",
+            "chunks": [
+              ["つまり", "つまり", "assim"],
+              ["ローマの強さは、", "ローマのつよさは、", "a força de Roma"],
+              ["純粋な血筋ではなく、", "じゅんすいなちすじではなく、", "não à pureza de sangue"],
+              ["外から来た人々を", "そとからきたひとびとを", "pessoas vindas de fora"],
+              ["受け入れる力にあると", "うけいれるちからにあると", "à capacidade de acolher"],
+              ["考えられた。", "かんがえられた。", "era atribuída"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "神話を離れて初期ローマを調べる方法として、言葉や古い祭りから過去を推測する試みがある。",
+            "pt": "Uma forma de investigar a Roma primitiva sem recorrer aos mitos é deduzir o passado a partir da língua e de antigos rituais.",
+            "chunks": [
+              ["神話を離れて", "しんわをはなれて", "sem recorrer aos mitos"],
+              ["初期ローマを調べる方法として、", "しょきローマをしらべるほうほうとして、", "para investigar a Roma primitiva"],
+              ["言葉や古い祭りから", "ことばやふるいまつりから", "da língua e rituais antigos"],
+              ["過去を", "かこを", "o passado"],
+              ["推測する試みがある。", "すいそくするこころみがある。", "há tentativas de deduzir"]
+            ]
+          },
+          {
+            "text": "たとえば七つの丘に関係する祭りから、町が七つの集落の連合として始まったという説が生まれた。",
+            "pt": "Por exemplo, um festival ligado a sete colinas deu origem à teoria de que a cidade começou como união de sete povoados.",
+            "chunks": [
+              ["たとえば", "たとえば", "por exemplo"],
+              ["七つの丘に関係する祭りから、", "ななつのおかにかんけいするまつりから、", "de um festival das sete colinas"],
+              ["町が", "まちが", "a cidade"],
+              ["七つの集落の連合として", "ななつのしゅうらくのれんごうとして", "como união de sete povoados"],
+              ["始まったという説が", "はじまったというせつが", "a teoria de que começou"],
+              ["生まれた。", "うまれた。", "surgiu"]
+            ]
+          },
+          {
+            "text": "しかし祭りの本来の意味も「七つの丘」がどこを指すのかも確かではなく、結論は出せない。",
+            "pt": "Mas nem o sentido original do festival nem a identidade das “sete colinas” é segura, por isso não se pode chegar a uma conclusão.",
+            "chunks": [
+              ["しかし", "しかし", "mas"],
+              ["祭りの本来の意味も", "まつりのほんらいのいみも", "o sentido original do festival"],
+              ["「七つの丘」が", "ななつのおかが", "as sete colinas"],
+              ["どこを指すのかも", "どこをさすのかも", "a que lugar se referem"],
+              ["確かではなく、", "たしかではなく、", "não são seguros"],
+              ["結論は出せない。", "けつろんはだせない。", "não há conclusão"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "考古学は、ローマの深い地層から小屋、墓地、土器、動物の骨などを発見してきた。",
+            "pt": "A arqueologia encontrou nas camadas profundas de Roma cabanas, cemitérios, cerâmica e ossos de animais.",
+            "chunks": [
+              ["考古学は、", "こうこがくは、", "a arqueologia"],
+              ["ローマの深い地層から", "ローマのふかいちそうから", "nas camadas profundas de Roma"],
+              ["小屋、墓地、土器、", "こや、ぼち、どき、", "cabanas, cemitérios, cerâmica"],
+              ["動物の骨などを", "どうぶつのほねなどを", "ossos de animais e outros"],
+              ["発見してきた。", "はっけんしてきた。", "tem encontrado"]
+            ]
+          },
+          {
+            "text": "これらは小さな集落が紀元前六世紀ごろまでに公共建築を持つ都市へ変わったことを示す。",
+            "pt": "Esses vestígios mostram que pequenos povoados se transformaram, por volta do século VI a.C., numa cidade com edifícios públicos.",
+            "chunks": [
+              ["これらは", "これらは", "esses vestígios"],
+              ["小さな集落が", "ちいさなしゅうらくが", "pequenos povoados"],
+              ["紀元前六世紀ごろまでに", "きげんぜんろくせいきごろまでに", "até cerca do século VI a.C."],
+              ["公共建築を持つ都市へ", "こうきょうけんちくをもつとしへ", "em cidade com edifícios públicos"],
+              ["変わったことを", "かわったことを", "que se transformaram"],
+              ["示す。", "しめす。", "mostram"]
+            ]
+          },
+          {
+            "text": "ただし遺物の年代測定には誤差があり、紀元前七五三年の建国を証明することはできない。",
+            "pt": "Contudo, a datação dos vestígios tem margens de erro e não pode comprovar a fundação em 753 a.C.",
+            "chunks": [
+              ["ただし", "ただし", "contudo"],
+              ["遺物の年代測定には", "いぶつのねんだいそくていには", "a datação dos vestígios"],
+              ["誤差があり、", "ごさがあり、", "tem margens de erro"],
+              ["紀元前七五三年の建国を", "きげんぜんななひゃくごじゅうさんねんのけんこくを", "a fundação em 753 a.C."],
+              ["証明することはできない。", "しょうめいすることはできない。", "não pode comprovar"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "発掘された初期ローマは、周辺の町と交易し、ギリシアなど外部の品や文字を取り入れていた。",
+            "pt": "A Roma primitiva revelada pelas escavações comerciava com cidades vizinhas e adotava produtos e escrita vindos de fora, inclusive da Grécia.",
+            "chunks": [
+              ["発掘された初期ローマは、", "はっくつされたしょきローマは、", "a Roma primitiva escavada"],
+              ["周辺の町と", "しゅうへんのまちと", "com cidades vizinhas"],
+              ["交易し、", "こうえきし、", "comerciava"],
+              ["ギリシアなど", "ギリシアなど", "inclusive da Grécia"],
+              ["外部の品や文字を", "がいぶのしなやもじを", "produtos e escrita externos"],
+              ["取り入れていた。", "とりいれていた。", "adotava"]
+            ]
+          },
+          {
+            "text": "しかしその発展は特別ではなく、中部イタリアの多くの共同体にも見られる普通の都市化だった。",
+            "pt": "Mas esse desenvolvimento não era excepcional; tratava-se de uma urbanização comum a muitas comunidades da Itália central.",
+            "chunks": [
+              ["しかし", "しかし", "mas"],
+              ["その発展は", "そのはってんは", "esse desenvolvimento"],
+              ["特別ではなく、", "とくべつではなく、", "não era excepcional"],
+              ["中部イタリアの", "ちゅうぶイタリアの", "da Itália central"],
+              ["多くの共同体にも見られる", "おおくのきょうどうたいにもみられる", "visto em muitas comunidades"],
+              ["普通の都市化だった。", "ふつうのとしかだった。", "era urbanização comum"]
+            ]
+          },
+          {
+            "text": "後に大帝国となるローマが、最初から他の町より優れていた証拠はない。",
+            "pt": "Não há prova de que Roma, que mais tarde se tornaria um grande império, fosse superior às outras cidades desde o início.",
+            "chunks": [
+              ["後に大帝国となる", "のちにだいていこくとなる", "que depois seria grande império"],
+              ["ローマが、", "ローマが、", "Roma"],
+              ["最初から", "さいしょから", "desde o início"],
+              ["他の町より", "ほかのまちより", "às outras cidades"],
+              ["優れていた証拠はない。", "すぐれていたしょうこはない。", "não há prova de superioridade"]
+            ]
+          }
+        ],
+        [
+          {
+            "text": "神話と発掘品を直接結びつけたい誘惑は強いが、似た年代だけで同じ出来事だと決めるのは危険である。",
+            "pt": "É forte a tentação de ligar diretamente mito e achados arqueológicos, mas é perigoso tratá-los como o mesmo acontecimento apenas por terem datas semelhantes.",
+            "chunks": [
+              ["神話と発掘品を", "しんわとはっくつひんを", "mito e achados arqueológicos"],
+              ["直接結びつけたい誘惑は", "ちょくせつむすびつけたいゆうわくは", "a tentação de ligar diretamente"],
+              ["強いが、", "つよいが、", "é forte, mas"],
+              ["似た年代だけで", "にたねんだいだけで", "só por datas semelhantes"],
+              ["同じ出来事だと決めるのは", "おなじできごとだときめるのは", "tratar como mesmo acontecimento"],
+              ["危険である。", "きけんである。", "é perigoso"]
+            ]
+          },
+          {
+            "text": "フォルムの黒い石の下では、古い祭壇とラテン語の碑文が発見された。",
+            "pt": "Sob a pedra negra do Fórum foram encontrados um antigo altar e uma inscrição em latim.",
+            "chunks": [
+              ["フォルムの黒い石の下では、", "フォルムのくろいいしのしたでは、", "sob a pedra negra do Fórum"],
+              ["古い祭壇と", "ふるいさいだんと", "um antigo altar e"],
+              ["ラテン語の碑文が", "ラテンごのひぶんが", "uma inscrição em latim"],
+              ["発見された。", "はっけんされた。", "foram encontrados"]
+            ]
+          },
+          {
+            "text": "それはロムルスの墓ではなく、次章で扱う伝説的な王たちの時代へつながる、数少ない物的証拠なのである。",
+            "pt": "Não se tratava da tumba de Rômulo, mas de uma das raras provas materiais que conduzem à época dos reis lendários, tema do capítulo seguinte.",
+            "chunks": [
+              ["それは", "それは", "isso"],
+              ["ロムルスの墓ではなく、", "ロムルスのはかではなく、", "não era a tumba de Rômulo"],
+              ["次章で扱う", "じしょうであつかう", "tratada no próximo capítulo"],
+              ["伝説的な王たちの時代へ", "でんせつてきなおうたちのじだいへ", "à época dos reis lendários"],
+              ["つながる、", "つながる、", "que conduz"],
+              ["数少ない物的証拠なのである。", "かずすくないぶってきしょうこなのである。", "é rara prova material"]
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}
