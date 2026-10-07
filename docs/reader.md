@@ -63,11 +63,11 @@ The mode selector appears in the normal document flow and exposes three modes.
 
 Each mode keeps an independent reading position:
 
-- `Frases`: active sentence index and its chapter.
+- `Frases`: the most recently read sentence in every chapter; selecting a chapter restores its last sentence and paragraph instead of returning to the beginning.
 - `Corrido`: current chapter and vertical page position.
 - `Vertical`: current chapter, page position, and vertical-writing page number.
 
-Switching modes restores the last position used in the destination mode. Reloading the page restores the active mode and that mode's saved position. Sentence and chapter positions are scoped to the current book; the active mode is currently shared across readers.
+Switching modes restores the last position used in the destination mode. Switching chapters in `Frases` restores that chapter's last sentence, including after a page reload. Reloading the page restores the active mode and that mode's saved position. Sentence and chapter positions are scoped to the current book; the active mode is currently shared across readers.
 
 ## Paragraphs and chunks
 
@@ -97,7 +97,7 @@ Switching modes restores the last position used in the destination mode. Reloadi
 - The compact summary displays global totals as `★ vocabulary · 🎧 listening` and updates immediately.
 - Marked glosses persist in browser storage and are included in exported reader data with a `reasons` array.
 - Stored or imported glosses without `reasons` are treated as `vocabulary`, preserving all marks created before the two-reason model.
-- When at least one gloss in the current sentence has `🎧` and the browser supports the Web Speech API, `▶ Escuta` reads only those glosses in sentence order. For each gloss it reads Japanese, Portuguese, and Japanese again, using separate language settings. The same button stops the sequence while it is active.
+- When at least one gloss in the current sentence has `🎧` and the browser supports the Web Speech API, `▶ Escuta` reads only those glosses in sentence order. For each gloss it reads Japanese, Portuguese, and Japanese again, using separate language settings. The adjacent `▶ JP` control reads each of the same glosses once, only in Japanese. Pressing the active control again stops its sequence; selecting the other control switches sequences.
 - Browser-synthesized gloss speech is an optional convenience and is separate from the pinned Nise sentence MP3s; voice quality and availability depend on the operating system and browser.
 - `▶ PT`, beside the full Portuguese translation at the end of the sentence card, reads only that translation with the browser's `pt-BR` speech synthesis. While active it becomes `■ PT`; pressing it again stops playback. Starting sentence audio, gloss speech, navigation, or another reading mode also stops it.
 
@@ -114,11 +114,12 @@ Version 3 contains:
 - marked glosses with one or both reasons (`vocabulary`, `listening`);
 - active reading mode;
 - active sentence index;
+- the most recently read sentence index for every chapter;
 - font level;
 - furigana visibility;
 - the independent positions for `Frases`, `Corrido`, and `Vertical`.
 
-Version 3 reader state may be applied only when `source_file` matches the currently open book. The complete payload is validated before any gloss or reader state is changed, so a failed import is atomic.
+Version 3 reader state may be applied only when `source_file` matches the currently open book. Backups made before per-chapter sentence positions existed remain valid: their single active sentence is retained and other chapters begin at their first sentence. The complete payload is validated before any gloss or reader state is changed, so a failed import is atomic.
 
 ### Legacy compatibility
 

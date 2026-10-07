@@ -87,7 +87,7 @@ Run the reader builder and test suite after changing canonical text, audio metad
 
 ## Browser-synthesized marked glosses
 
-The `▶ Escuta` control is intentionally separate from static sentence narration. It sends only glosses carrying the `listening` reason in the current sentence to the browser's built-in Web Speech API. The standalone button queues each gloss as Japanese (`ja-JP`), Portuguese (`pt-BR`), then Japanese again, selecting matching installed voices when possible. The `Glosses JP` loop modes instead speak each marked Japanese surface exactly once before the sentence MP3. Vocabulary-only marks are never spoken. It requires no network speech API. Voice quality, pronunciation, and availability vary by browser and operating system, so it is a convenience for comparison rather than a reproducible audio asset.
+The `▶ Escuta` and `▶ JP` controls are intentionally separate from static sentence narration. Both send only glosses carrying the `listening` reason in the current sentence to the browser's built-in Web Speech API. `▶ Escuta` queues each gloss as Japanese (`ja-JP`), Portuguese (`pt-BR`), then Japanese again, selecting matching installed voices when possible. The adjacent `▶ JP` control and the `Glosses JP` loop modes instead speak each marked Japanese surface exactly once. Vocabulary-only marks are never spoken. These controls require no network speech API. Voice quality, pronunciation, and availability vary by browser and operating system, so they are conveniences for comparison rather than reproducible audio assets.
 
 ## Future roadmap
 
