@@ -412,6 +412,56 @@
       gap: 0.4rem;
     }
 
+    .chapter-progress {
+      margin: 0 0 0.55rem;
+      padding: 0.35rem 0.55rem 0.45rem;
+      color: var(--muted);
+      background: color-mix(in srgb, var(--paper) 60%, transparent);
+      border: 1px solid color-mix(in srgb, var(--rule) 72%, transparent);
+      border-radius: 0.5rem;
+      font-family: system-ui, sans-serif;
+    }
+
+    .chapter-progress-summary {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.3rem;
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .chapter-progress-track {
+      display: flex;
+      gap: 0.18rem;
+      height: 0.42rem;
+    }
+
+    .chapter-progress-paragraph {
+      display: flex;
+      flex-basis: 0;
+      gap: 1px;
+      min-width: 2px;
+    }
+
+    .chapter-progress-sentence {
+      min-width: 1px;
+      flex: 1;
+      background: color-mix(in srgb, var(--rule) 72%, transparent);
+      border-radius: 999px;
+    }
+
+    .chapter-progress-sentence.is-complete {
+      background: color-mix(in srgb, var(--accent) 58%, var(--rule));
+    }
+
+    .chapter-progress-sentence.is-current {
+      background: var(--accent);
+      box-shadow: 0 0 0 1px var(--panel), 0 0 0 2px var(--accent);
+    }
+
     .sentence-audio-controls {
       display: flex;
       align-items: center;
@@ -468,6 +518,11 @@
       background: var(--accent-soft);
       border-color: var(--accent);
       outline: none;
+    }
+
+    .sentence-audio-action:disabled {
+      cursor: not-allowed;
+      opacity: 0.4;
     }
 
     .sentence-audio-speed,
@@ -1108,8 +1163,16 @@
               <button class="study-nav" id="study-next-paragraph" type="button" aria-label="Próximo parágrafo" title="Próximo parágrafo">＋¶</button>
             </div>
           </div>
+          <div class="chapter-progress" id="chapter-progress" role="progressbar" aria-label="Progresso no capítulo" aria-valuemin="1" aria-valuemax="1" aria-valuenow="1">
+            <div class="chapter-progress-summary">
+              <span>Progresso do capítulo</span>
+              <span id="chapter-progress-label">0%</span>
+            </div>
+            <div class="chapter-progress-track" id="chapter-progress-track" aria-hidden="true"></div>
+          </div>
           <div class="sentence-audio-controls" id="sentence-audio-controls" aria-label="Áudio da frase" hidden>
             <button class="sentence-audio-button" id="sentence-audio-toggle" type="button" aria-pressed="false">▶ Ouvir</button>
+            <button class="sentence-audio-action" id="sentence-audio-japanese" type="button" aria-label="Ouvir glosses em japonês e depois o áudio da frase" disabled>▶ JP + Ouvir</button>
             <button class="sentence-audio-action" id="sentence-audio-restart" type="button" aria-label="Reproduzir a frase desde o início" title="Reproduzir desde o início">↺ Início</button>
             <label class="sentence-audio-loop" for="sentence-audio-loop">
               ↻ Loop
@@ -1220,8 +1283,12 @@
     const glossExport = document.querySelector("#gloss-export");
     const glossImport = document.querySelector("#gloss-import");
     const glossImportFile = document.querySelector("#gloss-import-file");
+    const chapterProgress = document.querySelector("#chapter-progress");
+    const chapterProgressLabel = document.querySelector("#chapter-progress-label");
+    const chapterProgressTrack = document.querySelector("#chapter-progress-track");
     const sentenceAudioControls = document.querySelector("#sentence-audio-controls");
     const sentenceAudioToggle = document.querySelector("#sentence-audio-toggle");
+    const sentenceAudioJapanese = document.querySelector("#sentence-audio-japanese");
     const sentenceAudioRestart = document.querySelector("#sentence-audio-restart");
     const sentenceAudioLoop = document.querySelector("#sentence-audio-loop");
     const sentenceAudioVoice = document.querySelector("#sentence-audio-voice");
@@ -1857,6 +1924,14 @@
       const listeningParagraphAvailable = browserSpeechAvailable && currentParagraphHasListeningGlosses();
       listeningOption.disabled = !listeningAvailable;
       listeningJapaneseOption.disabled = !listeningAvailable;
+      sentenceAudioJapanese.disabled = sentenceAudioLoopMode !== "off" || !listeningAvailable;
+      sentenceAudioJapanese.title = sentenceAudioLoopMode !== "off"
+        ? "Disponível quando o loop está desligado"
+        : !browserSpeechAvailable
+          ? "Síntese de voz indisponível neste navegador"
+          : listeningAvailable
+            ? "Ouvir os glosses em japonês e depois o áudio desta frase"
+            : "Marque um gloss desta frase como dificuldade de escuta";
       listeningParagraphOption.disabled = !listeningParagraphAvailable;
       listeningJapaneseParagraphOption.disabled = !listeningParagraphAvailable;
       translationOption.disabled = !browserSpeechAvailable;
@@ -1883,6 +1958,7 @@
     }
 
     sentenceAudioToggle.addEventListener("click", toggleSentenceAudio);
+    sentenceAudioJapanese.addEventListener("click", startJapaneseGlossesThenSentenceOnce);
     sentenceAudioRestart.addEventListener("click", () => startSentenceAudioCycle({ restart: true }));
     sentenceAudioLoop.addEventListener("change", () => {
       clearSentenceAudioLoopTimer();
@@ -2283,6 +2359,24 @@
       }
       stopSentenceAudio();
       startMarkedGlossSpeech(glosses, { japaneseOnly });
+    }
+
+    function startJapaneseGlossesThenSentenceOnce() {
+      const glosses = currentSentenceListeningGlosses();
+      if (sentenceAudioLoopMode !== "off" || !browserSpeechAvailable || glosses.length === 0) return;
+      stopSentenceAudio();
+      startMarkedGlossSpeech(glosses, {
+        loopSequence: true,
+        japaneseOnly: true,
+        onComplete: () => {
+          if (sentenceAudioLoopMode !== "off") return;
+          sentenceAudioStatus.textContent = "Frase em 0,5 s…";
+          sentenceAudioLoopTimer = setTimeout(() => {
+            sentenceAudioLoopTimer = null;
+            if (sentenceAudioLoopMode === "off") playSentenceAudio({ restart: true });
+          }, sentenceAudioLoopDelayMs);
+        }
+      });
     }
 
     function scheduleSentenceAudioLoopPlayback(expectedMode = sentenceAudioLoopMode) {
@@ -2802,6 +2896,44 @@
       });
     }
 
+    function renderChapterProgress(activeChapter, activeParagraph, sentenceInParagraph) {
+      const chapterStart = chapterSentenceStarts[activeChapter];
+      const chapterEnd = activeChapter + 1 < chapterSentenceStarts.length
+        ? chapterSentenceStarts[activeChapter + 1]
+        : sentences.length;
+      const chapterSentenceCount = chapterEnd - chapterStart;
+      const sentenceInChapter = activeIndex - chapterStart;
+      const paragraphInChapter = activeParagraph - chapterParagraphStarts[activeChapter];
+      const percent = Math.round(((sentenceInChapter + 1) / chapterSentenceCount) * 100);
+
+      chapterProgressLabel.textContent = `${percent}%`;
+      chapterProgress.setAttribute("aria-valuemax", String(chapterSentenceCount));
+      chapterProgress.setAttribute("aria-valuenow", String(sentenceInChapter + 1));
+      chapterProgress.setAttribute(
+        "aria-valuetext",
+        `Frase ${sentenceInChapter + 1} de ${chapterSentenceCount}; frase ${sentenceInParagraph + 1} do parágrafo ${paragraphInChapter + 1} de ${chapterParagraphCounts[activeChapter]}`
+      );
+      chapterProgressTrack.replaceChildren();
+
+      const firstParagraph = chapterParagraphStarts[activeChapter];
+      const finalParagraph = firstParagraph + chapterParagraphCounts[activeChapter];
+      for (let paragraphIndex = firstParagraph; paragraphIndex < finalParagraph; paragraphIndex += 1) {
+        const paragraph = document.createElement("span");
+        paragraph.className = "chapter-progress-paragraph";
+        paragraph.style.flexGrow = String(paragraphSentenceCounts[paragraphIndex]);
+        const paragraphStart = paragraphSentenceStarts[paragraphIndex];
+        for (let offset = 0; offset < paragraphSentenceCounts[paragraphIndex]; offset += 1) {
+          const sentence = document.createElement("span");
+          const sentenceIndex = paragraphStart + offset;
+          sentence.className = "chapter-progress-sentence";
+          sentence.classList.toggle("is-complete", sentenceIndex <= activeIndex);
+          sentence.classList.toggle("is-current", sentenceIndex === activeIndex);
+          paragraph.append(sentence);
+        }
+        chapterProgressTrack.append(paragraph);
+      }
+    }
+
     function renderCard(index) {
       stopSentenceAudio();
       stopBrowserSpeech();
@@ -2820,6 +2952,7 @@
         if (start <= activeIndex) activeChapter = index;
       });
       const paragraphInChapter = activeParagraph - chapterParagraphStarts[activeChapter];
+      renderChapterProgress(activeChapter, activeParagraph, sentenceInParagraph);
       prepareSentenceAudio(activeChapter, paragraphInChapter, sentenceInParagraph);
       chapterSelect.value = String(activeChapter);
       void updateOfflineControls();
