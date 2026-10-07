@@ -14,13 +14,49 @@
       "src": "icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "shortcuts": [
+    {
+      "name": "Uma Princesa de Marte",
+      "short_name": "Princesa de Marte",
+      "url": "princess-of-mars/",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "SPQR — História de Roma",
+      "short_name": "SPQR",
+      "url": "mary-beard-spqr/",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     }
   ]
 }
