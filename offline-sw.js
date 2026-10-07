@@ -1,10 +1,12 @@
 const OFFLINE_CACHE_PREFIX = "simple-ja-books-offline:v1:";
 const PWA_CACHE_PREFIX = "simple-ja-books-pwa:";
-const PWA_CACHE_NAME = `${PWA_CACHE_PREFIX}v1`;
+const PWA_CACHE_NAME = `${PWA_CACHE_PREFIX}v2`;
 const PWA_SHELL_URLS = [
   "./",
   "./princess-of-mars/",
   "./books/princess-of-mars-ja.json",
+  "./mary-beard-spqr/",
+  "./books/mary-beard-spqr-ja.json",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
   "./icons/icon-512.png"
