@@ -4,10 +4,10 @@ The reader's sentence audio is generated from the canonical Japanese JSON and st
 
 ## Current implemented state
 
-`A Princess of Mars` currently has a complete checked-in audio set:
+`A Princess of Mars` currently has a complete checked-in audio set for translated chapters 1 through 15:
 
-- 462 sentence MP3 files generated successfully;
-- approximately 39 MB total;
+- 1,517 sentence MP3 files generated successfully;
+- approximately 154 MB total;
 - one file for every sentence currently present in the canonical JSON;
 - a manifest that pins the source text hash, voice/model settings, encoding settings, and file size;
 - automated checks for path stability, complete sentence coverage, stale hashes, missing files, obsolete files, and manifest drift;
@@ -64,7 +64,29 @@ MP3 output is mono at 44.1 kHz using `libmp3lame` quality level 2. The manifest 
 
 ## Generation and verification
 
-Start AivisSpeech Engine with the pinned Nise model installed, then run:
+### Persistent Docker engine and Nise model
+
+The repository includes `docker-compose.aivis.yml`, which exposes AivisSpeech only on `127.0.0.1:10101`, stores its complete user-data directory in the named volume `simple-ja-aivis-data`, and uses the `unless-stopped` restart policy. The named volume preserves Nise across container replacement and host restarts. Do not run `docker compose down -v` unless the voice models should be deleted deliberately.
+
+Start the engine and ensure that the exact pinned Nise model is installed and valid:
+
+```bash
+./tools/ensure_aivis_nise.sh
+```
+
+The script starts the Compose service, waits for the engine, installs Nise from AivisHub only when it is missing, verifies the `にせ` normal voice and speaker UUID, and checks the model file against the SHA-256 pinned in `tools/build_audio.py`. The first run also downloads AivisSpeech's default models and can take longer; later runs reuse the persistent volume.
+
+Useful lifecycle commands:
+
+```bash
+docker compose -f docker-compose.aivis.yml ps
+docker compose -f docker-compose.aivis.yml logs -f aivisspeech
+docker compose -f docker-compose.aivis.yml restart aivisspeech
+```
+
+### Generate sentence MP3s
+
+After `ensure_aivis_nise.sh` succeeds, generate new or changed sentence audio:
 
 ```bash
 python3 tools/build_audio.py \
@@ -72,7 +94,7 @@ python3 tools/build_audio.py \
   --output-dir site/princess-of-mars/audio
 ```
 
-The generator reuses a file only when its sentence hash and all pinned settings still match the manifest. It generates new or changed sentences and rewrites the manifest atomically.
+The generator reuses a file only when its sentence hash and all pinned settings still match the manifest. It generates new or changed sentences and rewrites the manifest atomically. It is safe to rerun after each translated chapter: existing valid MP3s are skipped and only new or changed sentences are synthesized.
 
 Verify the complete set without running AivisSpeech:
 

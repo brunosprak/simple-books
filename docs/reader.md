@@ -4,7 +4,7 @@ This document defines the user-visible behavior and compatibility requirements o
 
 ## Current book content
 
-`A Princess of Mars` has 28 source chapters. Chapters 1 through 4 are currently translated in full, comprising 122 source paragraphs and 462 Japanese sentence cards. The canonical content is `texts/princess-of-mars-ja.json`; the public JSON and reader HTML are generated from it.
+`A Princess of Mars` has 28 source chapters. Chapters 1 through 15 are currently translated in full, comprising 483 source paragraphs and 1,517 Japanese sentence cards. Every translated card has a matching pre-generated Nise MP3. The canonical content is `texts/princess-of-mars-ja.json`; the public JSON and reader HTML are generated from it.
 
 ## Generated architecture
 

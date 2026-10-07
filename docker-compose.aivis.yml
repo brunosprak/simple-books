@@ -1,0 +1,14 @@
+services:
+  aivisspeech:
+    image: ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
+    container_name: simple-ja-aivis
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:10101:10101"
+    volumes:
+      - simple-ja-aivis-data:/home/user/.local/share/AivisSpeech-Engine-Dev
+
+volumes:
+  simple-ja-aivis-data:
+    external: true
+    name: simple-ja-aivis-data
