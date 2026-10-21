@@ -433,19 +433,32 @@
       text-transform: uppercase;
     }
 
+    .chapter-progress-rows {
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .chapter-progress-row {
+      display: grid;
+      grid-template-columns: 4.8rem minmax(0, 1fr);
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .chapter-progress-row-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
     .chapter-progress-track {
       display: flex;
-      gap: 0.18rem;
+      gap: 1px;
       height: 0.42rem;
     }
 
-    .chapter-progress-paragraph {
-      display: flex;
-      flex-basis: 0;
-      gap: 1px;
-      min-width: 2px;
-    }
-
+    .chapter-progress-paragraph,
     .chapter-progress-sentence {
       min-width: 1px;
       flex: 1;
@@ -453,10 +466,12 @@
       border-radius: 999px;
     }
 
+    .chapter-progress-paragraph.is-complete,
     .chapter-progress-sentence.is-complete {
       background: color-mix(in srgb, var(--accent) 58%, var(--rule));
     }
 
+    .chapter-progress-paragraph.is-current,
     .chapter-progress-sentence.is-current {
       background: var(--accent);
       box-shadow: 0 0 0 1px var(--panel), 0 0 0 2px var(--accent);
@@ -1168,7 +1183,16 @@
               <span>Progresso do capítulo</span>
               <span id="chapter-progress-label">0%</span>
             </div>
-            <div class="chapter-progress-track" id="chapter-progress-track" aria-hidden="true"></div>
+            <div class="chapter-progress-rows" aria-hidden="true">
+              <div class="chapter-progress-row">
+                <span class="chapter-progress-row-label">Parágrafos</span>
+                <div class="chapter-progress-track" id="chapter-progress-paragraphs"></div>
+              </div>
+              <div class="chapter-progress-row">
+                <span class="chapter-progress-row-label">Frases</span>
+                <div class="chapter-progress-track" id="chapter-progress-sentences"></div>
+              </div>
+            </div>
           </div>
           <div class="sentence-audio-controls" id="sentence-audio-controls" aria-label="Áudio da frase" hidden>
             <button class="sentence-audio-button" id="sentence-audio-toggle" type="button" aria-pressed="false">▶ Ouvir</button>
@@ -1290,7 +1314,8 @@
     const glossImportFile = document.querySelector("#gloss-import-file");
     const chapterProgress = document.querySelector("#chapter-progress");
     const chapterProgressLabel = document.querySelector("#chapter-progress-label");
-    const chapterProgressTrack = document.querySelector("#chapter-progress-track");
+    const chapterProgressParagraphs = document.querySelector("#chapter-progress-paragraphs");
+    const chapterProgressSentences = document.querySelector("#chapter-progress-sentences");
     const sentenceAudioControls = document.querySelector("#sentence-audio-controls");
     const sentenceAudioToggle = document.querySelector("#sentence-audio-toggle");
     const sentenceAudioJapanese = document.querySelector("#sentence-audio-japanese");
@@ -1375,7 +1400,7 @@
     let positionSaveFrame = null;
     let nextSentencePreviewFrame = null;
     const fontPercentages = [85, 100, 115, 130, 150];
-    const offlineVersion = "6f46c66ae01ffebb";
+    const offlineVersion = "0b9a390f936b3360";
     const defaultFontLevelIndex = 1;
     const minFontLevel = -defaultFontLevelIndex;
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
@@ -2924,24 +2949,25 @@
         "aria-valuetext",
         `Frase ${sentenceInChapter + 1} de ${chapterSentenceCount}; frase ${sentenceInParagraph + 1} do parágrafo ${paragraphInChapter + 1} de ${chapterParagraphCounts[activeChapter]}`
       );
-      chapterProgressTrack.replaceChildren();
+      chapterProgressParagraphs.replaceChildren();
+      chapterProgressSentences.replaceChildren();
 
       const firstParagraph = chapterParagraphStarts[activeChapter];
       const finalParagraph = firstParagraph + chapterParagraphCounts[activeChapter];
       for (let paragraphIndex = firstParagraph; paragraphIndex < finalParagraph; paragraphIndex += 1) {
         const paragraph = document.createElement("span");
         paragraph.className = "chapter-progress-paragraph";
-        paragraph.style.flexGrow = String(paragraphSentenceCounts[paragraphIndex]);
-        const paragraphStart = paragraphSentenceStarts[paragraphIndex];
-        for (let offset = 0; offset < paragraphSentenceCounts[paragraphIndex]; offset += 1) {
-          const sentence = document.createElement("span");
-          const sentenceIndex = paragraphStart + offset;
-          sentence.className = "chapter-progress-sentence";
-          sentence.classList.toggle("is-complete", sentenceIndex <= activeIndex);
-          sentence.classList.toggle("is-current", sentenceIndex === activeIndex);
-          paragraph.append(sentence);
-        }
-        chapterProgressTrack.append(paragraph);
+        paragraph.classList.toggle("is-complete", paragraphIndex < activeParagraph);
+        paragraph.classList.toggle("is-current", paragraphIndex === activeParagraph);
+        chapterProgressParagraphs.append(paragraph);
+      }
+
+      for (let offset = 0; offset < paragraphSentenceCounts[activeParagraph]; offset += 1) {
+        const sentence = document.createElement("span");
+        sentence.className = "chapter-progress-sentence";
+        sentence.classList.toggle("is-complete", offset < sentenceInParagraph);
+        sentence.classList.toggle("is-current", offset === sentenceInParagraph);
+        chapterProgressSentences.append(sentence);
       }
     }
 
