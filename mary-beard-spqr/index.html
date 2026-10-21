@@ -1647,7 +1647,7 @@
     let positionSaveFrame = null;
     let nextSentencePreviewFrame = null;
     const fontPercentages = [85, 100, 115, 130, 150];
-    const offlineVersion = "c88121caf709795e";
+    const offlineVersion = "bce5cea79ccaac4d";
     const defaultFontLevelIndex = 1;
     const minFontLevel = -defaultFontLevelIndex;
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
@@ -2748,7 +2748,10 @@ ${chunkSurface}`;
           chunk_surface: chunkSurface,
           analysis
         };
-        grammarAnalyses.set(key, entry);
+        grammarAnalyses.set(
+          grammarAnalysisKey(sentenceText, chunkIndex, chunkSurface),
+          entry
+        );
         saveGrammarAnalyses();
         if (grammarPanel.isConnected) renderGrammarAnalysis(grammarPanel, analysis);
       } catch (error) {
