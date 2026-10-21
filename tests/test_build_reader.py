@@ -95,6 +95,8 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('function showStoredGrammarAnalysis', first)
         self.assertIn('if (!stored) return false;', first)
         self.assertIn('showStoredGrammarAnalysis(sentence.text, chunkIndex, surface, grammarPanel, chunkButton);', first)
+        self.assertIn('grammarAnalysisKey(sentenceText, chunkIndex, chunkSurface),\n          entry', first)
+        self.assertNotIn('grammarAnalyses.set(key, entry)', first)
         self.assertIn('void revealGrammarAnalysis(sentence.text, chunkIndex, surface', first)
         self.assertIn('chunkButton.setAttribute("aria-expanded", "false")', first)
         self.assertIn('vocabularyReason.addEventListener("click", () => toggleReason("vocabulary"))', first)
