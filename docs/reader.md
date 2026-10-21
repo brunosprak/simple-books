@@ -22,6 +22,7 @@ The mode selector appears in the normal document flow and exposes three modes.
 ### Frases
 
 - Shows one Japanese sentence at a time with furigana, interlinear chunks, concise Portuguese glosses, and the full Portuguese translation.
+- Chunk glosses in Portuguese start hidden whenever the reader is opened. The `Mostrar traduções` control immediately above the chunks reveals all glosses in the current and subsequent sentence cards for the rest of that page session; while visible, it becomes `Ocultar traduções`.
 - The sentence/paragraph navigation and gloss import/export row appear in the normal document flow before the sentence content.
 - Previous and next controls move by sentence.
 - When the current book declares audio metadata, a play/pause control and playback-speed selector appear for the active sentence. Books without audio metadata do not show an inactive player.
@@ -111,7 +112,7 @@ Switching modes restores the last position used in the destination mode. Switchi
 - Clicking the main body of an interlinear chunk reveals its saved grammar analysis or requests one from the OpenAI Responses API when none exists. Clicking an open chunk body collapses the analysis without deleting it.
 - The request uses `gpt-6-luna` with the complete Japanese sentence as syntactic context and the selected chunk as the target. The prompt asks for two to four concise, nonredundant grammar points in Portuguese and prevents an unnecessary full-sentence translation.
 - While a request is running, the chunk shows a loading message and prevents a duplicate request. Failures remain local to the chunk and can be retried.
-- Successful responses are rendered as plain text below the chunk, never as executable HTML, and persist per book in browser storage. Reopening the same chunk reuses the saved response without another API charge.
+- Successful responses are rendered below the chunk with a larger font and a safe Markdown subset for headings, numbered or bulleted lists, bold, and emphasis. The renderer creates text and DOM elements directly and never inserts model output as executable HTML. Analyses persist per book in browser storage, and reopening the same chunk reuses the saved response without another API charge.
 - The top-level `🔑 API` control opens a dialog for saving, replacing, or deleting the reader's OpenAI API key. The key is stored in `localStorage`, sent directly from the browser to OpenAI, shared by readers on the same origin, and never added to backups, generated files, logs, or book data.
 - The key dialog warns that browser-side secret storage can be read by other scripts on the same origin and that API use may incur charges. Without a configured key, clicking a chunk opens this dialog and resumes that chunk's request after a key is saved.
 

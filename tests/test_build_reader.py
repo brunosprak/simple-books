@@ -83,8 +83,15 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('Trecho-alvo:', first)
         self.assertIn('https://api.openai.com/v1/responses', first)
         self.assertIn('store: false', first)
-        self.assertIn('grammarPanel.textContent = stored.analysis', first)
-        self.assertIn('grammarPanel.textContent = analysis', first)
+        self.assertIn('renderGrammarAnalysis(grammarPanel, stored.analysis)', first)
+        self.assertIn('renderGrammarAnalysis(grammarPanel, analysis)', first)
+        self.assertIn('function appendGrammarInline', first)
+        self.assertIn('function renderGrammarAnalysis', first)
+        self.assertIn('document.createElement(strong ? "strong" : "em")', first)
+        self.assertIn('const heading = document.createElement("h3")', first)
+        self.assertIn('activeList = document.createElement(tagName)', first)
+        self.assertIn('font-size: 0.9rem;', first)
+        self.assertNotIn('grammarPanel.innerHTML', first)
         self.assertIn('void revealGrammarAnalysis(sentence.text, chunkIndex, surface', first)
         self.assertIn('chunkButton.setAttribute("aria-expanded", "false")', first)
         self.assertIn('vocabularyReason.addEventListener("click", () => toggleReason("vocabulary"))', first)
@@ -204,6 +211,11 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn("paragraphSentenceStarts[activeParagraph - 1]", first)
         self.assertIn("paragraphSentenceStarts[activeParagraph + 1]", first)
         self.assertIn("touch-action: pan-y", first)
+        self.assertIn('id="chunk-gloss-toggle"', first)
+        self.assertIn('let chunkGlossesVisible = false', first)
+        self.assertIn('gloss.hidden = !chunkGlossesVisible', first)
+        self.assertIn('? "Ocultar traduções"', first)
+        self.assertIn(': "Mostrar traduções"', first)
         self.assertIn('panel.addEventListener("pointerdown"', first)
         self.assertIn('panel.addEventListener("pointerup"', first)
         self.assertIn("suppressClickAfterSwipe", first)
@@ -319,6 +331,10 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn("scheduleNextSentencePreview();", first)
         self.assertLess(
             first.index('id="selected-sentence"'),
+            first.index('id="chunk-gloss-toggle"'),
+        )
+        self.assertLess(
+            first.index('id="chunk-gloss-toggle"'),
             first.index('id="interlinear"'),
         )
         self.assertNotIn('id="gloss-status"', first)
