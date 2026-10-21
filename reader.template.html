@@ -2705,23 +2705,28 @@ ${chunkSurface}`;
       return analysis;
     }
 
+    function showStoredGrammarAnalysis(sentenceText, chunkIndex, chunkSurface, grammarPanel, chunkButton) {
+      const key = grammarAnalysisKey(sentenceText, chunkIndex, chunkSurface);
+      const stored = grammarAnalyses.get(key);
+      if (!stored) return false;
+      grammarPanel.classList.remove("is-error");
+      renderGrammarAnalysis(grammarPanel, stored.analysis);
+      grammarPanel.hidden = false;
+      chunkButton.setAttribute("aria-expanded", "true");
+      return true;
+    }
+
     async function revealGrammarAnalysis(sentenceText, chunkIndex, chunkSurface, grammarPanel, chunkButton) {
       if (!grammarPanel.isConnected) return;
+      if (showStoredGrammarAnalysis(sentenceText, chunkIndex, chunkSurface, grammarPanel, chunkButton)) {
+        return;
+      }
       if (!openAiApiKey) {
         openApiKeyDialog(() => {
           if (grammarPanel.isConnected) {
             void revealGrammarAnalysis(sentenceText, chunkIndex, chunkSurface, grammarPanel, chunkButton);
           }
         });
-        return;
-      }
-      const key = grammarAnalysisKey(sentenceText, chunkIndex, chunkSurface);
-      const stored = grammarAnalyses.get(key);
-      if (stored) {
-        grammarPanel.classList.remove("is-error");
-        renderGrammarAnalysis(grammarPanel, stored.analysis);
-        grammarPanel.hidden = false;
-        chunkButton.setAttribute("aria-expanded", "true");
         return;
       }
 
@@ -3677,6 +3682,7 @@ ${chunkSurface}`;
         updateChunkReasons();
         chunk.append(chunkButton, reasonControls, grammarPanel);
         interlinear.append(chunk);
+        showStoredGrammarAnalysis(sentence.text, chunkIndex, surface, grammarPanel, chunkButton);
       });
       updateChunkGlossVisibility();
       updateGlossSpeechButton(false);
