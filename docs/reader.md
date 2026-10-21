@@ -27,7 +27,10 @@ The mode selector appears in the normal document flow and exposes three modes.
 - When the current book declares audio metadata, a play/pause control and playback-speed selector appear for the active sentence. Books without audio metadata do not show an inactive player.
 - `−¶` and `＋¶` move to the previous or next paragraph.
 - The paragraph counter is relative to the current chapter, while the sentence counter is relative to the current paragraph.
-- A compact chapter progress indicator advances sentence by sentence and shows a percentage. It uses two rows: the upper row represents the chapter's paragraphs, and the lower row represents the sentences in the current paragraph. Completed segments and the active segment are visually distinct.
+- A compact chapter progress indicator advances sentence by sentence and shows the percentage of sentence cards reached in the chapter.
+- Its upper row, labelled `Parágrafos`, contains one equal-width segment for every paragraph in the current chapter. Earlier paragraphs are shown as completed, the current paragraph is highlighted, and later paragraphs remain inactive.
+- Its lower row, labelled `Frases`, contains one equal-width segment for every sentence in the current paragraph. Earlier sentences are shown as completed, the current sentence is highlighted, and later sentences remain inactive. This row is rebuilt when paragraph navigation changes the active paragraph.
+- The progress indicator's accessible value reports both the current sentence's position in the chapter and its position within the current paragraph.
 - A horizontal swipe moves by sentence.
 - The Japanese sentence has a first-line indent only when it is the first sentence of a paragraph.
 - Except on the last sentence of a paragraph, the beginning of the following sentence appears in gray after the current sentence only when it fits in the remaining space on the same final line. The preview never wraps, clips a character, or becomes part of the accessible sentence content.
