@@ -2743,7 +2743,10 @@ ${chunkSurface}`;
           chunk_surface: chunkSurface,
           analysis
         };
-        grammarAnalyses.set(key, entry);
+        grammarAnalyses.set(
+          grammarAnalysisKey(sentenceText, chunkIndex, chunkSurface),
+          entry
+        );
         saveGrammarAnalyses();
         if (grammarPanel.isConnected) renderGrammarAnalysis(grammarPanel, analysis);
       } catch (error) {
