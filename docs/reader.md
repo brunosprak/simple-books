@@ -98,7 +98,7 @@ Switching modes restores the last position used in the destination mode. Switchi
 ## Marked glosses
 
 - Each interlinear chunk has two independent reasons: `★` for unknown or study-worthy vocabulary and `🎧` for a term that was difficult to recognize in sentence audio. A gloss may have either reason, both, or neither.
-- Clicking the main body of a chunk marks both `★` and `🎧` together when either is absent; clicking it again while both are active removes both. The two compact reason buttons on the right continue to toggle vocabulary and listening independently.
+- The two compact reason buttons on the right toggle vocabulary and listening independently. Clicking the main body does not change either reason; it controls the chunk's grammar analysis.
 - The compact summary displays global totals as `★ vocabulary · 🎧 listening` and updates immediately.
 - Marked glosses persist in browser storage and are included in exported reader data with a `reasons` array.
 - Stored or imported glosses without `reasons` are treated as `vocabulary`, preserving all marks created before the two-reason model.
@@ -106,17 +106,27 @@ Switching modes restores the last position used in the destination mode. Switchi
 - Browser-synthesized gloss speech is an optional convenience and is separate from the pinned Nise sentence MP3s; voice quality and availability depend on the operating system and browser.
 - `▶ PT`, beside the full Portuguese translation at the end of the sentence card, reads only that translation with the browser's `pt-BR` speech synthesis. While active it becomes `■ PT`; pressing it again stops playback. Starting sentence audio, gloss speech, navigation, or another reading mode also stops it.
 
+## On-demand grammar analyses
+
+- Clicking the main body of an interlinear chunk reveals its saved grammar analysis or requests one from the OpenAI Responses API when none exists. Clicking an open chunk body collapses the analysis without deleting it.
+- The request uses `gpt-6-luna` with the complete Japanese sentence as syntactic context and the selected chunk as the target. The prompt asks for two to four concise, nonredundant grammar points in Portuguese and prevents an unnecessary full-sentence translation.
+- While a request is running, the chunk shows a loading message and prevents a duplicate request. Failures remain local to the chunk and can be retried.
+- Successful responses are rendered as plain text below the chunk, never as executable HTML, and persist per book in browser storage. Reopening the same chunk reuses the saved response without another API charge.
+- The top-level `🔑 API` control opens a dialog for saving, replacing, or deleting the reader's OpenAI API key. The key is stored in `localStorage`, sent directly from the browser to OpenAI, shared by readers on the same origin, and never added to backups, generated files, logs, or book data.
+- The key dialog warns that browser-side secret storage can be read by other scripts on the same origin and that API use may incur charges. Without a configured key, clicking a chunk opens this dialog and resumes that chunk's request after a key is saved.
+
 ## Import and export
 
 The reader downloads its backup as `dados-de-leitura.json`.
 
-### Backup schema version 3
+### Backup schema version 4
 
-Version 3 contains:
+Version 4 contains:
 
 - `source_file`, identifying the book;
 - export timestamp;
 - marked glosses with one or both reasons (`vocabulary`, `listening`);
+- saved grammar analyses, identified by the complete sentence text, chunk index, and chunk surface;
 - active reading mode;
 - active sentence index;
 - the most recently read sentence index for every chapter;
@@ -124,11 +134,11 @@ Version 3 contains:
 - furigana visibility;
 - the independent positions for `Frases`, `Corrido`, and `Vertical`.
 
-Version 3 reader state may be applied only when `source_file` matches the currently open book. Backups made before per-chapter sentence positions existed remain valid: their single active sentence is retained and other chapters begin at their first sentence. The complete payload is validated before any gloss or reader state is changed, so a failed import is atomic.
+Version 4 reader state and grammar analyses may be applied only when `source_file` matches the currently open book. Importing a version 4 backup replaces the saved grammar analyses for that book. The API key is deliberately excluded. The complete payload is validated before any gloss, grammar analysis, or reader state is changed, so a failed import is atomic.
 
 ### Legacy compatibility
 
-The importer continues to accept schema versions 1 and 2. Version 1 updates glosses without replacing reader positions or preferences; version 2 retains its reader state. In either legacy version, every gloss without a `reasons` field is migrated to `reasons: ["vocabulary"]`.
+The importer continues to accept schema versions 1, 2, and 3. Version 1 updates glosses without replacing reader positions or preferences; versions 2 and 3 retain their reader state. Importing a legacy backup leaves existing grammar analyses unchanged because those schemas do not contain them. Backups made before per-chapter sentence positions existed remain valid: their single active sentence is retained and other chapters begin at their first sentence. In any legacy version, every gloss without a `reasons` field is migrated to `reasons: ["vocabulary"]`.
 
 ## Offline reading
 

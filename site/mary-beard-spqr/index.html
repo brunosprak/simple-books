@@ -82,6 +82,126 @@
       letter-spacing: 0.08em;
     }
 
+    .api-key-button {
+      margin-top: 1rem;
+      padding: 0.4rem 0.75rem;
+      color: var(--accent);
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font-family: system-ui, sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .api-key-button[data-configured="true"] {
+      color: var(--paper);
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .api-key-button:hover,
+    .api-key-button:focus-visible {
+      border-color: var(--accent);
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .api-key-dialog {
+      width: min(100% - 2rem, 32rem);
+      padding: 0;
+      color: var(--ink);
+      background: var(--panel);
+      border: 1px solid var(--rule);
+      border-radius: 0.65rem;
+      box-shadow: 0 1.5rem 4rem rgb(20 25 22 / 28%);
+    }
+
+    .api-key-dialog::backdrop {
+      background: rgb(20 25 22 / 55%);
+      backdrop-filter: blur(0.15rem);
+    }
+
+    .api-key-form {
+      display: grid;
+      gap: 0.85rem;
+      padding: 1.25rem;
+      font-family: system-ui, sans-serif;
+    }
+
+    .api-key-form h2 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 1.05rem;
+      letter-spacing: 0;
+    }
+
+    .api-key-description,
+    .api-key-warning,
+    .api-key-status {
+      margin: 0;
+      font-size: 0.76rem;
+      line-height: 1.55;
+      text-align: left;
+    }
+
+    .api-key-warning {
+      padding: 0.65rem;
+      color: var(--ink);
+      background: var(--accent-soft);
+      border-radius: 0.35rem;
+    }
+
+    .api-key-label {
+      display: grid;
+      gap: 0.3rem;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .api-key-input {
+      width: 100%;
+      padding: 0.65rem 0.75rem;
+      color: var(--ink);
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      border-radius: 0.35rem;
+      font: inherit;
+      font-weight: 400;
+    }
+
+    .api-key-actions {
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .api-key-action {
+      padding: 0.45rem 0.75rem;
+      color: var(--accent);
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font: inherit;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .api-key-action.primary {
+      color: var(--paper);
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .api-key-action:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+    }
+
     .reader-controls {
       display: flex;
       align-items: center;
@@ -735,7 +855,7 @@
       box-shadow: inset 0 -0.2rem 0 var(--accent);
     }
 
-    .chunk-vocabulary {
+    .chunk-main {
       display: inline-flex;
       min-width: 0;
       flex-direction: column;
@@ -778,7 +898,7 @@
       background: var(--accent-soft);
     }
 
-    .chunk-vocabulary:focus-visible,
+    .chunk-main:focus-visible,
     .chunk-reason:focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: -2px;
@@ -803,6 +923,28 @@
       font-family: system-ui, sans-serif;
       font-size: 0.7em;
       line-height: 1.3;
+    }
+
+    .chunk-grammar {
+      grid-column: 1 / -1;
+      margin: 0;
+      padding: 0.75rem;
+      color: var(--ink);
+      background: color-mix(in srgb, var(--accent-soft) 58%, transparent);
+      border-top: 1px solid var(--rule);
+      font-family: system-ui, sans-serif;
+      font-size: 0.72rem;
+      line-height: 1.55;
+      text-align: left;
+      white-space: pre-wrap;
+    }
+
+    .chunk-grammar[hidden] {
+      display: none;
+    }
+
+    .chunk-grammar.is-error {
+      color: #8a2f2f;
     }
 
     .gloss-tools {
@@ -961,6 +1103,13 @@
         grid-column: 1;
       }
 
+      .api-key-button {
+        grid-column: 2;
+        grid-row: 2 / 4;
+        align-self: end;
+        margin-top: 0;
+      }
+
       .reader-controls {
         grid-column: 2;
         grid-row: 2 / 4;
@@ -1005,7 +1154,7 @@
         min-width: 0;
       }
 
-      .chunk-vocabulary {
+      .chunk-main {
         padding: 0.85rem 0.9rem 0.75rem;
       }
 
@@ -1151,7 +1300,26 @@
       <p class="eyebrow" id="page-eyebrow">第一章から第三章の要約</p>
       <h1 id="page-title">SPQR　古代ローマ史</h1>
       <p class="author" id="page-author">メアリー・ビアード</p>
+      <button class="api-key-button" id="api-key-button" type="button" data-configured="false" aria-haspopup="dialog">🔑 API</button>
     </header>
+
+    <dialog class="api-key-dialog" id="api-key-dialog" aria-labelledby="api-key-title">
+      <form class="api-key-form" id="api-key-form" method="dialog">
+        <h2 id="api-key-title">Chave da API da OpenAI</h2>
+        <p class="api-key-description">A chave permite gerar pontos gramaticais ao tocar no corpo de um chunk.</p>
+        <p class="api-key-warning">A chave será guardada no localStorage deste navegador e enviada diretamente à OpenAI. Outros scripts executados nesta origem podem acessá-la. O uso da API pode gerar cobranças.</p>
+        <label class="api-key-label" for="api-key-input">
+          Chave secreta
+          <input class="api-key-input" id="api-key-input" type="password" autocomplete="off" spellcheck="false" placeholder="sk-…">
+        </label>
+        <p class="api-key-status" id="api-key-status" aria-live="polite"></p>
+        <div class="api-key-actions">
+          <button class="api-key-action" id="api-key-remove" type="button">Apagar chave</button>
+          <button class="api-key-action" id="api-key-cancel" type="button">Cancelar</button>
+          <button class="api-key-action primary" type="submit">Salvar</button>
+        </div>
+      </form>
+    </dialog>
 
     <article>
       <h2><select class="chapter-select" id="chapter-select" aria-label="Selecionar capítulo"><option>Capítulo</option></select></h2>
@@ -1294,6 +1462,13 @@
     const fontDecrease = document.querySelector("#font-decrease");
     const fontIncrease = document.querySelector("#font-increase");
     const fontLevel = document.querySelector("#font-level");
+    const apiKeyButton = document.querySelector("#api-key-button");
+    const apiKeyDialog = document.querySelector("#api-key-dialog");
+    const apiKeyForm = document.querySelector("#api-key-form");
+    const apiKeyInput = document.querySelector("#api-key-input");
+    const apiKeyStatus = document.querySelector("#api-key-status");
+    const apiKeyRemove = document.querySelector("#api-key-remove");
+    const apiKeyCancel = document.querySelector("#api-key-cancel");
     const panel = document.querySelector("#study-panel");
     const label = document.querySelector("#study-label");
     const selectedSentence = document.querySelector("#selected-sentence");
@@ -1385,6 +1560,12 @@
       return option;
     }));
     const storageScope = bookData?.source_file || location.pathname;
+    const openAiApiKeyStorageKey = "simple-ja-books:openai-api-key:v1";
+    const grammarAnalysesStorageKey = `simple-ja-books:grammar-analyses:v1:${storageScope}`;
+    const grammarModel = "gpt-6-luna";
+    let openAiApiKey = loadOpenAiApiKey();
+    let grammarAnalyses = loadGrammarAnalyses();
+    let pendingGrammarRequest = null;
     const activeCardStorageKey = `simple-ja-books:active-card:v1:${storageScope}`;
     let activeIndex = loadActiveIndex();
     const sentenceChapterPositionsStorageKey = `simple-ja-books:sentence-chapter-positions:v1:${storageScope}`;
@@ -1400,7 +1581,7 @@
     let positionSaveFrame = null;
     let nextSentencePreviewFrame = null;
     const fontPercentages = [85, 100, 115, 130, 150];
-    const offlineVersion = "f62d9839b5c518c2";
+    const offlineVersion = "0291954be253c9d1";
     const defaultFontLevelIndex = 1;
     const minFontLevel = -defaultFontLevelIndex;
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
@@ -2181,6 +2362,277 @@
       }
     }
 
+    function loadOpenAiApiKey() {
+      try {
+        return localStorage.getItem(openAiApiKeyStorageKey) || "";
+      } catch (_error) {
+        return "";
+      }
+    }
+
+    function updateApiKeyButton() {
+      const configured = Boolean(openAiApiKey);
+      apiKeyButton.dataset.configured = String(configured);
+      apiKeyButton.textContent = configured ? "🔑 API ✓" : "🔑 API";
+      apiKeyButton.setAttribute(
+        "aria-label",
+        configured ? "Alterar ou apagar chave da API da OpenAI" : "Configurar chave da API da OpenAI"
+      );
+      apiKeyRemove.disabled = !configured;
+    }
+
+    function openApiKeyDialog(afterSave = null) {
+      pendingGrammarRequest = afterSave;
+      apiKeyInput.value = "";
+      apiKeyInput.placeholder = openAiApiKey ? "Chave já salva" : "sk-…";
+      apiKeyStatus.textContent = openAiApiKey
+        ? "Uma chave está configurada neste navegador."
+        : "Nenhuma chave está configurada.";
+      updateApiKeyButton();
+      apiKeyDialog.showModal();
+      apiKeyInput.focus();
+    }
+
+    apiKeyButton.addEventListener("click", () => openApiKeyDialog());
+    apiKeyCancel.addEventListener("click", () => {
+      pendingGrammarRequest = null;
+      apiKeyDialog.close();
+    });
+    apiKeyRemove.addEventListener("click", () => {
+      try {
+        localStorage.removeItem(openAiApiKeyStorageKey);
+      } catch (_error) {
+        apiKeyStatus.textContent = "Não foi possível apagar a chave neste navegador.";
+        return;
+      }
+      openAiApiKey = "";
+      pendingGrammarRequest = null;
+      apiKeyInput.value = "";
+      apiKeyStatus.textContent = "Chave apagada.";
+      updateApiKeyButton();
+    });
+    apiKeyForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const enteredKey = apiKeyInput.value.trim();
+      if (!enteredKey && !openAiApiKey) {
+        apiKeyStatus.textContent = "Digite uma chave antes de salvar.";
+        return;
+      }
+      if (enteredKey) {
+        try {
+          localStorage.setItem(openAiApiKeyStorageKey, enteredKey);
+        } catch (_error) {
+          apiKeyStatus.textContent = "Não foi possível guardar a chave neste navegador.";
+          return;
+        }
+        openAiApiKey = enteredKey;
+      }
+      const afterSave = pendingGrammarRequest;
+      pendingGrammarRequest = null;
+      updateApiKeyButton();
+      apiKeyDialog.close();
+      if (afterSave) afterSave();
+    });
+    apiKeyDialog.addEventListener("close", () => {
+      apiKeyInput.value = "";
+      apiKeyStatus.textContent = "";
+    });
+    apiKeyDialog.addEventListener("cancel", () => {
+      pendingGrammarRequest = null;
+    });
+    updateApiKeyButton();
+
+    function grammarAnalysisKey(sentenceText, chunkIndex, chunkSurface) {
+      return JSON.stringify([sentenceText, chunkIndex, chunkSurface]);
+    }
+
+    function normalizeGrammarAnalysis(entry) {
+      if (!entry || typeof entry.sentence_text !== "string" || !entry.sentence_text
+        || !Number.isInteger(entry.chunk_index) || entry.chunk_index < 0
+        || typeof entry.chunk_surface !== "string" || !entry.chunk_surface
+        || typeof entry.analysis !== "string" || !entry.analysis.trim()
+        || entry.analysis.length > 20000) return null;
+      return {
+        sentence_text: entry.sentence_text,
+        chunk_index: entry.chunk_index,
+        chunk_surface: entry.chunk_surface,
+        analysis: entry.analysis.trim()
+      };
+    }
+
+    function loadGrammarAnalyses() {
+      try {
+        const stored = JSON.parse(localStorage.getItem(grammarAnalysesStorageKey) || "[]");
+        if (!Array.isArray(stored)) return new Map();
+        const normalized = stored.map(normalizeGrammarAnalysis).filter(Boolean);
+        return new Map(normalized.map((entry) => [
+          grammarAnalysisKey(entry.sentence_text, entry.chunk_index, entry.chunk_surface),
+          entry
+        ]));
+      } catch (_error) {
+        return new Map();
+      }
+    }
+
+    function saveGrammarAnalyses() {
+      try {
+        localStorage.setItem(
+          grammarAnalysesStorageKey,
+          JSON.stringify([...grammarAnalyses.values()])
+        );
+      } catch (_error) {
+        // Generated analyses remain available until the page is closed.
+      }
+    }
+
+    function grammarAnalysisPrompt(sentenceText, chunkSurface) {
+      return `Prompt — Identificação de pontos gramaticais em japonês
+
+Você é um tutor especializado em gramática japonesa e processamento incremental de frases.
+
+Receberá duas entradas:
+
+- Frase completa: a frase japonesa original, utilizada como contexto sintático e semântico.
+- Trecho-alvo: a parte específica da frase que o estudante está lendo neste momento.
+
+Objetivo
+
+Identificar e explicar os principais pontos gramaticais presentes no trecho-alvo, considerando sua função dentro da frase completa.
+
+Regras
+
+1. Analise prioritariamente o trecho-alvo. Não produza uma análise gramatical da frase inteira.
+
+2. Utilize a frase completa como contexto. Determine corretamente a função de partículas, modificadores, conjugações e construções, levando em conta as relações sintáticas com o restante da frase.
+
+3. Selecione de 2 a 4 pontos gramaticais relevantes, priorizando:
+
+   - Construções gramaticais e expressões fixas.
+   - Partículas e suas funções específicas.
+   - Formas verbais, conjugações e auxiliares.
+   - Modificadores nominais e orações relativas.
+   - Nominalizações e relações entre orações.
+   - Estruturas que possam causar dificuldade na leitura incremental.
+
+4. Evite explicações excessivamente elementares quando houver construções mais importantes. Não transforme a análise em uma lista de vocabulário.
+
+5. Considere as dependências sintáticas. Quando uma expressão do trecho-alvo depender de um elemento posterior, explique essa relação, identificando o elemento necessário para completar a interpretação.
+
+6. Não antecipe desnecessariamente o restante da frase. Utilize o contexto completo para garantir a correção gramatical, mas preserve a experiência de leitura incremental. Quando possível, explique o que já pode ser compreendido e o que ainda permanece sintaticamente aberto.
+
+7. Agrupe expressões que funcionem como uma unidade gramatical. Por exemplo, いちばん初めの deve ser analisado como uma construção integrada, e não apenas como palavras independentes.
+
+8. Evite redundâncias. Cada ponto deve acrescentar uma informação distinta e útil.
+
+9. Seja preciso e conciso. Cada explicação deve ter aproximadamente 1 a 3 frases, em português.
+
+Formato de saída
+
+Principais pontos gramaticais
+
+1. [Expressão japonesa] — [Função ou significado]
+
+Explicação da construção e de sua função específica no contexto.
+
+2. [Expressão japonesa] — [Função ou significado]
+
+Explicação da construção e de sua função específica no contexto.
+
+Continue até cobrir os pontos relevantes.
+
+Não inclua tradução integral da frase, introduções, conclusões ou seções adicionais.
+
+Entrada
+
+Frase completa:
+${sentenceText}
+
+Trecho-alvo:
+${chunkSurface}`;
+    }
+
+    function responseOutputText(payload) {
+      if (typeof payload?.output_text === "string") return payload.output_text.trim();
+      return (payload?.output || []).flatMap((item) => item.content || [])
+        .filter((content) => content.type === "output_text" && typeof content.text === "string")
+        .map((content) => content.text)
+        .join("\n")
+        .trim();
+    }
+
+    async function generateGrammarAnalysis(sentenceText, chunkSurface) {
+      const response = await fetch("https://api.openai.com/v1/responses", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${openAiApiKey}`
+        },
+        body: JSON.stringify({
+          model: grammarModel,
+          reasoning: { effort: "low" },
+          max_output_tokens: 1000,
+          store: false,
+          input: grammarAnalysisPrompt(sentenceText, chunkSurface)
+        })
+      });
+      if (!response.ok) {
+        if (response.status === 401) throw new Error("Chave rejeitada. Abra 🔑 API e confira a chave.");
+        if (response.status === 429) throw new Error("O limite da API foi atingido. Tente novamente mais tarde.");
+        throw new Error("A OpenAI não conseguiu gerar a análise agora. Tente novamente.");
+      }
+      const analysis = responseOutputText(await response.json());
+      if (!analysis) throw new Error("A OpenAI não retornou pontos gramaticais.");
+      return analysis;
+    }
+
+    async function revealGrammarAnalysis(sentenceText, chunkIndex, chunkSurface, grammarPanel, chunkButton) {
+      if (!grammarPanel.isConnected) return;
+      if (!openAiApiKey) {
+        openApiKeyDialog(() => {
+          if (grammarPanel.isConnected) {
+            void revealGrammarAnalysis(sentenceText, chunkIndex, chunkSurface, grammarPanel, chunkButton);
+          }
+        });
+        return;
+      }
+      const key = grammarAnalysisKey(sentenceText, chunkIndex, chunkSurface);
+      const stored = grammarAnalyses.get(key);
+      if (stored) {
+        grammarPanel.classList.remove("is-error");
+        grammarPanel.textContent = stored.analysis;
+        grammarPanel.hidden = false;
+        chunkButton.setAttribute("aria-expanded", "true");
+        return;
+      }
+
+      grammarPanel.classList.remove("is-error");
+      grammarPanel.textContent = "Gerando pontos gramaticais…";
+      grammarPanel.hidden = false;
+      chunkButton.disabled = true;
+      chunkButton.setAttribute("aria-expanded", "true");
+      try {
+        const analysis = await generateGrammarAnalysis(sentenceText, chunkSurface);
+        const entry = {
+          sentence_text: sentenceText,
+          chunk_index: chunkIndex,
+          chunk_surface: chunkSurface,
+          analysis
+        };
+        grammarAnalyses.set(key, entry);
+        saveGrammarAnalyses();
+        if (grammarPanel.isConnected) grammarPanel.textContent = analysis;
+      } catch (error) {
+        if (grammarPanel.isConnected) {
+          grammarPanel.classList.add("is-error");
+          grammarPanel.textContent = error instanceof Error
+            ? error.message
+            : "Não foi possível gerar os pontos gramaticais.";
+        }
+      } finally {
+        if (chunkButton.isConnected) chunkButton.disabled = false;
+      }
+    }
+
     function glossKey(term, portuguese) {
       return JSON.stringify([term, portuguese]);
     }
@@ -2234,16 +2686,6 @@
       else reasons.add(reason);
       if (reasons.size === 0) markedGlosses.delete(key);
       else markedGlosses.set(key, { term, portuguese, reasons: [...reasons] });
-      saveMarkedGlosses();
-    }
-
-    function toggleAllGlossReasons(term, portuguese) {
-      const key = glossKey(term, portuguese);
-      const allMarked = glossReasons.every((reason) =>
-        hasGlossReason(term, portuguese, reason)
-      );
-      if (allMarked) markedGlosses.delete(key);
-      else markedGlosses.set(key, { term, portuguese, reasons: [...glossReasons] });
       saveMarkedGlosses();
     }
 
@@ -3016,14 +3458,15 @@
       sentenceTranslation.textContent = sentence.pt;
       interlinear.replaceChildren();
 
-      sentence.chunks.forEach(([surface, reading, gloss]) => {
+      sentence.chunks.forEach(([surface, reading, gloss], chunkIndex) => {
         const chunk = document.createElement("div");
         chunk.className = "chunk";
 
-        const vocabularyButton = document.createElement("button");
-        vocabularyButton.className = "chunk-vocabulary";
-        vocabularyButton.type = "button";
-        vocabularyButton.setAttribute("aria-label", `${surface}: ${gloss}. Alternar vocabulário e dificuldade de escuta.`);
+        const chunkButton = document.createElement("button");
+        chunkButton.className = "chunk-main";
+        chunkButton.type = "button";
+        chunkButton.setAttribute("aria-label", `${surface}: ${gloss}. Mostrar pontos gramaticais.`);
+        chunkButton.setAttribute("aria-expanded", "false");
 
         const japanese = document.createElement("span");
         japanese.className = "chunk-japanese";
@@ -3033,7 +3476,7 @@
         meaning.className = "gloss";
         meaning.lang = "pt-BR";
         meaning.textContent = gloss;
-        vocabularyButton.append(japanese, meaning);
+        chunkButton.append(japanese, meaning);
 
         const reasonControls = document.createElement("div");
         reasonControls.className = "chunk-reasons";
@@ -3055,12 +3498,19 @@
         listeningReason.setAttribute("aria-label", `Marcar ${surface} como dificuldade de escuta`);
         reasonControls.append(vocabularyReason, listeningReason);
 
+        const grammarPanel = document.createElement("p");
+        grammarPanel.className = "chunk-grammar";
+        grammarPanel.id = `chunk-grammar-${activeIndex}-${chunkIndex}`;
+        grammarPanel.lang = "pt-BR";
+        grammarPanel.hidden = true;
+        grammarPanel.setAttribute("aria-live", "polite");
+        chunkButton.setAttribute("aria-controls", grammarPanel.id);
+
         function updateChunkReasons() {
           const vocabularyMarked = hasGlossReason(surface, gloss, "vocabulary");
           const listeningMarked = hasGlossReason(surface, gloss, "listening");
           chunk.dataset.vocabulary = String(vocabularyMarked);
           chunk.dataset.listening = String(listeningMarked);
-          vocabularyButton.setAttribute("aria-pressed", String(vocabularyMarked && listeningMarked));
           vocabularyReason.setAttribute("aria-pressed", String(vocabularyMarked));
           listeningReason.setAttribute("aria-pressed", String(listeningMarked));
         }
@@ -3070,14 +3520,18 @@
           updateChunkReasons();
         }
 
-        vocabularyButton.addEventListener("click", () => {
-          toggleAllGlossReasons(surface, gloss);
-          updateChunkReasons();
+        chunkButton.addEventListener("click", () => {
+          if (!grammarPanel.hidden) {
+            grammarPanel.hidden = true;
+            chunkButton.setAttribute("aria-expanded", "false");
+            return;
+          }
+          void revealGrammarAnalysis(sentence.text, chunkIndex, surface, grammarPanel, chunkButton);
         });
         vocabularyReason.addEventListener("click", () => toggleReason("vocabulary"));
         listeningReason.addEventListener("click", () => toggleReason("listening"));
         updateChunkReasons();
-        chunk.append(vocabularyButton, reasonControls);
+        chunk.append(chunkButton, reasonControls, grammarPanel);
         interlinear.append(chunk);
       });
       updateGlossSpeechButton(false);
@@ -3087,7 +3541,7 @@
     glossExport.addEventListener("click", () => {
       captureReadingPosition();
       const payload = {
-        schema_version: 3,
+        schema_version: 4,
         source_file: bookData?.source_file || null,
         exported_at: new Date().toISOString(),
         reader_state: {
@@ -3098,7 +3552,8 @@
           furigana_visible: furiganaVisible,
           positions: readingPositions
         },
-        glosses: [...markedGlosses.values()]
+        glosses: [...markedGlosses.values()],
+        grammar_analyses: [...grammarAnalyses.values()]
       };
       const blob = new Blob([JSON.stringify(payload, null, 2) + "\n"], { type: "application/json" });
       const url = URL.createObjectURL(blob);
@@ -3116,7 +3571,7 @@
       if (!file) return;
       try {
         const payload = JSON.parse(await file.text());
-        if (![1, 2, 3].includes(payload?.schema_version) || !Array.isArray(payload.glosses)) {
+        if (![1, 2, 3, 4].includes(payload?.schema_version) || !Array.isArray(payload.glosses)) {
           throw new Error("Formato incompatível");
         }
         const imported = payload.glosses.map((entry) => {
@@ -3124,8 +3579,21 @@
           if (!normalized) throw new Error("Gloss inválido");
           return normalized;
         });
+        let importedGrammarAnalyses = null;
+        if (payload.schema_version === 4) {
+          if (!Array.isArray(payload.grammar_analyses)) throw new Error("Análises gramaticais inválidas");
+          const normalizedAnalyses = payload.grammar_analyses.map((entry) => {
+            const normalized = normalizeGrammarAnalysis(entry);
+            if (!normalized) throw new Error("Análise gramatical inválida");
+            return normalized;
+          });
+          importedGrammarAnalyses = new Map(normalizedAnalyses.map((entry) => [
+            grammarAnalysisKey(entry.sentence_text, entry.chunk_index, entry.chunk_surface),
+            entry
+          ]));
+        }
         let importedReaderState = null;
-        if ([2, 3].includes(payload.schema_version)) {
+        if ([2, 3, 4].includes(payload.schema_version)) {
           const state = payload.reader_state;
           const storedSentenceChapterPositions = state?.sentence_chapter_positions;
           if (payload.source_file !== bookData?.source_file
@@ -3162,6 +3630,10 @@
           entry
         ]));
         saveMarkedGlosses();
+        if (importedGrammarAnalyses) {
+          grammarAnalyses = importedGrammarAnalyses;
+          saveGrammarAnalyses();
+        }
 
         if (importedReaderState) {
           activeIndex = importedReaderState.activeIndex;
