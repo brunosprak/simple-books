@@ -100,7 +100,7 @@ Switching modes restores the last position used in the destination mode. Switchi
 ## Marked glosses
 
 - Each interlinear chunk has two independent reasons: `★` for unknown or study-worthy vocabulary and `🎧` for a term that was difficult to recognize in sentence audio. A gloss may have either reason, both, or neither.
-- Every chunk ends with one uniform four-button study bar: `★ Palavra`, `🎧 Escuta`, `＋/✓ Gramática`, and `PT Tradução`. Vocabulary and listening toggle independently, and their active buttons are highlighted. The Japanese body is not an implicit control.
+- Every chunk ends with one uniform four-button study bar: `★ Palavra`, `🎧 Escuta`, `＋/✓ Gramática`, and `PT Tradução`. Vocabulary and listening toggle independently, and only their active buttons are highlighted; marking either reason does not change the chunk card's background or border. The Japanese body is not an implicit control.
 - The compact summary displays global totals as `★ vocabulary · 🎧 listening` and updates immediately.
 - Marked glosses persist in browser storage and are included in exported reader data with a `reasons` array.
 - Stored or imported glosses without `reasons` are treated as `vocabulary`, preserving all marks created before the two-reason model.
