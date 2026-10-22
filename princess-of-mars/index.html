@@ -1434,6 +1434,25 @@
         flex: 1.65;
       }
 
+      .sentence-primary-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.15rem;
+      }
+
+      .sentence-copy-button {
+        grid-row: 1;
+        justify-self: end;
+        margin: 0;
+        padding: 0.28rem 0.55rem;
+        font-size: 0.68rem;
+      }
+
+      .selected-sentence {
+        grid-row: 2;
+        width: 100%;
+      }
+
       .sentence-audio-speed {
         margin-left: 0;
       }
@@ -1776,7 +1795,7 @@
     let positionSaveFrame = null;
     let nextSentencePreviewFrame = null;
     const fontPercentages = [85, 100, 115, 130, 150];
-    const offlineVersion = "83af2a4c602012c5";
+    const offlineVersion = "d5a23d265d40428a";
     const defaultFontLevelIndex = 1;
     const minFontLevel = -defaultFontLevelIndex;
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
