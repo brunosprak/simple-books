@@ -22,6 +22,7 @@ The mode selector appears in the normal document flow and exposes three modes.
 ### Frases
 
 - Shows one Japanese sentence at a time with furigana, interlinear chunks, concise Portuguese glosses, and the full Portuguese translation.
+- A `Copiar` control beside the main Japanese text copies only the complete active sentence, without furigana readings or the gray preview of the following sentence, and briefly confirms success or failure.
 - Chunk glosses in Portuguese start visually hidden whenever the reader is opened, but their layout space is always reserved so chunks and surrounding text never move when translations are shown or hidden. Every chunk has a `PT Tradução` action in its four-button study bar that reveals or conceals only that chunk; its highlighted state indicates that the translation is visible. The `Mostrar traduções` control immediately above the chunks reveals all glosses in the current and subsequent sentence cards for the rest of that page session; while visible, it becomes `Ocultar traduções`.
 - The sentence/paragraph navigation and gloss import/export row appear in the normal document flow before the sentence content.
 - Previous and next controls move by sentence.
