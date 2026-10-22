@@ -908,19 +908,6 @@
       text-align: center;
     }
 
-    .chunk:focus-within {
-      border-color: var(--accent);
-    }
-
-    .chunk[data-vocabulary="true"] {
-      background: var(--accent-soft);
-      border-color: var(--accent);
-    }
-
-    .chunk[data-listening="true"] {
-      box-shadow: inset 0 -0.2rem 0 var(--accent);
-    }
-
     .chunk-main {
       display: inline-flex;
       min-width: 0;
@@ -967,6 +954,11 @@
     .chunk-grammar-toggle[aria-expanded="true"] {
       color: var(--accent);
       background: var(--accent-soft);
+    }
+
+    .chunk-reason[aria-pressed="true"] {
+      color: var(--paper);
+      background: var(--accent);
     }
 
     .chunk-action:disabled {
@@ -1795,7 +1787,7 @@
     let positionSaveFrame = null;
     let nextSentencePreviewFrame = null;
     const fontPercentages = [85, 100, 115, 130, 150];
-    const offlineVersion = "26ece5343c14c63d";
+    const offlineVersion = "53f8b0959e416688";
     const defaultFontLevelIndex = 1;
     const minFontLevel = -defaultFontLevelIndex;
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
@@ -4051,8 +4043,6 @@ ${chunkSurface}`;
         function updateChunkReasons() {
           const vocabularyMarked = hasGlossReason(surface, gloss, "vocabulary");
           const listeningMarked = hasGlossReason(surface, gloss, "listening");
-          chunk.dataset.vocabulary = String(vocabularyMarked);
-          chunk.dataset.listening = String(listeningMarked);
           vocabularyReason.setAttribute("aria-pressed", String(vocabularyMarked));
           listeningReason.setAttribute("aria-pressed", String(listeningMarked));
         }
