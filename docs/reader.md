@@ -22,7 +22,7 @@ The mode selector appears in the normal document flow and exposes three modes.
 ### Frases
 
 - Shows one Japanese sentence at a time with furigana, interlinear chunks, concise Portuguese glosses, and the full Portuguese translation.
-- Chunk glosses in Portuguese start visually hidden whenever the reader is opened, but their layout space is always reserved so chunks and surrounding text never move when translations are shown or hidden. The `Mostrar traduções` control immediately above the chunks reveals all glosses in the current and subsequent sentence cards for the rest of that page session; while visible, it becomes `Ocultar traduções`.
+- Chunk glosses in Portuguese start visually hidden whenever the reader is opened, but their layout space is always reserved so chunks and surrounding text never move when translations are shown or hidden. Every chunk has an explicit `Mostrar tradução`/`Ocultar tradução` control that affects only that chunk. The `Mostrar traduções` control immediately above the chunks reveals all glosses in the current and subsequent sentence cards for the rest of that page session; while visible, it becomes `Ocultar traduções`.
 - The sentence/paragraph navigation and gloss import/export row appear in the normal document flow before the sentence content.
 - Previous and next controls move by sentence.
 - When the current book declares audio metadata, a play/pause control and playback-speed selector appear for the active sentence. Books without audio metadata do not show an inactive player.
@@ -99,7 +99,7 @@ Switching modes restores the last position used in the destination mode. Switchi
 ## Marked glosses
 
 - Each interlinear chunk has two independent reasons: `★` for unknown or study-worthy vocabulary and `🎧` for a term that was difficult to recognize in sentence audio. A gloss may have either reason, both, or neither.
-- The two compact reason buttons on the right toggle vocabulary and listening independently. Clicking the main body does not change either reason; it controls the chunk's grammar analysis.
+- The two compact reason buttons on the right toggle vocabulary and listening independently. The Japanese body is not an implicit control: each chunk exposes separate, visibly labelled controls for its grammar analysis and Portuguese translation.
 - The compact summary displays global totals as `★ vocabulary · 🎧 listening` and updates immediately.
 - Marked glosses persist in browser storage and are included in exported reader data with a `reasons` array.
 - Stored or imported glosses without `reasons` are treated as `vocabulary`, preserving all marks created before the two-reason model.
@@ -109,11 +109,11 @@ Switching modes restores the last position used in the destination mode. Switchi
 
 ## On-demand grammar analyses
 
-- Clicking the main body of an interlinear chunk reveals its saved grammar analysis or, when none exists, asks for confirmation before making a request to the OpenAI Responses API. Canceling the confirmation performs no request and does not open the API-key dialog. Clicking an open chunk body collapses the analysis without deleting it.
+- Every interlinear chunk has an explicit grammar control. It reads `Gerar gramática` when no analysis exists, `Mostrar gramática` when a saved analysis is collapsed, and `Ocultar gramática` while the analysis is open. Generating asks for confirmation before making a request to the OpenAI Responses API. Canceling the confirmation performs no request and does not open the API-key dialog. Collapsing an analysis does not delete it.
 - The request uses `gpt-6-luna` with the complete Japanese sentence as syntactic context and the selected chunk as the target. The prompt asks for two to four concise, nonredundant grammar points in Portuguese and prevents an unnecessary full-sentence translation.
 - While a request is running, the chunk shows a loading message and prevents a duplicate request. Failures remain local to the chunk and can be retried.
 - Successful responses are rendered below the chunk with a larger font and a safe Markdown subset for headings, numbered or bulleted lists, bold, and emphasis. The renderer creates text and DOM elements directly and never inserts model output as executable HTML. Every chunk with a saved analysis starts collapsed and carries a compact `✓ Gramática` badge that remains visible whenever the panel is closed. Analyses persist per book in browser storage, and reopening one never requires another API call, confirmation, or configured key.
-- Every numbered or bulleted grammar topic has an independent checkbox. Newly generated and legacy topics start unchecked; checking or unchecking one updates browser storage immediately and does not affect the chunk's vocabulary or listening marks.
+- Every numbered or bulleted grammar topic has an independent checkbox. Newly generated and legacy topics start unchecked; checking or unchecking one updates browser storage immediately and does not affect the chunk's vocabulary or listening marks. When at least one topic is checked, the chunk badge becomes `✓ Gramática · N`; the total disappears again when the final topic is unchecked and is restored after navigation, reload, or import.
 - The top-level `🔑 API` control opens a dialog for saving, replacing, or deleting the reader's OpenAI API key. The key is stored in `localStorage`, sent directly from the browser to OpenAI, shared by readers on the same origin, and never added to backups, generated files, logs, or book data.
 - The key dialog warns that browser-side secret storage can be read by other scripts on the same origin and that API use may incur charges. After generation is confirmed, a missing key opens this dialog and resumes that chunk's request after a key is saved without asking for the same confirmation twice.
 
