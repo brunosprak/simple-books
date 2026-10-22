@@ -860,8 +860,8 @@
 
     .chunk {
       display: inline-grid;
-      min-width: 3rem;
-      grid-template-columns: minmax(0, 1fr) auto;
+      min-width: 12rem;
+      grid-template-columns: minmax(0, 1fr);
       overflow: hidden;
       background: color-mix(in srgb, var(--paper) 72%, transparent);
       color: var(--ink);
@@ -900,30 +900,57 @@
 
     .chunk-study-actions {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       border-top: 1px solid var(--rule);
       font-family: system-ui, sans-serif;
     }
 
-    .chunk-study-action {
+    .chunk-action {
+      display: flex;
       min-width: 0;
-      padding: 0.38rem 0.45rem;
-      color: var(--accent);
+      min-height: 3.15rem;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.12rem;
+      padding: 0.35rem 0.25rem;
+      color: var(--muted);
       background: transparent;
       border: 0;
-      font: inherit;
-      font-size: 0.62rem;
-      font-weight: 750;
-      line-height: 1.25;
+      font-family: inherit;
       cursor: pointer;
     }
 
-    .chunk-study-action + .chunk-study-action {
+    .chunk-action + .chunk-action {
       border-inline-start: 1px solid var(--rule);
     }
 
-    .chunk-study-action:hover {
+    .chunk-action:hover,
+    .chunk-action[aria-pressed="true"],
+    .chunk-grammar-toggle[aria-expanded="true"] {
+      color: var(--accent);
       background: var(--accent-soft);
+    }
+
+    .chunk-action:disabled {
+      cursor: wait;
+      opacity: 0.65;
+    }
+
+    .chunk-action-icon {
+      font-size: 0.9rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .chunk-action-label {
+      overflow: hidden;
+      max-width: 100%;
+      font-size: 0.52rem;
+      font-weight: 750;
+      line-height: 1.1;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .chunk-grammar-indicator {
@@ -942,38 +969,7 @@
       display: none;
     }
 
-    .chunk-reasons {
-      display: flex;
-      grid-column: 2;
-      grid-row: 1 / span 2;
-      flex-direction: column;
-      justify-content: center;
-      border-inline-start: 1px solid var(--rule);
-    }
-
-    .chunk-reason {
-      min-width: 2.15rem;
-      flex: 1;
-      padding: 0.3rem 0.35rem;
-      color: var(--muted);
-      background: transparent;
-      border: 0;
-      font: inherit;
-      font-size: 0.8em;
-      cursor: pointer;
-    }
-
-    .chunk-reason + .chunk-reason {
-      border-top: 1px solid var(--rule);
-    }
-
-    .chunk-reason[aria-pressed="true"] {
-      color: var(--ink);
-      background: var(--accent-soft);
-    }
-
-    .chunk-study-action:focus-visible,
-    .chunk-reason:focus-visible {
+    .chunk-action:focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: -2px;
     }
@@ -1280,7 +1276,7 @@
 
       .interlinear {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
         align-items: stretch;
         gap: 0.75rem;
       }
@@ -1736,7 +1732,7 @@
     let positionSaveFrame = null;
     let nextSentencePreviewFrame = null;
     const fontPercentages = [85, 100, 115, 130, 150];
-    const offlineVersion = "198081d414706ea7";
+    const offlineVersion = "d96f155c61f1be95";
     const defaultFontLevelIndex = 1;
     const minFontLevel = -defaultFontLevelIndex;
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
@@ -2923,7 +2919,7 @@ ${chunkSurface}`;
       grammarPanel.hidden = false;
       chunkButton.disabled = true;
       chunkButton.setAttribute("aria-expanded", "true");
-      chunkButton.textContent = "Gerando gramática…";
+      setChunkActionContent(chunkButton, "…", "Gerando");
       chunkButton.setAttribute("aria-label", `Gerando pontos gramaticais de ${chunkSurface}`);
       try {
         const analysis = await generateGrammarAnalysis(sentenceText, chunkSurface);
@@ -3738,6 +3734,17 @@ ${chunkSurface}`;
       }
     }
 
+    function setChunkActionContent(button, icon, label) {
+      const iconElement = document.createElement("span");
+      iconElement.className = "chunk-action-icon";
+      iconElement.textContent = icon;
+      iconElement.setAttribute("aria-hidden", "true");
+      const labelElement = document.createElement("span");
+      labelElement.className = "chunk-action-label";
+      labelElement.textContent = label;
+      button.replaceChildren(iconElement, labelElement);
+    }
+
     function updateChunkGrammarControl(chunkButton) {
       const hasGrammar = chunkButton.dataset.grammarAvailable === "true";
       const checkedTopics = Number(chunkButton.dataset.checkedGrammarTopics || 0);
@@ -3745,11 +3752,7 @@ ${chunkSurface}`;
         ? `, ${checkedTopics} ${checkedTopics === 1 ? "tópico marcado" : "tópicos marcados"}`
         : "";
       const isExpanded = chunkButton.getAttribute("aria-expanded") === "true";
-      chunkButton.textContent = isExpanded
-        ? "Ocultar gramática"
-        : hasGrammar
-          ? "Mostrar gramática"
-          : "Gerar gramática";
+      setChunkActionContent(chunkButton, hasGrammar ? "✓" : "＋", "Gramática");
       const action = isExpanded
         ? "Ocultar pontos gramaticais de"
         : hasGrammar
@@ -3768,7 +3771,7 @@ ${chunkSurface}`;
       gloss.classList.toggle("is-concealed", !visible);
       if (visible) gloss.removeAttribute("aria-hidden");
       else gloss.setAttribute("aria-hidden", "true");
-      translationButton.textContent = visible ? "Ocultar tradução" : "Mostrar tradução";
+      setChunkActionContent(translationButton, "PT", "Tradução");
       translationButton.setAttribute("aria-pressed", String(visible));
       translationButton.setAttribute(
         "aria-label",
@@ -3861,7 +3864,7 @@ ${chunkSurface}`;
         chunkMain.className = "chunk-main";
 
         const chunkButton = document.createElement("button");
-        chunkButton.className = "chunk-study-action chunk-grammar-toggle";
+        chunkButton.className = "chunk-action chunk-grammar-toggle";
         chunkButton.type = "button";
         chunkButton.dataset.surface = surface;
         chunkButton.dataset.grammarAvailable = "false";
@@ -3870,16 +3873,17 @@ ${chunkSurface}`;
         updateChunkGrammarControl(chunkButton);
 
         const translationButton = document.createElement("button");
-        translationButton.className = "chunk-study-action chunk-translation-toggle";
+        translationButton.className = "chunk-action chunk-translation-toggle";
         translationButton.type = "button";
         translationButton.dataset.surface = surface;
-        translationButton.textContent = "Mostrar tradução";
+        setChunkActionContent(translationButton, "PT", "Tradução");
         translationButton.setAttribute("aria-label", `Mostrar tradução de ${surface}`);
         translationButton.setAttribute("aria-pressed", "false");
 
         const studyActions = document.createElement("div");
         studyActions.className = "chunk-study-actions";
-        studyActions.append(chunkButton, translationButton);
+        studyActions.setAttribute("role", "group");
+        studyActions.setAttribute("aria-label", `Ações de estudo para ${surface}`);
 
         const japanese = document.createElement("span");
         japanese.className = "chunk-japanese";
@@ -3899,25 +3903,25 @@ ${chunkSurface}`;
         grammarIndicator.setAttribute("aria-hidden", "true");
         chunkMain.append(japanese, grammarIndicator, meaning);
 
-        const reasonControls = document.createElement("div");
-        reasonControls.className = "chunk-reasons";
-        reasonControls.setAttribute("role", "group");
-        reasonControls.setAttribute("aria-label", `Motivos para marcar ${surface}`);
-
         const vocabularyReason = document.createElement("button");
-        vocabularyReason.className = "chunk-reason";
+        vocabularyReason.className = "chunk-action chunk-reason";
         vocabularyReason.type = "button";
-        vocabularyReason.textContent = "★";
+        setChunkActionContent(vocabularyReason, "★", "Palavra");
         vocabularyReason.title = "Vocabulário";
         vocabularyReason.setAttribute("aria-label", `Marcar ${surface} como vocabulário`);
 
         const listeningReason = document.createElement("button");
-        listeningReason.className = "chunk-reason";
+        listeningReason.className = "chunk-action chunk-reason";
         listeningReason.type = "button";
-        listeningReason.textContent = "🎧";
+        setChunkActionContent(listeningReason, "🎧", "Escuta");
         listeningReason.title = "Dificuldade de escuta";
         listeningReason.setAttribute("aria-label", `Marcar ${surface} como dificuldade de escuta`);
-        reasonControls.append(vocabularyReason, listeningReason);
+        studyActions.append(
+          vocabularyReason,
+          listeningReason,
+          chunkButton,
+          translationButton
+        );
 
         const grammarPanel = document.createElement("div");
         grammarPanel.className = "chunk-grammar";
@@ -3957,7 +3961,7 @@ ${chunkSurface}`;
         vocabularyReason.addEventListener("click", () => toggleReason("vocabulary"));
         listeningReason.addEventListener("click", () => toggleReason("listening"));
         updateChunkReasons();
-        chunk.append(chunkMain, studyActions, reasonControls, grammarPanel);
+        chunk.append(chunkMain, studyActions, grammarPanel);
         interlinear.append(chunk);
         showStoredGrammarAnalysis(sentence.text, chunkIndex, surface, grammarPanel, chunkButton, false);
       });
