@@ -113,6 +113,7 @@ Switching modes restores the last position used in the destination mode. Switchi
 - The request uses `gpt-6-luna` with the complete Japanese sentence as syntactic context and the selected chunk as the target. The prompt asks for two to four concise, nonredundant grammar points in Portuguese and prevents an unnecessary full-sentence translation.
 - While a request is running, the chunk shows a loading message and prevents a duplicate request. Failures remain local to the chunk and can be retried.
 - Successful responses are rendered below the chunk with a larger font and a safe Markdown subset for headings, numbered or bulleted lists, bold, and emphasis. The renderer creates text and DOM elements directly and never inserts model output as executable HTML. Every chunk with a saved analysis starts collapsed and carries a compact `✓ Gramática` badge that remains visible whenever the panel is closed. Analyses persist per book in browser storage, and reopening one never requires another API call, confirmation, or configured key.
+- Every numbered or bulleted grammar topic has an independent checkbox. Newly generated and legacy topics start unchecked; checking or unchecking one updates browser storage immediately and does not affect the chunk's vocabulary or listening marks.
 - The top-level `🔑 API` control opens a dialog for saving, replacing, or deleting the reader's OpenAI API key. The key is stored in `localStorage`, sent directly from the browser to OpenAI, shared by readers on the same origin, and never added to backups, generated files, logs, or book data.
 - The key dialog warns that browser-side secret storage can be read by other scripts on the same origin and that API use may incur charges. After generation is confirmed, a missing key opens this dialog and resumes that chunk's request after a key is saved without asking for the same confirmation twice.
 
@@ -127,7 +128,7 @@ Version 4 contains:
 - `source_file`, identifying the book;
 - export timestamp;
 - marked glosses with one or both reasons (`vocabulary`, `listening`);
-- saved grammar analyses, identified by the complete sentence text, chunk index, and chunk surface;
+- saved grammar analyses, identified by the complete sentence text, chunk index, and chunk surface, including the zero-based indexes of checked topics in `checked_topics`;
 - active reading mode;
 - active sentence index;
 - the most recently read sentence index for every chapter;
@@ -136,6 +137,7 @@ Version 4 contains:
 - the independent positions for `Frases`, `Corrido`, and `Vertical`.
 
 Version 4 reader state and grammar analyses may be applied only when `source_file` matches the currently open book. Importing a version 4 backup replaces the saved grammar analyses for that book. The API key is deliberately excluded. The complete payload is validated before any gloss, grammar analysis, or reader state is changed, so a failed import is atomic.
+Grammar analyses exported before topic marking existed remain valid: a missing `checked_topics` field is normalized to an empty list, so every imported topic begins unchecked.
 
 ### Legacy compatibility
 

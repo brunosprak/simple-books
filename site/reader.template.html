@@ -1019,7 +1019,31 @@
       padding-inline-start: 1.35rem;
     }
 
-    .chunk-grammar li > p {
+    .chunk-grammar-topic-row {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 0.5rem;
+      align-items: start;
+    }
+
+    .chunk-grammar-topic-check {
+      width: 1rem;
+      height: 1rem;
+      margin: 0.2rem 0 0;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .chunk-grammar-topic-content {
+      min-width: 0;
+      border-radius: 0.25rem;
+    }
+
+    .chunk-grammar li.is-checked .chunk-grammar-topic-content {
+      background: color-mix(in srgb, var(--accent-soft) 72%, transparent);
+    }
+
+    .chunk-grammar-topic-content > p {
       margin-top: 0.2rem;
       color: var(--muted);
     }
@@ -2554,16 +2578,22 @@
     }
 
     function normalizeGrammarAnalysis(entry) {
+      const checkedTopics = entry?.checked_topics === undefined ? [] : entry.checked_topics;
       if (!entry || typeof entry.sentence_text !== "string" || !entry.sentence_text
         || !Number.isInteger(entry.chunk_index) || entry.chunk_index < 0
         || typeof entry.chunk_surface !== "string" || !entry.chunk_surface
         || typeof entry.analysis !== "string" || !entry.analysis.trim()
-        || entry.analysis.length > 20000) return null;
+        || entry.analysis.length > 20000
+        || !Array.isArray(checkedTopics)
+        || checkedTopics.some((topicIndex) => !Number.isInteger(topicIndex) || topicIndex < 0)) {
+        return null;
+      }
       return {
         sentence_text: entry.sentence_text,
         chunk_index: entry.chunk_index,
         chunk_surface: entry.chunk_surface,
-        analysis: entry.analysis.trim()
+        analysis: entry.analysis.trim(),
+        checked_topics: [...new Set(checkedTopics)].sort((left, right) => left - right)
       };
     }
 
@@ -2685,10 +2715,25 @@ ${chunkSurface}`;
       if (cursor < source.length) target.append(document.createTextNode(source.slice(cursor)));
     }
 
-    function renderGrammarAnalysis(target, markdown) {
+    function setGrammarTopicChecked(entry, topicIndex, checked) {
+      const checkedTopics = new Set(entry.checked_topics);
+      if (checked) checkedTopics.add(topicIndex);
+      else checkedTopics.delete(topicIndex);
+      entry.checked_topics = [...checkedTopics].sort((left, right) => left - right);
+      grammarAnalyses.set(
+        grammarAnalysisKey(entry.sentence_text, entry.chunk_index, entry.chunk_surface),
+        entry
+      );
+      saveGrammarAnalyses();
+    }
+
+    function renderGrammarAnalysis(target, markdown, entry) {
       target.replaceChildren();
       let activeList = null;
       let activeItem = null;
+      let activeItemContent = null;
+      let topicIndex = 0;
+      const checkedTopics = new Set(entry.checked_topics);
       markdown.split(/\r?\n/).forEach((line) => {
         const trimmed = line.trim();
         if (!trimmed) return;
@@ -2702,6 +2747,7 @@ ${chunkSurface}`;
           target.append(heading);
           activeList = null;
           activeItem = null;
+          activeItemContent = null;
           return;
         }
 
@@ -2714,14 +2760,36 @@ ${chunkSurface}`;
             target.append(activeList);
           }
           activeItem = document.createElement("li");
-          appendGrammarInline(activeItem, (numbered || bulleted)[1]);
-          activeList.append(activeItem);
+          const topicItem = activeItem;
+          const currentTopicIndex = topicIndex;
+          topicIndex += 1;
+          const topicRow = document.createElement("div");
+          topicRow.className = "chunk-grammar-topic-row";
+          const topicCheckbox = document.createElement("input");
+          topicCheckbox.className = "chunk-grammar-topic-check";
+          topicCheckbox.type = "checkbox";
+          topicCheckbox.checked = checkedTopics.has(currentTopicIndex);
+          topicCheckbox.setAttribute(
+            "aria-label",
+            `Tópico gramatical ${currentTopicIndex + 1}`
+          );
+          topicItem.classList.toggle("is-checked", topicCheckbox.checked);
+          topicCheckbox.addEventListener("change", () => {
+            topicItem.classList.toggle("is-checked", topicCheckbox.checked);
+            setGrammarTopicChecked(entry, currentTopicIndex, topicCheckbox.checked);
+          });
+          activeItemContent = document.createElement("div");
+          activeItemContent.className = "chunk-grammar-topic-content";
+          appendGrammarInline(activeItemContent, (numbered || bulleted)[1]);
+          topicRow.append(topicCheckbox, activeItemContent);
+          topicItem.append(topicRow);
+          activeList.append(topicItem);
           return;
         }
 
         const paragraph = document.createElement("p");
         appendGrammarInline(paragraph, headingText.replace(/^#{1,6}\s+/, ""));
-        if (activeItem) activeItem.append(paragraph);
+        if (activeItemContent) activeItemContent.append(paragraph);
         else target.append(paragraph);
       });
     }
@@ -2763,7 +2831,7 @@ ${chunkSurface}`;
       const stored = grammarAnalyses.get(key);
       if (!stored) return false;
       grammarPanel.classList.remove("is-error");
-      renderGrammarAnalysis(grammarPanel, stored.analysis);
+      renderGrammarAnalysis(grammarPanel, stored.analysis, stored);
       grammarPanel.hidden = !expanded;
       chunkButton.setAttribute("aria-expanded", String(expanded));
       markChunkGrammarAvailable(chunkButton);
@@ -2826,7 +2894,8 @@ ${chunkSurface}`;
           sentence_text: sentenceText,
           chunk_index: chunkIndex,
           chunk_surface: chunkSurface,
-          analysis
+          analysis,
+          checked_topics: []
         };
         grammarAnalyses.set(
           grammarAnalysisKey(sentenceText, chunkIndex, chunkSurface),
@@ -2834,7 +2903,7 @@ ${chunkSurface}`;
         );
         saveGrammarAnalyses();
         if (grammarPanel.isConnected) {
-          renderGrammarAnalysis(grammarPanel, analysis);
+          renderGrammarAnalysis(grammarPanel, analysis, entry);
           markChunkGrammarAvailable(chunkButton);
         }
       } catch (error) {
