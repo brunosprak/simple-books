@@ -95,6 +95,28 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('function showStoredGrammarAnalysis', first)
         self.assertIn('if (!stored) return false;', first)
         self.assertIn('showStoredGrammarAnalysis(sentence.text, chunkIndex, surface, grammarPanel, chunkButton);', first)
+        self.assertIn('function confirmGrammarGeneration', first)
+        self.assertIn('id="grammar-confirm-dialog"', first)
+        self.assertIn('id="grammar-confirm-submit"', first)
+        self.assertIn('return new Promise((resolve) => {', first)
+        self.assertIn('grammarConfirmDialog.returnValue === "confirm"', first)
+        self.assertIn('A frase e o chunk serão enviados à API da OpenAI.', first)
+        self.assertIn('generationConfirmed = false', first)
+        self.assertIn('if (!generationConfirmed && !await confirmGrammarGeneration(chunkSurface)) return;', first)
+        reveal_start = first.index('async function revealGrammarAnalysis')
+        confirmation_check = first.index(
+            'if (!generationConfirmed && !await confirmGrammarGeneration(chunkSurface)) return;',
+            reveal_start,
+        )
+        self.assertLess(confirmation_check, first.index('if (!openAiApiKey)', reveal_start))
+        self.assertLess(
+            confirmation_check,
+            first.index('const analysis = await generateGrammarAnalysis', reveal_start),
+        )
+        self.assertIn('chunkButton.dataset.grammarAvailable = "true"', first)
+        self.assertIn('grammarIndicator.textContent = "✓ Gramática"', first)
+        self.assertIn('grammarIndicator.hidden = true', first)
+        self.assertIn('markChunkGrammarAvailable(chunkButton);', first)
         self.assertIn('grammarAnalysisKey(sentenceText, chunkIndex, chunkSurface),\n          entry', first)
         self.assertNotIn('grammarAnalyses.set(key, entry)', first)
         self.assertIn('void revealGrammarAnalysis(sentence.text, chunkIndex, surface', first)

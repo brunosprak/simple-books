@@ -109,12 +109,12 @@ Switching modes restores the last position used in the destination mode. Switchi
 
 ## On-demand grammar analyses
 
-- Clicking the main body of an interlinear chunk reveals its saved grammar analysis or requests one from the OpenAI Responses API when none exists. Clicking an open chunk body collapses the analysis without deleting it.
+- Clicking the main body of an interlinear chunk reveals its saved grammar analysis or, when none exists, asks for confirmation before making a request to the OpenAI Responses API. Canceling the confirmation performs no request and does not open the API-key dialog. Clicking an open chunk body collapses the analysis without deleting it.
 - The request uses `gpt-6-luna` with the complete Japanese sentence as syntactic context and the selected chunk as the target. The prompt asks for two to four concise, nonredundant grammar points in Portuguese and prevents an unnecessary full-sentence translation.
 - While a request is running, the chunk shows a loading message and prevents a duplicate request. Failures remain local to the chunk and can be retried.
-- Successful responses are rendered below the chunk with a larger font and a safe Markdown subset for headings, numbered or bulleted lists, bold, and emphasis. The renderer creates text and DOM elements directly and never inserts model output as executable HTML. Analyses persist per book in browser storage; whenever a sentence card is loaded, every chunk with a saved analysis starts expanded, and reopening one never requires another API call or a configured key.
+- Successful responses are rendered below the chunk with a larger font and a safe Markdown subset for headings, numbered or bulleted lists, bold, and emphasis. The renderer creates text and DOM elements directly and never inserts model output as executable HTML. A compact `✓ Gramática` badge identifies every chunk with a saved analysis and remains visible when its panel is collapsed. Analyses persist per book in browser storage; whenever a sentence card is loaded, every chunk with a saved analysis starts expanded, and reopening one never requires another API call, confirmation, or configured key.
 - The top-level `🔑 API` control opens a dialog for saving, replacing, or deleting the reader's OpenAI API key. The key is stored in `localStorage`, sent directly from the browser to OpenAI, shared by readers on the same origin, and never added to backups, generated files, logs, or book data.
-- The key dialog warns that browser-side secret storage can be read by other scripts on the same origin and that API use may incur charges. Without a configured key, clicking a chunk opens this dialog and resumes that chunk's request after a key is saved.
+- The key dialog warns that browser-side secret storage can be read by other scripts on the same origin and that API use may incur charges. After generation is confirmed, a missing key opens this dialog and resumes that chunk's request after a key is saved without asking for the same confirmation twice.
 
 ## Import and export
 
