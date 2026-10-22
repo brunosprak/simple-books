@@ -1,6 +1,6 @@
 const OFFLINE_CACHE_PREFIX = "simple-ja-books-offline:v1:";
 const PWA_CACHE_PREFIX = "simple-ja-books-pwa:";
-const PWA_CACHE_NAME = `${PWA_CACHE_PREFIX}v3`;
+const PWA_CACHE_NAME = `${PWA_CACHE_PREFIX}v4`;
 const PWA_SHELL_URLS = [
   "./",
   "./index.html",
@@ -8,10 +8,13 @@ const PWA_SHELL_URLS = [
   "./books/princess-of-mars-ja.json",
   "./mary-beard-spqr/",
   "./books/mary-beard-spqr-ja.json",
-  "./manifest.webmanifest",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png",
-  "./icons/icon.svg"
+  "./manifest.webmanifest?v=2",
+  "./icons/icon-32.png?v=2",
+  "./icons/icon-180.png?v=2",
+  "./icons/icon-192.png?v=2",
+  "./icons/icon-512.png?v=2",
+  "./icons/icon-maskable-512.png?v=2",
+  "./icons/icon.svg?v=2"
 ];
 
 self.addEventListener("install", (event) => {
