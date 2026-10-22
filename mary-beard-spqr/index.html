@@ -896,7 +896,34 @@
       background: transparent;
       border: 0;
       font: inherit;
+    }
+
+    .chunk-study-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-top: 1px solid var(--rule);
+      font-family: system-ui, sans-serif;
+    }
+
+    .chunk-study-action {
+      min-width: 0;
+      padding: 0.38rem 0.45rem;
+      color: var(--accent);
+      background: transparent;
+      border: 0;
+      font: inherit;
+      font-size: 0.62rem;
+      font-weight: 750;
+      line-height: 1.25;
       cursor: pointer;
+    }
+
+    .chunk-study-action + .chunk-study-action {
+      border-inline-start: 1px solid var(--rule);
+    }
+
+    .chunk-study-action:hover {
+      background: var(--accent-soft);
     }
 
     .chunk-grammar-indicator {
@@ -917,6 +944,8 @@
 
     .chunk-reasons {
       display: flex;
+      grid-column: 2;
+      grid-row: 1 / span 2;
       flex-direction: column;
       justify-content: center;
       border-inline-start: 1px solid var(--rule);
@@ -943,7 +972,7 @@
       background: var(--accent-soft);
     }
 
-    .chunk-main:focus-visible,
+    .chunk-study-action:focus-visible,
     .chunk-reason:focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: -2px;
@@ -1707,7 +1736,7 @@
     let positionSaveFrame = null;
     let nextSentencePreviewFrame = null;
     const fontPercentages = [85, 100, 115, 130, 150];
-    const offlineVersion = "3e99562015e022c2";
+    const offlineVersion = "198081d414706ea7";
     const defaultFontLevelIndex = 1;
     const minFontLevel = -defaultFontLevelIndex;
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
@@ -2732,7 +2761,7 @@ ${chunkSurface}`;
       saveGrammarAnalyses();
     }
 
-    function renderGrammarAnalysis(target, markdown, entry) {
+    function renderGrammarAnalysis(target, markdown, entry, chunkButton) {
       target.replaceChildren();
       let activeList = null;
       let activeItem = null;
@@ -2782,6 +2811,7 @@ ${chunkSurface}`;
           topicCheckbox.addEventListener("change", () => {
             topicItem.classList.toggle("is-checked", topicCheckbox.checked);
             setGrammarTopicChecked(entry, currentTopicIndex, topicCheckbox.checked);
+            markChunkGrammarAvailable(chunkButton, entry);
           });
           activeItemContent = document.createElement("div");
           activeItemContent.className = "chunk-grammar-topic-content";
@@ -2836,10 +2866,10 @@ ${chunkSurface}`;
       const stored = grammarAnalyses.get(key);
       if (!stored) return false;
       grammarPanel.classList.remove("is-error");
-      renderGrammarAnalysis(grammarPanel, stored.analysis, stored);
+      renderGrammarAnalysis(grammarPanel, stored.analysis, stored, chunkButton);
       grammarPanel.hidden = !expanded;
       chunkButton.setAttribute("aria-expanded", String(expanded));
-      markChunkGrammarAvailable(chunkButton);
+      markChunkGrammarAvailable(chunkButton, stored);
       return true;
     }
 
@@ -2893,6 +2923,8 @@ ${chunkSurface}`;
       grammarPanel.hidden = false;
       chunkButton.disabled = true;
       chunkButton.setAttribute("aria-expanded", "true");
+      chunkButton.textContent = "Gerando gramática…";
+      chunkButton.setAttribute("aria-label", `Gerando pontos gramaticais de ${chunkSurface}`);
       try {
         const analysis = await generateGrammarAnalysis(sentenceText, chunkSurface);
         const entry = {
@@ -2908,8 +2940,8 @@ ${chunkSurface}`;
         );
         saveGrammarAnalyses();
         if (grammarPanel.isConnected) {
-          renderGrammarAnalysis(grammarPanel, analysis, entry);
-          markChunkGrammarAvailable(chunkButton);
+          renderGrammarAnalysis(grammarPanel, analysis, entry, chunkButton);
+          markChunkGrammarAvailable(chunkButton, entry);
         }
       } catch (error) {
         if (grammarPanel.isConnected) {
@@ -2919,7 +2951,10 @@ ${chunkSurface}`;
             : "Não foi possível gerar os pontos gramaticais.";
         }
       } finally {
-        if (chunkButton.isConnected) chunkButton.disabled = false;
+        if (chunkButton.isConnected) {
+          chunkButton.disabled = false;
+          updateChunkGrammarControl(chunkButton);
+        }
       }
     }
 
@@ -3703,37 +3738,69 @@ ${chunkSurface}`;
       }
     }
 
+    function updateChunkGrammarControl(chunkButton) {
+      const hasGrammar = chunkButton.dataset.grammarAvailable === "true";
+      const checkedTopics = Number(chunkButton.dataset.checkedGrammarTopics || 0);
+      const checkedStatus = checkedTopics > 0
+        ? `, ${checkedTopics} ${checkedTopics === 1 ? "tópico marcado" : "tópicos marcados"}`
+        : "";
+      const isExpanded = chunkButton.getAttribute("aria-expanded") === "true";
+      chunkButton.textContent = isExpanded
+        ? "Ocultar gramática"
+        : hasGrammar
+          ? "Mostrar gramática"
+          : "Gerar gramática";
+      const action = isExpanded
+        ? "Ocultar pontos gramaticais de"
+        : hasGrammar
+          ? "Mostrar pontos gramaticais salvos de"
+          : "Gerar pontos gramaticais de";
+      chunkButton.setAttribute(
+        "aria-label",
+        `${action} ${chunkButton.dataset.surface}${checkedStatus}`
+      );
+    }
+
+    function setChunkGlossVisibility(chunk, visible) {
+      const gloss = chunk.querySelector(".gloss");
+      const translationButton = chunk.querySelector(".chunk-translation-toggle");
+      if (!gloss || !translationButton) return;
+      gloss.classList.toggle("is-concealed", !visible);
+      if (visible) gloss.removeAttribute("aria-hidden");
+      else gloss.setAttribute("aria-hidden", "true");
+      translationButton.textContent = visible ? "Ocultar tradução" : "Mostrar tradução";
+      translationButton.setAttribute("aria-pressed", String(visible));
+      translationButton.setAttribute(
+        "aria-label",
+        `${visible ? "Ocultar" : "Mostrar"} tradução de ${translationButton.dataset.surface}`
+      );
+    }
+
     function updateChunkGlossVisibility() {
       chunkGlossToggle.textContent = chunkGlossesVisible
         ? "Ocultar traduções"
         : "Mostrar traduções";
       chunkGlossToggle.setAttribute("aria-pressed", String(chunkGlossesVisible));
-      interlinear.querySelectorAll(".gloss").forEach((gloss) => {
-        gloss.classList.toggle("is-concealed", !chunkGlossesVisible);
-        if (chunkGlossesVisible) gloss.removeAttribute("aria-hidden");
-        else gloss.setAttribute("aria-hidden", "true");
-      });
-      interlinear.querySelectorAll(".chunk-main").forEach((button) => {
-        const translation = chunkGlossesVisible ? `: ${button.dataset.gloss}` : "";
-        const hasGrammar = button.dataset.grammarAvailable === "true";
-        const isExpanded = button.getAttribute("aria-expanded") === "true";
-        const action = isExpanded
-          ? "Ocultar pontos gramaticais de"
-          : hasGrammar
-            ? "Mostrar pontos gramaticais salvos de"
-            : "Gerar pontos gramaticais de";
-        button.setAttribute(
-          "aria-label",
-          `${action} ${button.dataset.surface}${translation}`
-        );
+      interlinear.querySelectorAll(".chunk").forEach((chunk) => {
+        setChunkGlossVisibility(chunk, chunkGlossesVisible);
       });
     }
 
-    function markChunkGrammarAvailable(chunkButton) {
+    function markChunkGrammarAvailable(chunkButton, entry) {
+      const checkedTopics = entry.checked_topics.length;
       chunkButton.dataset.grammarAvailable = "true";
-      const indicator = chunkButton.querySelector(".chunk-grammar-indicator");
-      if (indicator) indicator.hidden = false;
-      updateChunkGlossVisibility();
+      chunkButton.dataset.checkedGrammarTopics = String(checkedTopics);
+      const indicator = chunkButton.closest(".chunk")?.querySelector(".chunk-grammar-indicator");
+      if (indicator) {
+        indicator.textContent = checkedTopics > 0
+          ? `✓ Gramática · ${checkedTopics}`
+          : "✓ Gramática";
+        indicator.title = checkedTopics > 0
+          ? `${checkedTopics} ${checkedTopics === 1 ? "tópico marcado" : "tópicos marcados"}`
+          : "Pontos gramaticais gerados";
+        indicator.hidden = false;
+      }
+      updateChunkGrammarControl(chunkButton);
     }
 
     chunkGlossToggle.addEventListener("click", () => {
@@ -3790,14 +3857,29 @@ ${chunkSurface}`;
         const chunk = document.createElement("div");
         chunk.className = "chunk";
 
+        const chunkMain = document.createElement("div");
+        chunkMain.className = "chunk-main";
+
         const chunkButton = document.createElement("button");
-        chunkButton.className = "chunk-main";
+        chunkButton.className = "chunk-study-action chunk-grammar-toggle";
         chunkButton.type = "button";
         chunkButton.dataset.surface = surface;
-        chunkButton.dataset.gloss = gloss;
         chunkButton.dataset.grammarAvailable = "false";
-        chunkButton.setAttribute("aria-label", `Gerar pontos gramaticais de ${surface}`);
+        chunkButton.dataset.checkedGrammarTopics = "0";
         chunkButton.setAttribute("aria-expanded", "false");
+        updateChunkGrammarControl(chunkButton);
+
+        const translationButton = document.createElement("button");
+        translationButton.className = "chunk-study-action chunk-translation-toggle";
+        translationButton.type = "button";
+        translationButton.dataset.surface = surface;
+        translationButton.textContent = "Mostrar tradução";
+        translationButton.setAttribute("aria-label", `Mostrar tradução de ${surface}`);
+        translationButton.setAttribute("aria-pressed", "false");
+
+        const studyActions = document.createElement("div");
+        studyActions.className = "chunk-study-actions";
+        studyActions.append(chunkButton, translationButton);
 
         const japanese = document.createElement("span");
         japanese.className = "chunk-japanese";
@@ -3815,7 +3897,7 @@ ${chunkSurface}`;
         grammarIndicator.title = "Pontos gramaticais gerados";
         grammarIndicator.hidden = true;
         grammarIndicator.setAttribute("aria-hidden", "true");
-        chunkButton.append(japanese, grammarIndicator, meaning);
+        chunkMain.append(japanese, grammarIndicator, meaning);
 
         const reasonControls = document.createElement("div");
         reasonControls.className = "chunk-reasons";
@@ -3863,15 +3945,19 @@ ${chunkSurface}`;
           if (!grammarPanel.hidden) {
             grammarPanel.hidden = true;
             chunkButton.setAttribute("aria-expanded", "false");
-            updateChunkGlossVisibility();
+            updateChunkGrammarControl(chunkButton);
             return;
           }
           void revealGrammarAnalysis(sentence.text, chunkIndex, surface, grammarPanel, chunkButton);
         });
+        translationButton.addEventListener("click", () => {
+          const visible = meaning.classList.contains("is-concealed");
+          setChunkGlossVisibility(chunk, visible);
+        });
         vocabularyReason.addEventListener("click", () => toggleReason("vocabulary"));
         listeningReason.addEventListener("click", () => toggleReason("listening"));
         updateChunkReasons();
-        chunk.append(chunkButton, reasonControls, grammarPanel);
+        chunk.append(chunkMain, studyActions, reasonControls, grammarPanel);
         interlinear.append(chunk);
         showStoredGrammarAnalysis(sentence.text, chunkIndex, surface, grammarPanel, chunkButton, false);
       });
