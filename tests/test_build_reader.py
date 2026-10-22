@@ -94,7 +94,10 @@ class BuildReaderTests(unittest.TestCase):
         self.assertNotIn('grammarPanel.innerHTML', first)
         self.assertIn('function showStoredGrammarAnalysis', first)
         self.assertIn('if (!stored) return false;', first)
-        self.assertIn('showStoredGrammarAnalysis(sentence.text, chunkIndex, surface, grammarPanel, chunkButton);', first)
+        self.assertIn('expanded = true', first)
+        self.assertIn('grammarPanel.hidden = !expanded', first)
+        self.assertIn('chunkButton.setAttribute("aria-expanded", String(expanded))', first)
+        self.assertIn('showStoredGrammarAnalysis(sentence.text, chunkIndex, surface, grammarPanel, chunkButton, false);', first)
         self.assertIn('function confirmGrammarGeneration', first)
         self.assertIn('id="grammar-confirm-dialog"', first)
         self.assertIn('id="grammar-confirm-submit"', first)
@@ -188,7 +191,7 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('Glosses em 0,5 s…', first)
         self.assertIn('Próxima frase em 0,5 s…', first)
         self.assertIn('audioConfig ? new Audio() : null', first)
-        self.assertIn('<link rel="manifest" href="../manifest.webmanifest">', first)
+        self.assertIn('<link rel="manifest" href="../manifest.webmanifest?v=2">', first)
         self.assertIn('<meta name="theme-color" content="#314f46">', first)
         self.assertIn('simple-ja-books:audio-speed:v1:', first)
         self.assertIn('function sentenceAudioPath', first)
@@ -240,7 +243,12 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn("touch-action: pan-y", first)
         self.assertIn('id="chunk-gloss-toggle"', first)
         self.assertIn('let chunkGlossesVisible = false', first)
-        self.assertIn('gloss.hidden = !chunkGlossesVisible', first)
+        self.assertIn('gloss.classList.toggle("is-concealed", !chunkGlossesVisible)', first)
+        self.assertIn('meaning.className = "gloss is-concealed"', first)
+        self.assertIn('meaning.setAttribute("aria-hidden", "true")', first)
+        self.assertIn('.gloss.is-concealed {', first)
+        self.assertIn('visibility: hidden;', first)
+        self.assertNotIn('gloss.hidden = !chunkGlossesVisible', first)
         self.assertIn('? "Ocultar traduções"', first)
         self.assertIn(': "Mostrar traduções"', first)
         self.assertIn('panel.addEventListener("pointerdown"', first)
@@ -511,9 +519,19 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('request.mode === "navigate"', worker)
         self.assertIn('self.registration.scope', worker)
         self.assertIn('const PWA_CACHE_PREFIX', worker)
+        self.assertIn('const PWA_CACHE_NAME = `${PWA_CACHE_PREFIX}v4`', worker)
         self.assertIn('const PWA_SHELL_URLS', worker)
         self.assertIn('cache.addAll(PWA_SHELL_URLS)', worker)
         self.assertIn('name.startsWith(PWA_CACHE_PREFIX)', worker)
+        for icon_url in (
+            '"./icons/icon-32.png?v=2"',
+            '"./icons/icon-180.png?v=2"',
+            '"./icons/icon-192.png?v=2"',
+            '"./icons/icon-512.png?v=2"',
+            '"./icons/icon-maskable-512.png?v=2"',
+            '"./icons/icon.svg?v=2"',
+        ):
+            self.assertIn(icon_url, worker)
 
     def test_pwa_manifest_icons_and_library_registration(self) -> None:
         manifest = json.loads(
@@ -527,15 +545,18 @@ class BuildReaderTests(unittest.TestCase):
             (icon["src"], icon["sizes"], icon["purpose"])
             for icon in manifest["icons"]
         ]
-        self.assertIn(("icons/icon-192.png", "192x192", "any"), icon_declarations)
-        self.assertIn(("icons/icon-512.png", "512x512", "maskable"), icon_declarations)
+        self.assertIn(("icons/icon-192.png?v=2", "192x192", "any"), icon_declarations)
+        self.assertIn(("icons/icon-maskable-512.png?v=2", "512x512", "maskable"), icon_declarations)
         self.assertEqual(len(manifest["shortcuts"]), 2)
 
         library = (ROOT / "site" / "index.html").read_text(encoding="utf-8")
-        self.assertIn('<link rel="manifest" href="manifest.webmanifest">', library)
+        self.assertIn('<link rel="manifest" href="manifest.webmanifest?v=2">', library)
+        self.assertIn('href="icons/icon.svg?v=2" type="image/svg+xml"', library)
+        self.assertIn('href="icons/icon-32.png?v=2" sizes="32x32"', library)
+        self.assertIn('href="icons/icon-180.png?v=2" sizes="180x180"', library)
         self.assertIn('navigator.serviceWorker.register("offline-sw.js", { updateViaCache: "none" })', library)
         self.assertIn('id="install-pwa"', library)
-        self.assertIn('src="icons/icon-192.png"', library)
+        self.assertIn('src="icons/icon-192.png?v=2"', library)
 
         worker = (ROOT / "site" / "offline-sw.js").read_text(encoding="utf-8")
         for shell_url in (
@@ -548,17 +569,26 @@ class BuildReaderTests(unittest.TestCase):
         ):
             self.assertIn(shell_url, worker)
 
-        for filename, expected_size in (("icon-192.png", 192), ("icon-512.png", 512)):
+        for filename, expected_size in (
+            ("icon-32.png", 32),
+            ("icon-180.png", 180),
+            ("icon-192.png", 192),
+            ("icon-512.png", 512),
+            ("icon-maskable-512.png", 512),
+        ):
             payload = (ROOT / "site" / "icons" / filename).read_bytes()
             self.assertEqual(payload[:8], b"\x89PNG\r\n\x1a\n")
             self.assertEqual(struct.unpack(">II", payload[16:24]), (expected_size, expected_size))
 
         for required in (
             '"../index.html"',
-            '"../manifest.webmanifest"',
-            '"../icons/icon-192.png"',
-            '"../icons/icon-512.png"',
-            '"../icons/icon.svg"',
+            '"../manifest.webmanifest?v=2"',
+            '"../icons/icon-32.png?v=2"',
+            '"../icons/icon-180.png?v=2"',
+            '"../icons/icon-192.png?v=2"',
+            '"../icons/icon-512.png?v=2"',
+            '"../icons/icon-maskable-512.png?v=2"',
+            '"../icons/icon.svg?v=2"',
             'updateViaCache: "none"',
             "await registration.update()",
         ):
