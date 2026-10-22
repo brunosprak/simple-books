@@ -732,8 +732,17 @@
       opacity: 0.35;
     }
 
-    .selected-sentence {
+    .sentence-primary-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
       margin: 0 0 0.65rem;
+    }
+
+    .selected-sentence {
+      min-width: 0;
+      flex: 1;
+      margin: 0;
       cursor: pointer;
       font-size: 1.35em;
       font-weight: 600;
@@ -776,6 +785,34 @@
 
     .selected-sentence.furigana-hidden rt {
       visibility: hidden;
+    }
+
+    .sentence-copy-button {
+      flex: none;
+      margin-top: 0.65rem;
+      padding: 0.35rem 0.65rem;
+      color: var(--accent);
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font-family: system-ui, sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .sentence-copy-button:hover,
+    .sentence-copy-button:focus-visible {
+      color: var(--paper);
+      background: var(--accent);
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    .sentence-copy-button:disabled {
+      cursor: wait;
+      opacity: 0.65;
     }
 
     .sentence-translation-row {
@@ -1267,10 +1304,13 @@
         min-width: 7rem;
       }
 
-      .selected-sentence {
+      .sentence-primary-row {
         margin-bottom: 1.5rem;
         padding: 0.75rem 0 1.75rem;
         border-bottom: 1px solid var(--rule);
+      }
+
+      .selected-sentence {
         line-height: 2.7;
       }
 
@@ -1538,7 +1578,10 @@
             <input id="gloss-import-file" type="file" accept="application/json,.json" hidden>
           </div>
         </div>
-        <p class="selected-sentence" id="selected-sentence" lang="ja" role="button" tabindex="0" aria-label="Alternar furigana" aria-pressed="true"></p>
+        <div class="sentence-primary-row">
+          <p class="selected-sentence" id="selected-sentence" lang="ja" role="button" tabindex="0" aria-label="Alternar furigana" aria-pressed="true"></p>
+          <button class="sentence-copy-button" id="sentence-copy" type="button" aria-label="Copiar frase japonesa" aria-live="polite">⧉ Copiar</button>
+        </div>
         <div class="chunk-display-controls">
           <button class="chunk-gloss-toggle" id="chunk-gloss-toggle" type="button" aria-pressed="false">Mostrar traduções</button>
         </div>
@@ -1620,6 +1663,7 @@
     const panel = document.querySelector("#study-panel");
     const label = document.querySelector("#study-label");
     const selectedSentence = document.querySelector("#selected-sentence");
+    const sentenceCopy = document.querySelector("#sentence-copy");
     const sentenceTranslation = document.querySelector("#sentence-translation");
     const translationSpeak = document.querySelector("#translation-speak");
     const chunkGlossToggle = document.querySelector("#chunk-gloss-toggle");
@@ -1732,7 +1776,7 @@
     let positionSaveFrame = null;
     let nextSentencePreviewFrame = null;
     const fontPercentages = [85, 100, 115, 130, 150];
-    const offlineVersion = "8b7600237872e2da";
+    const offlineVersion = "83af2a4c602012c5";
     const defaultFontLevelIndex = 1;
     const minFontLevel = -defaultFontLevelIndex;
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
@@ -3811,9 +3855,63 @@ ${chunkSurface}`;
       updateChunkGlossVisibility();
     });
 
+    let sentenceCopyResetTimer = null;
+
+    function resetSentenceCopyButton() {
+      if (sentenceCopyResetTimer !== null) {
+        clearTimeout(sentenceCopyResetTimer);
+        sentenceCopyResetTimer = null;
+      }
+      sentenceCopy.disabled = false;
+      sentenceCopy.textContent = "⧉ Copiar";
+      sentenceCopy.setAttribute("aria-label", "Copiar frase japonesa");
+    }
+
+    async function writeSentenceToClipboard(text) {
+      if (navigator.clipboard?.writeText) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return true;
+        } catch (_error) {
+          // Fall through to the legacy copy path when clipboard permission is denied.
+        }
+      }
+
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.setAttribute("aria-hidden", "true");
+      textarea.style.cssText = "width:1px;height:1px;padding:0;border:0;opacity:0";
+      document.body.append(textarea);
+      textarea.select();
+      let copied = false;
+      try {
+        copied = document.execCommand("copy");
+      } catch (_error) {
+        copied = false;
+      }
+      textarea.remove();
+      return copied;
+    }
+
+    async function copyActiveSentence() {
+      const sentenceText = sentences[activeIndex]?.text;
+      if (!sentenceText) return;
+      sentenceCopy.disabled = true;
+      const copied = await writeSentenceToClipboard(sentenceText);
+      sentenceCopy.disabled = false;
+      sentenceCopy.textContent = copied ? "✓ Copiado" : "Não copiado";
+      sentenceCopy.setAttribute(
+        "aria-label",
+        copied ? "Frase japonesa copiada" : "Não foi possível copiar a frase japonesa"
+      );
+      sentenceCopyResetTimer = setTimeout(resetSentenceCopyButton, 1800);
+    }
+
     function renderCard(index) {
       stopSentenceAudio();
       stopBrowserSpeech();
+      resetSentenceCopyButton();
       activeIndex = index;
       saveActiveIndex();
       const sentence = sentences[activeIndex];
@@ -4184,6 +4282,7 @@ ${chunkSurface}`;
     }
 
     furiganaToggle.addEventListener("click", toggleFurigana);
+    sentenceCopy.addEventListener("click", copyActiveSentence);
     selectedSentence.addEventListener("click", toggleFurigana);
     selectedSentence.addEventListener("keydown", (event) => {
       if (event.key !== "Enter" && event.key !== " ") return;
