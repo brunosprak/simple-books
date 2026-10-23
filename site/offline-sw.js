@@ -1,6 +1,6 @@
 const OFFLINE_CACHE_PREFIX = "simple-ja-books-offline:v1:";
 const PWA_CACHE_PREFIX = "simple-ja-books-pwa:";
-const PWA_CACHE_NAME = `${PWA_CACHE_PREFIX}v9`;
+const PWA_CACHE_NAME = `${PWA_CACHE_PREFIX}v10`;
 const PWA_SHELL_URLS = [
   "./",
   "./index.html",
