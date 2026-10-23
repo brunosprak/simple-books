@@ -18,10 +18,11 @@ This document defines the user-visible behavior and compatibility requirements o
 ## Editable pseudobook
 
 - The library includes `RPG`, an initially empty pseudobook whose canonical JSON sets `page.editable` to `true`. Unlike ordinary books, an editable book may begin with no chapters and its chapters may temporarily contain no paragraphs.
-- Its construction panel always remains available. The reader can add a locally named chapter without an API request, then choose a chapter and submit one Japanese paragraph at a time.
+- Its construction panel always remains available. `Adicionar capítulo` and `Gerenciar parágrafos` are collapsed curtains by default and open only on demand. The reader can add a locally named chapter without an API request, then choose a chapter and submit one Japanese paragraph at a time.
 - Adding a paragraph explicitly calls the OpenAI Responses API and may incur charges. It uses a strict Structured Outputs schema to divide the original paragraph into complete Japanese sentences and minimal chunks and to add each chunk's reading and concise Portuguese gloss plus each sentence's natural Portuguese translation.
 - The browser accepts the generated paragraph only when every sentence is nonempty, every chunk is valid, no chunk consists only of punctuation, the ordered chunk surfaces reproduce their sentence exactly, and the ordered sentences reproduce the submitted paragraph exactly. A failed request or validation does not partially alter the book.
 - Chapters and generated paragraphs are stored in `localStorage`, scoped to this pseudobook. They are personal browser data: they are not written back to the static public JSON and do not travel to another browser unless a future dedicated export is provided.
+- `Gerenciar parágrafos` also lists every saved paragraph with its chapter, ordinal, and text preview. Deleting the selected paragraph requires confirmation, removes only that paragraph, resets stale navigation positions, and removes or reindexes sentence-indexed incremental analyses while preserving unrelated chapter content.
 - The pseudobook has no sentence audio and hides offline-book download controls. As soon as it contains a generated paragraph, it exposes the same reading modes, chunks, incremental reading, translation, study marking, import/export, and API-assisted analyses as a normal book.
 
 ## Reading modes
@@ -101,6 +102,7 @@ Switching modes restores the last position used in the destination mode. Switchi
 
 - Source paragraph boundaries remain visible in all reading modes.
 - A chunk represents a lexical or grammatical study unit and never consists only of punctuation.
+- Particles are not standalone chunks. Case, topic, quotation, and similar particles attach to the preceding word or short phrase whose role they mark, such as `彼女が`, `本を`, and `学校に`; compact inflectional and auxiliary material likewise remains with its predicate when splitting it would create merely morphological fragments.
 - Adjacent or sentence-final punctuation belongs to the preceding chunk's surface and reading. It does not receive a separate gloss.
 - The ordered concatenation of chunk surfaces, allowing only deliberately uncovered formatting gaps accepted by the validator, reproduces the Japanese sentence text.
 
