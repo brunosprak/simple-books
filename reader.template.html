@@ -3703,9 +3703,12 @@ Objetivo pedagógico:
 Regras para steps:
 - Produza exatamente uma etapa para cada chunk fornecido, na mesma ordem. Não una, divida, omita nem reordene chunks.
 - Não devolva o texto nem a leitura dos chunks: eles serão associados pelo sistema de forma determinística.
-- interpretation explica em português somente a contribuição nova do chunk daquela etapa.
-- Não repita a interpretação dos chunks anteriores. Pode começar com reticências quando ajudar a mostrar a continuação.
-- A interpretação pode ser provisória quando uma relação ainda estiver aberta.
+- interpretation deve ser uma tradução parcial autêntica do novo chunk: escreva o fragmento em português como parte da própria frase, não como explicação do processo de leitura.
+- Não use metalinguagem. São proibidas formulações como "esse referente", "a descrição se amplia", "trata-se de", "o trecho indica", "aqui aparece", "permanece em aberto" ou comentários sobre o que a frase está fazendo.
+- Não repita a tradução dos chunks anteriores. Pode começar ou terminar com reticências para mostrar que o fragmento se liga ao que veio antes ou ainda será completado.
+- Quando o núcleo ou referente ainda estiver oculto e for impossível traduzir sem ele, você pode acrescentar um substantivo ou pronome genérico que esteja apenas implícito, como "algo...", "alguém...", "uma coisa..." ou "um ser...". Isso serve somente para tornar o fragmento compreensível em português: não invente uma identidade ou informação específica e não explique por que a referência é vaga.
+- Preserve o tom da frase e prefira um fragmento curto, fluente e diretamente legível. A interpretação pode ser provisória, mas deve sempre soar como tradução, nunca como análise.
+- Exemplos de estilo: para その巨大で恐ろしい、, escreva "algo enorme e aterrorizante..." ou "aquele ser enorme e aterrorizante...", não "esse referente é apresentado como enorme e aterrorizante"; para 憎しみと復讐と死の化身に, escreva "...encarnação do ódio, da vingança e da morte...", não "a descrição se amplia: trata-se de uma encarnação...".
 - Nunca antecipe na interpretação uma palavra, núcleo nominal, predicado, referente ou informação ainda oculta.
 - grammar_points contém somente os pontos mais úteis para processar o novo segmento nesta etapa, de zero a cinco itens.
 - Cada ponto tem um título com a expressão japonesa relevante já revelada e uma explicação objetiva em português.
