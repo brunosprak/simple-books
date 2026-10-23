@@ -41,6 +41,15 @@
       text-rendering: optimizeLegibility;
     }
 
+    .reading-mode-switch[hidden],
+    .reader-controls[hidden],
+    .offline-downloads[hidden],
+    .study-hint[hidden],
+    .study-panel[hidden],
+    .chapter-reader[hidden] {
+      display: none;
+    }
+
     main {
       width: min(100% - 2.5rem, 45rem);
       margin: 0 auto;
@@ -631,6 +640,87 @@
 
     .sentence-study-panel[hidden] {
       display: none;
+    }
+
+    .editable-book-panel {
+      display: grid;
+      gap: 1rem;
+      margin: 1rem 0 1.35rem;
+      padding: 1rem;
+      background: color-mix(in srgb, var(--panel) 86%, transparent);
+      border: 1px solid var(--rule);
+      border-radius: 0.75rem;
+      font-family: system-ui, sans-serif;
+    }
+
+    .editable-book-panel[hidden],
+    .editable-paragraph-tools[hidden] {
+      display: none;
+    }
+
+    .editable-book-panel h3,
+    .editable-book-panel p {
+      margin: 0;
+    }
+
+    .editable-book-form,
+    .editable-paragraph-tools {
+      display: grid;
+      gap: 0.65rem;
+    }
+
+    .editable-book-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 0.55rem;
+    }
+
+    .editable-book-input,
+    .editable-book-select,
+    .editable-book-textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0.7rem 0.8rem;
+      color: var(--ink);
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      border-radius: 0.5rem;
+      font: inherit;
+    }
+
+    .editable-book-textarea {
+      min-height: 9rem;
+      resize: vertical;
+      font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+      line-height: 1.6;
+    }
+
+    .editable-book-action {
+      min-height: 2.6rem;
+      padding: 0.55rem 0.9rem;
+      color: var(--paper);
+      background: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .editable-book-action:disabled {
+      cursor: wait;
+      opacity: 0.55;
+    }
+
+    .editable-book-note,
+    .editable-book-status {
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+
+    .editable-book-status.is-error {
+      color: var(--danger);
     }
 
     .chunk-view-controls {
@@ -1780,6 +1870,10 @@
       .sentence-audio-speed {
         margin-left: 0;
       }
+
+      .editable-book-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
     }
 
     @media (prefers-color-scheme: dark) {
@@ -1820,7 +1914,7 @@
     <dialog class="api-key-dialog" id="api-key-dialog" aria-labelledby="api-key-title">
       <form class="api-key-form" id="api-key-form" method="dialog">
         <h2 id="api-key-title">Chave da API da OpenAI</h2>
-        <p class="api-key-description">A chave permite gerar pontos gramaticais, listas de vocabulário e leituras incrementais.</p>
+        <p class="api-key-description">A chave permite gerar pontos gramaticais, listas de vocabulário, leituras incrementais e parágrafos estruturados.</p>
         <p class="api-key-warning">A chave será guardada no localStorage deste navegador e enviada diretamente à OpenAI. Outros scripts executados nesta origem podem acessá-la. O uso da API pode gerar cobranças.</p>
         <label class="api-key-label" for="api-key-input">
           Chave secreta
@@ -1871,7 +1965,27 @@
     <article>
       <h2><select class="chapter-select" id="chapter-select" aria-label="Selecionar capítulo"><option>Capítulo</option></select></h2>
 
-      <nav class="reading-mode-switch" aria-label="Modo de leitura">
+      <section class="editable-book-panel" id="editable-book-panel" aria-labelledby="editable-book-title" hidden>
+        <h3 id="editable-book-title">Construir pseudolivro</h3>
+        <p class="editable-book-status" id="editable-book-status" aria-live="polite"></p>
+        <form class="editable-book-form" id="editable-chapter-form">
+          <label for="editable-chapter-title">Novo capítulo</label>
+          <div class="editable-book-row">
+            <input class="editable-book-input" id="editable-chapter-title" type="text" maxlength="120" autocomplete="off" placeholder="Ex.: Capítulo 1" required>
+            <button class="editable-book-action" type="submit">Adicionar capítulo</button>
+          </div>
+        </form>
+        <div class="editable-paragraph-tools" id="editable-paragraph-tools" hidden>
+          <label for="editable-chapter-target">Adicionar parágrafo ao capítulo</label>
+          <select class="editable-book-select" id="editable-chapter-target"></select>
+          <label for="editable-paragraph-text">Parágrafo em japonês</label>
+          <textarea class="editable-book-textarea" id="editable-paragraph-text" maxlength="12000" placeholder="Cole aqui um parágrafo japonês."></textarea>
+          <p class="editable-book-note">A API dividirá o parágrafo em frases e chunks, acrescentará leituras, glosses e traduções. Esta ação pode gerar cobrança.</p>
+          <button class="editable-book-action" id="editable-paragraph-generate" type="button">Gerar e adicionar parágrafo</button>
+        </div>
+      </section>
+
+      <nav class="reading-mode-switch" id="reading-mode-switch" aria-label="Modo de leitura">
         <button class="reading-mode-button" type="button" data-reading-mode="sentence" aria-pressed="true">Frases</button>
         <button class="reading-mode-button" type="button" data-reading-mode="continuous" aria-pressed="false">Corrido</button>
         <button class="reading-mode-button" type="button" data-reading-mode="vertical" aria-pressed="false">Vertical</button>
@@ -1989,14 +2103,14 @@
       </section>
     </article>
 
-    <div class="reader-controls" aria-label="Controles de tamanho do texto">
+    <div class="reader-controls" id="reader-controls" aria-label="Controles de tamanho do texto">
       <span class="reader-controls-label">文字サイズ</span>
       <button class="font-button" id="font-decrease" type="button" aria-label="Diminuir o texto japonês">A−</button>
       <output class="font-level" id="font-level" aria-live="polite">100%</output>
       <button class="font-button" id="font-increase" type="button" aria-label="Aumentar o texto japonês">A＋</button>
     </div>
 
-    <section class="offline-downloads" aria-labelledby="offline-title">
+    <section class="offline-downloads" id="offline-downloads" aria-labelledby="offline-title">
       <h2 id="offline-title">Leitura offline</h2>
       <p class="offline-description">Salve os textos e os áudios Nise neste navegador. As vozes de síntese dependem do dispositivo.</p>
       <div class="offline-actions">
@@ -2045,6 +2159,17 @@
     const incrementalConfirmTitle = document.querySelector("#incremental-confirm-title");
     const incrementalConfirmDescription = document.querySelector("#incremental-confirm-description");
     const incrementalConfirmSubmit = document.querySelector("#incremental-confirm-submit");
+    const editableBookPanel = document.querySelector("#editable-book-panel");
+    const editableBookStatus = document.querySelector("#editable-book-status");
+    const editableChapterForm = document.querySelector("#editable-chapter-form");
+    const editableChapterTitle = document.querySelector("#editable-chapter-title");
+    const editableParagraphTools = document.querySelector("#editable-paragraph-tools");
+    const editableChapterTarget = document.querySelector("#editable-chapter-target");
+    const editableParagraphText = document.querySelector("#editable-paragraph-text");
+    const editableParagraphGenerate = document.querySelector("#editable-paragraph-generate");
+    const readingModeSwitch = document.querySelector("#reading-mode-switch");
+    const readerControls = document.querySelector("#reader-controls");
+    const offlineDownloads = document.querySelector("#offline-downloads");
     const panel = document.querySelector("#study-panel");
     const label = document.querySelector("#study-label");
     const selectedSentence = document.querySelector("#selected-sentence");
@@ -2116,6 +2241,61 @@
       document.querySelector("#study-hint").textContent = bookData.page.study_hint;
       document.querySelector("#page-footer").textContent = bookData.page.footer;
     }
+    const editableBook = bookData?.page?.editable === true;
+    const editableBookStorageKey = `simple-ja-books:editable-book:v1:${bookData?.source_file || location.pathname}`;
+
+    function normalizedEditableSentence(sentence) {
+      if (!sentence || typeof sentence.text !== "string" || !sentence.text
+        || typeof sentence.pt !== "string" || !sentence.pt
+        || !Array.isArray(sentence.chunks) || !sentence.chunks.length) return null;
+      let cursor = 0;
+      const chunks = [];
+      for (const chunk of sentence.chunks) {
+        if (!Array.isArray(chunk) || chunk.length !== 3
+          || chunk.some((value) => typeof value !== "string" || !value)) return null;
+        const [surface, reading, gloss] = chunk;
+        if (/^[\p{P}\p{S}\s]+$/u.test(surface)) return null;
+        const start = sentence.text.indexOf(surface, cursor);
+        if (start < 0 || !/^[\s、。！？…—―「」『』（）・]*$/u.test(
+          sentence.text.slice(cursor, start)
+        )) return null;
+        cursor = start + surface.length;
+        chunks.push([surface, reading, gloss]);
+      }
+      if (!/^[\s、。！？…—―「」『』（）・]*$/u.test(sentence.text.slice(cursor))) return null;
+      if (chunks.map(([surface]) => surface).join("") !== sentence.text) return null;
+      return { text: sentence.text, pt: sentence.pt, chunks };
+    }
+
+    function normalizedEditableChapters(value) {
+      if (!Array.isArray(value) || value.length > 200) return null;
+      const normalized = [];
+      for (const chapter of value) {
+        if (!chapter || typeof chapter.title !== "string" || !chapter.title.trim()
+          || chapter.title.length > 120 || !Array.isArray(chapter.paragraphs)
+          || chapter.paragraphs.length > 2000) return null;
+        const paragraphs = [];
+        for (const paragraph of chapter.paragraphs) {
+          if (!Array.isArray(paragraph) || !paragraph.length || paragraph.length > 100) return null;
+          const sentencesInParagraph = paragraph.map(normalizedEditableSentence);
+          if (sentencesInParagraph.some((sentence) => !sentence)) return null;
+          paragraphs.push(sentencesInParagraph);
+        }
+        normalized.push({ title: chapter.title.trim(), paragraphs });
+      }
+      return normalized;
+    }
+
+    if (editableBook) {
+      try {
+        const storedChapters = normalizedEditableChapters(
+          JSON.parse(localStorage.getItem(editableBookStorageKey) || "[]")
+        );
+        if (storedChapters) chapters.splice(0, chapters.length, ...storedChapters);
+      } catch (_error) {
+        // Invalid local content is ignored; the canonical empty book remains available.
+      }
+    }
     const chapterSentenceStarts = [];
     const chapterParagraphStarts = [];
     const chapterParagraphCounts = [];
@@ -2142,12 +2322,13 @@
       const option = document.createElement("option");
       option.value = String(index);
       option.textContent = chapter.title;
+      option.disabled = !chapter.paragraphs.some((paragraph) => paragraph.length);
       return option;
     }));
     const storageScope = bookData?.source_file || location.pathname;
     const openAiApiKeyStorageKey = "simple-ja-books:openai-api-key:v1";
     const grammarAnalysesStorageKey = `simple-ja-books:grammar-analyses:v1:${storageScope}`;
-    const vocabularyAnalysesStorageKey = `simple-ja-books:vocabulary-analyses:v2:${storageScope}`;
+    const vocabularyAnalysesStorageKey = `simple-ja-books:vocabulary-analyses:v3:${storageScope}`;
     const incrementalAnalysesStorageKey = `simple-ja-books:incremental-analyses:v2:${storageScope}`;
     const sentenceStudyTabStorageKey = `simple-ja-books:sentence-study-tab:v1:${storageScope}`;
     const grammarModel = "gpt-6-luna";
@@ -2162,6 +2343,7 @@
       "adverb",
       "idiom"
     ];
+    const vocabularyJlptLevels = ["N5", "N4", "N3", "N2", "N1", "Acima de N1"];
     const vocabularyPartLabels = {
       noun: "substantivo",
       verb: "verbo",
@@ -2198,7 +2380,7 @@
     let positionSaveFrame = null;
     let nextSentencePreviewFrame = null;
     const fontPercentages = [85, 100, 115, 130, 150];
-    const offlineVersion = "0e12ba47c70dc8e6";
+    const offlineVersion = "9363725f0178cd6a";
     const defaultFontLevelIndex = 1;
     const minFontLevel = -defaultFontLevelIndex;
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
@@ -3078,6 +3260,199 @@
     });
     updateApiKeyButton();
 
+    function saveEditableBookChapters() {
+      if (!editableBook) return;
+      localStorage.setItem(editableBookStorageKey, JSON.stringify(chapters));
+    }
+
+    function setEditableBookStatus(message, isError = false) {
+      editableBookStatus.textContent = message;
+      editableBookStatus.classList.toggle("is-error", isError);
+    }
+
+    function editableParagraphPrompt(paragraphText) {
+      return `Estruture o parágrafo japonês abaixo para um leitor de japonês com glosses em português.
+
+Regras obrigatórias:
+- Preserve exatamente todos os caracteres e a ordem do parágrafo original.
+- Divida o parágrafo em frases naturais. A concatenação de todos os campos text deve reproduzir exatamente o parágrafo recebido.
+- Em pt, dê uma tradução natural e completa da respectiva frase em português do Brasil.
+- Divida cada frase em chunks pequenos e úteis: normalmente uma palavra de conteúdo, um composto curto ou uma construção gramatical compacta.
+- A concatenação exata dos campos surface de todos os chunks deve reproduzir a frase inteira, sem lacunas.
+- Nunca crie um chunk composto somente de pontuação. Anexe pontuação ao chunk lexical ou gramatical anterior em surface e reading.
+- Em reading, forneça a leitura completa de surface, usando hiragana para kanji e preservando kana, espaços e pontuação necessários ao alinhamento de furigana.
+- Em gloss, escreva uma pista curta em português, preferencialmente de uma a três palavras e no máximo quatro.
+- Não omita, resuma, corrija, romanize nem acrescente conteúdo japonês.
+
+Parágrafo:
+${paragraphText}`;
+    }
+
+    async function generateEditableParagraph(paragraphText) {
+      const response = await fetch("https://api.openai.com/v1/responses", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${openAiApiKey}`
+        },
+        body: JSON.stringify({
+          model: grammarModel,
+          reasoning: { effort: "low" },
+          max_output_tokens: 8000,
+          store: false,
+          input: editableParagraphPrompt(paragraphText),
+          text: {
+            format: {
+              type: "json_schema",
+              name: "editable_book_paragraph",
+              strict: true,
+              schema: {
+                type: "object",
+                properties: {
+                  sentences: {
+                    type: "array",
+                    minItems: 1,
+                    maxItems: 100,
+                    items: {
+                      type: "object",
+                      properties: {
+                        text: { type: "string" },
+                        pt: { type: "string" },
+                        chunks: {
+                          type: "array",
+                          minItems: 1,
+                          maxItems: 100,
+                          items: {
+                            type: "object",
+                            properties: {
+                              surface: { type: "string" },
+                              reading: { type: "string" },
+                              gloss: { type: "string" }
+                            },
+                            required: ["surface", "reading", "gloss"],
+                            additionalProperties: false
+                          }
+                        }
+                      },
+                      required: ["text", "pt", "chunks"],
+                      additionalProperties: false
+                    }
+                  }
+                },
+                required: ["sentences"],
+                additionalProperties: false
+              }
+            }
+          }
+        })
+      });
+      if (!response.ok) {
+        if (response.status === 401) throw new Error("Chave rejeitada. Abra 🔑 API e confira a chave.");
+        if (response.status === 429) throw new Error("O limite da API foi atingido. Tente novamente mais tarde.");
+        throw new Error("A OpenAI não conseguiu estruturar o parágrafo agora.");
+      }
+      const output = responseOutputText(await response.json());
+      if (!output) throw new Error("A OpenAI não retornou o parágrafo estruturado.");
+      let parsed;
+      try {
+        parsed = JSON.parse(output);
+      } catch (_error) {
+        throw new Error("A OpenAI retornou um parágrafo inválido.");
+      }
+      if (!Array.isArray(parsed?.sentences) || !parsed.sentences.length) {
+        throw new Error("A OpenAI retornou um parágrafo sem frases.");
+      }
+      const normalized = parsed.sentences.map((sentence) => normalizedEditableSentence({
+        text: sentence?.text,
+        pt: sentence?.pt,
+        chunks: Array.isArray(sentence?.chunks) ? sentence.chunks.map((chunk) => [
+          chunk?.surface,
+          chunk?.reading,
+          chunk?.gloss
+        ]) : sentence?.chunks
+      }));
+      if (normalized.some((sentence) => !sentence)
+        || normalized.map((sentence) => sentence.text).join("") !== paragraphText) {
+        throw new Error("A resposta não preservou exatamente o parágrafo japonês.");
+      }
+      return normalized;
+    }
+
+    function renderEditableBookManager() {
+      if (!editableBook) return;
+      editableBookPanel.hidden = false;
+      editableParagraphTools.hidden = chapters.length === 0;
+      editableChapterTarget.replaceChildren(...chapters.map((chapter, index) => {
+        const option = document.createElement("option");
+        option.value = String(index);
+        option.textContent = chapter.title;
+        return option;
+      }));
+      const paragraphCount = chapters.reduce(
+        (total, chapter) => total + chapter.paragraphs.length,
+        0
+      );
+      setEditableBookStatus(chapters.length
+        ? `${chapters.length} ${chapters.length === 1 ? "capítulo" : "capítulos"} · ${paragraphCount} ${paragraphCount === 1 ? "parágrafo" : "parágrafos"}`
+        : "O pseudolivro ainda não tem capítulos.");
+    }
+
+    editableChapterForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!editableBook) return;
+      const title = editableChapterTitle.value.trim();
+      if (!title) return;
+      chapters.push({ title, paragraphs: [] });
+      saveEditableBookChapters();
+      location.reload();
+    });
+
+    async function addEditableParagraph() {
+      if (!editableBook || editableParagraphGenerate.disabled) return;
+      const chapterIndex = Number.parseInt(editableChapterTarget.value, 10);
+      const paragraphText = editableParagraphText.value.trim();
+      if (!Number.isInteger(chapterIndex) || !chapters[chapterIndex]) {
+        setEditableBookStatus("Selecione um capítulo válido.", true);
+        return;
+      }
+      if (!paragraphText) {
+        setEditableBookStatus("Cole um parágrafo japonês antes de gerar.", true);
+        editableParagraphText.focus();
+        return;
+      }
+      if (!openAiApiKey) {
+        openApiKeyDialog(() => void addEditableParagraph());
+        return;
+      }
+      editableParagraphGenerate.disabled = true;
+      editableChapterTarget.disabled = true;
+      editableParagraphText.disabled = true;
+      setEditableBookStatus("Dividindo o parágrafo em frases e chunks…");
+      try {
+        const paragraph = await generateEditableParagraph(paragraphText);
+        const firstSentenceIndex = chapters.slice(0, chapterIndex).reduce(
+          (total, chapter) => total + chapter.paragraphs.flat().length,
+          chapters[chapterIndex].paragraphs.flat().length
+        );
+        chapters[chapterIndex].paragraphs.push(paragraph);
+        saveEditableBookChapters();
+        localStorage.setItem(activeCardStorageKey, String(firstSentenceIndex));
+        localStorage.setItem(readingModeStorageKey, "sentence");
+        location.reload();
+      } catch (error) {
+        setEditableBookStatus(
+          error instanceof Error ? error.message : "Não foi possível adicionar o parágrafo.",
+          true
+        );
+      } finally {
+        editableParagraphGenerate.disabled = false;
+        editableChapterTarget.disabled = false;
+        editableParagraphText.disabled = false;
+      }
+    }
+
+    editableParagraphGenerate.addEventListener("click", () => void addEditableParagraph());
+
     function grammarAnalysisKey(sentenceText, chunkIndex, chunkSurface) {
       return JSON.stringify([sentenceText, chunkIndex, chunkSurface]);
     }
@@ -3442,15 +3817,15 @@ ${chunkSurface}`;
     function normalizeVocabularyItem(item) {
       if (!item || typeof item.dictionary_form !== "string" || !item.dictionary_form.trim()
         || typeof item.reading !== "string"
-        || typeof item.pitch_accent !== "string" || !item.pitch_accent.trim()
+        || !vocabularyJlptLevels.includes(item.jlpt_level)
         || !vocabularyPartsOfSpeech.includes(item.part_of_speech)
         || typeof item.meaning !== "string" || !item.meaning.trim()
         || item.dictionary_form.length > 80 || item.reading.length > 120
-        || item.pitch_accent.length > 160 || item.meaning.length > 80) return null;
+        || item.meaning.length > 80) return null;
       return {
         dictionary_form: item.dictionary_form.trim(),
         reading: item.reading.trim(),
-        pitch_accent: item.pitch_accent.trim(),
+        jlpt_level: item.jlpt_level,
         part_of_speech: item.part_of_speech,
         meaning: item.meaning.trim()
       };
@@ -3511,7 +3886,7 @@ Regras:
 - Normalize verbos para a forma de dicionário não passada; adjetivos い devem terminar em い; adjetivos な devem aparecer sem な.
 - Em dictionary_form, use a grafia de dicionário moderna mais comum. Se a palavra apareceu em kana, mas normalmente é escrita com kanji comum, restaure esse kanji. Mantenha kana somente quando essa for a grafia moderna normal ou predominante.
 - Em reading, escreva a leitura inteira em hiragana quando dictionary_form contiver kanji; caso contrário, use uma string vazia.
-- Em pitch_accent, escreva a leitura usando / no ponto de subida e \\ no ponto de queda do pitch de Tóquio. Para padrão plano, use apenas a subida. Não use números.
+- Em jlpt_level, estime a dificuldade geral do vocábulo como N5, N4, N3, N2, N1 ou Acima de N1. Use Acima de N1 para itens raros, literários, técnicos ou normalmente fora do JLPT.
 - Use a frase somente para identificar corretamente o vocábulo e sua classe. Não restrinja meaning ao sentido especializado, técnico, figurado ou circunstancial usado nesta frase.
 - Em meaning, dê em português o significado central e geral do vocábulo, útil na maioria dos contextos, preferencialmente em uma palavra e no máximo duas.
 - Não repita entradas equivalentes.
@@ -3555,14 +3930,14 @@ ${chunkReading}`;
                       properties: {
                         dictionary_form: { type: "string" },
                         reading: { type: "string" },
-                        pitch_accent: { type: "string" },
+                        jlpt_level: { type: "string", enum: vocabularyJlptLevels },
                         part_of_speech: { type: "string", enum: vocabularyPartsOfSpeech },
                         meaning: { type: "string" }
                       },
                       required: [
                         "dictionary_form",
                         "reading",
-                        "pitch_accent",
+                        "jlpt_level",
                         "part_of_speech",
                         "meaning"
                       ],
@@ -4136,7 +4511,7 @@ ${chunkList}`;
           const key = JSON.stringify([
             entry.dictionary_form,
             entry.reading,
-            entry.pitch_accent,
+            entry.jlpt_level,
             entry.part_of_speech,
             entry.meaning
           ]);
@@ -4224,12 +4599,11 @@ ${chunkList}`;
           reading.textContent = `Leitura: ${item.reading}`;
           details.append(reading);
         }
-        const pitch = document.createElement("span");
-        pitch.lang = "ja";
-        pitch.textContent = `Pitch: ${item.pitch_accent}`;
+        const jlpt = document.createElement("span");
+        jlpt.textContent = `JLPT: ${item.jlpt_level}`;
         const part = document.createElement("span");
         part.textContent = vocabularyPartLabels[item.part_of_speech];
-        details.append(pitch, part);
+        details.append(jlpt, part);
         content.append(main, details);
         row.append(checkbox, content);
         checkbox.addEventListener("change", () => {
@@ -4373,7 +4747,7 @@ ${chunkList}`;
       const entries = selectedVocabularyEntries();
       if (!entries.length) return;
       const payload = {
-        schema_version: 1,
+        schema_version: 2,
         exported_at: new Date().toISOString(),
         vocabulary: entries
       };
@@ -4862,11 +5236,16 @@ ${chunkList}`;
     }
 
     function activeChapterForIndex(index) {
-      let activeChapter = 0;
-      chapterSentenceStarts.forEach((start, chapterIndex) => {
-        if (start <= index) activeChapter = chapterIndex;
-      });
-      return activeChapter;
+      for (let chapterIndex = 0; chapterIndex < chapterSentenceStarts.length; chapterIndex += 1) {
+        const start = chapterSentenceStarts[chapterIndex];
+        const end = chapterIndex + 1 < chapterSentenceStarts.length
+          ? chapterSentenceStarts[chapterIndex + 1]
+          : sentences.length;
+        if (index >= start && index < end) return chapterIndex;
+      }
+      return Math.max(chapters.findIndex((chapter) =>
+        chapter.paragraphs.some((paragraph) => paragraph.length)
+      ), 0);
     }
 
     function updateFuriganaState() {
@@ -5501,7 +5880,7 @@ ${chunkList}`;
     glossExport.addEventListener("click", () => {
       captureReadingPosition();
       const payload = {
-        schema_version: 8,
+        schema_version: 9,
         source_file: bookData?.source_file || null,
         exported_at: new Date().toISOString(),
         reader_state: {
@@ -5534,7 +5913,7 @@ ${chunkList}`;
       if (!file) return;
       try {
         const payload = JSON.parse(await file.text());
-        if (![1, 2, 3, 4, 5, 6, 7, 8].includes(payload?.schema_version) || !Array.isArray(payload.glosses)) {
+        if (![1, 2, 3, 4, 5, 6, 7, 8, 9].includes(payload?.schema_version) || !Array.isArray(payload.glosses)) {
           throw new Error("Formato incompatível");
         }
         const imported = payload.glosses.map((entry) => {
@@ -5543,7 +5922,7 @@ ${chunkList}`;
           return normalized;
         });
         let importedGrammarAnalyses = null;
-        if ([4, 5, 6, 7, 8].includes(payload.schema_version)) {
+        if ([4, 5, 6, 7, 8, 9].includes(payload.schema_version)) {
           if (!Array.isArray(payload.grammar_analyses)) throw new Error("Análises gramaticais inválidas");
           const normalizedAnalyses = payload.grammar_analyses.map((entry) => {
             const normalized = normalizeGrammarAnalysis(entry);
@@ -5556,25 +5935,27 @@ ${chunkList}`;
           ]));
         }
         let importedVocabularyAnalyses = null;
-        if ([6, 7, 8].includes(payload.schema_version)) {
+        if ([6, 7, 8, 9].includes(payload.schema_version)) {
           if (!Array.isArray(payload.vocabulary_analyses)) throw new Error("Análises de vocabulário inválidas");
-          const normalizedVocabulary = payload.vocabulary_analyses.map((entry) => {
-            const normalized = normalizeVocabularyAnalysis(entry);
-            if (!normalized) throw new Error("Análise de vocabulário inválida");
-            return normalized;
-          });
+          const normalizedVocabulary = payload.vocabulary_analyses
+            .map(normalizeVocabularyAnalysis)
+            .filter(Boolean);
+          if (payload.schema_version === 9
+            && normalizedVocabulary.length !== payload.vocabulary_analyses.length) {
+            throw new Error("Análise de vocabulário inválida");
+          }
           importedVocabularyAnalyses = new Map(normalizedVocabulary.map((entry) => [
             vocabularyAnalysisKey(entry.sentence_text, entry.chunk_index, entry.chunk_surface),
             entry
           ]));
         }
         let importedIncrementalAnalyses = null;
-        if ([7, 8].includes(payload.schema_version)) {
+        if ([7, 8, 9].includes(payload.schema_version)) {
           if (!Array.isArray(payload.incremental_analyses)) throw new Error("Leituras incrementais inválidas");
           const normalizedIncremental = payload.incremental_analyses
             .map(normalizeIncrementalAnalysis)
             .filter(Boolean);
-          if (payload.schema_version === 8
+          if ([8, 9].includes(payload.schema_version)
             && normalizedIncremental.length !== payload.incremental_analyses.length) {
             throw new Error("Leitura incremental inválida");
           }
@@ -5584,15 +5965,15 @@ ${chunkList}`;
           ]));
         }
         let importedReaderState = null;
-        if ([2, 3, 4, 5, 6, 7, 8].includes(payload.schema_version)) {
+        if ([2, 3, 4, 5, 6, 7, 8, 9].includes(payload.schema_version)) {
           const state = payload.reader_state;
           const storedSentenceChapterPositions = state?.sentence_chapter_positions;
           if (payload.source_file !== bookData?.source_file
             || !state || typeof state !== "object"
             || !["sentence", "continuous", "vertical"].includes(state.reading_mode)
             || !Number.isInteger(state.active_sentence_index)
-            || ([7, 8].includes(payload.schema_version)
-              && !["chunks", "incremental", ...(payload.schema_version === 8 ? ["translation"] : [])]
+            || ([7, 8, 9].includes(payload.schema_version)
+              && !["chunks", "incremental", ...([8, 9].includes(payload.schema_version) ? ["translation"] : [])]
                 .includes(state.sentence_study_tab))
             || (storedSentenceChapterPositions !== undefined
               && !validSentenceChapterPositions(storedSentenceChapterPositions))
@@ -5612,7 +5993,7 @@ ${chunkList}`;
               storedSentenceChapterPositions,
               importedActiveIndex
             ),
-            sentenceStudyTab: [7, 8].includes(payload.schema_version)
+            sentenceStudyTab: [7, 8, 9].includes(payload.schema_version)
               ? state.sentence_study_tab
               : sentenceStudyTab,
             readingMode: state.reading_mode,
@@ -5872,11 +6253,24 @@ ${chunkList}`;
       stopBrowserSpeech();
     });
 
-    updateStudyCount();
-    updateTranslationSpeechButton(false);
-    void initializeOfflineControls();
-    updateFuriganaState();
-    setReadingMode(readingMode, false);
+    renderEditableBookManager();
+    offlineDownloads.hidden = editableBook;
+    if (sentences.length) {
+      updateStudyCount();
+      updateTranslationSpeechButton(false);
+      if (!editableBook) void initializeOfflineControls();
+      updateFuriganaState();
+      setReadingMode(readingMode, false);
+    } else {
+      chapterSelect.closest("h2").hidden = true;
+      readingModeSwitch.hidden = true;
+      studyHint.hidden = true;
+      panel.hidden = true;
+      chapterReader.hidden = true;
+      readerControls.hidden = true;
+      updateTranslationSpeechButton(false);
+      updateFuriganaState();
+    }
   </script>
 </body>
 </html>
