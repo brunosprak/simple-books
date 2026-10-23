@@ -2434,7 +2434,7 @@
     let positionSaveFrame = null;
     let nextSentencePreviewFrame = null;
     const fontPercentages = [85, 100, 115, 130, 150];
-    const offlineVersion = "f96393dc35d43588";
+    const offlineVersion = "d0bad50257eb1864";
     const defaultFontLevelIndex = 1;
     const minFontLevel = -defaultFontLevelIndex;
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
@@ -4279,18 +4279,19 @@ Objetivo pedagógico:
 Regras para steps:
 - Produza exatamente uma etapa para cada chunk fornecido, na mesma ordem. Não una, divida, omita nem reordene chunks.
 - Não devolva o texto nem a leitura dos chunks: eles serão associados pelo sistema de forma determinística.
-- interpretation deve ser uma tradução parcial autêntica do novo chunk: escreva o fragmento em português como parte da própria frase, não como explicação do processo de leitura.
+- interpretation deve ser uma tradução cumulativa, natural e autêntica de todos os chunks revelados desde o primeiro até a etapa atual. Não traduza somente o novo chunk.
 - Não use metalinguagem. São proibidas formulações como "esse referente", "a descrição se amplia", "trata-se de", "o trecho indica", "aqui aparece", "permanece em aberto" ou comentários sobre o que a frase está fazendo.
-- Não repita a tradução dos chunks anteriores. Pode começar ou terminar com reticências para mostrar que o fragmento se liga ao que veio antes ou ainda será completado.
-- Quando o núcleo ou referente ainda estiver oculto e for impossível traduzir sem ele, você pode acrescentar um substantivo ou pronome genérico que esteja apenas implícito, como "algo...", "alguém...", "uma coisa..." ou "um ser...". Isso serve somente para tornar o fragmento compreensível em português: não invente uma identidade ou informação específica e não explique por que a referência é vaga.
-- Preserve o tom da frase e prefira um fragmento curto, fluente e diretamente legível. A interpretação pode ser provisória, mas deve sempre soar como tradução, nunca como análise.
-- Exemplos de estilo: para その巨大で恐ろしい、, escreva "algo enorme e aterrorizante..." ou "aquele ser enorme e aterrorizante...", não "esse referente é apresentado como enorme e aterrorizante"; para 憎しみと復讐と死の化身に, escreva "...encarnação do ódio, da vingança e da morte...", não "a descrição se amplia: trata-se de uma encarnação...".
+- A cada novo chunk, retraduza todo o prefixo já visível. Repita naturalmente o sentido anterior e reorganize o português quando a nova informação esclarecer a sintaxe japonesa. Não preserve à força a redação provisória da etapa anterior.
+- Quando o núcleo ou referente ainda estiver oculto e for impossível traduzir sem ele, você pode acrescentar um substantivo ou pronome genérico que esteja apenas implícito, como "algo...", "alguém...", "uma coisa..." ou "um ser...". Isso serve somente para tornar a tradução cumulativa compreensível: não invente uma identidade ou informação específica e não explique por que a referência é vaga.
+- Preserve o tom da frase e produza uma tradução fluente e diretamente legível. Enquanto o prefixo estiver incompleto, a interpretação pode ser provisória e terminar com reticências, mas deve sempre soar como tradução, nunca como análise.
+- Exemplo cumulativo para 地層を / 調査したい / エリアが / 何箇所かあるんだけど……: escreva, respectivamente, "As camadas geológicas..."; "Quero investigar as camadas geológicas..."; "Há áreas nas quais quero investigar as camadas geológicas..."; "Há alguns lugares onde quero investigar as camadas geológicas, mas...".
+- Na etapa final, interpretation deve ser uma tradução natural e completa da frase inteira. Se o japonês terminar de modo suspenso, preserve essa suspensão em português.
 - Nunca antecipe na interpretação uma palavra, núcleo nominal, predicado, referente ou informação ainda oculta.
 - grammar_points contém somente os pontos mais úteis para processar o novo segmento nesta etapa, de zero a cinco itens.
 - Cada ponto tem um título com a expressão japonesa relevante já revelada e uma explicação objetiva em português.
 - Explique dependências ainda abertas sem revelar qual elemento oculto irá completá-las.
 - Quando um elemento posterior esclarecer uma dependência anterior, explique a conexão nessa etapa.
-- Não crie seções de memória, não inclua romanização e não repita uma tradução completa antes da etapa final.
+- Não crie seções de memória e não inclua romanização.
 
 Contexto anterior, usado somente para referências e sujeitos omitidos:
 ${previousContext || "(nenhuma frase anterior)"}
