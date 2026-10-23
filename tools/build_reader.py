@@ -22,7 +22,7 @@ DEFAULT_TEMPLATE = ROOT / "site" / "reader.template.html"
 DEFAULT_OUTPUT = ROOT / "site" / "princess-of-mars" / "index.html"
 ALLOWED_GAPS = re.compile(r"^[\s、。！？…—―「」『』（）・]*$")
 DATA_BLOCK = re.compile(
-    r"(?ms)^    // BOOK_DATA_START\n.*?^    // BOOK_DATA_END$"
+    r"(?ms)^    // DOCUMENT_DATA_START\n.*?^    // DOCUMENT_DATA_END$"
 )
 UNRESOLVED_MARKER = re.compile(r"\{\{[A-Z0-9_]+\}\}|__[A-Z0-9_]+__")
 
@@ -38,11 +38,117 @@ def require_string(container: dict[str, Any], key: str, context: str) -> str:
     return value
 
 
+def legacy_view(data: dict[str, Any]) -> dict[str, Any]:
+    """Adapt a generic v3 document to the legacy reader shape for validation tools."""
+    if data.get("schema_version") == 2:
+        return data
+    metadata = data.get("metadata") or {}
+    capabilities = data.get("capabilities") or {}
+    chapters = []
+    for section in data.get("sections") or []:
+        paragraphs = []
+        for passage in section.get("passages") or []:
+            sentences = []
+            for sentence in passage.get("sentences") or []:
+                chunks = [
+                    [chunk.get("surface"), chunk.get("reading"), chunk.get("gloss")]
+                    for chunk in sentence.get("chunks") or []
+                ]
+                sentences.append({"text": sentence.get("text"), "pt": sentence.get("pt"), "chunks": chunks})
+            paragraphs.append(sentences)
+        chapters.append({"title": section.get("title"), "paragraphs": paragraphs})
+    page = {
+        "title": metadata.get("title"),
+        "author": metadata.get("creator", ""),
+        "eyebrow": metadata.get("eyebrow", ""),
+        "description": metadata.get("description"),
+        "study_hint": metadata.get("study_hint", ""),
+        "footer": metadata.get("footer"),
+        "font_levels_percent": metadata.get("font_levels_percent"),
+        "default_font_level_percent": metadata.get("default_font_level_percent"),
+        "editable": data.get("editable", False),
+    }
+    if capabilities.get("audio"):
+        page["audio"] = capabilities["audio"]
+    return {
+        "schema_version": 2,
+        "source_file": data.get("source_file", data.get("id")),
+        "languages": data.get("languages"),
+        "page": page,
+        "chapters": chapters,
+    }
+
+
+def validate_generic_document(data: dict[str, Any]) -> None:
+    require_string(data, "id", "document")
+    require_string(data, "kind", "document")
+    require_string(data, "source_file", "document")
+    metadata = data.get("metadata")
+    if not isinstance(metadata, dict):
+        raise BuildError("metadata must be an object")
+    require_string(metadata, "title", "metadata")
+    require_string(metadata, "description", "metadata")
+    require_string(metadata, "footer", "metadata")
+    labels = data.get("labels")
+    if not isinstance(labels, dict):
+        raise BuildError("labels must be an object")
+    for key in ("section", "sections", "passage", "passages"):
+        require_string(labels, key, "labels")
+    capabilities = data.get("capabilities")
+    if not isinstance(capabilities, dict):
+        raise BuildError("capabilities must be an object")
+    editing = capabilities.get("editing")
+    if not isinstance(editing, bool) or data.get("editable") is not editing:
+        raise BuildError("editable and capabilities.editing must be matching booleans")
+    if not isinstance(capabilities.get("incremental_reading"), bool):
+        raise BuildError("capabilities.incremental_reading must be a boolean")
+    sections = data.get("sections")
+    if not isinstance(sections, list):
+        raise BuildError("sections must be an array")
+    seen_ids: set[str] = set()
+
+    def unique_id(container: dict[str, Any], context: str) -> None:
+        identifier = require_string(container, "id", context)
+        if identifier in seen_ids:
+            raise BuildError(f"duplicate document entity id: {identifier}")
+        seen_ids.add(identifier)
+
+    unique_id(data, "document")
+    for section_index, section in enumerate(sections, start=1):
+        if not isinstance(section, dict):
+            raise BuildError(f"sections[{section_index}] must be an object")
+        unique_id(section, f"sections[{section_index}]")
+        passages = section.get("passages")
+        if not isinstance(passages, list):
+            raise BuildError(f"sections[{section_index}].passages must be an array")
+        for passage_index, passage in enumerate(passages, start=1):
+            context = f"sections[{section_index}].passages[{passage_index}]"
+            if not isinstance(passage, dict):
+                raise BuildError(f"{context} must be an object")
+            unique_id(passage, context)
+            sentences = passage.get("sentences")
+            if not isinstance(sentences, list):
+                raise BuildError(f"{context}.sentences must be an array")
+            for sentence_index, sentence in enumerate(sentences, start=1):
+                sentence_context = f"{context}.sentences[{sentence_index}]"
+                if not isinstance(sentence, dict):
+                    raise BuildError(f"{sentence_context} must be an object")
+                unique_id(sentence, sentence_context)
+                for chunk_index, chunk in enumerate(sentence.get("chunks") or [], start=1):
+                    if not isinstance(chunk, dict):
+                        raise BuildError(f"{sentence_context}.chunks[{chunk_index}] must be an object")
+                    unique_id(chunk, f"{sentence_context}.chunks[{chunk_index}]")
+
+
 def validate_data(data: Any) -> dict[str, Any]:
     if not isinstance(data, dict):
         raise BuildError("the JSON root must be an object")
+    if data.get("schema_version") == 3:
+        validate_generic_document(data)
+        validate_data(legacy_view(data))
+        return data
     if data.get("schema_version") != 2:
-        raise BuildError("schema_version must be 2")
+        raise BuildError("schema_version must be 2 or 3")
     if "paragraphs" in data:
         raise BuildError("root-level paragraphs is obsolete; nest paragraphs in chapters")
 
@@ -196,7 +302,7 @@ def javascript_json(value: Any, *, indent: int | None = None) -> str:
 def render(
     data: dict[str, Any], template: str, *, data_url: str | None = None
 ) -> str:
-    page = data["page"]
+    page = legacy_view(data)["page"]
     levels = page["font_levels_percent"]
     default_index = levels.index(page["default_font_level_percent"])
 
@@ -222,31 +328,29 @@ def render(
 
     if data_url:
         data_block = (
-            "    // BOOK_DATA_START\n"
-            f"    const bookDataUrl = {javascript_json(data_url)};\n"
-            "    const bookDataResponse = await fetch(bookDataUrl);\n"
-            "    if (!bookDataResponse.ok) {\n"
-            "      throw new Error(`Falha ao carregar o livro: ${bookDataResponse.status}`);\n"
+            "    // DOCUMENT_DATA_START\n"
+            f"    const documentDataUrl = {javascript_json(data_url)};\n"
+            "    const documentDataResponse = await fetch(documentDataUrl);\n"
+            "    if (!documentDataResponse.ok) {\n"
+            "      throw new Error(`Falha ao carregar o documento: ${documentDataResponse.status}`);\n"
             "    }\n"
-            "    const bookData = await bookDataResponse.json();\n"
-            "    const chapters = bookData.chapters;\n"
-            "    // BOOK_DATA_END"
+            "    const rawDocumentData = await documentDataResponse.json();\n"
+            "    // DOCUMENT_DATA_END"
         )
     else:
-        chapters = javascript_json(data["chapters"], indent=6)
-        indented = "\n".join(f"    {line}" for line in chapters.splitlines())
+        document_json = javascript_json(data, indent=6)
+        indented = "\n".join(f"    {line}" for line in document_json.splitlines())
         data_block = (
-            "    // BOOK_DATA_START\n"
-            f"    const chapters = {indented.lstrip()};\n"
-            "    const bookData = null;\n"
-            "    const bookDataUrl = null;\n"
-            "    // BOOK_DATA_END"
+            "    // DOCUMENT_DATA_START\n"
+            f"    const rawDocumentData = {indented.lstrip()};\n"
+            "    const documentDataUrl = null;\n"
+            "    // DOCUMENT_DATA_END"
         )
     output, replacements_count = DATA_BLOCK.subn(
         lambda _match: data_block, output, count=1
     )
     if replacements_count != 1:
-        raise BuildError("template must contain exactly one BOOK_DATA block")
+        raise BuildError("template must contain exactly one DOCUMENT_DATA block")
 
     unresolved = UNRESOLVED_MARKER.search(output)
     if unresolved:
@@ -261,9 +365,10 @@ def render_public_json(data: dict[str, Any]) -> str:
 
 def render_text(data: dict[str, Any]) -> str:
     """Render a clean, disposable Japanese reading copy from canonical JSON."""
-    page = data["page"]
+    legacy = legacy_view(data)
+    page = legacy["page"]
     blocks = [page["title"], page["author"]]
-    for chapter in data["chapters"]:
+    for chapter in legacy["chapters"]:
         blocks.append(chapter["title"])
         blocks.extend(
             "".join(sentence["text"] for sentence in paragraph)

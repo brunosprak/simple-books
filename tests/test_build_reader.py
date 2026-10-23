@@ -53,16 +53,18 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('id="editable-paragraph-status"', first)
         self.assertIn('function setEditableParagraphStatus', first)
         self.assertIn('function fetchEditableParagraphResponse', first)
-        self.assertIn('abortController.abort()', first)
-        self.assertIn('Motivo informado pela API', first)
+        self.assertIn('import { requestOpenAi, responseOutputText }', first)
+        openai_client = (ROOT / "site" / "modules" / "openai-client.js").read_text(encoding="utf-8")
+        self.assertIn('controller.abort()', openai_client)
+        self.assertIn('payload?.error?.message', openai_client)
         self.assertIn('editableParagraphGenerate.textContent = "Gerando…"', first)
-        self.assertIn('<summary>Adicionar capítulo</summary>', first)
-        self.assertIn('<summary>Gerenciar parágrafos</summary>', first)
+        self.assertIn('id="editable-section-summary">Adicionar seção</summary>', first)
+        self.assertIn('id="editable-passage-summary">Gerenciar passagens</summary>', first)
         self.assertIn('id="editable-paragraph-delete-target"', first)
         self.assertIn('id="editable-paragraph-delete"', first)
         self.assertIn('function deleteEditableParagraph', first)
-        self.assertIn('Excluir permanentemente este parágrafo?', first)
-        self.assertIn('chapters[chapterIndex].paragraphs.splice(paragraphIndex, 1)', first)
+        self.assertIn('Excluir permanentemente: ${passageLabel', first)
+        self.assertIn('sections[chapterIndex].passages.splice(paragraphIndex, 1)', first)
         self.assertIn('editableParagraphDelete.addEventListener("click", deleteEditableParagraph)', first)
         self.assertIn('simple-ja-books:editable-book:v1:', first)
         self.assertIn('function generateEditableParagraph', first)
@@ -76,7 +78,7 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('if (!paragraphText.trim())', first)
         self.assertNotIn('const paragraphText = editableParagraphText.value.trim();', first)
         self.assertIn('function renderEditableBookManager', first)
-        self.assertIn('A API dividirá o parágrafo em frases e chunks', first)
+        self.assertIn('A API dividirá ${passageLabel.toLocaleLowerCase', first)
         self.assertIn('const standaloneEditableParticles = new Set', first)
         self.assertIn('function editableChunkIsStandaloneParticle', first)
         self.assertIn('editableChunkIsStandaloneParticle(surface)', first)
@@ -122,7 +124,7 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('function grammarAnalysisPrompt', first)
         self.assertIn('Frase completa:', first)
         self.assertIn('Trecho-alvo:', first)
-        self.assertIn('https://api.openai.com/v1/responses', first)
+        self.assertIn('https://api.openai.com/v1/responses', openai_client)
         self.assertIn('store: false', first)
         self.assertIn('renderGrammarAnalysis(grammarPanel, stored.analysis, stored, chunkButton)', first)
         self.assertIn('renderGrammarAnalysis(grammarPanel, analysis, entry, chunkButton)', first)
@@ -367,9 +369,9 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('saveActiveIndex()', first)
         self.assertIn('renderCard(activeIndex);', first)
         self.assertIn('id="chapter-progress"', first)
-        self.assertIn('id="chapter-progress-paragraphs"', first)
+        self.assertIn('id="chapter-progress-passages"', first)
         self.assertIn('id="chapter-progress-sentences"', first)
-        self.assertIn('>Parágrafos</span>', first)
+        self.assertIn('id="passage-progress-label">Passagens</span>', first)
         self.assertIn('>Frases</span>', first)
         self.assertIn('function renderChapterProgress', first)
         self.assertIn('paragraph.classList.toggle("is-current", paragraphIndex === activeParagraph)', first)
@@ -479,8 +481,8 @@ class BuildReaderTests(unittest.TestCase):
             first.index('id="vertical-page-next"'),
             first.index('id="vertical-page-previous"'),
         )
-        self.assertIn('chapterNextButton.textContent = "← 章"', first)
-        self.assertIn('chapterPreviousButton.textContent = "章 →"', first)
+        self.assertIn('chapterNextButton.textContent = "←"', first)
+        self.assertIn('chapterPreviousButton.textContent = "→"', first)
         self.assertIn(
             "chapterNextButton,\n          chapterReaderTitle,\n          chapterFuriganaToggle,\n          chapterPreviousButton",
             first,
@@ -660,19 +662,67 @@ class BuildReaderTests(unittest.TestCase):
         with self.assertRaisesRegex(build_reader.BuildError, "punctuation only"):
             build_reader.validate_data(invalid)
 
-    def test_editable_book_may_start_without_chapters_or_paragraphs(self) -> None:
+    def test_editable_document_may_start_without_sections_or_passages(self) -> None:
         editable = json.loads(
             (ROOT / "texts" / "rpg-ja.json").read_text(
                 encoding="utf-8"
             )
         )
-        self.assertTrue(
-            build_reader.validate_data(copy.deepcopy(editable))["page"]["editable"]
-        )
+        validated = build_reader.validate_data(copy.deepcopy(editable))
+        self.assertEqual(validated["schema_version"], 3)
+        self.assertTrue(validated["capabilities"]["editing"])
+        self.assertEqual(validated["sections"], [])
 
-        editable["chapters"] = [{"title": "Capítulo 1", "paragraphs": []}]
+        editable["sections"] = [{
+            "id": "chapter-1",
+            "title": "Capítulo 1",
+            "kind": "chapter",
+            "passages": [],
+        }]
         validated = build_reader.validate_data(editable)
-        self.assertEqual(validated["chapters"][0]["paragraphs"], [])
+        self.assertEqual(validated["sections"][0]["passages"], [])
+
+    def test_generic_document_renders_through_shared_reader(self) -> None:
+        document = json.loads((ROOT / "texts" / "rpg-ja.json").read_text(encoding="utf-8"))
+        document["sections"] = [{
+            "id": "scene-1",
+            "kind": "scene",
+            "title": "Cena 1",
+            "passages": [{
+                "id": "speech-1",
+                "kind": "speech",
+                "speaker": "",
+                "sentences": [{
+                    "id": "sentence-1",
+                    "text": "彼女が来た。",
+                    "pt": "Ela veio.",
+                    "chunks": [
+                        {"id": "chunk-1", "surface": "彼女が", "reading": "かのじょが", "gloss": "ela"},
+                        {"id": "chunk-2", "surface": "来た。", "reading": "きた。", "gloss": "veio"},
+                    ],
+                }],
+            }],
+        }]
+
+        validated = build_reader.validate_data(document)
+        output = build_reader.render(validated, self.template)
+
+        self.assertIn('const rawDocumentData = {', output)
+        self.assertIn('"kind": "game_script"', output)
+        self.assertIn('normalizeDocument(rawDocumentData)', output)
+        self.assertIn('彼女が来た。', output)
+
+    def test_generic_document_rejects_duplicate_entity_ids(self) -> None:
+        document = json.loads((ROOT / "texts" / "rpg-ja.json").read_text(encoding="utf-8"))
+        document["sections"] = [{
+            "id": document["id"],
+            "kind": "scene",
+            "title": "Cena 1",
+            "passages": [],
+        }]
+
+        with self.assertRaisesRegex(build_reader.BuildError, "duplicate document entity id"):
+            build_reader.validate_data(document)
 
     def test_noneditable_book_requires_content(self) -> None:
         data = copy.deepcopy(self.data)
@@ -732,10 +782,13 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('request.mode === "navigate"', worker)
         self.assertIn('self.registration.scope', worker)
         self.assertIn('const PWA_CACHE_PREFIX', worker)
-        self.assertIn('const PWA_CACHE_NAME = `${PWA_CACHE_PREFIX}v10`', worker)
+        self.assertIn('const PWA_CACHE_NAME = `${PWA_CACHE_PREFIX}v11`', worker)
         self.assertIn('const PWA_SHELL_URLS', worker)
         self.assertIn('cache.addAll(PWA_SHELL_URLS)', worker)
         self.assertIn('name.startsWith(PWA_CACHE_PREFIX)', worker)
+        self.assertIn('"./modules/document-model.js"', worker)
+        self.assertIn('"./modules/storage.js"', worker)
+        self.assertIn('"./modules/openai-client.js"', worker)
         for icon_url in (
             '"./icons/icon-32.png?v=2"',
             '"./icons/icon-180.png?v=2"',
@@ -820,9 +873,9 @@ class BuildReaderTests(unittest.TestCase):
             data_url="../books/princess-of-mars-ja.json",
         )
 
-        self.assertIn('await fetch(bookDataUrl)', output)
+        self.assertIn('await fetch(documentDataUrl)', output)
         self.assertIn('../books/princess-of-mars-ja.json', output)
-        self.assertIn('const bookDataUrl = "../books/princess-of-mars-ja.json"', output)
+        self.assertIn('const documentDataUrl = "../books/princess-of-mars-ja.json"', output)
         self.assertNotIn(self.first_sentence(self.data)["text"], output)
         self.assertIn('document.querySelector("#page-title")', output)
 

@@ -1,6 +1,14 @@
 # Reader Functional Specification
 
-This document defines the user-visible behavior and compatibility requirements of the static Japanese reader. Implementation guidance for agents belongs in `AGENTS.md`; reader product rules belong here and should be enforced by automated tests wherever practical.
+This document defines the user-visible behavior and compatibility requirements of the static Japanese text reader. Implementation guidance for agents belongs in `AGENTS.md`; reader product rules belong here and should be enforced by automated tests wherever practical. A book is one document kind, not the reader's domain model.
+
+## Generic document model
+
+- The normalized hierarchy is `Document → Section → Passage → Sentence → Chunk`. It is shared by books, game scripts, film scripts, articles, transcripts and future text kinds.
+- `kind` describes the document (`book`, `game_script`, `article`, `screenplay`, and so on) without changing reading behavior. `labels` supplies user-facing names for sections and passages, so the same controls can say `Capítulo`/`Parágrafo`, `Cena`/`Fala`, or another appropriate pair.
+- Every entity in schema version 3 has a stable `id`. Browser content, study state and future annotations are scoped by the document ID rather than by a book filename.
+- `capabilities` enables optional behavior independently: editing, audio and incremental reading are document capabilities rather than assumptions tied to a book.
+- Legacy schema version 2 book JSON remains accepted through the adapter in `site/modules/document-model.js`. New non-book documents use schema version 3. The complete schema and migration rules are in `docs/document-model.md`.
 
 ## Current book content
 
@@ -8,23 +16,24 @@ This document defines the user-visible behavior and compatibility requirements o
 
 ## Generated architecture
 
-- `texts/<book-slug>-ja.json` is the canonical book and study data.
-- `site/books/<book-slug>-ja.json` is its generated public copy.
-- `site/<book-slug>/index.html` is generated from the shared `site/reader.template.html` and loads the public JSON at runtime.
+- `texts/<document-slug>-ja.json` is the canonical document and study data.
+- `site/books/<document-slug>-ja.json` is its generated public copy. The directory retains its historical name for URL compatibility.
+- `site/<document-slug>/index.html` is generated from the shared `site/reader.template.html` and loads the public JSON at runtime.
+- `site/modules/document-model.js` normalizes v2 books and v3 documents; `storage.js` provides namespaced persistence; `openai-client.js` owns Responses API transport, timeout and bounded error handling.
 - Optional `page.audio` metadata enables sentence audio for a book and defines its base URL, voice label, allowed playback speeds, and default speed.
 - `site/<book-slug>/audio/` contains generated MP3 files and their manifest when audio is enabled.
 - A translation-only change may update the public JSON without changing the generated HTML bytes.
 
-## Editable pseudobook
+## Editable documents
 
-- The library includes `RPG`, an initially empty pseudobook whose canonical JSON sets `page.editable` to `true`. Unlike ordinary books, an editable book may begin with no chapters and its chapters may temporarily contain no paragraphs.
-- Its construction panel always remains available. `Adicionar capítulo` and `Gerenciar parágrafos` are collapsed curtains by default and open only on demand. The reader can add a locally named chapter without an API request, then choose a chapter and submit one Japanese paragraph at a time.
+- The library includes `RPG`, an initially empty `game_script` document whose canonical schema-v3 JSON enables `capabilities.editing`. An editable document may begin without sections, and a section may temporarily contain no passages.
+- Its construction panel always remains available. The add-section and passage-management controls are collapsed curtains by default and use the labels declared by the document. The reader can add a locally named section without an API request, then choose it and submit one Japanese passage at a time.
 - Adding a paragraph explicitly calls the OpenAI Responses API and may incur charges. It uses a strict Structured Outputs schema to request only sentence and chunk boundary indexes plus readings, concise Portuguese glosses, and each sentence's natural Portuguese translation. The API never supplies the Japanese text that is stored: the browser slices every sentence and chunk directly from the submitted paragraph, making the original Japanese immutable.
 - The paragraph curtain reports progress, success, validation failures, connection failures, API status and the API's bounded error detail immediately below the generation button. While a request is active, the button reads `Gerando…`; a two-minute timeout restores the form with an actionable message instead of leaving it apparently inert.
 - The browser accepts the generated paragraph only when the boundary indexes are increasing, contiguous, cover the submitted paragraph exactly, every sentence is nonempty, every chunk is valid, and no chunk consists only of punctuation. Leading and trailing characters from the textarea are retained instead of being trimmed. A failed request or validation does not partially alter the book.
-- Chapters and generated paragraphs are stored in `localStorage`, scoped to this pseudobook. They are personal browser data: they are not written back to the static public JSON and do not travel to another browser unless a future dedicated export is provided.
+- Sections and generated passages are stored in `localStorage`, scoped to the document ID. They are personal browser data and are not written back to the static public JSON. `Exportar documento` downloads the complete generic schema-v3 document; `Importar documento` restores compatible editable content in another browser.
 - `Gerenciar parágrafos` also lists every saved paragraph with its chapter, ordinal, and text preview. Deleting the selected paragraph requires confirmation, removes only that paragraph, resets stale navigation positions, and removes or reindexes sentence-indexed incremental analyses while preserving unrelated chapter content.
-- The pseudobook has no sentence audio and hides offline-book download controls. As soon as it contains a generated paragraph, it exposes the same reading modes, chunks, incremental reading, translation, study marking, import/export, and API-assisted analyses as a normal book.
+- RPG has no sentence audio and hides offline-document download controls. As soon as it contains a generated passage, it exposes the same reading modes, chunks, incremental reading, translation, study marking, backup and API-assisted analyses as any other document.
 
 ## Reading modes
 
@@ -32,7 +41,7 @@ The mode selector appears in the normal document flow and exposes three modes.
 
 ### Frases
 
-- Shows one Japanese sentence at a time. Sentence and paragraph navigation plus chapter progress are shared by three content tabs immediately below them: `Chunks`, `Leitura incremental`, and `Tradução`. The selected tab persists per book.
+- Shows one Japanese sentence at a time. Sentence and passage navigation plus section progress are shared by three content tabs immediately below them: `Chunks`, `Leitura incremental`, and `Tradução`. The selected tab persists per document.
 - `Chunks` is the default and preserves the established sentence experience: furigana, interlinear chunks, concise Portuguese glosses, audio and study actions. The full Portuguese sentence translation and its speech control appear in `Tradução`.
 - In `Chunks`, a `Copiar` control adjacent to the main Japanese text copies only the complete active sentence, without furigana readings or the gray preview of the following sentence, and briefly confirms success or failure. On narrow screens it occupies a compact row above the sentence so the Japanese text retains the full reader width.
 - Chunk glosses in Portuguese start visually hidden whenever the reader is opened, but their layout space is always reserved so chunks and surrounding text never move when translations are shown or hidden. Every chunk has a `🌐 Tradução` action in its five-button study bar that reveals or conceals only that chunk; its highlighted state indicates that the translation is visible. The `Mostrar traduções` control immediately above the chunks reveals all glosses in the current and subsequent sentence cards for the rest of that page session; while visible, it becomes `Ocultar traduções`.
@@ -61,7 +70,7 @@ The mode selector appears in the normal document flow and exposes three modes.
 - Progress-bar segments can jump directly to any step. Moving between steps updates Japanese, interpretation and grammar together without changing word order or revealing later segments.
 - Entering the incremental tab enables furigana so kanji readings are immediately visible. Furigana and font-size controls remain shared with `Chunks`, and clicking or activating the incremental Japanese text toggles furigana normally afterward.
 - Grammar points generated for an incremental step are the same saved analysis used by its corresponding chunk in `Chunks`. Their checkboxes and checked state are shared across both views, and the grammar total counts each selected point only once. Regenerating requires confirmation, replaces the saved incremental analysis only after a successful response, and refreshes the shared chunk grammar; a failure leaves the previous saved analysis available. Analyses saved before cumulative interpretations were introduced remain untouched and require `Regenerar` to adopt the cumulative format.
-- The generated analysis and the zero-based current step persist per sentence and per book in browser storage and in version 9 reader backups.
+- The generated analysis and the zero-based current step persist per sentence and per document in browser storage and in version 9 reader backups.
 
 ### Corrido
 
@@ -85,7 +94,7 @@ The mode selector appears in the normal document flow and exposes three modes.
 
 - Clicking or activating Japanese text toggles furigana in every mode.
 - The explicit furigana control and the Japanese text remain synchronized.
-- Furigana visibility persists per book across mode changes and page reloads.
+- Furigana visibility persists per document across mode changes and page reloads.
 - The font-size controls appear at the end of the reader content, immediately before the page footer.
 - Font-size controls affect Japanese text in all three modes.
 - The selected font level survives mode changes and page reloads and is currently shared across readers.
@@ -98,7 +107,7 @@ Each mode keeps an independent reading position:
 - `Corrido`: current chapter and vertical page position.
 - `Vertical`: current chapter, page position, and vertical-writing page number.
 
-Switching modes restores the last position used in the destination mode. Switching chapters in `Frases` restores that chapter's last sentence, including after a page reload. Reloading the page restores the active mode and that mode's saved position. Sentence and chapter positions are scoped to the current book; the active mode is currently shared across readers.
+Switching modes restores the last position used in the destination mode. Switching sections in `Frases` restores that section's last sentence, including after a page reload. Reloading the page restores the active mode and that mode's saved position. Sentence and section positions are scoped to the current document; the active mode is currently shared across readers.
 
 ## Paragraphs and chunks
 
@@ -140,7 +149,7 @@ Switching modes restores the last position used in the destination mode. Switchi
 - Every chunk has a separate `Vocabulário` action. Its first activation asks for confirmation and then sends the target chunk plus the complete sentence as context to the OpenAI Responses API. The result includes lexical material only from that chunk, ignores particles and other function words, and includes only nouns, dictionary-form verbs, dictionary-form い and な adjectives, adverbs, and idiomatic expressions. Before generation the button shows `📖＋`; afterward its own icon becomes `📖✓ N`, where `N` is the number of checked vocabulary entries, including zero. A saved result opens immediately without another request or confirmation.
 - Every generated entry has its common modern dictionary spelling. If the source writes in kana a word normally written with common kanji, the generated form restores that kanji; kana remains when it is the normal or predominant modern spelling. When the dictionary form contains kanji, its hiragana reading appears directly above it as furigana and is also retained as a separate data field. The entry additionally has a best-effort JLPT estimate (`N5`, `N4`, `N3`, `N2`, `N1`, or `Acima de N1`), a part of speech, and a concise Portuguese meaning. Pitch accent is neither requested nor stored.
 - The sentence context is used only to identify and disambiguate the lexeme. The Portuguese meaning represents the word's central, general meaning across contexts rather than narrowing it to a specialized, technical, figurative, or incidental use in the current sentence. It should preferably contain one word and never more than two.
-- The response uses a strict Structured Outputs JSON schema and is validated again in the browser before being stored. Entries have independent checkboxes, and generated chunk analyses and checked entries persist per book in browser storage.
+- The response uses a strict Structured Outputs JSON schema and is validated again in the browser before being stored. Entries have independent checkboxes, and generated chunk analyses and checked entries persist per document in browser storage.
 - `↓ Vocabulário` downloads `vocabulario-selecionado.json`, containing only the unique checked entries from all generated lists and only their five vocabulary fields, inside a version 2 vocabulary-export envelope. In version 2, `jlpt_level` replaces the former pitch-accent field.
 
 ## On-demand grammar analyses
@@ -148,7 +157,7 @@ Switching modes restores the last position used in the destination mode. Switchi
 - Every interlinear chunk has an explicit `Gramática` action in the same study bar as the other four actions. Its icon is `🧩＋` before generation and `🧩✓ N` when a saved analysis exists, where `N` is the number of checked grammar topics, including zero; its highlighted state indicates that the analysis is open. Activating it without saved data asks for confirmation before making a request to the OpenAI Responses API. Canceling the confirmation performs no request and does not open the API-key dialog. Collapsing an analysis does not delete it.
 - The request uses `gpt-6-luna` with the complete Japanese sentence as syntactic context and the selected chunk as the target. The prompt asks for two to four concise, nonredundant grammar points in Portuguese and prevents an unnecessary full-sentence translation.
 - While a request is running, the chunk shows a loading message and prevents a duplicate request. Failures remain local to the chunk and can be retried.
-- Successful responses are rendered below the chunk with a larger font and a safe Markdown subset for headings, numbered or bulleted lists, bold, and emphasis. The renderer creates text and DOM elements directly and never inserts model output as executable HTML. Saved analyses start collapsed; their generated state and checked count remain visible on the `Gramática` button itself. Analyses persist per book in browser storage, and reopening one never requires another API call, confirmation, or configured key.
+- Successful responses are rendered below the chunk with a larger font and a safe Markdown subset for headings, numbered or bulleted lists, bold, and emphasis. The renderer creates text and DOM elements directly and never inserts model output as executable HTML. Saved analyses start collapsed; their generated state and checked count remain visible on the `Gramática` button itself. Analyses persist per document in browser storage, and reopening one never requires another API call, confirmation, or configured key.
 - Every numbered or bulleted grammar topic has an independent checkbox. Newly generated and legacy topics start unchecked; checking or unchecking one updates browser storage and the button count immediately without affecting the chunk's vocabulary or listening marks. The count is restored after navigation, reload, or import.
 - The top-level `🔑 API` control opens a dialog for saving, replacing, or deleting the reader's OpenAI API key. The key is stored in `localStorage`, sent directly from the browser to OpenAI, shared by readers on the same origin, and never added to backups, generated files, logs, or book data.
 - The key dialog warns that browser-side secret storage can be read by other scripts on the same origin and that API use may incur charges. After grammar, vocabulary, or incremental-reading generation is confirmed, a missing key opens this dialog and resumes that request after a key is saved without asking for the same confirmation twice.
@@ -161,7 +170,7 @@ The reader downloads its backup as `dados-de-leitura.json`.
 
 Version 9 contains:
 
-- `source_file`, identifying the book;
+- `document_id`, identifying new exports, plus `source_file` for backward compatibility;
 - export timestamp;
 - marked glosses with one or both reasons (`vocabulary`, `listening`);
 - saved grammar analyses, identified by the complete sentence text, chunk index, and chunk surface, including the zero-based indexes of checked topics in `checked_topics`;
@@ -175,7 +184,7 @@ Version 9 contains:
 - furigana visibility;
 - the independent positions for `Frases`, `Corrido`, and `Vertical`.
 
-Version 9 reader state and all three analysis collections may be applied only when `source_file` matches the currently open book. Importing a version 9 backup replaces grammar, vocabulary, and incremental analyses for that book. The API key is deliberately excluded. The complete payload is validated before any gloss, analysis, or reader state is changed, so a failed import is atomic.
+Version 9 reader state and all three analysis collections may be applied only when `document_id`, when present, and `source_file` match the currently open document. Importing a version 9 backup replaces grammar, vocabulary, and incremental analyses for that document. The API key is deliberately excluded. The complete payload is validated before any gloss, analysis, or reader state is changed, so a failed import is atomic.
 Grammar analyses exported before topic marking existed remain valid: a missing `checked_topics` field is normalized to an empty list, so every imported topic begins unchecked.
 
 ### Legacy compatibility

@@ -1,17 +1,26 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
+  "id": "rpg",
   "source_file": "rpg.local",
+  "kind": "game_script",
+  "editable": true,
+  "labels": {
+    "section": "Capítulo",
+    "sections": "Capítulos",
+    "passage": "Parágrafo",
+    "passages": "Parágrafos"
+  },
   "languages": {
     "source": "ja",
-    "translation": "ja",
+    "translation": "pt-BR",
     "gloss": "pt-BR"
   },
-  "page": {
+  "metadata": {
     "title": "RPG",
-    "author": "Pseudolivro pessoal",
+    "creator": "Documento pessoal",
     "eyebrow": "",
-    "description": "Um livro japonês pessoal construído por capítulos e parágrafos neste navegador.",
-    "study_hint": "Adicione capítulos e gere parágrafos para começar a leitura.",
+    "description": "Um roteiro japonês pessoal organizado em seções e passagens neste navegador.",
+    "study_hint": "Adicione seções e gere passagens para começar a leitura.",
     "footer": "Conteúdo pessoal salvo localmente neste navegador.",
     "font_levels_percent": [
       85,
@@ -20,8 +29,12 @@
       130,
       150
     ],
-    "default_font_level_percent": 100,
-    "editable": true
+    "default_font_level_percent": 100
   },
-  "chapters": []
+  "capabilities": {
+    "editing": true,
+    "audio": null,
+    "incremental_reading": true
+  },
+  "sections": []
 }
