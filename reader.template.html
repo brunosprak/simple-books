@@ -3325,24 +3325,29 @@
     }
 
     function editableParagraphPrompt(paragraphText) {
+      const indexedCharacters = Array.from(paragraphText)
+        .map((character, index) => `${index}: ${JSON.stringify(character)}`)
+        .join("\n");
       return `Estruture o parágrafo japonês abaixo para um leitor de japonês com glosses em português.
 
 Regras obrigatórias:
-- Preserve exatamente todos os caracteres e a ordem do parágrafo original.
-- Divida o parágrafo em frases naturais. A concatenação de todos os campos text deve reproduzir exatamente o parágrafo recebido.
+- O parágrafo original é imutável. Não devolva, copie, corrija ou reescreva nenhum texto japonês.
+- Cada caractere Unicode do original está numerado abaixo a partir de zero.
+- Divida o parágrafo em frases naturais usando sentence_end, o índice exclusivo imediatamente depois do último caractere da frase.
+- Dentro de cada frase, use chunk_end da mesma maneira para indicar o fim exclusivo de cada chunk.
+- Os limites devem ser crescentes, contíguos e cobrir todos os caracteres, do índice 0 até ${Array.from(paragraphText).length}. O navegador extrairá o japonês diretamente do original usando esses limites.
 - Em pt, dê uma tradução natural e completa da respectiva frase em português do Brasil.
 - Divida cada frase em chunks sintáticos curtos e úteis, não em uma sequência de palavras isoladas. Cada chunk deve formar uma unidade que o estudante consiga relacionar a um gloss sem virar uma oração longa.
 - Nunca deixe partículas isoladas em um chunk, mesmo quando vierem acompanhadas de pontuação. Una が, は, を, に, へ, で, と, の, も e outras partículas ao termo ou sintagma imediatamente anterior cuja função elas marcam: 彼女が, 私は, 本を, 学校に.
 - Mantenha terminações flexionais, auxiliares e finais compactos junto ao verbo ou adjetivo a que pertencem quando separá-los produzir apenas fragmentos morfológicos. Preserve expressões fixas e construções gramaticais compostas como uma unidade.
 - Evite a segmentação de quase uma palavra por chunk. Prefira, por exemplo, 私は / 昨日 / 学校に / 行きました。 em vez de 私 / は / 昨日 / 学校 / に / 行き / ました。
-- A concatenação exata dos campos surface de todos os chunks deve reproduzir a frase inteira, sem lacunas.
-- Nunca crie um chunk composto somente de pontuação. Anexe pontuação ao chunk lexical ou gramatical anterior em surface e reading.
-- Em reading, forneça a leitura completa de surface, usando hiragana para kanji e preservando kana, espaços e pontuação necessários ao alinhamento de furigana.
+- Nunca delimite um chunk composto somente de pontuação. Inclua a pontuação no chunk lexical ou gramatical anterior.
+- Em reading, forneça a leitura completa do trecho delimitado pelo chunk, usando hiragana para kanji e preservando kana, espaços e pontuação necessários ao alinhamento de furigana.
 - Em gloss, escreva uma pista curta em português, preferencialmente de uma a três palavras e no máximo quatro.
-- Não omita, resuma, corrija, romanize nem acrescente conteúdo japonês.
+- Não omita nenhum índice e não crie limites dentro de pares substitutos Unicode.
 
-Parágrafo:
-${paragraphText}`;
+Caracteres imutáveis do parágrafo:
+${indexedCharacters}`;
     }
 
     async function fetchEditableParagraphResponse(options) {
@@ -3391,7 +3396,7 @@ ${paragraphText}`;
                     items: {
                       type: "object",
                       properties: {
-                        text: { type: "string" },
+                        sentence_end: { type: "integer" },
                         pt: { type: "string" },
                         chunks: {
                           type: "array",
@@ -3400,16 +3405,16 @@ ${paragraphText}`;
                           items: {
                             type: "object",
                             properties: {
-                              surface: { type: "string" },
+                              chunk_end: { type: "integer" },
                               reading: { type: "string" },
                               gloss: { type: "string" }
                             },
-                            required: ["surface", "reading", "gloss"],
+                            required: ["chunk_end", "reading", "gloss"],
                             additionalProperties: false
                           }
                         }
                       },
-                      required: ["text", "pt", "chunks"],
+                      required: ["sentence_end", "pt", "chunks"],
                       additionalProperties: false
                     }
                   }
@@ -3447,24 +3452,48 @@ ${paragraphText}`;
       if (!Array.isArray(parsed?.sentences) || !parsed.sentences.length) {
         throw new Error("A OpenAI retornou um parágrafo sem frases.");
       }
-      if (parsed.sentences.some((sentence) =>
-        Array.isArray(sentence?.chunks) && sentence.chunks.some((chunk) =>
-          typeof chunk?.surface === "string" && editableChunkIsStandaloneParticle(chunk.surface)
-        ))) {
-        throw new Error("A resposta separou partículas em chunks. Gere o parágrafo novamente.");
+      const characters = Array.from(paragraphText);
+      const normalized = [];
+      let sentenceStart = 0;
+      for (const sentence of parsed.sentences) {
+        const sentenceEnd = sentence?.sentence_end;
+        if (!Number.isInteger(sentenceEnd)
+          || sentenceEnd <= sentenceStart || sentenceEnd > characters.length
+          || !Array.isArray(sentence?.chunks) || !sentence.chunks.length) {
+          throw new Error("A OpenAI retornou limites de frase inválidos. Gere novamente.");
+        }
+        const chunks = [];
+        let chunkStart = sentenceStart;
+        for (const chunk of sentence.chunks) {
+          const chunkEnd = chunk?.chunk_end;
+          if (!Number.isInteger(chunkEnd) || chunkEnd <= chunkStart || chunkEnd > sentenceEnd
+            || typeof chunk?.reading !== "string" || !chunk.reading
+            || typeof chunk?.gloss !== "string" || !chunk.gloss) {
+            throw new Error("A OpenAI retornou limites de chunk inválidos. Gere novamente.");
+          }
+          const surface = characters.slice(chunkStart, chunkEnd).join("");
+          if (editableChunkIsStandaloneParticle(surface)) {
+            throw new Error("A resposta separou partículas em chunks. Gere o parágrafo novamente.");
+          }
+          chunks.push([surface, chunk.reading, chunk.gloss]);
+          chunkStart = chunkEnd;
+        }
+        if (chunkStart !== sentenceEnd) {
+          throw new Error("A resposta deixou parte de uma frase fora dos chunks. Gere novamente.");
+        }
+        const normalizedSentence = normalizedEditableSentence({
+          text: characters.slice(sentenceStart, sentenceEnd).join(""),
+          pt: sentence?.pt,
+          chunks
+        });
+        if (!normalizedSentence) {
+          throw new Error("A OpenAI retornou uma divisão de frase inválida. Gere novamente.");
+        }
+        normalized.push(normalizedSentence);
+        sentenceStart = sentenceEnd;
       }
-      const normalized = parsed.sentences.map((sentence) => normalizedEditableSentence({
-        text: sentence?.text,
-        pt: sentence?.pt,
-        chunks: Array.isArray(sentence?.chunks) ? sentence.chunks.map((chunk) => [
-          chunk?.surface,
-          chunk?.reading,
-          chunk?.gloss
-        ]) : sentence?.chunks
-      }));
-      if (normalized.some((sentence) => !sentence)
-        || normalized.map((sentence) => sentence.text).join("") !== paragraphText) {
-        throw new Error("A resposta não preservou exatamente o parágrafo japonês.");
+      if (sentenceStart !== characters.length) {
+        throw new Error("A resposta não delimitou o parágrafo inteiro. Gere novamente.");
       }
       return normalized;
     }
@@ -3567,12 +3596,12 @@ ${paragraphText}`;
     async function addEditableParagraph() {
       if (!editableBook || editableParagraphGenerate.disabled) return;
       const chapterIndex = Number.parseInt(editableChapterTarget.value, 10);
-      const paragraphText = editableParagraphText.value.trim();
+      const paragraphText = editableParagraphText.value;
       if (!Number.isInteger(chapterIndex) || !chapters[chapterIndex]) {
         setEditableParagraphStatus("Selecione um capítulo válido.", true);
         return;
       }
-      if (!paragraphText) {
+      if (!paragraphText.trim()) {
         setEditableParagraphStatus("Cole um parágrafo japonês antes de gerar.", true);
         editableParagraphText.focus();
         return;
