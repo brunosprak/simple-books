@@ -1,6 +1,6 @@
 const OFFLINE_CACHE_PREFIX = "simple-ja-books-offline:v1:";
 const PWA_CACHE_PREFIX = "simple-ja-books-pwa:";
-const PWA_CACHE_NAME = `${PWA_CACHE_PREFIX}v10`;
+const PWA_CACHE_NAME = `${PWA_CACHE_PREFIX}v11`;
 const PWA_SHELL_URLS = [
   "./",
   "./index.html",
@@ -10,6 +10,9 @@ const PWA_SHELL_URLS = [
   "./books/mary-beard-spqr-ja.json",
   "./rpg/",
   "./books/rpg-ja.json",
+  "./modules/document-model.js",
+  "./modules/storage.js",
+  "./modules/openai-client.js",
   "./manifest.webmanifest?v=2",
   "./icons/icon-32.png?v=2",
   "./icons/icon-180.png?v=2",

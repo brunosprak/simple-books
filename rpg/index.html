@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Um livro japonês pessoal construído por capítulos e parágrafos neste navegador.">
+  <meta name="description" content="Um roteiro japonês pessoal organizado em seções e passagens neste navegador.">
   <meta name="theme-color" content="#314f46">
   <link rel="manifest" href="../manifest.webmanifest?v=2">
   <link rel="icon" href="../icons/icon.svg?v=2" type="image/svg+xml">
@@ -1936,7 +1936,7 @@
     <header>
       <p class="eyebrow" id="page-eyebrow"></p>
       <h1 id="page-title">RPG</h1>
-      <p class="author" id="page-author">Pseudolivro pessoal</p>
+      <p class="author" id="page-author">Documento pessoal</p>
       <button class="api-key-button" id="api-key-button" type="button" data-configured="false" aria-haspopup="dialog">🔑 API</button>
     </header>
 
@@ -1995,34 +1995,39 @@
       <h2><select class="chapter-select" id="chapter-select" aria-label="Selecionar capítulo"><option>Capítulo</option></select></h2>
 
       <section class="editable-book-panel" id="editable-book-panel" aria-labelledby="editable-book-title" hidden>
-        <h3 id="editable-book-title">Construir pseudolivro</h3>
+        <h3 id="editable-book-title">Construir documento</h3>
         <p class="editable-book-status" id="editable-book-status" aria-live="polite"></p>
         <details class="editable-book-curtain">
-          <summary>Adicionar capítulo</summary>
+          <summary id="editable-section-summary">Adicionar seção</summary>
           <form class="editable-book-form" id="editable-chapter-form">
-            <label for="editable-chapter-title">Novo capítulo</label>
+            <label for="editable-chapter-title" id="editable-section-label">Nova seção</label>
             <div class="editable-book-row">
               <input class="editable-book-input" id="editable-chapter-title" type="text" maxlength="120" autocomplete="off" placeholder="Ex.: Capítulo 1" required>
-              <button class="editable-book-action" type="submit">Adicionar capítulo</button>
+              <button class="editable-book-action" id="editable-section-add" type="submit">Adicionar seção</button>
             </div>
           </form>
         </details>
         <details class="editable-book-curtain editable-paragraph-tools" id="editable-paragraph-tools" hidden>
-          <summary>Gerenciar parágrafos</summary>
+          <summary id="editable-passage-summary">Gerenciar passagens</summary>
           <div class="editable-paragraph-content">
-            <label for="editable-chapter-target">Adicionar parágrafo ao capítulo</label>
+            <label for="editable-chapter-target" id="editable-passage-target-label">Adicionar passagem à seção</label>
             <select class="editable-book-select" id="editable-chapter-target"></select>
-            <label for="editable-paragraph-text">Parágrafo em japonês</label>
+            <label for="editable-paragraph-text" id="editable-passage-text-label">Passagem em japonês</label>
             <textarea class="editable-book-textarea" id="editable-paragraph-text" maxlength="12000" placeholder="Cole aqui um parágrafo japonês."></textarea>
-            <p class="editable-book-note">A API dividirá o parágrafo em frases e chunks, acrescentará leituras, glosses e traduções. Esta ação pode gerar cobrança.</p>
-            <button class="editable-book-action" id="editable-paragraph-generate" type="button">Gerar e adicionar parágrafo</button>
+            <p class="editable-book-note" id="editable-passage-note">A API dividirá a passagem em frases e chunks, acrescentará leituras, glosses e traduções. Esta ação pode gerar cobrança.</p>
+            <button class="editable-book-action" id="editable-paragraph-generate" type="button">Gerar e adicionar passagem</button>
             <p class="editable-book-status" id="editable-paragraph-status" aria-live="polite"></p>
             <div class="editable-book-divider" aria-hidden="true"></div>
-            <label for="editable-paragraph-delete-target">Excluir parágrafo</label>
+            <label for="editable-paragraph-delete-target" id="editable-passage-delete-label">Excluir passagem</label>
             <select class="editable-book-select" id="editable-paragraph-delete-target"></select>
-            <button class="editable-book-action is-danger" id="editable-paragraph-delete" type="button">Excluir parágrafo selecionado</button>
+            <button class="editable-book-action is-danger" id="editable-paragraph-delete" type="button">Excluir passagem selecionada</button>
           </div>
         </details>
+        <div class="editable-book-form">
+          <button class="editable-book-action" id="editable-document-export" type="button">↓ Exportar documento</button>
+          <button class="editable-book-action" id="editable-document-import" type="button">↑ Importar documento</button>
+          <input id="editable-document-import-file" type="file" accept="application/json,.json" hidden>
+        </div>
       </section>
 
       <nav class="reading-mode-switch" id="reading-mode-switch" aria-label="Modo de leitura">
@@ -2031,7 +2036,7 @@
         <button class="reading-mode-button" type="button" data-reading-mode="vertical" aria-pressed="false">Vertical</button>
       </nav>
 
-      <p class="study-hint" id="study-hint">Adicione capítulos e gere parágrafos para começar a leitura.</p>
+      <p class="study-hint" id="study-hint">Adicione seções e gere passagens para começar a leitura.</p>
 
       <noscript><p>このページを表示するにはJavaScriptを有効にしてください。</p></noscript>
 
@@ -2049,13 +2054,13 @@
           </div>
           <div class="chapter-progress" id="chapter-progress" role="progressbar" aria-label="Progresso no capítulo" aria-valuemin="1" aria-valuemax="1" aria-valuenow="1">
             <div class="chapter-progress-summary">
-              <span>Progresso do capítulo</span>
+              <span id="section-progress-heading">Progresso da seção</span>
               <span id="chapter-progress-label">0%</span>
             </div>
             <div class="chapter-progress-rows" aria-hidden="true">
               <div class="chapter-progress-row">
-                <span class="chapter-progress-row-label">Parágrafos</span>
-                <div class="chapter-progress-track" id="chapter-progress-paragraphs"></div>
+                <span class="chapter-progress-row-label" id="passage-progress-label">Passagens</span>
+                <div class="chapter-progress-track" id="chapter-progress-passages"></div>
               </div>
               <div class="chapter-progress-row">
                 <span class="chapter-progress-row-label">Frases</span>
@@ -2169,15 +2174,26 @@
     <footer id="page-footer">Conteúdo pessoal salvo localmente neste navegador.</footer>
   </main>
   <script type="module">
-    // BOOK_DATA_START
-    const bookDataUrl = "../books/rpg-ja.json";
-    const bookDataResponse = await fetch(bookDataUrl);
-    if (!bookDataResponse.ok) {
-      throw new Error(`Falha ao carregar o livro: ${bookDataResponse.status}`);
+    import {
+      documentFromReaderSections,
+      legacyReaderSections,
+      normalizeDocument
+    } from "../modules/document-model.js";
+    import { createStorage } from "../modules/storage.js";
+    import { requestOpenAi, responseOutputText } from "../modules/openai-client.js";
+
+    // DOCUMENT_DATA_START
+    const documentDataUrl = "../books/rpg-ja.json";
+    const documentDataResponse = await fetch(documentDataUrl);
+    if (!documentDataResponse.ok) {
+      throw new Error(`Falha ao carregar o documento: ${documentDataResponse.status}`);
     }
-    const bookData = await bookDataResponse.json();
-    const chapters = bookData.chapters;
-    // BOOK_DATA_END
+    const rawDocumentData = await documentDataResponse.json();
+    // DOCUMENT_DATA_END
+
+    const documentData = normalizeDocument(rawDocumentData);
+    const sections = legacyReaderSections(documentData);
+    const documentStorage = createStorage(`simple-ja-documents:${documentData.id}`);
 
     const fontDecrease = document.querySelector("#font-decrease");
     const fontIncrease = document.querySelector("#font-increase");
@@ -2210,6 +2226,9 @@
     const editableParagraphStatus = document.querySelector("#editable-paragraph-status");
     const editableParagraphDeleteTarget = document.querySelector("#editable-paragraph-delete-target");
     const editableParagraphDelete = document.querySelector("#editable-paragraph-delete");
+    const editableDocumentExport = document.querySelector("#editable-document-export");
+    const editableDocumentImport = document.querySelector("#editable-document-import");
+    const editableDocumentImportFile = document.querySelector("#editable-document-import-file");
     const readingModeSwitch = document.querySelector("#reading-mode-switch");
     const readerControls = document.querySelector("#reader-controls");
     const offlineDownloads = document.querySelector("#offline-downloads");
@@ -2242,7 +2261,7 @@
     const glossImportFile = document.querySelector("#gloss-import-file");
     const chapterProgress = document.querySelector("#chapter-progress");
     const chapterProgressLabel = document.querySelector("#chapter-progress-label");
-    const chapterProgressParagraphs = document.querySelector("#chapter-progress-paragraphs");
+    const chapterProgressParagraphs = document.querySelector("#chapter-progress-passages");
     const chapterProgressSentences = document.querySelector("#chapter-progress-sentences");
     const sentenceAudioControls = document.querySelector("#sentence-audio-controls");
     const sentenceAudioToggle = document.querySelector("#sentence-audio-toggle");
@@ -2275,17 +2294,44 @@
     const verticalPagePrevious = document.querySelector("#vertical-page-previous");
     const verticalPageNext = document.querySelector("#vertical-page-next");
     const verticalPageStatus = document.querySelector("#vertical-page-status");
-    if (bookData) {
-      document.title = bookData.page.title;
-      document.querySelector('meta[name="description"]').content = bookData.page.description;
-      document.querySelector("#page-eyebrow").textContent = bookData.page.eyebrow;
-      document.querySelector("#page-title").textContent = bookData.page.title;
-      document.querySelector("#page-author").textContent = bookData.page.author;
-      document.querySelector("#study-hint").textContent = bookData.page.study_hint;
-      document.querySelector("#page-footer").textContent = bookData.page.footer;
-    }
-    const editableBook = bookData?.page?.editable === true;
-    const editableBookStorageKey = `simple-ja-books:editable-book:v1:${bookData?.source_file || location.pathname}`;
+    document.title = documentData.metadata.title;
+    document.querySelector('meta[name="description"]').content = documentData.metadata.description;
+    document.querySelector("#page-eyebrow").textContent = documentData.metadata.eyebrow;
+    document.querySelector("#page-title").textContent = documentData.metadata.title;
+    document.querySelector("#page-author").textContent = documentData.metadata.creator;
+    document.querySelector("#study-hint").textContent = documentData.metadata.study_hint;
+    document.querySelector("#page-footer").textContent = documentData.metadata.footer;
+    const sectionLabel = documentData.labels.section;
+    const passageLabel = documentData.labels.passage;
+    const sectionsLabel = documentData.labels.sections;
+    const passagesLabel = documentData.labels.passages;
+    chapterSelect.setAttribute("aria-label", `Selecionar ${sectionLabel.toLocaleLowerCase("pt-BR")}`);
+    document.querySelector("#editable-section-summary").textContent = `Adicionar ${sectionLabel.toLocaleLowerCase("pt-BR")}`;
+    document.querySelector("#editable-section-label").textContent = `Novo ${sectionLabel.toLocaleLowerCase("pt-BR")}`;
+    document.querySelector("#editable-section-add").textContent = `Adicionar ${sectionLabel.toLocaleLowerCase("pt-BR")}`;
+    editableChapterTitle.placeholder = `Ex.: ${sectionLabel} 1`;
+    document.querySelector("#editable-passage-summary").textContent = `Gerenciar ${documentData.labels.passages.toLocaleLowerCase("pt-BR")}`;
+    document.querySelector("#editable-passage-target-label").textContent = `Adicionar ${passageLabel.toLocaleLowerCase("pt-BR")} a ${sectionLabel.toLocaleLowerCase("pt-BR")}`;
+    document.querySelector("#editable-passage-text-label").textContent = `${passageLabel} em japonês`;
+    document.querySelector("#editable-passage-note").textContent = `A API dividirá ${passageLabel.toLocaleLowerCase("pt-BR")} em frases e chunks, acrescentará leituras, glosses e traduções. Esta ação pode gerar cobrança.`;
+    document.querySelector("#editable-passage-delete-label").textContent = `Excluir ${passageLabel.toLocaleLowerCase("pt-BR")}`;
+    editableParagraphGenerate.textContent = `Gerar e adicionar ${passageLabel.toLocaleLowerCase("pt-BR")}`;
+    editableParagraphDelete.textContent = `Excluir ${passageLabel.toLocaleLowerCase("pt-BR")}`;
+    editableParagraphText.placeholder = `Cole aqui ${passageLabel.toLocaleLowerCase("pt-BR")} em japonês.`;
+    previousParagraphButton.setAttribute("aria-label", `${passageLabel} anterior`);
+    previousParagraphButton.title = `${passageLabel} anterior`;
+    nextParagraphButton.setAttribute("aria-label", `Próximo ${passageLabel.toLocaleLowerCase("pt-BR")}`);
+    nextParagraphButton.title = `Próximo ${passageLabel.toLocaleLowerCase("pt-BR")}`;
+    chapterProgress.setAttribute("aria-label", `Progresso em ${sectionLabel.toLocaleLowerCase("pt-BR")}`);
+    document.querySelector("#section-progress-heading").textContent = `Progresso: ${sectionLabel.toLocaleLowerCase("pt-BR")}`;
+    document.querySelector("#passage-progress-label").textContent = passagesLabel;
+    chapterPreviousButton.setAttribute("aria-label", `${sectionLabel} anterior`);
+    chapterNextButton.setAttribute("aria-label", `Próximo ${sectionLabel.toLocaleLowerCase("pt-BR")}`);
+    offlineChapterDownload.textContent = `↓ ${sectionLabel} atual`;
+    offlineBookDownload.textContent = "↓ Documento completo";
+    const editableBook = documentData.capabilities.editing;
+    const editableBookStorageKey = documentStorage.key("content:v2");
+    const legacyEditableBookStorageKey = `simple-ja-books:editable-book:v1:${documentData.source_file || location.pathname}`;
     const standaloneEditableParticles = new Set([
       "が", "は", "を", "に", "へ", "で", "と", "の", "も", "や", "か", "ね", "よ", "ぞ", "さ",
       "から", "まで", "より", "って", "では", "には", "とは", "でも", "しか", "だけ", "こそ",
@@ -2325,27 +2371,42 @@
       if (!Array.isArray(value) || value.length > 200) return null;
       const normalized = [];
       for (const chapter of value) {
+        const storedPassages = Array.isArray(chapter?.passages)
+          ? chapter.passages
+          : chapter?.["paragraphs"];
         if (!chapter || typeof chapter.title !== "string" || !chapter.title.trim()
-          || chapter.title.length > 120 || !Array.isArray(chapter.paragraphs)
-          || chapter.paragraphs.length > 2000) return null;
-        const paragraphs = [];
-        for (const paragraph of chapter.paragraphs) {
+          || chapter.title.length > 120 || !Array.isArray(storedPassages)
+          || storedPassages.length > 2000) return null;
+        const passages = [];
+        for (const paragraph of storedPassages) {
           if (!Array.isArray(paragraph) || !paragraph.length || paragraph.length > 100) return null;
           const sentencesInParagraph = paragraph.map(normalizedEditableSentence);
           if (sentencesInParagraph.some((sentence) => !sentence)) return null;
-          paragraphs.push(sentencesInParagraph);
+          passages.push(sentencesInParagraph);
         }
-        normalized.push({ title: chapter.title.trim(), paragraphs });
+        normalized.push({ title: chapter.title.trim(), passages: passages });
       }
       return normalized;
     }
 
     if (editableBook) {
       try {
-        const storedChapters = normalizedEditableChapters(
-          JSON.parse(localStorage.getItem(editableBookStorageKey) || "[]")
-        );
-        if (storedChapters) chapters.splice(0, chapters.length, ...storedChapters);
+        const storedDocument = JSON.parse(localStorage.getItem(editableBookStorageKey) || "null");
+        if (storedDocument) {
+          const normalizedStoredDocument = normalizeDocument(storedDocument);
+          sections.splice(0, sections.length, ...legacyReaderSections(normalizedStoredDocument));
+        } else {
+          const legacyStoredChapters = normalizedEditableChapters(
+            JSON.parse(localStorage.getItem(legacyEditableBookStorageKey) || "[]")
+          );
+          if (legacyStoredChapters?.length) {
+            sections.splice(0, sections.length, ...legacyStoredChapters);
+            localStorage.setItem(
+              editableBookStorageKey,
+              JSON.stringify(documentFromReaderSections(documentData, sections))
+            );
+          }
+        }
       } catch (_error) {
         // Invalid local content is ignored; the canonical empty book remains available.
       }
@@ -2356,30 +2417,30 @@
     const paragraphSentenceStarts = [];
     const paragraphSentenceCounts = [];
     const sentenceParagraphIndexes = [];
-    const paragraphs = [];
+    const passages = [];
     let sentenceTotal = 0;
-    chapters.forEach((chapter) => {
+    sections.forEach((chapter) => {
       chapterSentenceStarts.push(sentenceTotal);
-      chapterParagraphStarts.push(paragraphs.length);
-      chapterParagraphCounts.push(chapter.paragraphs.length);
-      chapter.paragraphs.forEach((paragraph) => {
-        const paragraphIndex = paragraphs.length;
+      chapterParagraphStarts.push(passages.length);
+      chapterParagraphCounts.push(chapter.passages.length);
+      chapter.passages.forEach((paragraph) => {
+        const paragraphIndex = passages.length;
         paragraphSentenceStarts.push(sentenceTotal);
         paragraphSentenceCounts.push(paragraph.length);
-        paragraphs.push(paragraph);
+        passages.push(paragraph);
         paragraph.forEach(() => sentenceParagraphIndexes.push(paragraphIndex));
         sentenceTotal += paragraph.length;
       });
     });
-    const sentences = paragraphs.flat();
-    chapterSelect.replaceChildren(...chapters.map((chapter, index) => {
+    const sentences = passages.flat();
+    chapterSelect.replaceChildren(...sections.map((chapter, index) => {
       const option = document.createElement("option");
       option.value = String(index);
       option.textContent = chapter.title;
-      option.disabled = !chapter.paragraphs.some((paragraph) => paragraph.length);
+      option.disabled = !chapter.passages.some((paragraph) => paragraph.length);
       return option;
     }));
-    const storageScope = bookData?.source_file || location.pathname;
+    const storageScope = documentData.id;
     const openAiApiKeyStorageKey = "simple-ja-books:openai-api-key:v1";
     const grammarAnalysesStorageKey = `simple-ja-books:grammar-analyses:v1:${storageScope}`;
     const vocabularyAnalysesStorageKey = `simple-ja-books:vocabulary-analyses:v3:${storageScope}`;
@@ -2434,12 +2495,13 @@
     let positionSaveFrame = null;
     let nextSentencePreviewFrame = null;
     const fontPercentages = [85, 100, 115, 130, 150];
-    const offlineVersion = "d0bad50257eb1864";
+    const offlineVersion = "5683d14cda148235";
     const defaultFontLevelIndex = 1;
     const minFontLevel = -defaultFontLevelIndex;
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
     let currentFontLevel = Number.parseInt(localStorage.getItem("reading-font-level") || "0", 10);
-    const markedGlossesStorageKey = "simple-ja-books:marked-glosses:v1";
+    const markedGlossesStorageKey = documentStorage.key("marked-glosses:v2");
+    const legacyMarkedGlossesStorageKey = "simple-ja-books:marked-glosses:v1";
     const glossReasons = ["vocabulary", "listening"];
     let markedGlosses = loadMarkedGlosses();
     const browserSpeechAvailable = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
@@ -2451,7 +2513,7 @@
     let translationSpeechActive = false;
     let translationSpeechRun = 0;
     let translationSpeechOnComplete = null;
-    const audioConfig = bookData?.page?.audio || null;
+    const audioConfig = documentData.capabilities.audio;
     const sentenceAudio = audioConfig ? new Audio() : null;
     const sentenceAudioLoopDelayMs = 500;
     const audioSpeedStorageKey = `simple-ja-books:audio-speed:v1:${storageScope}`;
@@ -2487,14 +2549,14 @@
     function normalizeOfflineChapterIndexes(values) {
       if (!Array.isArray(values)) return [];
       return [...new Set(values.filter((index) =>
-        Number.isInteger(index) && index >= 0 && index < chapters.length
+        Number.isInteger(index) && index >= 0 && index < sections.length
       ))].sort((a, b) => a - b);
     }
 
     function emptyOfflineState(pendingChapters = [], pendingBookComplete = false) {
       return {
         version: offlineVersion,
-        chapters: [],
+        sections: [],
         bookComplete: false,
         pendingChapters: normalizeOfflineChapterIndexes(pendingChapters),
         pendingBookComplete
@@ -2504,13 +2566,13 @@
     function loadOfflineState() {
       try {
         const stored = JSON.parse(localStorage.getItem(offlineStateStorageKey) || "null");
-        if (!stored || !Array.isArray(stored.chapters)) return emptyOfflineState();
-        const storedChapters = normalizeOfflineChapterIndexes(stored.chapters);
+        if (!stored || !Array.isArray(stored.sections)) return emptyOfflineState();
+        const storedChapters = normalizeOfflineChapterIndexes(stored.sections);
         if (stored.version !== offlineVersion) {
           const pendingBookComplete = stored.bookComplete === true
             || stored.pendingBookComplete === true;
           const pendingChapters = pendingBookComplete
-            ? chapters.map((_chapter, index) => index)
+            ? sections.map((_chapter, index) => index)
             : normalizeOfflineChapterIndexes([
                 ...storedChapters,
                 ...(Array.isArray(stored.pendingChapters) ? stored.pendingChapters : [])
@@ -2519,7 +2581,7 @@
         }
         return {
           version: offlineVersion,
-          chapters: storedChapters,
+          sections: storedChapters,
           bookComplete: stored.bookComplete === true,
           pendingChapters: normalizeOfflineChapterIndexes(stored.pendingChapters),
           pendingBookComplete: stored.pendingBookComplete === true
@@ -2551,7 +2613,12 @@
 
     function offlineUrlsForChapters(chapterIndexes, includeLibrary = false) {
       const urls = new Set([canonicalPageUrl(), offlineWorkerUrl]);
-      if (bookDataUrl) urls.add(new URL(bookDataUrl, document.baseURI).href);
+      [
+        "../modules/document-model.js",
+        "../modules/storage.js",
+        "../modules/openai-client.js"
+      ].forEach((path) => urls.add(new URL(path, document.baseURI).href));
+      if (documentDataUrl) urls.add(new URL(documentDataUrl, document.baseURI).href);
       if (includeLibrary) {
         [
           "../",
@@ -2570,7 +2637,7 @@
         const audioBase = audioConfig.base_url.replace(/\/+$/, "");
         urls.add(new URL(`${audioBase}/manifest.json`, document.baseURI).href);
         chapterIndexes.forEach((chapterIndex) => {
-          chapters[chapterIndex].paragraphs.forEach((paragraph, paragraphIndex) => {
+          sections[chapterIndex].passages.forEach((paragraph, paragraphIndex) => {
             paragraph.forEach((_sentence, sentenceIndex) => {
               urls.add(new URL(
                 sentenceAudioPath(chapterIndex, paragraphIndex, sentenceIndex),
@@ -2623,7 +2690,7 @@
       const previousCacheExists = cacheNames.some((name) =>
         name.startsWith(offlineCachePrefix) && name !== offlineCacheName
       );
-      if (!cacheExists && (offlineState.bookComplete || offlineState.chapters.length)) {
+      if (!cacheExists && (offlineState.bookComplete || offlineState.sections.length)) {
         offlineState = emptyOfflineState(
           offlineState.pendingChapters,
           offlineState.pendingBookComplete
@@ -2636,24 +2703,24 @@
         saveOfflineState();
       }
       const chapterIndex = currentOfflineChapterIndex();
-      const chapterReady = offlineState.bookComplete || offlineState.chapters.includes(chapterIndex);
+      const chapterReady = offlineState.bookComplete || offlineState.sections.includes(chapterIndex);
       const chapterNeedsUpdate = offlineState.pendingChapters.includes(chapterIndex);
       offlineChapterDownload.textContent = chapterReady
-        ? "✓ Capítulo offline"
-        : chapterNeedsUpdate ? "↻ Atualizar capítulo" : "↓ Capítulo atual";
+        ? `✓ ${sectionLabel} offline`
+        : chapterNeedsUpdate ? `↻ Atualizar ${sectionLabel.toLocaleLowerCase("pt-BR")}` : `↓ ${sectionLabel} atual`;
       offlineBookDownload.textContent = offlineState.bookComplete
-        ? "✓ Livro offline"
-        : offlineState.pendingBookComplete ? "↻ Atualizar livro" : "↓ Livro completo";
+        ? "✓ Documento offline"
+        : offlineState.pendingBookComplete ? "↻ Atualizar documento" : "↓ Documento completo";
       if (offlineState.bookComplete) {
-        offlineStatus.textContent = "Livro completo disponível offline neste navegador.";
+        offlineStatus.textContent = "Documento completo disponível offline neste navegador.";
       } else if (offlineState.pendingChapters.length) {
         const count = offlineState.pendingChapters.length;
-        offlineStatus.textContent = `${count} ${count === 1 ? "capítulo precisa" : "capítulos precisam"} de atualização offline.`;
-      } else if (offlineState.chapters.length) {
-        const count = offlineState.chapters.length;
-        offlineStatus.textContent = `${count} ${count === 1 ? "capítulo disponível" : "capítulos disponíveis"} offline neste navegador.`;
+        offlineStatus.textContent = `${count} de ${sectionsLabel.toLocaleLowerCase("pt-BR")} precisam de atualização offline.`;
+      } else if (offlineState.sections.length) {
+        const count = offlineState.sections.length;
+        offlineStatus.textContent = `${count} de ${sectionsLabel.toLocaleLowerCase("pt-BR")} disponíveis offline neste navegador.`;
       } else {
-        offlineStatus.textContent = "Nenhum conteúdo deste livro foi salvo para uso offline.";
+        offlineStatus.textContent = "Nenhum conteúdo deste documento foi salvo para uso offline.";
       }
       setOfflineBusy(offlineBusy);
       if (!offlineManagePanel.hidden) void updateOfflineStorageEstimate();
@@ -2789,7 +2856,7 @@
       if (offlineBusy || !offlineSupported) return;
       const chapterIndex = currentOfflineChapterIndex();
       const chapterIndexes = scope === "book"
-        ? chapters.map((_chapter, index) => index)
+        ? sections.map((_chapter, index) => index)
         : [chapterIndex];
       const urls = offlineUrlsForChapters(chapterIndexes, scope === "book");
       setOfflineBusy(true);
@@ -2802,20 +2869,20 @@
         if (scope === "book") {
           offlineState = {
             version: offlineVersion,
-            chapters: chapters.map((_chapter, index) => index),
+            sections: sections.map((_chapter, index) => index),
             bookComplete: true,
             pendingChapters: [],
             pendingBookComplete: false
           };
         } else {
-          offlineState.chapters = normalizeOfflineChapterIndexes([
-            ...offlineState.chapters,
+          offlineState.sections = normalizeOfflineChapterIndexes([
+            ...offlineState.sections,
             chapterIndex
           ]);
           offlineState.pendingChapters = offlineState.pendingChapters.filter(
             (index) => index !== chapterIndex
           );
-          if (offlineState.chapters.length === chapters.length) {
+          if (offlineState.sections.length === sections.length) {
             offlineState.bookComplete = true;
           }
           if (!offlineState.pendingChapters.length) {
@@ -2825,8 +2892,8 @@
         if (!offlineState.pendingChapters.length) await removeObsoleteOfflineCaches();
         saveOfflineState();
         offlineStatus.textContent = scope === "book"
-          ? "Livro completo salvo para uso offline."
-          : `Capítulo “${chapters[chapterIndex].title}” salvo para uso offline.`;
+          ? "Documento completo salvo para uso offline."
+          : `${sectionLabel} “${sections[chapterIndex].title}” salvo para uso offline.`;
       } catch (_error) {
         failureMessage = "O download foi interrompido. Conecte-se à internet e tente novamente.";
       } finally {
@@ -2839,7 +2906,7 @@
 
     async function removeOfflineFiles() {
       if (offlineBusy || !offlineSupported) return;
-      if (!window.confirm("Remover os arquivos offline deste livro neste navegador?")) return;
+      if (!window.confirm("Remover os arquivos offline deste documento neste navegador?")) return;
       setOfflineBusy(true);
       try {
         const cacheNames = await caches.keys();
@@ -3103,7 +3170,7 @@
 
     function validSentenceChapterPositions(values) {
       return Array.isArray(values)
-        && values.length <= chapters.length
+        && values.length <= sections.length
         && values.every((index, chapterIndex) =>
           validSentenceIndexForChapter(index, chapterIndex)
         );
@@ -3113,7 +3180,7 @@
       const positions = [...chapterSentenceStarts];
       if (Array.isArray(stored)) {
         stored.forEach((index, chapterIndex) => {
-          if (chapterIndex < chapters.length
+          if (chapterIndex < sections.length
             && validSentenceIndexForChapter(index, chapterIndex)) {
             positions[chapterIndex] = index;
           }
@@ -3143,7 +3210,7 @@
         const position = stored?.[mode];
         if (!position || typeof position !== "object") return;
         if (Number.isInteger(position.chapterIndex)) {
-          defaults[mode].chapterIndex = Math.min(Math.max(position.chapterIndex, 0), chapters.length - 1);
+          defaults[mode].chapterIndex = Math.min(Math.max(position.chapterIndex, 0), sections.length - 1);
         }
         if (Number.isFinite(position.pageScrollY)) {
           defaults[mode].pageScrollY = Math.max(position.pageScrollY, 0);
@@ -3316,7 +3383,11 @@
 
     function saveEditableBookChapters() {
       if (!editableBook) return;
-      localStorage.setItem(editableBookStorageKey, JSON.stringify(chapters));
+      const saved = documentStorage.setJson(
+        "content:v2",
+        documentFromReaderSections(documentData, sections)
+      );
+      if (!saved) throw new Error("Não foi possível salvar o documento neste navegador.");
     }
 
     function setEditableBookStatus(message, isError = false) {
@@ -3355,32 +3426,16 @@ Caracteres imutáveis do parágrafo:
 ${indexedCharacters}`;
     }
 
-    async function fetchEditableParagraphResponse(options) {
-      const abortController = new AbortController();
-      const timeout = setTimeout(() => abortController.abort(), 120000);
-      try {
-        return await fetch("https://api.openai.com/v1/responses", {
-          ...options,
-          signal: abortController.signal
-        });
-      } catch (error) {
-        if (error instanceof DOMException && error.name === "AbortError") {
-          throw new Error("A geração ultrapassou dois minutos. Tente novamente com um parágrafo menor.");
-        }
-        throw new Error("Não foi possível conectar à API da OpenAI. Confira sua conexão e tente novamente.");
-      } finally {
-        clearTimeout(timeout);
-      }
+    async function fetchEditableParagraphResponse(body) {
+      return requestOpenAi({
+        apiKey: openAiApiKey,
+        body,
+        operation: "geração do documento"
+      });
     }
 
     async function generateEditableParagraph(paragraphText) {
-      const response = await fetchEditableParagraphResponse({
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${openAiApiKey}`
-        },
-        body: JSON.stringify({
+      const responsePayload = await fetchEditableParagraphResponse({
           model: grammarModel,
           reasoning: { effort: "low" },
           max_output_tokens: 8000,
@@ -3429,24 +3484,9 @@ ${indexedCharacters}`;
               }
             }
           }
-        })
-      });
-      if (!response.ok) {
-        let apiDetail = "";
-        try {
-          const errorPayload = await response.json();
-          if (typeof errorPayload?.error?.message === "string") {
-            apiDetail = errorPayload.error.message.trim().slice(0, 400);
-          }
-        } catch (_error) {
-          // The status-specific message remains useful without a JSON error body.
         }
-        if (response.status === 401) throw new Error("Chave rejeitada. Abra 🔑 API e confira a chave.");
-        if (response.status === 429) throw new Error("O limite da API foi atingido. Tente novamente mais tarde.");
-        const detail = apiDetail ? ` Motivo informado pela API: ${apiDetail}` : "";
-        throw new Error(`A OpenAI recusou a geração (erro ${response.status}).${detail}`);
-      }
-      const output = responseOutputText(await response.json());
+      );
+      const output = responseOutputText(responsePayload);
       if (!output) throw new Error("A OpenAI não retornou o parágrafo estruturado.");
       let parsed;
       try {
@@ -3506,41 +3546,43 @@ ${indexedCharacters}`;
     function renderEditableBookManager() {
       if (!editableBook) return;
       editableBookPanel.hidden = false;
-      editableParagraphTools.hidden = chapters.length === 0;
-      editableChapterTarget.replaceChildren(...chapters.map((chapter, index) => {
+      editableParagraphTools.hidden = sections.length === 0;
+      editableChapterTarget.replaceChildren(...sections.map((chapter, index) => {
         const option = document.createElement("option");
         option.value = String(index);
         option.textContent = chapter.title;
         return option;
       }));
       const paragraphOptions = [];
-      chapters.forEach((chapter, chapterIndex) => {
-        chapter.paragraphs.forEach((paragraph, paragraphIndex) => {
+      sections.forEach((chapter, chapterIndex) => {
+        chapter.passages.forEach((paragraph, paragraphIndex) => {
           const option = document.createElement("option");
           const paragraphText = paragraph.map((sentence) => sentence.text).join("");
           const preview = paragraphText.length > 42
             ? `${paragraphText.slice(0, 42)}…`
             : paragraphText;
           option.value = `${chapterIndex}:${paragraphIndex}`;
-          option.textContent = `${chapter.title} · Parágrafo ${paragraphIndex + 1} — ${preview}`;
+          option.textContent = `${chapter.title} · ${passageLabel} ${paragraphIndex + 1} — ${preview}`;
           paragraphOptions.push(option);
         });
       });
       if (!paragraphOptions.length) {
         const emptyOption = document.createElement("option");
-        emptyOption.textContent = "Nenhum parágrafo cadastrado";
+        emptyOption.textContent = `Nenhum ${passageLabel.toLocaleLowerCase("pt-BR")} cadastrado`;
         emptyOption.disabled = true;
         paragraphOptions.push(emptyOption);
       }
       editableParagraphDeleteTarget.replaceChildren(...paragraphOptions);
-      editableParagraphDelete.disabled = !chapters.some((chapter) => chapter.paragraphs.length);
-      const paragraphCount = chapters.reduce(
-        (total, chapter) => total + chapter.paragraphs.length,
+      editableParagraphDelete.disabled = !sections.some((chapter) => chapter.passages.length);
+      const paragraphCount = sections.reduce(
+        (total, chapter) => total + chapter.passages.length,
         0
       );
-      setEditableBookStatus(chapters.length
-        ? `${chapters.length} ${chapters.length === 1 ? "capítulo" : "capítulos"} · ${paragraphCount} ${paragraphCount === 1 ? "parágrafo" : "parágrafos"}`
-        : "O pseudolivro ainda não tem capítulos.");
+      const sectionCountLabel = sections.length === 1 ? sectionLabel : sectionsLabel;
+      const passageCountLabel = paragraphCount === 1 ? passageLabel : passagesLabel;
+      setEditableBookStatus(sections.length
+        ? `${sections.length} ${sectionCountLabel.toLocaleLowerCase("pt-BR")} · ${paragraphCount} ${passageCountLabel.toLocaleLowerCase("pt-BR")}`
+        : `O documento ainda não tem ${sectionsLabel.toLocaleLowerCase("pt-BR")}.`);
     }
 
     editableChapterForm.addEventListener("submit", (event) => {
@@ -3548,7 +3590,7 @@ ${indexedCharacters}`;
       if (!editableBook) return;
       const title = editableChapterTitle.value.trim();
       if (!title) return;
-      chapters.push({ title, paragraphs: [] });
+      sections.push({ title, passages: [] });
       saveEditableBookChapters();
       location.reload();
     });
@@ -3558,18 +3600,18 @@ ${indexedCharacters}`;
       const [chapterValue, paragraphValue] = editableParagraphDeleteTarget.value.split(":");
       const chapterIndex = Number.parseInt(chapterValue, 10);
       const paragraphIndex = Number.parseInt(paragraphValue, 10);
-      const paragraph = chapters[chapterIndex]?.paragraphs[paragraphIndex];
+      const paragraph = sections[chapterIndex]?.passages[paragraphIndex];
       if (!paragraph) {
-        setEditableBookStatus("Selecione um parágrafo válido.", true);
+        setEditableBookStatus(`Selecione um ${passageLabel.toLocaleLowerCase("pt-BR")} válido.`, true);
         return;
       }
       const paragraphText = paragraph.map((sentence) => sentence.text).join("");
       const preview = paragraphText.length > 70 ? `${paragraphText.slice(0, 70)}…` : paragraphText;
-      if (!window.confirm(`Excluir permanentemente este parágrafo?\n\n${preview}`)) return;
+      if (!window.confirm(`Excluir permanentemente: ${passageLabel.toLocaleLowerCase("pt-BR")}?\n\n${preview}`)) return;
 
-      const deletedSentenceStart = chapters.slice(0, chapterIndex).reduce(
-        (total, chapter) => total + chapter.paragraphs.flat().length,
-        chapters[chapterIndex].paragraphs.slice(0, paragraphIndex).flat().length
+      const deletedSentenceStart = sections.slice(0, chapterIndex).reduce(
+        (total, chapter) => total + chapter.passages.flat().length,
+        sections[chapterIndex].passages.slice(0, paragraphIndex).flat().length
       );
       const deletedSentenceCount = paragraph.length;
       const shiftedIncrementalAnalyses = new Map();
@@ -3586,7 +3628,7 @@ ${indexedCharacters}`;
       });
       incrementalAnalyses = shiftedIncrementalAnalyses;
       saveIncrementalAnalyses();
-      chapters[chapterIndex].paragraphs.splice(paragraphIndex, 1);
+      sections[chapterIndex].passages.splice(paragraphIndex, 1);
       saveEditableBookChapters();
       try {
         localStorage.removeItem(activeCardStorageKey);
@@ -3602,12 +3644,12 @@ ${indexedCharacters}`;
       if (!editableBook || editableParagraphGenerate.disabled) return;
       const chapterIndex = Number.parseInt(editableChapterTarget.value, 10);
       const paragraphText = editableParagraphText.value;
-      if (!Number.isInteger(chapterIndex) || !chapters[chapterIndex]) {
-        setEditableParagraphStatus("Selecione um capítulo válido.", true);
+      if (!Number.isInteger(chapterIndex) || !sections[chapterIndex]) {
+        setEditableParagraphStatus(`Selecione um ${sectionLabel.toLocaleLowerCase("pt-BR")} válido.`, true);
         return;
       }
       if (!paragraphText.trim()) {
-        setEditableParagraphStatus("Cole um parágrafo japonês antes de gerar.", true);
+        setEditableParagraphStatus(`Cole ${passageLabel.toLocaleLowerCase("pt-BR")} em japonês antes de gerar.`, true);
         editableParagraphText.focus();
         return;
       }
@@ -3620,27 +3662,27 @@ ${indexedCharacters}`;
       editableParagraphGenerate.textContent = "Gerando…";
       editableChapterTarget.disabled = true;
       editableParagraphText.disabled = true;
-      setEditableParagraphStatus("Dividindo o parágrafo em frases e chunks…");
+      setEditableParagraphStatus(`Dividindo ${passageLabel.toLocaleLowerCase("pt-BR")} em frases e chunks…`);
       try {
         const paragraph = await generateEditableParagraph(paragraphText);
-        const firstSentenceIndex = chapters.slice(0, chapterIndex).reduce(
-          (total, chapter) => total + chapter.paragraphs.flat().length,
-          chapters[chapterIndex].paragraphs.flat().length
+        const firstSentenceIndex = sections.slice(0, chapterIndex).reduce(
+          (total, chapter) => total + chapter.passages.flat().length,
+          sections[chapterIndex].passages.flat().length
         );
-        chapters[chapterIndex].paragraphs.push(paragraph);
+        sections[chapterIndex].passages.push(paragraph);
         saveEditableBookChapters();
         localStorage.setItem(activeCardStorageKey, String(firstSentenceIndex));
         localStorage.setItem(readingModeStorageKey, "sentence");
-        setEditableParagraphStatus("Parágrafo cadastrado. Abrindo a leitura…");
+        setEditableParagraphStatus(`${passageLabel} cadastrado. Abrindo a leitura…`);
         location.reload();
       } catch (error) {
         setEditableParagraphStatus(
-          error instanceof Error ? error.message : "Não foi possível adicionar o parágrafo.",
+          error instanceof Error ? error.message : `Não foi possível adicionar ${passageLabel.toLocaleLowerCase("pt-BR")}.`,
           true
         );
       } finally {
         editableParagraphGenerate.disabled = false;
-        editableParagraphGenerate.textContent = "Gerar e adicionar parágrafo";
+        editableParagraphGenerate.textContent = `Gerar e adicionar ${passageLabel.toLocaleLowerCase("pt-BR")}`;
         editableChapterTarget.disabled = false;
         editableParagraphText.disabled = false;
       }
@@ -3648,6 +3690,39 @@ ${indexedCharacters}`;
 
     editableParagraphGenerate.addEventListener("click", () => void addEditableParagraph());
     editableParagraphDelete.addEventListener("click", deleteEditableParagraph);
+    editableDocumentExport.addEventListener("click", () => {
+      if (!editableBook) return;
+      const payload = documentFromReaderSections(documentData, sections);
+      const blob = new Blob([JSON.stringify(payload, null, 2) + "\n"], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${documentData.id}.documento-ja.json`;
+      link.click();
+      URL.revokeObjectURL(url);
+    });
+    editableDocumentImport.addEventListener("click", () => editableDocumentImportFile.click());
+    editableDocumentImportFile.addEventListener("change", async () => {
+      const [file] = editableDocumentImportFile.files;
+      if (!file || !editableBook) return;
+      try {
+        const importedDocument = normalizeDocument(JSON.parse(await file.text()));
+        if (!importedDocument.editable) throw new Error("O documento não é editável.");
+        const importedSections = legacyReaderSections(importedDocument);
+        const localDocument = documentFromReaderSections(documentData, importedSections);
+        if (!documentStorage.setJson("content:v2", localDocument)) {
+          throw new Error("Não foi possível salvar o documento importado.");
+        }
+        location.reload();
+      } catch (error) {
+        setEditableBookStatus(
+          error instanceof Error ? error.message : "Documento inválido.",
+          true
+        );
+      } finally {
+        editableDocumentImportFile.value = "";
+      }
+    });
 
     function grammarAnalysisKey(sentenceText, chunkIndex, chunkSurface) {
       return JSON.stringify([sentenceText, chunkIndex, chunkSurface]);
@@ -3764,15 +3839,6 @@ Trecho-alvo:
 ${chunkSurface}`;
     }
 
-    function responseOutputText(payload) {
-      if (typeof payload?.output_text === "string") return payload.output_text.trim();
-      return (payload?.output || []).flatMap((item) => item.content || [])
-        .filter((content) => content.type === "output_text" && typeof content.text === "string")
-        .map((content) => content.text)
-        .join("\n")
-        .trim();
-    }
-
     function appendGrammarInline(target, source) {
       const emphasis = /(\*\*[^*\n]+\*\*|__[^_\n]+__|\*[^*\n]+\*|_[^_\n]+_)/g;
       let cursor = 0;
@@ -3878,26 +3944,18 @@ ${chunkSurface}`;
     }
 
     async function generateGrammarAnalysis(sentenceText, chunkSurface) {
-      const response = await fetch("https://api.openai.com/v1/responses", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${openAiApiKey}`
-        },
-        body: JSON.stringify({
+      const responsePayload = await requestOpenAi({
+        apiKey: openAiApiKey,
+        operation: "análise gramatical",
+        body: {
           model: grammarModel,
           reasoning: { effort: "low" },
           max_output_tokens: 1000,
           store: false,
           input: grammarAnalysisPrompt(sentenceText, chunkSurface)
-        })
+        }
       });
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Chave rejeitada. Abra 🔑 API e confira a chave.");
-        if (response.status === 429) throw new Error("O limite da API foi atingido. Tente novamente mais tarde.");
-        throw new Error("A OpenAI não conseguiu gerar a análise agora. Tente novamente.");
-      }
-      const analysis = responseOutputText(await response.json());
+      const analysis = responseOutputText(responsePayload);
       if (!analysis) throw new Error("A OpenAI não retornou pontos gramaticais.");
       return analysis;
     }
@@ -4098,13 +4156,10 @@ ${chunkReading}`;
     }
 
     async function generateVocabularyAnalysis(sentenceText, chunkSurface, chunkReading) {
-      const response = await fetch("https://api.openai.com/v1/responses", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${openAiApiKey}`
-        },
-        body: JSON.stringify({
+      const responsePayload = await requestOpenAi({
+        apiKey: openAiApiKey,
+        operation: "geração de vocabulário",
+        body: {
           model: grammarModel,
           reasoning: { effort: "low" },
           max_output_tokens: 1600,
@@ -4146,14 +4201,9 @@ ${chunkReading}`;
               }
             }
           }
-        })
+        }
       });
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Chave rejeitada. Abra 🔑 API e confira a chave.");
-        if (response.status === 429) throw new Error("O limite da API foi atingido. Tente novamente mais tarde.");
-        throw new Error("A OpenAI não conseguiu gerar o vocabulário agora. Tente novamente.");
-      }
-      const output = responseOutputText(await response.json());
+      const output = responseOutputText(responsePayload);
       if (!output) throw new Error("A OpenAI não retornou vocabulário.");
       let parsed;
       try {
@@ -4307,13 +4357,10 @@ ${chunkList}`;
       const sentence = sentences[sentenceIndex];
       const sentenceText = sentence.text;
       const stepCount = sentence.chunks.length;
-      const response = await fetch("https://api.openai.com/v1/responses", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${openAiApiKey}`
-        },
-        body: JSON.stringify({
+      const responsePayload = await requestOpenAi({
+        apiKey: openAiApiKey,
+        operation: "leitura incremental",
+        body: {
           model: grammarModel,
           reasoning: { effort: "low" },
           max_output_tokens: 5000,
@@ -4359,14 +4406,9 @@ ${chunkList}`;
               }
             }
           }
-        })
+        }
       });
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Chave rejeitada. Abra 🔑 API e confira a chave.");
-        if (response.status === 429) throw new Error("O limite da API foi atingido. Tente novamente mais tarde.");
-        throw new Error("A OpenAI não conseguiu gerar a leitura incremental agora. Tente novamente.");
-      }
-      const output = responseOutputText(await response.json());
+      const output = responseOutputText(responsePayload);
       if (!output) throw new Error("A OpenAI não retornou uma leitura incremental.");
       let parsed;
       try {
@@ -4976,7 +5018,24 @@ ${chunkList}`;
 
     function loadMarkedGlosses() {
       try {
-        const stored = JSON.parse(localStorage.getItem(markedGlossesStorageKey) || "[]");
+        let rawStored = localStorage.getItem(markedGlossesStorageKey);
+        if (rawStored === null) {
+          const relevantTerms = new Set();
+          sentences.forEach((sentence) => sentence.chunks.forEach(([surface]) => {
+            relevantTerms.add(surface.replace(/[\s、。！？…—―「」『』（）・]+/gu, ""));
+          }));
+          vocabularyAnalyses.forEach((analysis) => analysis.entries.forEach((entry) => {
+            relevantTerms.add(entry.dictionary_form);
+          }));
+          const legacyEntries = JSON.parse(localStorage.getItem(legacyMarkedGlossesStorageKey) || "[]");
+          const relevantLegacyEntries = Array.isArray(legacyEntries)
+            ? legacyEntries.filter((entry) => relevantTerms.has(entry?.term)
+              || sentences.some((sentence) => sentence.text.includes(entry?.term || "")))
+            : [];
+          rawStored = JSON.stringify(relevantLegacyEntries);
+          localStorage.setItem(markedGlossesStorageKey, rawStored);
+        }
+        const stored = JSON.parse(rawStored);
         if (!Array.isArray(stored)) return new Map();
         const normalized = stored.map(normalizeGlossEntry).filter(Boolean);
         return new Map(normalized.map((entry) => [
@@ -5440,8 +5499,8 @@ ${chunkList}`;
           : sentences.length;
         if (index >= start && index < end) return chapterIndex;
       }
-      return Math.max(chapters.findIndex((chapter) =>
-        chapter.paragraphs.some((paragraph) => paragraph.length)
+      return Math.max(sections.findIndex((chapter) =>
+        chapter.passages.some((paragraph) => paragraph.length)
       ), 0);
     }
 
@@ -5482,13 +5541,13 @@ ${chunkList}`;
       saveReadingPositions();
       chapterSelect.value = String(chapterIndex);
       void updateOfflineControls();
-      chapterReaderTitle.textContent = chapters[chapterIndex].title;
+      chapterReaderTitle.textContent = sections[chapterIndex].title;
       chapterPreviousButton.disabled = chapterIndex === 0;
-      chapterNextButton.disabled = chapterIndex === chapters.length - 1;
+      chapterNextButton.disabled = chapterIndex === sections.length - 1;
       chapterReader.classList.toggle("vertical", readingMode === "vertical");
       if (readingMode === "vertical") {
-        chapterNextButton.textContent = "← 章";
-        chapterPreviousButton.textContent = "章 →";
+        chapterNextButton.textContent = "←";
+        chapterPreviousButton.textContent = "→";
         chapterReaderToolbar.append(
           chapterNextButton,
           chapterReaderTitle,
@@ -5496,8 +5555,8 @@ ${chunkList}`;
           chapterPreviousButton
         );
       } else {
-        chapterPreviousButton.textContent = "← 章";
-        chapterNextButton.textContent = "章 →";
+        chapterPreviousButton.textContent = "←";
+        chapterNextButton.textContent = "→";
         chapterReaderToolbar.append(
           chapterPreviousButton,
           chapterReaderTitle,
@@ -5507,7 +5566,7 @@ ${chunkList}`;
       }
       verticalPageControls.hidden = readingMode !== "vertical";
       chapterSwipeHint.textContent = readingMode === "vertical"
-        ? "Deslize o texto para a direita para avançar; deslize na barra acima para trocar de capítulo."
+        ? `Deslize o texto para a direita para avançar; deslize na barra acima para trocar de ${sectionLabel.toLocaleLowerCase("pt-BR")}.`
         : "Deslize para a direita para Frases ou para a esquerda para Vertical.";
       if (readingMode !== "vertical") {
         chapterReadingViewport.style.width = "";
@@ -5515,7 +5574,7 @@ ${chunkList}`;
         chapterReadingText.style.paddingRight = "";
       }
       chapterReadingText.replaceChildren();
-      chapters[chapterIndex].paragraphs.forEach((paragraph) => {
+      sections[chapterIndex].passages.forEach((paragraph) => {
         const paragraphElement = document.createElement("p");
         paragraph.forEach((sentence) => appendSentenceWithRuby(paragraphElement, sentence));
         chapterReadingText.append(paragraphElement);
@@ -5568,7 +5627,7 @@ ${chunkList}`;
 
     function navigateChapter(offset) {
       const currentChapter = chapterReaderIndex;
-      const targetChapter = Math.min(Math.max(currentChapter + offset, 0), chapters.length - 1);
+      const targetChapter = Math.min(Math.max(currentChapter + offset, 0), sections.length - 1);
       if (targetChapter !== currentChapter) {
         captureReadingPosition();
         renderFullChapter(targetChapter, false);
@@ -5730,7 +5789,7 @@ ${chunkList}`;
       chapterProgress.setAttribute("aria-valuenow", String(sentenceInChapter + 1));
       chapterProgress.setAttribute(
         "aria-valuetext",
-        `Frase ${sentenceInChapter + 1} de ${chapterSentenceCount}; frase ${sentenceInParagraph + 1} do parágrafo ${paragraphInChapter + 1} de ${chapterParagraphCounts[activeChapter]}`
+        `Frase ${sentenceInChapter + 1} de ${chapterSentenceCount}; frase ${sentenceInParagraph + 1} em ${passageLabel.toLocaleLowerCase("pt-BR")} ${paragraphInChapter + 1} de ${chapterParagraphCounts[activeChapter]}`
       );
       chapterProgressParagraphs.replaceChildren();
       chapterProgressSentences.replaceChildren();
@@ -5891,7 +5950,7 @@ ${chunkList}`;
       previousParagraphButton.disabled = activeParagraph === 0;
       previousButton.disabled = activeIndex === 0;
       nextButton.disabled = activeIndex === sentences.length - 1;
-      nextParagraphButton.disabled = activeParagraph === paragraphs.length - 1;
+      nextParagraphButton.disabled = activeParagraph === passages.length - 1;
       let activeChapter = 0;
       chapterSentenceStarts.forEach((start, index) => {
         if (start <= activeIndex) activeChapter = index;
@@ -5901,7 +5960,7 @@ ${chunkList}`;
       prepareSentenceAudio(activeChapter, paragraphInChapter, sentenceInParagraph);
       chapterSelect.value = String(activeChapter);
       void updateOfflineControls();
-      label.textContent = `Parágrafo ${paragraphInChapter + 1} de ${chapterParagraphCounts[activeChapter]} · frase ${sentenceInParagraph + 1} de ${sentencesInParagraph}`;
+      label.textContent = `${passageLabel} ${paragraphInChapter + 1} de ${chapterParagraphCounts[activeChapter]} · frase ${sentenceInParagraph + 1} de ${sentencesInParagraph}`;
       selectedSentence.classList.toggle("paragraph-start", sentenceInParagraph === 0);
       selectedSentence.replaceChildren();
 
@@ -6078,7 +6137,8 @@ ${chunkList}`;
       captureReadingPosition();
       const payload = {
         schema_version: 9,
-        source_file: bookData?.source_file || null,
+        document_id: documentData.id,
+        source_file: documentData.source_file || null,
         exported_at: new Date().toISOString(),
         reader_state: {
           reading_mode: readingMode,
@@ -6165,7 +6225,8 @@ ${chunkList}`;
         if ([2, 3, 4, 5, 6, 7, 8, 9].includes(payload.schema_version)) {
           const state = payload.reader_state;
           const storedSentenceChapterPositions = state?.sentence_chapter_positions;
-          if (payload.source_file !== bookData?.source_file
+          if ((payload.document_id && payload.document_id !== documentData.id)
+            || payload.source_file !== documentData.source_file
             || !state || typeof state !== "object"
             || !["sentence", "continuous", "vertical"].includes(state.reading_mode)
             || !Number.isInteger(state.active_sentence_index)
@@ -6241,7 +6302,7 @@ ${chunkList}`;
           renderFullChapter(chapterReaderIndex);
         }
       } catch (_error) {
-        window.alert("O arquivo não é um JSON de dados de leitura válido para este livro.");
+        window.alert("O arquivo não é um JSON de dados de leitura válido para este documento.");
       } finally {
         glossImportFile.value = "";
       }
@@ -6272,7 +6333,7 @@ ${chunkList}`;
 
     nextParagraphButton.addEventListener("click", () => {
       const activeParagraph = sentenceParagraphIndexes[activeIndex];
-      if (activeParagraph < paragraphs.length - 1) {
+      if (activeParagraph < passages.length - 1) {
         renderCard(paragraphSentenceStarts[activeParagraph + 1]);
       }
     });
