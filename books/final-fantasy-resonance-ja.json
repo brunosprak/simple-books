@@ -1,0 +1,27 @@
+{
+  "schema_version": 2,
+  "source_file": "final-fantasy-resonance.local",
+  "languages": {
+    "source": "ja",
+    "translation": "ja",
+    "gloss": "pt-BR"
+  },
+  "page": {
+    "title": "Final Fantasy Resonance",
+    "author": "Pseudolivro pessoal",
+    "eyebrow": "",
+    "description": "Um livro japonês pessoal construído por capítulos e parágrafos neste navegador.",
+    "study_hint": "Adicione capítulos e gere parágrafos para começar a leitura.",
+    "footer": "Conteúdo pessoal salvo localmente neste navegador.",
+    "font_levels_percent": [
+      85,
+      100,
+      115,
+      130,
+      150
+    ],
+    "default_font_level_percent": 100,
+    "editable": true
+  },
+  "chapters": []
+}
