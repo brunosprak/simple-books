@@ -166,8 +166,10 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('function syncIncrementalGrammarAnalyses(entry)', first)
         self.assertIn('renderGrammarAnalysis(grammar, sharedGrammar.analysis, sharedGrammar, null)', first)
         self.assertIn('false,\n        true', first)
-        self.assertIn('function setSentenceStudyTab(tab, persist = true, generate = false)', first)
-        self.assertIn('renderIncrementalForActiveSentence(generate)', first)
+        self.assertIn('function setSentenceStudyTab(tab, persist = true)', first)
+        self.assertIn('renderIncrementalForActiveSentence()', first)
+        self.assertIn('incrementalTab.addEventListener("click", () => setSentenceStudyTab("incremental"))', first)
+        self.assertNotIn('if (generate) void revealIncrementalAnalysis(activeIndex)', first)
         self.assertIn('incremental_analyses: [...incrementalAnalyses.values()]', first)
         self.assertIn('saveIncrementalAnalyses()', first)
         self.assertIn('incrementalAnalyses = importedIncrementalAnalyses', first)
@@ -525,7 +527,7 @@ class BuildReaderTests(unittest.TestCase):
             first.index('id="incremental-panel"'),
             first.index('id="translation-panel"'),
         )
-        self.assertIn('setSentenceStudyTab(sentenceStudyTab, false, false)', first)
+        self.assertIn('setSentenceStudyTab(sentenceStudyTab, false)', first)
         self.assertIn('current_step: currentStep', first)
         self.assertIn('localStorage.setItem(sentenceStudyTabStorageKey, sentenceStudyTab)', first)
 

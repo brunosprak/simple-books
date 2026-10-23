@@ -4066,13 +4066,12 @@ ${chunkList}`;
       }
     }
 
-    function renderIncrementalForActiveSentence(generate = false) {
+    function renderIncrementalForActiveSentence() {
       if (showStoredIncrementalAnalysis(activeIndex)) return;
       showIncrementalPlaceholder("A leitura incremental desta frase ainda não foi gerada.");
-      if (generate) void revealIncrementalAnalysis(activeIndex);
     }
 
-    function setSentenceStudyTab(tab, persist = true, generate = false) {
+    function setSentenceStudyTab(tab, persist = true) {
       sentenceStudyTab = ["chunks", "incremental", "translation"].includes(tab)
         ? tab
         : "chunks";
@@ -4099,7 +4098,7 @@ ${chunkList}`;
           furiganaVisible = true;
           updateFuriganaState();
         }
-        renderIncrementalForActiveSentence(generate);
+        renderIncrementalForActiveSentence();
       } else if (sentenceStudyTab === "translation") {
         stopSentenceAudio();
         stopBrowserSpeech();
@@ -4107,7 +4106,7 @@ ${chunkList}`;
     }
 
     chunksTab.addEventListener("click", () => setSentenceStudyTab("chunks"));
-    incrementalTab.addEventListener("click", () => setSentenceStudyTab("incremental", true, true));
+    incrementalTab.addEventListener("click", () => setSentenceStudyTab("incremental"));
     translationTab.addEventListener("click", () => setSentenceStudyTab("translation"));
     const sentenceStudyTabs = [chunksTab, incrementalTab, translationTab];
     sentenceStudyTabs.forEach((tabButton, index) => {
@@ -5491,7 +5490,7 @@ ${chunkList}`;
       updateVocabularyExportControl();
       updateGlossSpeechButton(false);
       updateSentenceAudioLoop();
-      setSentenceStudyTab(sentenceStudyTab, false, false);
+      setSentenceStudyTab(sentenceStudyTab, false);
     }
 
     glossExport.addEventListener("click", () => {
