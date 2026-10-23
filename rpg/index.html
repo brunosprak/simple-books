@@ -2016,6 +2016,7 @@
             <textarea class="editable-book-textarea" id="editable-paragraph-text" maxlength="12000" placeholder="Cole aqui um parágrafo japonês."></textarea>
             <p class="editable-book-note">A API dividirá o parágrafo em frases e chunks, acrescentará leituras, glosses e traduções. Esta ação pode gerar cobrança.</p>
             <button class="editable-book-action" id="editable-paragraph-generate" type="button">Gerar e adicionar parágrafo</button>
+            <p class="editable-book-status" id="editable-paragraph-status" aria-live="polite"></p>
             <div class="editable-book-divider" aria-hidden="true"></div>
             <label for="editable-paragraph-delete-target">Excluir parágrafo</label>
             <select class="editable-book-select" id="editable-paragraph-delete-target"></select>
@@ -2206,6 +2207,7 @@
     const editableChapterTarget = document.querySelector("#editable-chapter-target");
     const editableParagraphText = document.querySelector("#editable-paragraph-text");
     const editableParagraphGenerate = document.querySelector("#editable-paragraph-generate");
+    const editableParagraphStatus = document.querySelector("#editable-paragraph-status");
     const editableParagraphDeleteTarget = document.querySelector("#editable-paragraph-delete-target");
     const editableParagraphDelete = document.querySelector("#editable-paragraph-delete");
     const readingModeSwitch = document.querySelector("#reading-mode-switch");
@@ -2432,7 +2434,7 @@
     let positionSaveFrame = null;
     let nextSentencePreviewFrame = null;
     const fontPercentages = [85, 100, 115, 130, 150];
-    const offlineVersion = "4b4f1b822474d7a9";
+    const offlineVersion = "8ede12e1242c1179";
     const defaultFontLevelIndex = 1;
     const minFontLevel = -defaultFontLevelIndex;
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
@@ -3322,6 +3324,11 @@
       editableBookStatus.classList.toggle("is-error", isError);
     }
 
+    function setEditableParagraphStatus(message, isError = false) {
+      editableParagraphStatus.textContent = message;
+      editableParagraphStatus.classList.toggle("is-error", isError);
+    }
+
     function editableParagraphPrompt(paragraphText) {
       return `Estruture o parágrafo japonês abaixo para um leitor de japonês com glosses em português.
 
@@ -3343,8 +3350,26 @@ Parágrafo:
 ${paragraphText}`;
     }
 
+    async function fetchEditableParagraphResponse(options) {
+      const abortController = new AbortController();
+      const timeout = setTimeout(() => abortController.abort(), 120000);
+      try {
+        return await fetch("https://api.openai.com/v1/responses", {
+          ...options,
+          signal: abortController.signal
+        });
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") {
+          throw new Error("A geração ultrapassou dois minutos. Tente novamente com um parágrafo menor.");
+        }
+        throw new Error("Não foi possível conectar à API da OpenAI. Confira sua conexão e tente novamente.");
+      } finally {
+        clearTimeout(timeout);
+      }
+    }
+
     async function generateEditableParagraph(paragraphText) {
-      const response = await fetch("https://api.openai.com/v1/responses", {
+      const response = await fetchEditableParagraphResponse({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -3402,9 +3427,19 @@ ${paragraphText}`;
         })
       });
       if (!response.ok) {
+        let apiDetail = "";
+        try {
+          const errorPayload = await response.json();
+          if (typeof errorPayload?.error?.message === "string") {
+            apiDetail = errorPayload.error.message.trim().slice(0, 400);
+          }
+        } catch (_error) {
+          // The status-specific message remains useful without a JSON error body.
+        }
         if (response.status === 401) throw new Error("Chave rejeitada. Abra 🔑 API e confira a chave.");
         if (response.status === 429) throw new Error("O limite da API foi atingido. Tente novamente mais tarde.");
-        throw new Error("A OpenAI não conseguiu estruturar o parágrafo agora.");
+        const detail = apiDetail ? ` Motivo informado pela API: ${apiDetail}` : "";
+        throw new Error(`A OpenAI recusou a geração (erro ${response.status}).${detail}`);
       }
       const output = responseOutputText(await response.json());
       if (!output) throw new Error("A OpenAI não retornou o parágrafo estruturado.");
@@ -3539,22 +3574,24 @@ ${paragraphText}`;
       const chapterIndex = Number.parseInt(editableChapterTarget.value, 10);
       const paragraphText = editableParagraphText.value.trim();
       if (!Number.isInteger(chapterIndex) || !chapters[chapterIndex]) {
-        setEditableBookStatus("Selecione um capítulo válido.", true);
+        setEditableParagraphStatus("Selecione um capítulo válido.", true);
         return;
       }
       if (!paragraphText) {
-        setEditableBookStatus("Cole um parágrafo japonês antes de gerar.", true);
+        setEditableParagraphStatus("Cole um parágrafo japonês antes de gerar.", true);
         editableParagraphText.focus();
         return;
       }
       if (!openAiApiKey) {
+        setEditableParagraphStatus("Configure a chave da API para continuar.");
         openApiKeyDialog(() => void addEditableParagraph());
         return;
       }
       editableParagraphGenerate.disabled = true;
+      editableParagraphGenerate.textContent = "Gerando…";
       editableChapterTarget.disabled = true;
       editableParagraphText.disabled = true;
-      setEditableBookStatus("Dividindo o parágrafo em frases e chunks…");
+      setEditableParagraphStatus("Dividindo o parágrafo em frases e chunks…");
       try {
         const paragraph = await generateEditableParagraph(paragraphText);
         const firstSentenceIndex = chapters.slice(0, chapterIndex).reduce(
@@ -3565,14 +3602,16 @@ ${paragraphText}`;
         saveEditableBookChapters();
         localStorage.setItem(activeCardStorageKey, String(firstSentenceIndex));
         localStorage.setItem(readingModeStorageKey, "sentence");
+        setEditableParagraphStatus("Parágrafo cadastrado. Abrindo a leitura…");
         location.reload();
       } catch (error) {
-        setEditableBookStatus(
+        setEditableParagraphStatus(
           error instanceof Error ? error.message : "Não foi possível adicionar o parágrafo.",
           true
         );
       } finally {
         editableParagraphGenerate.disabled = false;
+        editableParagraphGenerate.textContent = "Gerar e adicionar parágrafo";
         editableChapterTarget.disabled = false;
         editableParagraphText.disabled = false;
       }
