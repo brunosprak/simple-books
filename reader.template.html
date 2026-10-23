@@ -664,9 +664,32 @@
     }
 
     .editable-book-form,
-    .editable-paragraph-tools {
+    .editable-paragraph-content {
       display: grid;
       gap: 0.65rem;
+    }
+
+    .editable-book-curtain {
+      padding: 0.65rem 0.75rem;
+      border: 1px solid var(--rule);
+      border-radius: 0.65rem;
+      background: color-mix(in srgb, var(--paper) 76%, transparent);
+    }
+
+    .editable-book-curtain summary {
+      color: var(--accent);
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .editable-book-curtain[open] summary {
+      margin-bottom: 0.75rem;
+    }
+
+    .editable-book-divider {
+      height: 1px;
+      margin: 0.35rem 0;
+      background: var(--rule);
     }
 
     .editable-book-row {
@@ -710,6 +733,12 @@
     .editable-book-action:disabled {
       cursor: wait;
       opacity: 0.55;
+    }
+
+    .editable-book-action.is-danger {
+      color: var(--danger);
+      background: transparent;
+      border-color: var(--danger);
     }
 
     .editable-book-note,
@@ -1968,21 +1997,31 @@
       <section class="editable-book-panel" id="editable-book-panel" aria-labelledby="editable-book-title" hidden>
         <h3 id="editable-book-title">Construir pseudolivro</h3>
         <p class="editable-book-status" id="editable-book-status" aria-live="polite"></p>
-        <form class="editable-book-form" id="editable-chapter-form">
-          <label for="editable-chapter-title">Novo capítulo</label>
-          <div class="editable-book-row">
-            <input class="editable-book-input" id="editable-chapter-title" type="text" maxlength="120" autocomplete="off" placeholder="Ex.: Capítulo 1" required>
-            <button class="editable-book-action" type="submit">Adicionar capítulo</button>
+        <details class="editable-book-curtain">
+          <summary>Adicionar capítulo</summary>
+          <form class="editable-book-form" id="editable-chapter-form">
+            <label for="editable-chapter-title">Novo capítulo</label>
+            <div class="editable-book-row">
+              <input class="editable-book-input" id="editable-chapter-title" type="text" maxlength="120" autocomplete="off" placeholder="Ex.: Capítulo 1" required>
+              <button class="editable-book-action" type="submit">Adicionar capítulo</button>
+            </div>
+          </form>
+        </details>
+        <details class="editable-book-curtain editable-paragraph-tools" id="editable-paragraph-tools" hidden>
+          <summary>Gerenciar parágrafos</summary>
+          <div class="editable-paragraph-content">
+            <label for="editable-chapter-target">Adicionar parágrafo ao capítulo</label>
+            <select class="editable-book-select" id="editable-chapter-target"></select>
+            <label for="editable-paragraph-text">Parágrafo em japonês</label>
+            <textarea class="editable-book-textarea" id="editable-paragraph-text" maxlength="12000" placeholder="Cole aqui um parágrafo japonês."></textarea>
+            <p class="editable-book-note">A API dividirá o parágrafo em frases e chunks, acrescentará leituras, glosses e traduções. Esta ação pode gerar cobrança.</p>
+            <button class="editable-book-action" id="editable-paragraph-generate" type="button">Gerar e adicionar parágrafo</button>
+            <div class="editable-book-divider" aria-hidden="true"></div>
+            <label for="editable-paragraph-delete-target">Excluir parágrafo</label>
+            <select class="editable-book-select" id="editable-paragraph-delete-target"></select>
+            <button class="editable-book-action is-danger" id="editable-paragraph-delete" type="button">Excluir parágrafo selecionado</button>
           </div>
-        </form>
-        <div class="editable-paragraph-tools" id="editable-paragraph-tools" hidden>
-          <label for="editable-chapter-target">Adicionar parágrafo ao capítulo</label>
-          <select class="editable-book-select" id="editable-chapter-target"></select>
-          <label for="editable-paragraph-text">Parágrafo em japonês</label>
-          <textarea class="editable-book-textarea" id="editable-paragraph-text" maxlength="12000" placeholder="Cole aqui um parágrafo japonês."></textarea>
-          <p class="editable-book-note">A API dividirá o parágrafo em frases e chunks, acrescentará leituras, glosses e traduções. Esta ação pode gerar cobrança.</p>
-          <button class="editable-book-action" id="editable-paragraph-generate" type="button">Gerar e adicionar parágrafo</button>
-        </div>
+        </details>
       </section>
 
       <nav class="reading-mode-switch" id="reading-mode-switch" aria-label="Modo de leitura">
@@ -2162,6 +2201,8 @@
     const editableChapterTarget = document.querySelector("#editable-chapter-target");
     const editableParagraphText = document.querySelector("#editable-paragraph-text");
     const editableParagraphGenerate = document.querySelector("#editable-paragraph-generate");
+    const editableParagraphDeleteTarget = document.querySelector("#editable-paragraph-delete-target");
+    const editableParagraphDelete = document.querySelector("#editable-paragraph-delete");
     const readingModeSwitch = document.querySelector("#reading-mode-switch");
     const readerControls = document.querySelector("#reader-controls");
     const offlineDownloads = document.querySelector("#offline-downloads");
@@ -2238,6 +2279,16 @@
     }
     const editableBook = bookData?.page?.editable === true;
     const editableBookStorageKey = `simple-ja-books:editable-book:v1:${bookData?.source_file || location.pathname}`;
+    const standaloneEditableParticles = new Set([
+      "が", "は", "を", "に", "へ", "で", "と", "の", "も", "や", "か", "ね", "よ", "ぞ", "さ",
+      "から", "まで", "より", "って", "では", "には", "とは", "でも", "しか", "だけ", "こそ",
+      "など", "なり", "やら", "ばかり", "ほど", "くらい", "ぐらい", "ので", "のに"
+    ]);
+
+    function editableChunkIsStandaloneParticle(surface) {
+      const lexicalSurface = surface.replace(/[\s、。！？…—―「」『』（）・]+/gu, "");
+      return standaloneEditableParticles.has(lexicalSurface);
+    }
 
     function normalizedEditableSentence(sentence) {
       if (!sentence || typeof sentence.text !== "string" || !sentence.text
@@ -2249,7 +2300,8 @@
         if (!Array.isArray(chunk) || chunk.length !== 3
           || chunk.some((value) => typeof value !== "string" || !value)) return null;
         const [surface, reading, gloss] = chunk;
-        if (/^[\p{P}\p{S}\s]+$/u.test(surface)) return null;
+        if (/^[\p{P}\p{S}\s]+$/u.test(surface)
+          || editableChunkIsStandaloneParticle(surface)) return null;
         const start = sentence.text.indexOf(surface, cursor);
         if (start < 0 || !/^[\s、。！？…—―「」『』（）・]*$/u.test(
           sentence.text.slice(cursor, start)
@@ -3272,7 +3324,10 @@ Regras obrigatórias:
 - Preserve exatamente todos os caracteres e a ordem do parágrafo original.
 - Divida o parágrafo em frases naturais. A concatenação de todos os campos text deve reproduzir exatamente o parágrafo recebido.
 - Em pt, dê uma tradução natural e completa da respectiva frase em português do Brasil.
-- Divida cada frase em chunks pequenos e úteis: normalmente uma palavra de conteúdo, um composto curto ou uma construção gramatical compacta.
+- Divida cada frase em chunks sintáticos curtos e úteis, não em uma sequência de palavras isoladas. Cada chunk deve formar uma unidade que o estudante consiga relacionar a um gloss sem virar uma oração longa.
+- Nunca deixe partículas isoladas em um chunk, mesmo quando vierem acompanhadas de pontuação. Una が, は, を, に, へ, で, と, の, も e outras partículas ao termo ou sintagma imediatamente anterior cuja função elas marcam: 彼女が, 私は, 本を, 学校に.
+- Mantenha terminações flexionais, auxiliares e finais compactos junto ao verbo ou adjetivo a que pertencem quando separá-los produzir apenas fragmentos morfológicos. Preserve expressões fixas e construções gramaticais compostas como uma unidade.
+- Evite a segmentação de quase uma palavra por chunk. Prefira, por exemplo, 私は / 昨日 / 学校に / 行きました。 em vez de 私 / は / 昨日 / 学校 / に / 行き / ました。
 - A concatenação exata dos campos surface de todos os chunks deve reproduzir a frase inteira, sem lacunas.
 - Nunca crie um chunk composto somente de pontuação. Anexe pontuação ao chunk lexical ou gramatical anterior em surface e reading.
 - Em reading, forneça a leitura completa de surface, usando hiragana para kanji e preservando kana, espaços e pontuação necessários ao alinhamento de furigana.
@@ -3357,6 +3412,12 @@ ${paragraphText}`;
       if (!Array.isArray(parsed?.sentences) || !parsed.sentences.length) {
         throw new Error("A OpenAI retornou um parágrafo sem frases.");
       }
+      if (parsed.sentences.some((sentence) =>
+        Array.isArray(sentence?.chunks) && sentence.chunks.some((chunk) =>
+          typeof chunk?.surface === "string" && editableChunkIsStandaloneParticle(chunk.surface)
+        ))) {
+        throw new Error("A resposta separou partículas em chunks. Gere o parágrafo novamente.");
+      }
       const normalized = parsed.sentences.map((sentence) => normalizedEditableSentence({
         text: sentence?.text,
         pt: sentence?.pt,
@@ -3383,6 +3444,27 @@ ${paragraphText}`;
         option.textContent = chapter.title;
         return option;
       }));
+      const paragraphOptions = [];
+      chapters.forEach((chapter, chapterIndex) => {
+        chapter.paragraphs.forEach((paragraph, paragraphIndex) => {
+          const option = document.createElement("option");
+          const paragraphText = paragraph.map((sentence) => sentence.text).join("");
+          const preview = paragraphText.length > 42
+            ? `${paragraphText.slice(0, 42)}…`
+            : paragraphText;
+          option.value = `${chapterIndex}:${paragraphIndex}`;
+          option.textContent = `${chapter.title} · Parágrafo ${paragraphIndex + 1} — ${preview}`;
+          paragraphOptions.push(option);
+        });
+      });
+      if (!paragraphOptions.length) {
+        const emptyOption = document.createElement("option");
+        emptyOption.textContent = "Nenhum parágrafo cadastrado";
+        emptyOption.disabled = true;
+        paragraphOptions.push(emptyOption);
+      }
+      editableParagraphDeleteTarget.replaceChildren(...paragraphOptions);
+      editableParagraphDelete.disabled = !chapters.some((chapter) => chapter.paragraphs.length);
       const paragraphCount = chapters.reduce(
         (total, chapter) => total + chapter.paragraphs.length,
         0
@@ -3401,6 +3483,51 @@ ${paragraphText}`;
       saveEditableBookChapters();
       location.reload();
     });
+
+    function deleteEditableParagraph() {
+      if (!editableBook || editableParagraphDelete.disabled) return;
+      const [chapterValue, paragraphValue] = editableParagraphDeleteTarget.value.split(":");
+      const chapterIndex = Number.parseInt(chapterValue, 10);
+      const paragraphIndex = Number.parseInt(paragraphValue, 10);
+      const paragraph = chapters[chapterIndex]?.paragraphs[paragraphIndex];
+      if (!paragraph) {
+        setEditableBookStatus("Selecione um parágrafo válido.", true);
+        return;
+      }
+      const paragraphText = paragraph.map((sentence) => sentence.text).join("");
+      const preview = paragraphText.length > 70 ? `${paragraphText.slice(0, 70)}…` : paragraphText;
+      if (!window.confirm(`Excluir permanentemente este parágrafo?\n\n${preview}`)) return;
+
+      const deletedSentenceStart = chapters.slice(0, chapterIndex).reduce(
+        (total, chapter) => total + chapter.paragraphs.flat().length,
+        chapters[chapterIndex].paragraphs.slice(0, paragraphIndex).flat().length
+      );
+      const deletedSentenceCount = paragraph.length;
+      const shiftedIncrementalAnalyses = new Map();
+      incrementalAnalyses.forEach((entry) => {
+        if (entry.sentence_index >= deletedSentenceStart
+          && entry.sentence_index < deletedSentenceStart + deletedSentenceCount) return;
+        const shiftedEntry = entry.sentence_index > deletedSentenceStart
+          ? { ...entry, sentence_index: entry.sentence_index - deletedSentenceCount }
+          : entry;
+        shiftedIncrementalAnalyses.set(
+          incrementalAnalysisKey(shiftedEntry.sentence_index, shiftedEntry.sentence_text),
+          shiftedEntry
+        );
+      });
+      incrementalAnalyses = shiftedIncrementalAnalyses;
+      saveIncrementalAnalyses();
+      chapters[chapterIndex].paragraphs.splice(paragraphIndex, 1);
+      saveEditableBookChapters();
+      try {
+        localStorage.removeItem(activeCardStorageKey);
+        localStorage.removeItem(sentenceChapterPositionsStorageKey);
+        localStorage.removeItem(readingPositionsStorageKey);
+      } catch (_error) {
+        // The paragraph deletion itself remains saved.
+      }
+      location.reload();
+    }
 
     async function addEditableParagraph() {
       if (!editableBook || editableParagraphGenerate.disabled) return;
@@ -3447,6 +3574,7 @@ ${paragraphText}`;
     }
 
     editableParagraphGenerate.addEventListener("click", () => void addEditableParagraph());
+    editableParagraphDelete.addEventListener("click", deleteEditableParagraph);
 
     function grammarAnalysisKey(sentenceText, chunkIndex, chunkSurface) {
       return JSON.stringify([sentenceText, chunkIndex, chunkSurface]);
