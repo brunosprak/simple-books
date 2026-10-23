@@ -59,9 +59,9 @@
       ]
     },
     {
-      "name": "Final Fantasy Resonance",
-      "short_name": "FF Resonance",
-      "url": "final-fantasy-resonance/",
+      "name": "RPG",
+      "short_name": "RPG",
+      "url": "rpg/",
       "icons": [
         {
           "src": "icons/icon-192.png?v=2",
