@@ -1081,22 +1081,6 @@
       white-space: nowrap;
     }
 
-    .chunk-grammar-indicator {
-      padding: 0.18rem 0.4rem;
-      color: var(--paper);
-      background: var(--accent);
-      border-radius: 999px;
-      font-family: system-ui, sans-serif;
-      font-size: 0.55rem;
-      font-weight: 800;
-      line-height: 1;
-      letter-spacing: 0.02em;
-    }
-
-    .chunk-grammar-indicator[hidden] {
-      display: none;
-    }
-
     .chunk-action:focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: -2px;
@@ -1690,8 +1674,8 @@
             </label>
             <span class="sentence-audio-status" id="sentence-audio-status" aria-live="polite"></span>
           </div>
-          <div class="gloss-tools" aria-label="Glosses marcados">
-            <span class="gloss-count" id="gloss-count" aria-label="Nenhum gloss marcado">★ 0 · 🎧 0</span>
+          <div class="gloss-tools" aria-label="Marcações de estudo">
+            <span class="gloss-count" id="study-count" aria-label="Nenhuma marcação de estudo">★ 0 · 🎧 0 · Voc. 0 · Gram. 0</span>
             <button class="gloss-tool-button" id="gloss-speak" type="button" aria-label="Ouvir glosses de escuta da frase atual" aria-pressed="false" disabled>▶ Escuta</button>
             <button class="gloss-tool-button" id="gloss-speak-ja" type="button" aria-label="Ouvir somente em japonês os glosses de escuta da frase atual" aria-pressed="false" disabled>▶ JP</button>
             <button class="gloss-tool-button" id="vocabulary-export" type="button" aria-label="Nenhum vocabulário selecionado para exportar" disabled>↓ Vocabulário</button>
@@ -1795,7 +1779,7 @@
     const nextButton = document.querySelector("#study-next");
     const nextParagraphButton = document.querySelector("#study-next-paragraph");
     const furiganaToggle = document.querySelector("#furigana-toggle");
-    const glossCount = document.querySelector("#gloss-count");
+    const studyCount = document.querySelector("#study-count");
     const glossSpeak = document.querySelector("#gloss-speak");
     const glossSpeakJapanese = document.querySelector("#gloss-speak-ja");
     const glossExport = document.querySelector("#gloss-export");
@@ -2950,6 +2934,7 @@ ${chunkSurface}`;
         entry
       );
       saveGrammarAnalyses();
+      updateStudyCount();
     }
 
     function renderGrammarAnalysis(target, markdown, entry, chunkButton) {
@@ -3346,14 +3331,25 @@ ${chunkReading}`;
 
     function updateChunkVocabularyControl(chunkButton) {
       const hasVocabulary = chunkButton.dataset.vocabularyAvailable === "true";
+      const checkedEntries = Number(chunkButton.dataset.checkedVocabularyEntries || 0);
       const isExpanded = chunkButton.getAttribute("aria-expanded") === "true";
-      setChunkActionContent(chunkButton, hasVocabulary ? "✓" : "＋", "Vocabulário");
+      setChunkActionContent(
+        chunkButton,
+        hasVocabulary ? `✓ ${checkedEntries}` : "＋",
+        "Vocabulário"
+      );
       const action = isExpanded
         ? "Ocultar vocabulário de"
         : hasVocabulary
           ? "Mostrar vocabulário salvo de"
           : "Gerar vocabulário de";
-      chunkButton.setAttribute("aria-label", `${action} ${chunkButton.dataset.surface}`);
+      const checkedStatus = hasVocabulary
+        ? `, ${checkedEntries} ${checkedEntries === 1 ? "vocábulo marcado" : "vocábulos marcados"}`
+        : "";
+      chunkButton.setAttribute(
+        "aria-label",
+        `${action} ${chunkButton.dataset.surface}${checkedStatus}`
+      );
     }
 
     function renderVocabularyAnalysis(target, entry, chunkButton) {
@@ -3384,7 +3380,8 @@ ${chunkReading}`;
         const dictionaryForm = document.createElement("span");
         dictionaryForm.className = "vocabulary-dictionary-form";
         dictionaryForm.lang = "ja";
-        dictionaryForm.textContent = item.dictionary_form;
+        if (item.reading) appendAlignedRuby(dictionaryForm, item.dictionary_form, item.reading);
+        else dictionaryForm.textContent = item.dictionary_form;
         const meaning = document.createElement("span");
         meaning.className = "vocabulary-meaning";
         meaning.lang = "pt-BR";
@@ -3418,12 +3415,16 @@ ${chunkReading}`;
             entry
           );
           saveVocabularyAnalyses();
+          chunkButton.dataset.checkedVocabularyEntries = String(entry.checked_entries.length);
+          updateChunkVocabularyControl(chunkButton);
           updateVocabularyExportControl();
+          updateStudyCount();
         });
         list.append(row);
       });
       target.append(status, list);
       chunkButton.dataset.vocabularyAvailable = "true";
+      chunkButton.dataset.checkedVocabularyEntries = String(entry.checked_entries.length);
       updateChunkVocabularyControl(chunkButton);
       updateVocabularyExportControl();
     }
@@ -3595,7 +3596,7 @@ ${chunkReading}`;
       } catch (_error) {
         // The reader remains usable when storage is unavailable.
       }
-      updateGlossCount();
+      updateStudyCount();
     }
 
     function hasGlossReason(term, portuguese, reason) {
@@ -3917,14 +3918,22 @@ ${chunkReading}`;
       startTranslationSpeech();
     }
 
-    function updateGlossCount() {
+    function updateStudyCount() {
       const entries = [...markedGlosses.values()];
-      const vocabularyCount = entries.filter(({ reasons }) => reasons.includes("vocabulary")).length;
+      const chunkCount = entries.filter(({ reasons }) => reasons.includes("vocabulary")).length;
       const listeningCount = entries.filter(({ reasons }) => reasons.includes("listening")).length;
-      glossCount.textContent = `★ ${vocabularyCount} · 🎧 ${listeningCount}`;
-      glossCount.setAttribute(
+      const vocabularyCount = [...vocabularyAnalyses.values()].reduce(
+        (total, analysis) => total + analysis.checked_entries.length,
+        0
+      );
+      const grammarCount = [...grammarAnalyses.values()].reduce(
+        (total, analysis) => total + analysis.checked_topics.length,
+        0
+      );
+      studyCount.textContent = `★ ${chunkCount} · 🎧 ${listeningCount} · Voc. ${vocabularyCount} · Gram. ${grammarCount}`;
+      studyCount.setAttribute(
         "aria-label",
-        `${vocabularyCount} ${vocabularyCount === 1 ? "chunk marcado" : "chunks marcados"}; ${listeningCount} ${listeningCount === 1 ? "dificuldade de escuta" : "dificuldades de escuta"}`
+        `${chunkCount} ${chunkCount === 1 ? "chunk marcado" : "chunks marcados"}; ${listeningCount} ${listeningCount === 1 ? "dificuldade de escuta" : "dificuldades de escuta"}; ${vocabularyCount} ${vocabularyCount === 1 ? "vocábulo marcado" : "vocábulos marcados"}; ${grammarCount} ${grammarCount === 1 ? "tópico gramatical marcado" : "tópicos gramaticais marcados"}`
       );
       updateGlossSpeechButton(markedGlossSpeechMode);
       updateSentenceAudioLoop();
@@ -4351,11 +4360,15 @@ ${chunkReading}`;
     function updateChunkGrammarControl(chunkButton) {
       const hasGrammar = chunkButton.dataset.grammarAvailable === "true";
       const checkedTopics = Number(chunkButton.dataset.checkedGrammarTopics || 0);
-      const checkedStatus = checkedTopics > 0
+      const checkedStatus = hasGrammar
         ? `, ${checkedTopics} ${checkedTopics === 1 ? "tópico marcado" : "tópicos marcados"}`
         : "";
       const isExpanded = chunkButton.getAttribute("aria-expanded") === "true";
-      setChunkActionContent(chunkButton, hasGrammar ? "✓" : "＋", "Gramática");
+      setChunkActionContent(
+        chunkButton,
+        hasGrammar ? `✓ ${checkedTopics}` : "＋",
+        "Gramática"
+      );
       const action = isExpanded
         ? "Ocultar pontos gramaticais de"
         : hasGrammar
@@ -4396,16 +4409,6 @@ ${chunkReading}`;
       const checkedTopics = entry.checked_topics.length;
       chunkButton.dataset.grammarAvailable = "true";
       chunkButton.dataset.checkedGrammarTopics = String(checkedTopics);
-      const indicator = chunkButton.closest(".chunk")?.querySelector(".chunk-grammar-indicator");
-      if (indicator) {
-        indicator.textContent = checkedTopics > 0
-          ? `✓ Gramática · ${checkedTopics}`
-          : "✓ Gramática";
-        indicator.title = checkedTopics > 0
-          ? `${checkedTopics} ${checkedTopics === 1 ? "tópico marcado" : "tópicos marcados"}`
-          : "Pontos gramaticais gerados";
-        indicator.hidden = false;
-      }
       updateChunkGrammarControl(chunkButton);
     }
 
@@ -4534,6 +4537,7 @@ ${chunkReading}`;
         vocabularyButton.type = "button";
         vocabularyButton.dataset.surface = surface;
         vocabularyButton.dataset.vocabularyAvailable = "false";
+        vocabularyButton.dataset.checkedVocabularyEntries = "0";
         vocabularyButton.setAttribute("aria-expanded", "false");
         updateChunkVocabularyControl(vocabularyButton);
 
@@ -4560,13 +4564,7 @@ ${chunkReading}`;
         meaning.textContent = gloss;
         meaning.setAttribute("aria-hidden", "true");
 
-        const grammarIndicator = document.createElement("span");
-        grammarIndicator.className = "chunk-grammar-indicator";
-        grammarIndicator.textContent = "✓ Gramática";
-        grammarIndicator.title = "Pontos gramaticais gerados";
-        grammarIndicator.hidden = true;
-        grammarIndicator.setAttribute("aria-hidden", "true");
-        chunkMain.append(japanese, grammarIndicator, meaning);
+        chunkMain.append(japanese, meaning);
 
         const chunkReason = document.createElement("button");
         chunkReason.className = "chunk-action chunk-reason";
@@ -4781,6 +4779,7 @@ ${chunkReading}`;
           vocabularyAnalyses = importedVocabularyAnalyses;
           saveVocabularyAnalyses();
         }
+        updateStudyCount();
 
         if (importedReaderState) {
           activeIndex = importedReaderState.activeIndex;
@@ -5011,7 +5010,7 @@ ${chunkReading}`;
       stopBrowserSpeech();
     });
 
-    updateGlossCount();
+    updateStudyCount();
     updateTranslationSpeechButton(false);
     void initializeOfflineControls();
     updateFuriganaState();
