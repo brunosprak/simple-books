@@ -21,11 +21,11 @@ The mode selector appears in the normal document flow and exposes three modes.
 
 ### Frases
 
-- Shows one Japanese sentence at a time. Sentence and paragraph navigation plus chapter progress are shared by two content tabs immediately below them: `Chunks` and `Leitura incremental`. The selected tab persists per book.
-- `Chunks` is the default and preserves the complete established sentence experience: furigana, interlinear chunks, concise Portuguese glosses, audio and study actions, and the full Portuguese translation.
+- Shows one Japanese sentence at a time. Sentence and paragraph navigation plus chapter progress are shared by three content tabs immediately below them: `Chunks`, `Leitura incremental`, and `Tradução`. The selected tab persists per book.
+- `Chunks` is the default and preserves the established sentence experience: furigana, interlinear chunks, concise Portuguese glosses, audio and study actions. The full Portuguese sentence translation and its speech control appear in `Tradução`.
 - In `Chunks`, a `Copiar` control adjacent to the main Japanese text copies only the complete active sentence, without furigana readings or the gray preview of the following sentence, and briefly confirms success or failure. On narrow screens it occupies a compact row above the sentence so the Japanese text retains the full reader width.
 - Chunk glosses in Portuguese start visually hidden whenever the reader is opened, but their layout space is always reserved so chunks and surrounding text never move when translations are shown or hidden. Every chunk has a `🌐 Tradução` action in its five-button study bar that reveals or conceals only that chunk; its highlighted state indicates that the translation is visible. The `Mostrar traduções` control immediately above the chunks reveals all glosses in the current and subsequent sentence cards for the rest of that page session; while visible, it becomes `Ocultar traduções`.
-- Sentence/paragraph navigation and chapter progress appear in the normal document flow above both tabs. The gloss import/export row remains inside `Chunks` before its sentence content.
+- Sentence/paragraph navigation and chapter progress appear in the normal document flow above all three tabs. The gloss import/export row remains inside `Chunks` before its sentence content.
 - Previous and next controls move by sentence.
 - When the current book declares audio metadata, a play/pause control and playback-speed selector appear for the active sentence inside `Chunks`. Books without audio metadata do not show an inactive player.
 - `−¶` and `＋¶` move to the previous or next paragraph.
@@ -42,13 +42,14 @@ The mode selector appears in the normal document flow and exposes three modes.
 #### Leitura incremental
 
 - Opening `Leitura incremental` for a sentence with no saved analysis asks for confirmation before sending that sentence and up to two preceding Japanese sentences to the OpenAI Responses API. A missing API key opens the existing key dialog after confirmation. Canceling leaves a local `Gerar leitura incremental` action, and failures remain confined to this tab with a retry action.
-- The response uses a strict Structured Outputs JSON schema. Browser validation requires between one and sixteen ordered steps and rejects any result whose newly revealed segments do not concatenate exactly to the original Japanese sentence.
+- The response uses a strict Structured Outputs JSON schema. Every existing interlinear chunk is exactly one incremental step, in the same order: the model does not choose a second segmentation, and the browser supplies each step's Japanese surface and reading directly from the canonical chunk data.
 - A saved analysis opens without another request. Navigating to a sentence without an analysis while the tab remains selected shows the explicit generation action rather than silently incurring an API charge.
-- Each step contains only its newly revealed Japanese segment, its complete reading, a cumulative Portuguese interpretation limited to what has appeared so far, and zero to five grammar points relevant to processing the new material. Intermediate interpretations may remain provisional; only the final step presents the complete sentence meaning.
-- The current card displays, in order, the sentence and step identifiers, a clickable segmented progress bar, `Anterior` and `Continuar` controls (`Recomeçar` on the final step), accumulated Japanese with furigana, the current partial interpretation, and `Principais pontos gramaticais`. It never displays memory-management sections or per-point expansion controls.
+- Each step contains only its corresponding chunk, the canonical chunk reading, a concise Portuguese interpretation focused on that chunk's new contribution, and zero to five grammar points relevant to processing it. The interpretation does not repeat earlier chunks and may start with reticências to express continuation or remain provisional while a relation is open.
+- The current card displays, in order, the sentence and step identifiers with a `Regenerar` action, a clickable segmented progress bar, `Anterior` and `Continuar` controls (`Recomeçar` on the final step), accumulated Japanese with furigana, the current chunk interpretation, and `Principais pontos gramaticais`. The newly revealed chunk is visually distinguished from all earlier chunks. It never displays memory-management sections or per-point expansion controls.
 - Progress-bar segments can jump directly to any step. Moving between steps updates Japanese, interpretation and grammar together without changing word order or revealing later segments.
-- Furigana and font-size controls are shared with `Chunks`. Clicking or activating the incremental Japanese text also toggles furigana.
-- The generated analysis and the zero-based current step persist per sentence and per book in browser storage and in version 7 reader backups.
+- Entering the incremental tab enables furigana so kanji readings are immediately visible. Furigana and font-size controls remain shared with `Chunks`, and clicking or activating the incremental Japanese text toggles furigana normally afterward.
+- Grammar points generated for an incremental step are the same saved analysis used by its corresponding chunk in `Chunks`. Their checkboxes and checked state are shared across both views, and the grammar total counts each selected point only once. Regenerating requires confirmation, replaces the saved incremental analysis only after a successful response, and refreshes the shared chunk grammar; a failure leaves the previous saved analysis available.
+- The generated analysis and the zero-based current step persist per sentence and per book in browser storage and in version 8 reader backups.
 
 ### Corrido
 
@@ -143,9 +144,9 @@ Switching modes restores the last position used in the destination mode. Switchi
 
 The reader downloads its backup as `dados-de-leitura.json`.
 
-### Backup schema version 7
+### Backup schema version 8
 
-Version 7 contains:
+Version 8 contains:
 
 - `source_file`, identifying the book;
 - export timestamp;
@@ -154,19 +155,19 @@ Version 7 contains:
 - saved vocabulary analyses, identified by complete sentence text, chunk index, and chunk surface, including normalized entries and the zero-based indexes of checked entries in `checked_entries`;
 - saved incremental analyses, identified by sentence index and exact sentence text, including ordered steps and the zero-based current step in `current_step`;
 - active reading mode;
-- active sentence-content tab (`chunks` or `incremental`);
+- active sentence-content tab (`chunks`, `incremental`, or `translation`);
 - active sentence index;
 - the most recently read sentence index for every chapter;
 - font level;
 - furigana visibility;
 - the independent positions for `Frases`, `Corrido`, and `Vertical`.
 
-Version 7 reader state and all three analysis collections may be applied only when `source_file` matches the currently open book. Importing a version 7 backup replaces grammar, vocabulary, and incremental analyses for that book. The API key is deliberately excluded. The complete payload is validated before any gloss, analysis, or reader state is changed, so a failed import is atomic.
+Version 8 reader state and all three analysis collections may be applied only when `source_file` matches the currently open book. Importing a version 8 backup replaces grammar, vocabulary, and incremental analyses for that book. The API key is deliberately excluded. The complete payload is validated before any gloss, analysis, or reader state is changed, so a failed import is atomic.
 Grammar analyses exported before topic marking existed remain valid: a missing `checked_topics` field is normalized to an empty list, so every imported topic begins unchecked.
 
 ### Legacy compatibility
 
-The importer continues to accept schema versions 1 through 6. Version 1 updates glosses without replacing reader positions or preferences; versions 2 and 3 retain their reader state. Versions 4 and 5 replace grammar analyses. Version 5 sentence-level vocabulary lists are deliberately not imported into the new per-chunk format, so existing per-chunk vocabulary remains unchanged. Version 6 replaces grammar and per-chunk vocabulary analyses but leaves incremental analyses and the selected sentence-content tab unchanged. Earlier versions likewise leave unsupported newer analysis collections unchanged. Backups made before per-chapter sentence positions existed remain valid: their single active sentence is retained and other chapters begin at their first sentence. In any legacy version, every gloss without a `reasons` field is migrated to `reasons: ["vocabulary"]`.
+The importer continues to accept schema versions 1 through 7. Version 1 updates glosses without replacing reader positions or preferences; versions 2 and 3 retain their reader state. Versions 4 and 5 replace grammar analyses. Version 5 sentence-level vocabulary lists are deliberately not imported into the new per-chunk format, so existing per-chunk vocabulary remains unchanged. Version 6 replaces grammar and per-chunk vocabulary analyses but leaves incremental analyses and the selected sentence-content tab unchanged. Version 7 incremental analyses whose old model-selected segmentation does not exactly match the canonical chunks are discarded during import; its other valid data is preserved. Earlier versions likewise leave unsupported newer analysis collections unchanged. Backups made before per-chapter sentence positions existed remain valid: their single active sentence is retained and other chapters begin at their first sentence. In any legacy version, every gloss without a `reasons` field is migrated to `reasons: ["vocabulary"]`.
 
 ## Offline reading
 
