@@ -2495,7 +2495,7 @@
     let positionSaveFrame = null;
     let nextSentencePreviewFrame = null;
     const fontPercentages = [85, 100, 115, 130, 150];
-    const offlineVersion = "5683d14cda148235";
+    const offlineVersion = "601e53ac53720d59";
     const defaultFontLevelIndex = 1;
     const minFontLevel = -defaultFontLevelIndex;
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
@@ -4794,7 +4794,7 @@ ${chunkList}`;
       );
     }
 
-    function renderVocabularyAnalysis(target, entry, chunkButton) {
+    function renderVocabularyAnalysis(target, entry, chunkButton, setChunkVocabularyMarked) {
       target.replaceChildren();
       target.classList.remove("is-error");
       const status = document.createElement("p");
@@ -4856,10 +4856,10 @@ ${chunkList}`;
             entry
           );
           saveVocabularyAnalyses();
+          setChunkVocabularyMarked(entry.checked_entries.length > 0);
           chunkButton.dataset.checkedVocabularyEntries = String(entry.checked_entries.length);
           updateChunkVocabularyControl(chunkButton);
           updateVocabularyExportControl();
-          updateStudyCount();
         });
         list.append(row);
       });
@@ -4892,12 +4892,18 @@ ${chunkList}`;
       chunkSurface,
       vocabularyPanel,
       chunkButton,
+      setChunkVocabularyMarked,
       expanded = true
     ) {
       const key = vocabularyAnalysisKey(sentenceText, chunkIndex, chunkSurface);
       const stored = vocabularyAnalyses.get(key);
       if (!stored) return false;
-      renderVocabularyAnalysis(vocabularyPanel, stored, chunkButton);
+      renderVocabularyAnalysis(
+        vocabularyPanel,
+        stored,
+        chunkButton,
+        setChunkVocabularyMarked
+      );
       vocabularyPanel.hidden = !expanded;
       chunkButton.setAttribute("aria-expanded", String(expanded));
       updateChunkVocabularyControl(chunkButton);
@@ -4911,6 +4917,7 @@ ${chunkList}`;
       chunkReading,
       vocabularyPanel,
       chunkButton,
+      setChunkVocabularyMarked,
       generationConfirmed = false
     ) {
       if (!vocabularyPanel.isConnected) return;
@@ -4919,7 +4926,8 @@ ${chunkList}`;
         chunkIndex,
         chunkSurface,
         vocabularyPanel,
-        chunkButton
+        chunkButton,
+        setChunkVocabularyMarked
       )) return;
       const key = vocabularyAnalysisKey(sentenceText, chunkIndex, chunkSurface);
       if (vocabularyRequests.has(key)) return;
@@ -4934,6 +4942,7 @@ ${chunkList}`;
               chunkReading,
               vocabularyPanel,
               chunkButton,
+              setChunkVocabularyMarked,
               true
             );
           }
@@ -4964,7 +4973,12 @@ ${chunkList}`;
         vocabularyAnalyses.set(key, entry);
         saveVocabularyAnalyses();
         if (vocabularyPanel.isConnected) {
-          renderVocabularyAnalysis(vocabularyPanel, entry, chunkButton);
+          renderVocabularyAnalysis(
+            vocabularyPanel,
+            entry,
+            chunkButton,
+            setChunkVocabularyMarked
+          );
         }
       } catch (error) {
         if (vocabularyPanel.isConnected) {
@@ -5061,15 +5075,19 @@ ${chunkList}`;
       return markedGlosses.get(glossKey(term, portuguese))?.reasons.includes(reason) || false;
     }
 
-    function toggleGlossReason(term, portuguese, reason) {
+    function setGlossReason(term, portuguese, reason, marked) {
       const key = glossKey(term, portuguese);
       const entry = markedGlosses.get(key) || { term, portuguese, reasons: [] };
       const reasons = new Set(entry.reasons);
-      if (reasons.has(reason)) reasons.delete(reason);
-      else reasons.add(reason);
+      if (marked) reasons.add(reason);
+      else reasons.delete(reason);
       if (reasons.size === 0) markedGlosses.delete(key);
       else markedGlosses.set(key, { term, portuguese, reasons: [...reasons] });
       saveMarkedGlosses();
+    }
+
+    function toggleGlossReason(term, portuguese, reason) {
+      setGlossReason(term, portuguese, reason, !hasGlossReason(term, portuguese, reason));
     }
 
     function sentenceListeningGlosses(index) {
@@ -6082,6 +6100,11 @@ ${chunkList}`;
           updateChunkReasons();
         }
 
+        function setChunkVocabularyMarked(marked) {
+          setGlossReason(surface, gloss, "vocabulary", marked);
+          updateChunkReasons();
+        }
+
         chunkButton.addEventListener("click", () => {
           if (!grammarPanel.hidden) {
             grammarPanel.hidden = true;
@@ -6104,7 +6127,8 @@ ${chunkList}`;
             surface,
             reading,
             vocabularyPanel,
-            vocabularyButton
+            vocabularyButton,
+            setChunkVocabularyMarked
           );
         });
         translationButton.addEventListener("click", () => {
@@ -6122,6 +6146,7 @@ ${chunkList}`;
           surface,
           vocabularyPanel,
           vocabularyButton,
+          setChunkVocabularyMarked,
           false
         );
         showStoredGrammarAnalysis(sentence.text, chunkIndex, surface, grammarPanel, chunkButton, false);
