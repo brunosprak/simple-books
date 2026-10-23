@@ -2486,7 +2486,7 @@
     let readingMode = loadReadingMode();
     const readingPositionsStorageKey = `simple-ja-books:reading-positions:v1:${storageScope}`;
     let readingPositions = loadReadingPositions();
-    let chapterReaderIndex = readingPositions[readingMode === "sentence" ? "continuous" : readingMode].chapterIndex;
+    let chapterReaderIndex = activeChapterForIndex(activeIndex);
     let restoringReadingPosition = false;
     let positionSaveFrame = null;
     let nextSentencePreviewFrame = null;
@@ -3286,6 +3286,16 @@
       } catch (_error) {
         // The reader remains usable when storage is unavailable.
       }
+    }
+
+    function selectCanonicalChapter(chapterIndex) {
+      const targetIndex = sentenceChapterPositions[chapterIndex];
+      if (!validSentenceIndexForChapter(targetIndex, chapterIndex)) return false;
+      activeIndex = targetIndex;
+      readingPositions.sentence.chapterIndex = chapterIndex;
+      saveActiveIndex();
+      saveReadingPositions();
+      return true;
     }
 
     function loadOpenAiApiKey() {
@@ -5543,6 +5553,8 @@ ${chunkList}`;
     }
 
     function renderFullChapter(chapterIndex, restorePosition = true) {
+      const canonicalChapter = activeChapterForIndex(activeIndex);
+      chapterIndex = canonicalChapter;
       const storedPosition = readingPositions[readingMode];
       const sameChapter = storedPosition.chapterIndex === chapterIndex;
       if (!restorePosition || !sameChapter) {
@@ -5635,14 +5647,14 @@ ${chunkList}`;
       } else {
         stopSentenceAudio();
         stopBrowserSpeech();
-        renderFullChapter(readingPositions[mode].chapterIndex);
+        renderFullChapter(activeChapterForIndex(activeIndex));
       }
     }
 
     function navigateChapter(offset) {
-      const currentChapter = chapterReaderIndex;
+      const currentChapter = activeChapterForIndex(activeIndex);
       const targetChapter = Math.min(Math.max(currentChapter + offset, 0), sections.length - 1);
-      if (targetChapter !== currentChapter) {
+      if (targetChapter !== currentChapter && selectCanonicalChapter(targetChapter)) {
         captureReadingPosition();
         renderFullChapter(targetChapter, false);
       }
@@ -6309,7 +6321,7 @@ ${chunkList}`;
           currentFontLevel = importedReaderState.fontLevel;
           furiganaVisible = importedReaderState.furiganaVisible;
           readingPositions = importedReaderState.positions;
-          chapterReaderIndex = readingPositions[readingMode === "sentence" ? "continuous" : readingMode].chapterIndex;
+          chapterReaderIndex = activeChapterForIndex(activeIndex);
           saveActiveIndex();
           saveReadingPositions();
           localStorage.setItem(readingModeStorageKey, readingMode);
@@ -6320,7 +6332,7 @@ ${chunkList}`;
         } else if (readingMode === "sentence") {
           renderCard(activeIndex);
         } else {
-          renderFullChapter(chapterReaderIndex);
+          renderFullChapter(activeChapterForIndex(activeIndex));
         }
       } catch (_error) {
         window.alert("O arquivo não é um JSON de dados de leitura válido para este documento.");
@@ -6410,7 +6422,9 @@ ${chunkList}`;
         renderCard(sentenceChapterPositions[chapterIndex]);
       } else {
         captureReadingPosition();
-        renderFullChapter(chapterIndex, false);
+        if (selectCanonicalChapter(chapterIndex)) {
+          renderFullChapter(chapterIndex, false);
+        }
       }
     });
 

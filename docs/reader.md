@@ -101,13 +101,11 @@ The mode selector appears in the normal document flow and exposes three modes.
 
 ## Position and navigation persistence
 
-Each mode keeps an independent reading position:
+`Frases` owns the canonical document position. It remembers the most recently read sentence in every section; selecting a section restores its last sentence and passage instead of returning to the beginning.
 
-- `Frases`: the most recently read sentence in every chapter; selecting a chapter restores its last sentence and paragraph instead of returning to the beginning.
-- `Corrido`: current chapter and vertical page position.
-- `Vertical`: current chapter, page position, and vertical-writing page number.
+`Corrido` and `Vertical` always copy the section containing the canonical sentence instead of retaining an independent section. Changing sections from either of those views updates the canonical position to the most recently read sentence in the destination section, so returning to `Frases` shows the same place. Mode-specific presentation details remain independent: page scroll for `Corrido`, and page scroll plus the vertical-writing page number for `Vertical`. A saved visual offset is restored only while it still belongs to the current canonical section.
 
-Switching modes restores the last position used in the destination mode. Switching sections in `Frases` restores that section's last sentence, including after a page reload. Reloading the page restores the active mode and that mode's saved position. Sentence and section positions are scoped to the current document; the active mode is currently shared across readers.
+Switching modes therefore preserves one shared document position. Reloading restores the active mode, the canonical sentence, and that mode's applicable visual offset. Sentence and section positions are scoped to the current document; the active mode is currently shared across readers.
 
 ## Paragraphs and chunks
 
