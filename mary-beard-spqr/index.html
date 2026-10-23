@@ -1675,7 +1675,7 @@
             <span class="sentence-audio-status" id="sentence-audio-status" aria-live="polite"></span>
           </div>
           <div class="gloss-tools" aria-label="Marcações de estudo">
-            <span class="gloss-count" id="study-count" aria-label="Nenhuma marcação de estudo">★ 0 · 🎧 0 · Voc. 0 · Gram. 0</span>
+            <span class="gloss-count" id="study-count" aria-label="Nenhuma marcação de estudo">★ 0 · 🎧 0 · 📖 0 · 🧩 0</span>
             <button class="gloss-tool-button" id="gloss-speak" type="button" aria-label="Ouvir glosses de escuta da frase atual" aria-pressed="false" disabled>▶ Escuta</button>
             <button class="gloss-tool-button" id="gloss-speak-ja" type="button" aria-label="Ouvir somente em japonês os glosses de escuta da frase atual" aria-pressed="false" disabled>▶ JP</button>
             <button class="gloss-tool-button" id="vocabulary-export" type="button" aria-label="Nenhum vocabulário selecionado para exportar" disabled>↓ Vocabulário</button>
@@ -1907,7 +1907,7 @@
     let positionSaveFrame = null;
     let nextSentencePreviewFrame = null;
     const fontPercentages = [85, 100, 115, 130, 150];
-    const offlineVersion = "b845c46c930a1c1f";
+    const offlineVersion = "eb5d5e6d89644b8d";
     const defaultFontLevelIndex = 1;
     const minFontLevel = -defaultFontLevelIndex;
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
@@ -3340,7 +3340,7 @@ ${chunkReading}`;
       const isExpanded = chunkButton.getAttribute("aria-expanded") === "true";
       setChunkActionContent(
         chunkButton,
-        hasVocabulary ? `✓ ${checkedEntries}` : "＋",
+        hasVocabulary ? `📖✓ ${checkedEntries}` : "📖＋",
         "Vocabulário"
       );
       const action = isExpanded
@@ -3935,7 +3935,7 @@ ${chunkReading}`;
         (total, analysis) => total + analysis.checked_topics.length,
         0
       );
-      studyCount.textContent = `★ ${chunkCount} · 🎧 ${listeningCount} · Voc. ${vocabularyCount} · Gram. ${grammarCount}`;
+      studyCount.textContent = `★ ${chunkCount} · 🎧 ${listeningCount} · 📖 ${vocabularyCount} · 🧩 ${grammarCount}`;
       studyCount.setAttribute(
         "aria-label",
         `${chunkCount} ${chunkCount === 1 ? "chunk marcado" : "chunks marcados"}; ${listeningCount} ${listeningCount === 1 ? "dificuldade de escuta" : "dificuldades de escuta"}; ${vocabularyCount} ${vocabularyCount === 1 ? "vocábulo marcado" : "vocábulos marcados"}; ${grammarCount} ${grammarCount === 1 ? "tópico gramatical marcado" : "tópicos gramaticais marcados"}`
@@ -4371,7 +4371,7 @@ ${chunkReading}`;
       const isExpanded = chunkButton.getAttribute("aria-expanded") === "true";
       setChunkActionContent(
         chunkButton,
-        hasGrammar ? `✓ ${checkedTopics}` : "＋",
+        hasGrammar ? `🧩✓ ${checkedTopics}` : "🧩＋",
         "Gramática"
       );
       const action = isExpanded
@@ -4392,7 +4392,7 @@ ${chunkReading}`;
       gloss.classList.toggle("is-concealed", !visible);
       if (visible) gloss.removeAttribute("aria-hidden");
       else gloss.setAttribute("aria-hidden", "true");
-      setChunkActionContent(translationButton, "PT", "Tradução");
+      setChunkActionContent(translationButton, "🌐", "Tradução");
       translationButton.setAttribute("aria-pressed", String(visible));
       translationButton.setAttribute(
         "aria-label",
@@ -4550,7 +4550,7 @@ ${chunkReading}`;
         translationButton.className = "chunk-action chunk-translation-toggle";
         translationButton.type = "button";
         translationButton.dataset.surface = surface;
-        setChunkActionContent(translationButton, "PT", "Tradução");
+        setChunkActionContent(translationButton, "🌐", "Tradução");
         translationButton.setAttribute("aria-label", `Mostrar tradução de ${surface}`);
         translationButton.setAttribute("aria-pressed", "false");
 
