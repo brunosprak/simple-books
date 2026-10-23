@@ -867,47 +867,11 @@
       gap: 0.75rem 0.55rem;
     }
 
-    .interlinear[hidden] {
-      display: none;
-    }
-
     .chunk-display-controls {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.65rem;
+      justify-content: flex-end;
       margin: 0 0 0.65rem;
       font-family: system-ui, sans-serif;
-    }
-
-    .study-view-tabs {
-      display: inline-flex;
-      overflow: hidden;
-      border: 1px solid var(--rule);
-      border-radius: 999px;
-    }
-
-    .study-view-tab {
-      padding: 0.38rem 0.75rem;
-      color: var(--muted);
-      background: transparent;
-      border: 0;
-      font: inherit;
-      font-size: 0.72rem;
-      font-weight: 750;
-      cursor: pointer;
-    }
-
-    .study-view-tab + .study-view-tab {
-      border-inline-start: 1px solid var(--rule);
-    }
-
-    .study-view-tab:hover,
-    .study-view-tab:focus-visible,
-    .study-view-tab[aria-selected="true"] {
-      color: var(--paper);
-      background: var(--accent);
-      outline: none;
     }
 
     .chunk-gloss-toggle {
@@ -931,13 +895,20 @@
       outline: none;
     }
 
-    .sentence-vocabulary {
+    .chunk-vocabulary {
+      grid-column: 1 / -1;
       display: grid;
       gap: 0.75rem;
+      margin: 0;
+      padding: 0.75rem;
+      color: var(--ink);
+      background: color-mix(in srgb, var(--accent-soft) 58%, transparent);
+      border-top: 1px solid var(--rule);
       font-family: system-ui, sans-serif;
+      text-align: left;
     }
 
-    .sentence-vocabulary[hidden] {
+    .chunk-vocabulary[hidden] {
       display: none;
     }
 
@@ -949,6 +920,10 @@
     }
 
     .vocabulary-status.is-error {
+      color: #8a2f2f;
+    }
+
+    .chunk-vocabulary.is-error {
       color: #8a2f2f;
     }
 
@@ -1017,46 +992,10 @@
       line-height: 1.45;
     }
 
-    .vocabulary-tools {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.65rem;
-    }
-
-    .vocabulary-selection-count {
-      color: var(--muted);
-      font-size: 0.75rem;
-    }
-
-    .vocabulary-export {
-      padding: 0.32rem 0.65rem;
-      color: var(--accent);
-      background: transparent;
-      border: 1px solid var(--rule);
-      border-radius: 999px;
-      font: inherit;
-      font-size: 0.72rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .vocabulary-export:hover,
-    .vocabulary-export:focus-visible {
-      color: var(--paper);
-      background: var(--accent);
-      border-color: var(--accent);
-      outline: none;
-    }
-
-    .vocabulary-export:disabled {
-      cursor: not-allowed;
-      opacity: 0.45;
-    }
 
     .chunk {
       display: inline-grid;
-      min-width: 12rem;
+      min-width: 18rem;
       grid-template-columns: minmax(0, 1fr);
       overflow: hidden;
       background: color-mix(in srgb, var(--paper) 72%, transparent);
@@ -1083,7 +1022,7 @@
 
     .chunk-study-actions {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       border-top: 1px solid var(--rule);
       font-family: system-ui, sans-serif;
     }
@@ -1110,7 +1049,8 @@
 
     .chunk-action:hover,
     .chunk-action[aria-pressed="true"],
-    .chunk-grammar-toggle[aria-expanded="true"] {
+    .chunk-grammar-toggle[aria-expanded="true"],
+    .chunk-vocabulary-toggle[aria-expanded="true"] {
       color: var(--accent);
       background: var(--accent-soft);
     }
@@ -1467,7 +1407,7 @@
 
       .interlinear {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
         align-items: stretch;
         gap: 0.75rem;
       }
@@ -1664,8 +1604,8 @@
     <dialog class="api-key-dialog" id="vocabulary-confirm-dialog" aria-labelledby="vocabulary-confirm-title">
       <form class="api-key-form" method="dialog">
         <h2 id="vocabulary-confirm-title">Gerar vocabulário?</h2>
-        <p class="api-key-description">A frase e seus chunks serão enviados à API da OpenAI para gerar uma lista de vocábulos em forma de dicionário.</p>
-        <p class="api-key-warning">Esta ação pode gerar cobrança. A lista ficará salva neste navegador e não será gerada novamente ao reabrir a aba.</p>
+        <p class="api-key-description" id="vocabulary-confirm-description"></p>
+        <p class="api-key-warning">Esta ação pode gerar cobrança. A lista ficará salva neste navegador e não será gerada novamente ao reabrir este vocabulário.</p>
         <div class="api-key-actions">
           <button class="api-key-action" type="submit" value="cancel">Cancelar</button>
           <button class="api-key-action primary" id="vocabulary-confirm-submit" type="submit" value="confirm">Gerar</button>
@@ -1754,6 +1694,7 @@
             <span class="gloss-count" id="gloss-count" aria-label="Nenhum gloss marcado">★ 0 · 🎧 0</span>
             <button class="gloss-tool-button" id="gloss-speak" type="button" aria-label="Ouvir glosses de escuta da frase atual" aria-pressed="false" disabled>▶ Escuta</button>
             <button class="gloss-tool-button" id="gloss-speak-ja" type="button" aria-label="Ouvir somente em japonês os glosses de escuta da frase atual" aria-pressed="false" disabled>▶ JP</button>
+            <button class="gloss-tool-button" id="vocabulary-export" type="button" aria-label="Nenhum vocabulário selecionado para exportar" disabled>↓ Vocabulário</button>
             <button class="gloss-tool-button" id="gloss-export" type="button" aria-label="Exportar dados de leitura em JSON" title="Exportar dados de leitura em JSON">↓ JSON</button>
             <button class="gloss-tool-button" id="gloss-import" type="button" aria-label="Importar dados de leitura em JSON" title="Importar dados de leitura em JSON">↑ JSON</button>
             <input id="gloss-import-file" type="file" accept="application/json,.json" hidden>
@@ -1764,21 +1705,9 @@
           <button class="sentence-copy-button" id="sentence-copy" type="button" aria-label="Copiar frase japonesa" aria-live="polite">⧉ Copiar</button>
         </div>
         <div class="chunk-display-controls">
-          <div class="study-view-tabs" role="tablist" aria-label="Conteúdo de estudo">
-            <button class="study-view-tab" id="chunks-tab" type="button" role="tab" aria-selected="true" aria-controls="interlinear">Chunks</button>
-            <button class="study-view-tab" id="vocabulary-tab" type="button" role="tab" aria-selected="false" aria-controls="sentence-vocabulary">Vocabulário</button>
-          </div>
           <button class="chunk-gloss-toggle" id="chunk-gloss-toggle" type="button" aria-pressed="false">Mostrar traduções</button>
         </div>
-        <div class="interlinear" id="interlinear" role="tabpanel" aria-labelledby="chunks-tab"></div>
-        <div class="sentence-vocabulary" id="sentence-vocabulary" role="tabpanel" aria-labelledby="vocabulary-tab" hidden>
-          <p class="vocabulary-status" id="vocabulary-status" aria-live="polite"></p>
-          <ul class="vocabulary-list" id="vocabulary-list"></ul>
-          <div class="vocabulary-tools">
-            <span class="vocabulary-selection-count" id="vocabulary-selection-count">0 selecionados</span>
-            <button class="vocabulary-export" id="vocabulary-export" type="button" disabled>↓ Vocabulário</button>
-          </div>
-        </div>
+        <div class="interlinear" id="interlinear"></div>
         <div class="sentence-translation-row">
           <p class="sentence-translation" id="sentence-translation" lang="pt-BR"></p>
           <button class="translation-speak-button" id="translation-speak" type="button" aria-label="Ouvir tradução em português" aria-pressed="false">▶ PT</button>
@@ -1854,6 +1783,7 @@
     const grammarConfirmDescription = document.querySelector("#grammar-confirm-description");
     const grammarConfirmSubmit = document.querySelector("#grammar-confirm-submit");
     const vocabularyConfirmDialog = document.querySelector("#vocabulary-confirm-dialog");
+    const vocabularyConfirmDescription = document.querySelector("#vocabulary-confirm-description");
     const vocabularyConfirmSubmit = document.querySelector("#vocabulary-confirm-submit");
     const panel = document.querySelector("#study-panel");
     const label = document.querySelector("#study-label");
@@ -1862,13 +1792,7 @@
     const sentenceTranslation = document.querySelector("#sentence-translation");
     const translationSpeak = document.querySelector("#translation-speak");
     const chunkGlossToggle = document.querySelector("#chunk-gloss-toggle");
-    const chunksTab = document.querySelector("#chunks-tab");
-    const vocabularyTab = document.querySelector("#vocabulary-tab");
     const interlinear = document.querySelector("#interlinear");
-    const sentenceVocabulary = document.querySelector("#sentence-vocabulary");
-    const vocabularyStatus = document.querySelector("#vocabulary-status");
-    const vocabularyList = document.querySelector("#vocabulary-list");
-    const vocabularySelectionCount = document.querySelector("#vocabulary-selection-count");
     const vocabularyExport = document.querySelector("#vocabulary-export");
     const chapterSelect = document.querySelector("#chapter-select");
     const previousParagraphButton = document.querySelector("#study-previous-paragraph");
@@ -1957,7 +1881,7 @@
     const storageScope = bookData?.source_file || location.pathname;
     const openAiApiKeyStorageKey = "simple-ja-books:openai-api-key:v1";
     const grammarAnalysesStorageKey = `simple-ja-books:grammar-analyses:v1:${storageScope}`;
-    const vocabularyAnalysesStorageKey = `simple-ja-books:vocabulary-analyses:v1:${storageScope}`;
+    const vocabularyAnalysesStorageKey = `simple-ja-books:vocabulary-analyses:v2:${storageScope}`;
     const grammarModel = "gpt-6-luna";
     const vocabularyPartsOfSpeech = [
       "noun",
@@ -1982,7 +1906,7 @@
     let pendingApiCancel = null;
     let pendingGrammarConfirmation = null;
     let pendingVocabularyConfirmation = null;
-    let vocabularyRequestSentence = null;
+    const vocabularyRequests = new Set();
     let chunkGlossesVisible = false;
     const activeCardStorageKey = `simple-ja-books:active-card:v1:${storageScope}`;
     let activeIndex = loadActiveIndex();
@@ -1999,7 +1923,7 @@
     let positionSaveFrame = null;
     let nextSentencePreviewFrame = null;
     const fontPercentages = [85, 100, 115, 130, 150];
-    const offlineVersion = "66680fbdaf914420";
+    const offlineVersion = "895825257d15c2b1";
     const defaultFontLevelIndex = 1;
     const minFontLevel = -defaultFontLevelIndex;
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
@@ -3230,8 +3154,8 @@ ${chunkSurface}`;
       }
     }
 
-    function vocabularyAnalysisKey(sentenceIndex, sentenceText) {
-      return JSON.stringify([sentenceIndex, sentenceText]);
+    function vocabularyAnalysisKey(sentenceText, chunkIndex, chunkSurface) {
+      return JSON.stringify([sentenceText, chunkIndex, chunkSurface]);
     }
 
     function normalizeVocabularyItem(item) {
@@ -3253,17 +3177,19 @@ ${chunkSurface}`;
 
     function normalizeVocabularyAnalysis(entry) {
       const checkedEntries = entry?.checked_entries === undefined ? [] : entry.checked_entries;
-      if (!entry || !Number.isInteger(entry.sentence_index) || entry.sentence_index < 0
-        || typeof entry.sentence_text !== "string" || !entry.sentence_text
-        || !Array.isArray(entry.entries) || entry.entries.length > 40
+      if (!entry || typeof entry.sentence_text !== "string" || !entry.sentence_text
+        || !Number.isInteger(entry.chunk_index) || entry.chunk_index < 0
+        || typeof entry.chunk_surface !== "string" || !entry.chunk_surface
+        || !Array.isArray(entry.entries) || entry.entries.length > 12
         || !Array.isArray(checkedEntries)) return null;
       const normalizedEntries = entry.entries.map(normalizeVocabularyItem);
       if (normalizedEntries.some((item) => !item)
         || checkedEntries.some((itemIndex) => !Number.isInteger(itemIndex)
           || itemIndex < 0 || itemIndex >= normalizedEntries.length)) return null;
       return {
-        sentence_index: entry.sentence_index,
         sentence_text: entry.sentence_text,
+        chunk_index: entry.chunk_index,
+        chunk_surface: entry.chunk_surface,
         entries: normalizedEntries,
         checked_entries: [...new Set(checkedEntries)].sort((left, right) => left - right)
       };
@@ -3275,7 +3201,7 @@ ${chunkSurface}`;
         if (!Array.isArray(stored)) return new Map();
         const normalized = stored.map(normalizeVocabularyAnalysis).filter(Boolean);
         return new Map(normalized.map((entry) => [
-          vocabularyAnalysisKey(entry.sentence_index, entry.sentence_text),
+          vocabularyAnalysisKey(entry.sentence_text, entry.chunk_index, entry.chunk_surface),
           entry
         ]));
       } catch (_error) {
@@ -3294,27 +3220,32 @@ ${chunkSurface}`;
       }
     }
 
-    function vocabularyPrompt(sentence, chunks) {
-      return `Extraia o vocabulário lexical da frase japonesa abaixo.
+    function vocabularyPrompt(sentenceText, chunkSurface, chunkReading) {
+      return `Extraia o vocabulário lexical somente do chunk-alvo abaixo, usando a frase completa apenas como contexto.
 
 Regras:
-- Use os chunks como pistas, mas analise a frase completa e reconheça expressões idiomáticas que atravessem chunks.
+- Não inclua palavras que estejam fora do chunk-alvo. Uma expressão idiomática só pode ser incluída quando estiver contida no chunk-alvo.
 - Ignore partículas, auxiliares isolados, copulas, pontuação e outras palavras funcionais.
 - Inclua somente substantivos, verbos, adjetivos い, adjetivos な, advérbios e expressões idiomáticas.
 - Normalize verbos para a forma de dicionário não passada; adjetivos い devem terminar em い; adjetivos な devem aparecer sem な.
+- Em dictionary_form, use a grafia de dicionário moderna mais comum. Se a palavra apareceu em kana, mas normalmente é escrita com kanji comum, restaure esse kanji. Mantenha kana somente quando essa for a grafia moderna normal ou predominante.
 - Em reading, escreva a leitura inteira em hiragana quando dictionary_form contiver kanji; caso contrário, use uma string vazia.
 - Em pitch_accent, escreva a leitura usando / no ponto de subida e \\ no ponto de queda do pitch de Tóquio. Para padrão plano, use apenas a subida. Não use números.
-- Em meaning, dê uma tradução curta em português, preferencialmente uma palavra e no máximo duas.
+- Use a frase somente para identificar corretamente o vocábulo e sua classe. Não restrinja meaning ao sentido especializado, técnico, figurado ou circunstancial usado nesta frase.
+- Em meaning, dê em português o significado central e geral do vocábulo, útil na maioria dos contextos, preferencialmente em uma palavra e no máximo duas.
 - Não repita entradas equivalentes.
 
-Frase:
-${sentence}
+Frase completa:
+${sentenceText}
 
-Chunks:
-${JSON.stringify(chunks)}`;
+Chunk-alvo:
+${chunkSurface}
+
+Leitura fornecida para o chunk:
+${chunkReading}`;
     }
 
-    async function generateVocabularyAnalysis(sentence, chunks) {
+    async function generateVocabularyAnalysis(sentenceText, chunkSurface, chunkReading) {
       const response = await fetch("https://api.openai.com/v1/responses", {
         method: "POST",
         headers: {
@@ -3326,18 +3257,18 @@ ${JSON.stringify(chunks)}`;
           reasoning: { effort: "low" },
           max_output_tokens: 1600,
           store: false,
-          input: vocabularyPrompt(sentence, chunks),
+          input: vocabularyPrompt(sentenceText, chunkSurface, chunkReading),
           text: {
             format: {
               type: "json_schema",
-              name: "sentence_vocabulary",
+              name: "chunk_vocabulary",
               strict: true,
               schema: {
                 type: "object",
                 properties: {
                   entries: {
                     type: "array",
-                    maxItems: 40,
+                    maxItems: 12,
                     items: {
                       type: "object",
                       properties: {
@@ -3407,10 +3338,8 @@ ${JSON.stringify(chunks)}`;
       return [...unique.values()];
     }
 
-    function updateVocabularySelectionSummary(entry = null) {
-      const currentCount = entry?.checked_entries.length || 0;
+    function updateVocabularyExportControl() {
       const totalCount = selectedVocabularyEntries().length;
-      vocabularySelectionCount.textContent = `${currentCount} ${currentCount === 1 ? "selecionado" : "selecionados"} nesta frase · ${totalCount} no total`;
       vocabularyExport.disabled = totalCount === 0;
       vocabularyExport.setAttribute(
         "aria-label",
@@ -3420,12 +3349,28 @@ ${JSON.stringify(chunks)}`;
       );
     }
 
-    function renderVocabularyAnalysis(entry) {
-      vocabularyStatus.classList.remove("is-error");
-      vocabularyStatus.textContent = entry.entries.length
+    function updateChunkVocabularyControl(chunkButton) {
+      const hasVocabulary = chunkButton.dataset.vocabularyAvailable === "true";
+      const isExpanded = chunkButton.getAttribute("aria-expanded") === "true";
+      setChunkActionContent(chunkButton, hasVocabulary ? "✓" : "＋", "Vocabulário");
+      const action = isExpanded
+        ? "Ocultar vocabulário de"
+        : hasVocabulary
+          ? "Mostrar vocabulário salvo de"
+          : "Gerar vocabulário de";
+      chunkButton.setAttribute("aria-label", `${action} ${chunkButton.dataset.surface}`);
+    }
+
+    function renderVocabularyAnalysis(target, entry, chunkButton) {
+      target.replaceChildren();
+      target.classList.remove("is-error");
+      const status = document.createElement("p");
+      status.className = "vocabulary-status";
+      status.textContent = entry.entries.length
         ? "Marque os vocábulos que deseja guardar."
-        : "Nenhum vocábulo lexical foi encontrado nesta frase.";
-      vocabularyList.replaceChildren();
+        : "Nenhum vocábulo lexical foi encontrado neste chunk.";
+      const list = document.createElement("ul");
+      list.className = "vocabulary-list";
       const checkedEntries = new Set(entry.checked_entries);
       entry.entries.forEach((item, itemIndex) => {
         const row = document.createElement("li");
@@ -3474,18 +3419,22 @@ ${JSON.stringify(chunks)}`;
           entry.checked_entries = [...selected].sort((left, right) => left - right);
           row.classList.toggle("is-checked", checkbox.checked);
           vocabularyAnalyses.set(
-            vocabularyAnalysisKey(entry.sentence_index, entry.sentence_text),
+            vocabularyAnalysisKey(entry.sentence_text, entry.chunk_index, entry.chunk_surface),
             entry
           );
           saveVocabularyAnalyses();
-          updateVocabularySelectionSummary(entry);
+          updateVocabularyExportControl();
         });
-        vocabularyList.append(row);
+        list.append(row);
       });
-      updateVocabularySelectionSummary(entry);
+      target.append(status, list);
+      chunkButton.dataset.vocabularyAvailable = "true";
+      updateChunkVocabularyControl(chunkButton);
+      updateVocabularyExportControl();
     }
 
-    function confirmVocabularyGeneration() {
+    function confirmVocabularyGeneration(chunkSurface) {
+      vocabularyConfirmDescription.textContent = `Gerar vocabulário para “${chunkSurface}”? A frase completa será usada somente como contexto.`;
       vocabularyConfirmDialog.returnValue = "";
       return new Promise((resolve) => {
         pendingVocabularyConfirmation = resolve;
@@ -3500,83 +3449,101 @@ ${JSON.stringify(chunks)}`;
       if (resolve) resolve(vocabularyConfirmDialog.returnValue === "confirm");
     });
 
-    function showChunksView() {
-      chunksTab.setAttribute("aria-selected", "true");
-      vocabularyTab.setAttribute("aria-selected", "false");
-      interlinear.hidden = false;
-      sentenceVocabulary.hidden = true;
-      chunkGlossToggle.hidden = false;
-    }
-
-    function showVocabularyView() {
-      chunksTab.setAttribute("aria-selected", "false");
-      vocabularyTab.setAttribute("aria-selected", "true");
-      interlinear.hidden = true;
-      sentenceVocabulary.hidden = false;
-      chunkGlossToggle.hidden = true;
-    }
-
-    async function openVocabularyView(sentenceIndex, generationConfirmed = false) {
-      const sentence = sentences[sentenceIndex];
-      if (!sentence) return;
-      showVocabularyView();
-      const key = vocabularyAnalysisKey(sentenceIndex, sentence.text);
+    function showStoredVocabularyAnalysis(
+      sentenceText,
+      chunkIndex,
+      chunkSurface,
+      vocabularyPanel,
+      chunkButton,
+      expanded = true
+    ) {
+      const key = vocabularyAnalysisKey(sentenceText, chunkIndex, chunkSurface);
       const stored = vocabularyAnalyses.get(key);
-      if (stored) {
-        renderVocabularyAnalysis(stored);
-        return;
-      }
-      if (vocabularyRequestSentence === key) return;
-      if (!generationConfirmed && !await confirmVocabularyGeneration()) {
-        showChunksView();
-        return;
-      }
+      if (!stored) return false;
+      renderVocabularyAnalysis(vocabularyPanel, stored, chunkButton);
+      vocabularyPanel.hidden = !expanded;
+      chunkButton.setAttribute("aria-expanded", String(expanded));
+      updateChunkVocabularyControl(chunkButton);
+      return true;
+    }
+
+    async function revealVocabularyAnalysis(
+      sentenceText,
+      chunkIndex,
+      chunkSurface,
+      chunkReading,
+      vocabularyPanel,
+      chunkButton,
+      generationConfirmed = false
+    ) {
+      if (!vocabularyPanel.isConnected) return;
+      if (showStoredVocabularyAnalysis(
+        sentenceText,
+        chunkIndex,
+        chunkSurface,
+        vocabularyPanel,
+        chunkButton
+      )) return;
+      const key = vocabularyAnalysisKey(sentenceText, chunkIndex, chunkSurface);
+      if (vocabularyRequests.has(key)) return;
+      if (!generationConfirmed && !await confirmVocabularyGeneration(chunkSurface)) return;
       if (!openAiApiKey) {
-        openApiKeyDialog(
-          () => {
-            if (activeIndex === sentenceIndex) void openVocabularyView(sentenceIndex, true);
-          },
-          () => {
-            if (activeIndex === sentenceIndex) showChunksView();
+        openApiKeyDialog(() => {
+          if (vocabularyPanel.isConnected) {
+            void revealVocabularyAnalysis(
+              sentenceText,
+              chunkIndex,
+              chunkSurface,
+              chunkReading,
+              vocabularyPanel,
+              chunkButton,
+              true
+            );
           }
-        );
+        });
         return;
       }
 
-      vocabularyRequestSentence = key;
-      vocabularyStatus.classList.remove("is-error");
-      vocabularyStatus.textContent = "Gerando vocabulário…";
-      vocabularyList.replaceChildren();
-      vocabularyTab.disabled = true;
+      vocabularyRequests.add(key);
+      vocabularyPanel.classList.remove("is-error");
+      vocabularyPanel.textContent = "Gerando vocabulário…";
+      vocabularyPanel.hidden = false;
+      chunkButton.disabled = true;
+      chunkButton.setAttribute("aria-expanded", "true");
+      setChunkActionContent(chunkButton, "…", "Gerando");
       try {
-        const entries = await generateVocabularyAnalysis(sentence.text, sentence.chunks);
+        const entries = await generateVocabularyAnalysis(
+          sentenceText,
+          chunkSurface,
+          chunkReading
+        );
         const entry = {
-          sentence_index: sentenceIndex,
-          sentence_text: sentence.text,
+          sentence_text: sentenceText,
+          chunk_index: chunkIndex,
+          chunk_surface: chunkSurface,
           entries,
           checked_entries: []
         };
         vocabularyAnalyses.set(key, entry);
         saveVocabularyAnalyses();
-        if (activeIndex === sentenceIndex && !sentenceVocabulary.hidden) {
-          renderVocabularyAnalysis(entry);
+        if (vocabularyPanel.isConnected) {
+          renderVocabularyAnalysis(vocabularyPanel, entry, chunkButton);
         }
       } catch (error) {
-        if (activeIndex === sentenceIndex && !sentenceVocabulary.hidden) {
-          vocabularyStatus.classList.add("is-error");
-          vocabularyStatus.textContent = error instanceof Error
+        if (vocabularyPanel.isConnected) {
+          vocabularyPanel.classList.add("is-error");
+          vocabularyPanel.textContent = error instanceof Error
             ? error.message
             : "Não foi possível gerar o vocabulário.";
-          updateVocabularySelectionSummary();
         }
       } finally {
-        vocabularyRequestSentence = null;
-        vocabularyTab.disabled = false;
+        vocabularyRequests.delete(key);
+        if (chunkButton.isConnected) {
+          chunkButton.disabled = false;
+          updateChunkVocabularyControl(chunkButton);
+        }
       }
     }
-
-    chunksTab.addEventListener("click", showChunksView);
-    vocabularyTab.addEventListener("click", () => void openVocabularyView(activeIndex));
 
     vocabularyExport.addEventListener("click", () => {
       const entries = selectedVocabularyEntries();
@@ -3962,7 +3929,7 @@ ${JSON.stringify(chunks)}`;
       glossCount.textContent = `★ ${vocabularyCount} · 🎧 ${listeningCount}`;
       glossCount.setAttribute(
         "aria-label",
-        `${vocabularyCount} ${vocabularyCount === 1 ? "palavra para estudar" : "palavras para estudar"}; ${listeningCount} ${listeningCount === 1 ? "dificuldade de escuta" : "dificuldades de escuta"}`
+        `${vocabularyCount} ${vocabularyCount === 1 ? "chunk marcado" : "chunks marcados"}; ${listeningCount} ${listeningCount === 1 ? "dificuldade de escuta" : "dificuldades de escuta"}`
       );
       updateGlossSpeechButton(markedGlossSpeechMode);
       updateSentenceAudioLoop();
@@ -4511,11 +4478,6 @@ ${JSON.stringify(chunks)}`;
       resetSentenceCopyButton();
       activeIndex = index;
       saveActiveIndex();
-      showChunksView();
-      vocabularyStatus.classList.remove("is-error");
-      vocabularyStatus.textContent = "";
-      vocabularyList.replaceChildren();
-      updateVocabularySelectionSummary();
       const sentence = sentences[activeIndex];
       const activeParagraph = sentenceParagraphIndexes[activeIndex];
       const sentenceInParagraph = activeIndex - paragraphSentenceStarts[activeParagraph];
@@ -4572,6 +4534,14 @@ ${JSON.stringify(chunks)}`;
         chunkButton.setAttribute("aria-expanded", "false");
         updateChunkGrammarControl(chunkButton);
 
+        const vocabularyButton = document.createElement("button");
+        vocabularyButton.className = "chunk-action chunk-vocabulary-toggle";
+        vocabularyButton.type = "button";
+        vocabularyButton.dataset.surface = surface;
+        vocabularyButton.dataset.vocabularyAvailable = "false";
+        vocabularyButton.setAttribute("aria-expanded", "false");
+        updateChunkVocabularyControl(vocabularyButton);
+
         const translationButton = document.createElement("button");
         translationButton.className = "chunk-action chunk-translation-toggle";
         translationButton.type = "button";
@@ -4603,12 +4573,12 @@ ${JSON.stringify(chunks)}`;
         grammarIndicator.setAttribute("aria-hidden", "true");
         chunkMain.append(japanese, grammarIndicator, meaning);
 
-        const vocabularyReason = document.createElement("button");
-        vocabularyReason.className = "chunk-action chunk-reason";
-        vocabularyReason.type = "button";
-        setChunkActionContent(vocabularyReason, "★", "Palavra");
-        vocabularyReason.title = "Vocabulário";
-        vocabularyReason.setAttribute("aria-label", `Marcar ${surface} como vocabulário`);
+        const chunkReason = document.createElement("button");
+        chunkReason.className = "chunk-action chunk-reason";
+        chunkReason.type = "button";
+        setChunkActionContent(chunkReason, "★", "Chunk");
+        chunkReason.title = "Marcar chunk";
+        chunkReason.setAttribute("aria-label", `Marcar o chunk ${surface}`);
 
         const listeningReason = document.createElement("button");
         listeningReason.className = "chunk-action chunk-reason";
@@ -4617,11 +4587,20 @@ ${JSON.stringify(chunks)}`;
         listeningReason.title = "Dificuldade de escuta";
         listeningReason.setAttribute("aria-label", `Marcar ${surface} como dificuldade de escuta`);
         studyActions.append(
-          vocabularyReason,
+          chunkReason,
           listeningReason,
+          vocabularyButton,
           chunkButton,
           translationButton
         );
+
+        const vocabularyPanel = document.createElement("div");
+        vocabularyPanel.className = "chunk-vocabulary";
+        vocabularyPanel.id = `chunk-vocabulary-${activeIndex}-${chunkIndex}`;
+        vocabularyPanel.lang = "pt-BR";
+        vocabularyPanel.hidden = true;
+        vocabularyPanel.setAttribute("aria-live", "polite");
+        vocabularyButton.setAttribute("aria-controls", vocabularyPanel.id);
 
         const grammarPanel = document.createElement("div");
         grammarPanel.className = "chunk-grammar";
@@ -4634,7 +4613,7 @@ ${JSON.stringify(chunks)}`;
         function updateChunkReasons() {
           const vocabularyMarked = hasGlossReason(surface, gloss, "vocabulary");
           const listeningMarked = hasGlossReason(surface, gloss, "listening");
-          vocabularyReason.setAttribute("aria-pressed", String(vocabularyMarked));
+          chunkReason.setAttribute("aria-pressed", String(vocabularyMarked));
           listeningReason.setAttribute("aria-pressed", String(listeningMarked));
         }
 
@@ -4652,18 +4631,43 @@ ${JSON.stringify(chunks)}`;
           }
           void revealGrammarAnalysis(sentence.text, chunkIndex, surface, grammarPanel, chunkButton);
         });
+        vocabularyButton.addEventListener("click", () => {
+          if (!vocabularyPanel.hidden) {
+            vocabularyPanel.hidden = true;
+            vocabularyButton.setAttribute("aria-expanded", "false");
+            updateChunkVocabularyControl(vocabularyButton);
+            return;
+          }
+          void revealVocabularyAnalysis(
+            sentence.text,
+            chunkIndex,
+            surface,
+            reading,
+            vocabularyPanel,
+            vocabularyButton
+          );
+        });
         translationButton.addEventListener("click", () => {
           const visible = meaning.classList.contains("is-concealed");
           setChunkGlossVisibility(chunk, visible);
         });
-        vocabularyReason.addEventListener("click", () => toggleReason("vocabulary"));
+        chunkReason.addEventListener("click", () => toggleReason("vocabulary"));
         listeningReason.addEventListener("click", () => toggleReason("listening"));
         updateChunkReasons();
-        chunk.append(chunkMain, studyActions, grammarPanel);
+        chunk.append(chunkMain, studyActions, vocabularyPanel, grammarPanel);
         interlinear.append(chunk);
+        showStoredVocabularyAnalysis(
+          sentence.text,
+          chunkIndex,
+          surface,
+          vocabularyPanel,
+          vocabularyButton,
+          false
+        );
         showStoredGrammarAnalysis(sentence.text, chunkIndex, surface, grammarPanel, chunkButton, false);
       });
       updateChunkGlossVisibility();
+      updateVocabularyExportControl();
       updateGlossSpeechButton(false);
       updateSentenceAudioLoop();
     }
@@ -4671,7 +4675,7 @@ ${JSON.stringify(chunks)}`;
     glossExport.addEventListener("click", () => {
       captureReadingPosition();
       const payload = {
-        schema_version: 5,
+        schema_version: 6,
         source_file: bookData?.source_file || null,
         exported_at: new Date().toISOString(),
         reader_state: {
@@ -4702,7 +4706,7 @@ ${JSON.stringify(chunks)}`;
       if (!file) return;
       try {
         const payload = JSON.parse(await file.text());
-        if (![1, 2, 3, 4, 5].includes(payload?.schema_version) || !Array.isArray(payload.glosses)) {
+        if (![1, 2, 3, 4, 5, 6].includes(payload?.schema_version) || !Array.isArray(payload.glosses)) {
           throw new Error("Formato incompatível");
         }
         const imported = payload.glosses.map((entry) => {
@@ -4711,7 +4715,7 @@ ${JSON.stringify(chunks)}`;
           return normalized;
         });
         let importedGrammarAnalyses = null;
-        if ([4, 5].includes(payload.schema_version)) {
+        if ([4, 5, 6].includes(payload.schema_version)) {
           if (!Array.isArray(payload.grammar_analyses)) throw new Error("Análises gramaticais inválidas");
           const normalizedAnalyses = payload.grammar_analyses.map((entry) => {
             const normalized = normalizeGrammarAnalysis(entry);
@@ -4724,7 +4728,7 @@ ${JSON.stringify(chunks)}`;
           ]));
         }
         let importedVocabularyAnalyses = null;
-        if (payload.schema_version === 5) {
+        if (payload.schema_version === 6) {
           if (!Array.isArray(payload.vocabulary_analyses)) throw new Error("Análises de vocabulário inválidas");
           const normalizedVocabulary = payload.vocabulary_analyses.map((entry) => {
             const normalized = normalizeVocabularyAnalysis(entry);
@@ -4732,12 +4736,12 @@ ${JSON.stringify(chunks)}`;
             return normalized;
           });
           importedVocabularyAnalyses = new Map(normalizedVocabulary.map((entry) => [
-            vocabularyAnalysisKey(entry.sentence_index, entry.sentence_text),
+            vocabularyAnalysisKey(entry.sentence_text, entry.chunk_index, entry.chunk_surface),
             entry
           ]));
         }
         let importedReaderState = null;
-        if ([2, 3, 4, 5].includes(payload.schema_version)) {
+        if ([2, 3, 4, 5, 6].includes(payload.schema_version)) {
           const state = payload.reader_state;
           const storedSentenceChapterPositions = state?.sentence_chapter_positions;
           if (payload.source_file !== bookData?.source_file
