@@ -101,7 +101,7 @@ Switching modes restores the last position used in the destination mode. Switchi
 
 - Each interlinear chunk has two independent reasons: `★` for a chunk the reader wants to retain and `🎧` for a chunk that was difficult to recognize in sentence audio. A gloss may have either reason, both, or neither.
 - Every chunk ends with one uniform five-button study bar: `★ Chunk`, `🎧 Escuta`, `＋/✓ Vocabulário`, `＋/✓ Gramática`, and `PT Tradução`. Chunk and listening marks toggle independently, and only their active buttons are highlighted; marking either reason does not change the chunk card's background or border. The Japanese body is not an implicit control.
-- The compact summary displays global totals as `★ chunks · 🎧 listening` and updates immediately.
+- The compact summary displays global per-book totals as `★ chunks · 🎧 listening · Voc. checked vocabulary · Gram. checked grammar topics`. All four totals update immediately when their corresponding marks change and are restored from saved or imported data.
 - Marked glosses persist in browser storage and are included in exported reader data with a `reasons` array.
 - Stored or imported glosses without `reasons` are treated as `vocabulary`, preserving all marks created before the two-reason model.
 - When at least one gloss in the current sentence has `🎧` and the browser supports the Web Speech API, `▶ Escuta` reads only those glosses in sentence order. For each gloss it reads Japanese, Portuguese, and Japanese again, using separate language settings. The adjacent `▶ JP` control reads each of the same glosses once, only in Japanese. Pressing the active control again stops its sequence; selecting the other control switches sequences.
