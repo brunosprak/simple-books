@@ -17,7 +17,7 @@ This document defines the user-visible behavior and compatibility requirements o
 
 ## Editable pseudobook
 
-- The library includes `Final Fantasy Resonance`, an initially empty pseudobook whose canonical JSON sets `page.editable` to `true`. Unlike ordinary books, an editable book may begin with no chapters and its chapters may temporarily contain no paragraphs.
+- The library includes `RPG`, an initially empty pseudobook whose canonical JSON sets `page.editable` to `true`. Unlike ordinary books, an editable book may begin with no chapters and its chapters may temporarily contain no paragraphs.
 - Its construction panel always remains available. The reader can add a locally named chapter without an API request, then choose a chapter and submit one Japanese paragraph at a time.
 - Adding a paragraph explicitly calls the OpenAI Responses API and may incur charges. It uses a strict Structured Outputs schema to divide the original paragraph into complete Japanese sentences and minimal chunks and to add each chunk's reading and concise Portuguese gloss plus each sentence's natural Portuguese translation.
 - The browser accepts the generated paragraph only when every sentence is nonempty, every chunk is valid, no chunk consists only of punctuation, the ordered chunk surfaces reproduce their sentence exactly, and the ordered sentences reproduce the submitted paragraph exactly. A failed request or validation does not partially alter the book.

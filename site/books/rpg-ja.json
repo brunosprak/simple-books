@@ -1,13 +1,13 @@
 {
   "schema_version": 2,
-  "source_file": "final-fantasy-resonance.local",
+  "source_file": "rpg.local",
   "languages": {
     "source": "ja",
     "translation": "ja",
     "gloss": "pt-BR"
   },
   "page": {
-    "title": "Final Fantasy Resonance",
+    "title": "RPG",
     "author": "Pseudolivro pessoal",
     "eyebrow": "",
     "description": "Um livro japonês pessoal construído por capítulos e parágrafos neste navegador.",

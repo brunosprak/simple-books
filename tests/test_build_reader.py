@@ -628,7 +628,7 @@ class BuildReaderTests(unittest.TestCase):
 
     def test_editable_book_may_start_without_chapters_or_paragraphs(self) -> None:
         editable = json.loads(
-            (ROOT / "texts" / "final-fantasy-resonance-ja.json").read_text(
+            (ROOT / "texts" / "rpg-ja.json").read_text(
                 encoding="utf-8"
             )
         )
@@ -698,7 +698,7 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('request.mode === "navigate"', worker)
         self.assertIn('self.registration.scope', worker)
         self.assertIn('const PWA_CACHE_PREFIX', worker)
-        self.assertIn('const PWA_CACHE_NAME = `${PWA_CACHE_PREFIX}v5`', worker)
+        self.assertIn('const PWA_CACHE_NAME = `${PWA_CACHE_PREFIX}v6`', worker)
         self.assertIn('const PWA_SHELL_URLS', worker)
         self.assertIn('cache.addAll(PWA_SHELL_URLS)', worker)
         self.assertIn('name.startsWith(PWA_CACHE_PREFIX)', worker)
@@ -736,8 +736,8 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('navigator.serviceWorker.register("offline-sw.js", { updateViaCache: "none" })', library)
         self.assertIn('id="install-pwa"', library)
         self.assertIn('src="icons/icon-192.png?v=2"', library)
-        self.assertIn('href="final-fantasy-resonance/"', library)
-        self.assertIn('Final Fantasy Resonance', library)
+        self.assertIn('href="rpg/"', library)
+        self.assertIn('>RPG<', library)
 
         worker = (ROOT / "site" / "offline-sw.js").read_text(encoding="utf-8")
         for shell_url in (
@@ -747,8 +747,8 @@ class BuildReaderTests(unittest.TestCase):
             '"./books/princess-of-mars-ja.json"',
             '"./mary-beard-spqr/"',
             '"./books/mary-beard-spqr-ja.json"',
-            '"./final-fantasy-resonance/"',
-            '"./books/final-fantasy-resonance-ja.json"',
+            '"./rpg/"',
+            '"./books/rpg-ja.json"',
         ):
             self.assertIn(shell_url, worker)
 
