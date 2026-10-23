@@ -600,7 +600,7 @@
 
     .sentence-study-tabs {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       margin: 0 0 0.75rem;
       border-bottom: 1px solid var(--rule);
       font-family: system-ui, sans-serif;
@@ -661,6 +661,7 @@
     }
 
     .incremental-generate,
+    .incremental-regenerate,
     .incremental-nav-button {
       min-height: 2.25rem;
       padding: 0.45rem 0.8rem;
@@ -678,14 +679,44 @@
       justify-self: center;
     }
 
+    .incremental-heading-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .incremental-regenerate {
+      min-height: 1.9rem;
+      padding: 0.3rem 0.65rem;
+      font-size: 0.7rem;
+    }
+
     .incremental-generate:hover,
     .incremental-generate:focus-visible,
+    .incremental-regenerate:hover,
+    .incremental-regenerate:focus-visible,
     .incremental-nav-button:hover,
     .incremental-nav-button:focus-visible {
       color: var(--paper);
       background: var(--accent);
       border-color: var(--accent);
       outline: none;
+    }
+
+    .incremental-segment {
+      border-radius: 0.2em;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+    }
+
+    .incremental-segment.is-current-segment {
+      padding: 0.04em 0.12em;
+      background: color-mix(in srgb, var(--accent) 18%, transparent);
+      box-shadow: inset 0 -0.08em 0 color-mix(in srgb, var(--accent) 72%, transparent);
+    }
+
+    .translation-view {
+      padding: 0.4rem 0 0.35rem;
     }
 
     .incremental-nav-button:disabled {
@@ -1882,6 +1913,7 @@
         <nav class="sentence-study-tabs" role="tablist" aria-label="Conteúdo da frase">
           <button class="sentence-study-tab" id="chunks-tab" type="button" role="tab" aria-selected="true" aria-controls="chunks-panel" tabindex="0">Chunks</button>
           <button class="sentence-study-tab" id="incremental-tab" type="button" role="tab" aria-selected="false" aria-controls="incremental-panel" tabindex="-1">Leitura incremental</button>
+          <button class="sentence-study-tab" id="translation-tab" type="button" role="tab" aria-selected="false" aria-controls="translation-panel" tabindex="-1">Tradução</button>
         </nav>
         <div class="sentence-study-panel" id="chunks-panel" role="tabpanel" aria-labelledby="chunks-tab">
           <div class="chunk-view-controls">
@@ -1928,12 +1960,14 @@
           <button class="chunk-gloss-toggle" id="chunk-gloss-toggle" type="button" aria-pressed="false">Mostrar traduções</button>
         </div>
         <div class="interlinear" id="interlinear"></div>
-        <div class="sentence-translation-row">
-          <p class="sentence-translation" id="sentence-translation" lang="pt-BR"></p>
-          <button class="translation-speak-button" id="translation-speak" type="button" aria-label="Ouvir tradução em português" aria-pressed="false">▶ PT</button>
-        </div>
         </div>
         <section class="sentence-study-panel incremental-view" id="incremental-panel" role="tabpanel" aria-labelledby="incremental-tab" aria-live="polite" hidden></section>
+        <section class="sentence-study-panel translation-view" id="translation-panel" role="tabpanel" aria-labelledby="translation-tab" hidden>
+          <div class="sentence-translation-row">
+            <p class="sentence-translation" id="sentence-translation" lang="pt-BR"></p>
+            <button class="translation-speak-button" id="translation-speak" type="button" aria-label="Ouvir tradução em português" aria-pressed="false">▶ PT</button>
+          </div>
+        </section>
       </section>
 
       <section class="chapter-reader" id="chapter-reader" aria-live="polite" hidden>
@@ -2008,6 +2042,7 @@
     const vocabularyConfirmDescription = document.querySelector("#vocabulary-confirm-description");
     const vocabularyConfirmSubmit = document.querySelector("#vocabulary-confirm-submit");
     const incrementalConfirmDialog = document.querySelector("#incremental-confirm-dialog");
+    const incrementalConfirmTitle = document.querySelector("#incremental-confirm-title");
     const incrementalConfirmDescription = document.querySelector("#incremental-confirm-description");
     const incrementalConfirmSubmit = document.querySelector("#incremental-confirm-submit");
     const panel = document.querySelector("#study-panel");
@@ -2020,8 +2055,10 @@
     const interlinear = document.querySelector("#interlinear");
     const chunksTab = document.querySelector("#chunks-tab");
     const incrementalTab = document.querySelector("#incremental-tab");
+    const translationTab = document.querySelector("#translation-tab");
     const chunksPanel = document.querySelector("#chunks-panel");
     const incrementalPanel = document.querySelector("#incremental-panel");
+    const translationPanel = document.querySelector("#translation-panel");
     const vocabularyExport = document.querySelector("#vocabulary-export");
     const chapterSelect = document.querySelector("#chapter-select");
     const previousParagraphButton = document.querySelector("#study-previous-paragraph");
@@ -2111,7 +2148,7 @@
     const openAiApiKeyStorageKey = "simple-ja-books:openai-api-key:v1";
     const grammarAnalysesStorageKey = `simple-ja-books:grammar-analyses:v1:${storageScope}`;
     const vocabularyAnalysesStorageKey = `simple-ja-books:vocabulary-analyses:v2:${storageScope}`;
-    const incrementalAnalysesStorageKey = `simple-ja-books:incremental-analyses:v1:${storageScope}`;
+    const incrementalAnalysesStorageKey = `simple-ja-books:incremental-analyses:v2:${storageScope}`;
     const sentenceStudyTabStorageKey = `simple-ja-books:sentence-study-tab:v1:${storageScope}`;
     const grammarModel = "gpt-6-luna";
     const vocabularySymbol = "📖︎";
@@ -2161,7 +2198,7 @@
     let positionSaveFrame = null;
     let nextSentencePreviewFrame = null;
     const fontPercentages = [85, 100, 115, 130, 150];
-    const offlineVersion = "1dba3cbb1f9b26ca";
+    const offlineVersion = "83d51b7f9b8576ed";
     const defaultFontLevelIndex = 1;
     const minFontLevel = -defaultFontLevelIndex;
     const maxFontLevel = fontPercentages.length - defaultFontLevelIndex - 1;
@@ -3194,6 +3231,11 @@ ${chunkSurface}`;
       );
       saveGrammarAnalyses();
       updateStudyCount();
+      const panelId = `chunk-grammar-${activeIndex}-${entry.chunk_index}`;
+      const activeChunkButton = document.querySelector(`[aria-controls="${panelId}"]`);
+      if (activeChunkButton && entry.sentence_text === sentences[activeIndex]?.text) {
+        markChunkGrammarAvailable(activeChunkButton, entry);
+      }
     }
 
     function renderGrammarAnalysis(target, markdown, entry, chunkButton) {
@@ -3246,7 +3288,7 @@ ${chunkSurface}`;
           topicCheckbox.addEventListener("change", () => {
             topicItem.classList.toggle("is-checked", topicCheckbox.checked);
             setGrammarTopicChecked(entry, currentTopicIndex, topicCheckbox.checked);
-            markChunkGrammarAvailable(chunkButton, entry);
+            if (chunkButton) markChunkGrammarAvailable(chunkButton, entry);
           });
           activeItemContent = document.createElement("div");
           activeItemContent.className = "chunk-grammar-topic-content";
@@ -3594,11 +3636,15 @@ ${chunkReading}`;
         || entry.sentence_index >= sentences.length
         || typeof entry.sentence_text !== "string" || !entry.sentence_text
         || sentences[entry.sentence_index]?.text !== entry.sentence_text
-        || !Array.isArray(entry.steps) || entry.steps.length < 1 || entry.steps.length > 16) {
+        || !Array.isArray(entry.steps)) {
         return null;
       }
+      const expectedChunks = sentences[entry.sentence_index].chunks;
+      if (entry.steps.length !== expectedChunks.length) return null;
       const steps = entry.steps.map(normalizeIncrementalStep);
       if (steps.some((step) => !step)
+        || steps.some((step, index) => step.segment !== expectedChunks[index][0]
+          || step.reading !== expectedChunks[index][1])
         || steps.map((step) => step.segment).join("") !== entry.sentence_text) return null;
       const currentStep = entry.current_step === undefined ? 0 : entry.current_step;
       if (!Number.isInteger(currentStep) || currentStep < 0 || currentStep >= steps.length) return null;
@@ -3637,9 +3683,8 @@ ${chunkReading}`;
 
     function loadSentenceStudyTab() {
       try {
-        return localStorage.getItem(sentenceStudyTabStorageKey) === "incremental"
-          ? "incremental"
-          : "chunks";
+        const stored = localStorage.getItem(sentenceStudyTabStorageKey);
+        return ["chunks", "incremental", "translation"].includes(stored) ? stored : "chunks";
       } catch (_error) {
         return "chunks";
       }
@@ -3651,7 +3696,9 @@ ${chunkReading}`;
       const previousContext = sentences.slice(contextStart, sentenceIndex)
         .map((item) => item.text)
         .join("\n");
-      const supportReading = sentence.chunks.map(([, reading]) => reading).join("");
+      const chunkList = sentence.chunks.map(([surface, reading], index) => (
+        `${index + 1}. ${surface}（${reading}）`
+      )).join("\n");
       return `Crie uma leitura incremental da frase japonesa abaixo para um estudante.
 
 Objetivo pedagógico:
@@ -3659,14 +3706,12 @@ Objetivo pedagógico:
 - Preservar rigorosamente a ordem original, sem revelar palavras ou relações antes que apareçam.
 
 Regras para steps:
-- Divida a frase em 1 a 16 unidades naturais de processamento, não necessariamente palavras isoladas.
-- A concatenação exata de todos os campos segment, sem inserir ou remover nenhum caractere, deve reproduzir a frase original.
-- Cada segment contém somente o novo trecho revelado naquela etapa.
-- reading contém a pronúncia completa de segment. Use hiragana para leituras de kanji e preserve na posição correspondente kana, espaços e pontuação necessários ao alinhamento do furigana.
-- interpretation representa em português apenas o entendimento possível com tudo que já foi revelado até a etapa atual.
-- A interpretação pode ser provisória e usar reticências quando uma relação ainda estiver aberta. Reajuste-a nas etapas seguintes quando a estrutura se esclarecer.
+- Produza exatamente uma etapa para cada chunk fornecido, na mesma ordem. Não una, divida, omita nem reordene chunks.
+- Não devolva o texto nem a leitura dos chunks: eles serão associados pelo sistema de forma determinística.
+- interpretation explica em português somente a contribuição nova do chunk daquela etapa.
+- Não repita a interpretação dos chunks anteriores. Pode começar com reticências quando ajudar a mostrar a continuação.
+- A interpretação pode ser provisória quando uma relação ainda estiver aberta.
 - Nunca antecipe na interpretação uma palavra, núcleo nominal, predicado, referente ou informação ainda oculta.
-- Na última etapa, interpretation deve expressar naturalmente o sentido completo da frase.
 - grammar_points contém somente os pontos mais úteis para processar o novo segmento nesta etapa, de zero a cinco itens.
 - Cada ponto tem um título com a expressão japonesa relevante já revelada e uma explicação objetiva em português.
 - Explique dependências ainda abertas sem revelar qual elemento oculto irá completá-las.
@@ -3679,12 +3724,14 @@ ${previousContext || "(nenhuma frase anterior)"}
 Frase atual:
 ${sentence.text}
 
-Leitura de apoio:
-${supportReading}`;
+Chunks obrigatórios, em ordem:
+${chunkList}`;
     }
 
     async function generateIncrementalAnalysis(sentenceIndex) {
-      const sentenceText = sentences[sentenceIndex].text;
+      const sentence = sentences[sentenceIndex];
+      const sentenceText = sentence.text;
+      const stepCount = sentence.chunks.length;
       const response = await fetch("https://api.openai.com/v1/responses", {
         method: "POST",
         headers: {
@@ -3707,13 +3754,11 @@ ${supportReading}`;
                 properties: {
                   steps: {
                     type: "array",
-                    minItems: 1,
-                    maxItems: 16,
+                    minItems: stepCount,
+                    maxItems: stepCount,
                     items: {
                       type: "object",
                       properties: {
-                        segment: { type: "string" },
-                        reading: { type: "string" },
                         interpretation: { type: "string" },
                         grammar_points: {
                           type: "array",
@@ -3729,7 +3774,7 @@ ${supportReading}`;
                           }
                         }
                       },
-                      required: ["segment", "reading", "interpretation", "grammar_points"],
+                      required: ["interpretation", "grammar_points"],
                       additionalProperties: false
                     }
                   }
@@ -3757,15 +3802,63 @@ ${supportReading}`;
       const entry = normalizeIncrementalAnalysis({
         sentence_index: sentenceIndex,
         sentence_text: sentenceText,
-        steps: parsed?.steps,
+        steps: Array.isArray(parsed?.steps) ? parsed.steps.map((step, index) => ({
+          ...step,
+          segment: sentence.chunks[index]?.[0],
+          reading: sentence.chunks[index]?.[1]
+        })) : parsed?.steps,
         current_step: 0
       });
-      if (!entry) throw new Error("A OpenAI retornou etapas que não reproduzem corretamente a frase.");
+      if (!entry) throw new Error("A OpenAI não retornou uma etapa válida para cada chunk.");
       return entry;
     }
 
-    function confirmIncrementalGeneration(sentenceText) {
-      incrementalConfirmDescription.textContent = `Gerar etapas incrementais para “${sentenceText}”?`;
+    function incrementalGrammarMarkdown(points) {
+      return [
+        "Principais pontos gramaticais",
+        ...points.flatMap((point, index) => [
+          `${index + 1}. ${point.title}`,
+          point.explanation
+        ])
+      ].join("\n\n");
+    }
+
+    function syncIncrementalGrammarAnalyses(entry) {
+      entry.steps.forEach((step, chunkIndex) => {
+        if (!step.grammar_points.length) return;
+        const key = grammarAnalysisKey(entry.sentence_text, chunkIndex, step.segment);
+        const stored = grammarAnalyses.get(key);
+        grammarAnalyses.set(key, {
+          sentence_text: entry.sentence_text,
+          chunk_index: chunkIndex,
+          chunk_surface: step.segment,
+          analysis: incrementalGrammarMarkdown(step.grammar_points),
+          checked_topics: stored?.checked_topics.filter(
+            (topicIndex) => topicIndex < step.grammar_points.length
+          ) || []
+        });
+      });
+      saveGrammarAnalyses();
+      updateStudyCount();
+    }
+
+    function incrementalGrammarEntry(entry, stepIndex) {
+      const step = entry.steps[stepIndex];
+      return grammarAnalyses.get(grammarAnalysisKey(
+        entry.sentence_text,
+        stepIndex,
+        step.segment
+      ));
+    }
+
+    function confirmIncrementalGeneration(sentenceText, regenerate = false) {
+      incrementalConfirmTitle.textContent = regenerate
+        ? "Regenerar leitura incremental?"
+        : "Gerar leitura incremental?";
+      incrementalConfirmSubmit.textContent = regenerate ? "Regenerar" : "Gerar";
+      incrementalConfirmDescription.textContent = regenerate
+        ? `Regenerar as etapas e os pontos gramaticais compartilhados de “${sentenceText}”?`
+        : `Gerar etapas incrementais e pontos gramaticais compartilhados para “${sentenceText}”?`;
       incrementalConfirmDialog.returnValue = "";
       return new Promise((resolve) => {
         pendingIncrementalConfirmation = resolve;
@@ -3805,7 +3898,7 @@ ${supportReading}`;
       }
     }
 
-    function renderIncrementalAnalysis(entry) {
+    function renderIncrementalAnalysis(entry, notice = "") {
       incrementalPanel.replaceChildren();
       const stepIndex = entry.current_step;
       const step = entry.steps[stepIndex];
@@ -3818,7 +3911,19 @@ ${supportReading}`;
       sentenceLabel.textContent = `Frase ${sentenceInParagraph}`;
       const stepLabel = document.createElement("span");
       stepLabel.textContent = `Etapa ${stepIndex + 1} de ${entry.steps.length}`;
-      heading.append(sentenceLabel, stepLabel);
+      const headingActions = document.createElement("span");
+      headingActions.className = "incremental-heading-actions";
+      const regenerate = document.createElement("button");
+      regenerate.className = "incremental-regenerate";
+      regenerate.type = "button";
+      regenerate.textContent = "↻ Regenerar";
+      regenerate.addEventListener("click", () => void revealIncrementalAnalysis(
+        entry.sentence_index,
+        false,
+        true
+      ));
+      headingActions.append(stepLabel, regenerate);
+      heading.append(sentenceLabel, headingActions);
 
       const progress = document.createElement("div");
       progress.className = "incremental-progress";
@@ -3860,8 +3965,12 @@ ${supportReading}`;
       japanese.tabIndex = 0;
       japanese.setAttribute("aria-label", "Alternar furigana");
       japanese.setAttribute("aria-pressed", String(furiganaVisible));
-      entry.steps.slice(0, stepIndex + 1).forEach((item) => {
-        appendAlignedRuby(japanese, item.segment, item.reading);
+      entry.steps.slice(0, stepIndex + 1).forEach((item, index) => {
+        const segment = document.createElement("span");
+        segment.className = "incremental-segment";
+        segment.classList.toggle("is-current-segment", index === stepIndex);
+        appendAlignedRuby(segment, item.segment, item.reading);
+        japanese.append(segment);
       });
       japanese.addEventListener("click", toggleFurigana);
       japanese.addEventListener("keydown", (event) => {
@@ -3876,33 +3985,25 @@ ${supportReading}`;
       interpretation.textContent = step.interpretation;
 
       const grammar = document.createElement("section");
-      grammar.className = "incremental-grammar";
-      const grammarHeading = document.createElement("h3");
-      grammarHeading.textContent = "Principais pontos gramaticais";
-      grammar.append(grammarHeading);
-      if (step.grammar_points.length) {
-        const list = document.createElement("ul");
-        list.className = "incremental-grammar-list";
-        step.grammar_points.forEach((point) => {
-          const item = document.createElement("li");
-          item.className = "incremental-grammar-item";
-          const title = document.createElement("strong");
-          title.lang = "ja";
-          title.textContent = point.title;
-          const explanation = document.createElement("p");
-          explanation.lang = "pt-BR";
-          explanation.textContent = point.explanation;
-          item.append(title, explanation);
-          list.append(item);
-        });
-        grammar.append(list);
+      grammar.className = "incremental-grammar chunk-grammar";
+      const sharedGrammar = incrementalGrammarEntry(entry, stepIndex);
+      if (sharedGrammar) {
+        renderGrammarAnalysis(grammar, sharedGrammar.analysis, sharedGrammar, null);
       } else {
+        const grammarHeading = document.createElement("h3");
+        grammarHeading.textContent = "Principais pontos gramaticais";
         const empty = document.createElement("p");
         empty.className = "incremental-status";
         empty.textContent = "Nenhum ponto gramatical essencial nesta etapa.";
-        grammar.append(empty);
+        grammar.append(grammarHeading, empty);
       }
 
+      if (notice) {
+        const message = document.createElement("p");
+        message.className = "incremental-error";
+        message.textContent = notice;
+        incrementalPanel.append(message);
+      }
       incrementalPanel.append(heading, progress, navigation, japanese, interpretation, grammar);
       updateFuriganaState();
     }
@@ -3915,18 +4016,27 @@ ${supportReading}`;
       return true;
     }
 
-    async function revealIncrementalAnalysis(sentenceIndex, generationConfirmed = false) {
+    async function revealIncrementalAnalysis(
+      sentenceIndex,
+      generationConfirmed = false,
+      force = false
+    ) {
       if (sentenceIndex !== activeIndex || sentenceStudyTab !== "incremental") return;
-      if (showStoredIncrementalAnalysis(sentenceIndex)) return;
       const sentenceText = sentences[sentenceIndex].text;
       const requestKey = incrementalAnalysisKey(sentenceIndex, sentenceText);
+      const previousEntry = incrementalAnalyses.get(requestKey);
+      if (!force && showStoredIncrementalAnalysis(sentenceIndex)) return;
       if (incrementalRequests.has(requestKey)) return;
-      if (!generationConfirmed && !await confirmIncrementalGeneration(sentenceText)) {
-        showIncrementalPlaceholder("A leitura incremental desta frase ainda não foi gerada.");
+      if (!generationConfirmed && !await confirmIncrementalGeneration(sentenceText, force)) {
+        if (previousEntry) renderIncrementalAnalysis(previousEntry);
+        else showIncrementalPlaceholder("A leitura incremental desta frase ainda não foi gerada.");
         return;
       }
       if (!openAiApiKey) {
-        openApiKeyDialog(() => void revealIncrementalAnalysis(sentenceIndex, true));
+        openApiKeyDialog(
+          () => void revealIncrementalAnalysis(sentenceIndex, true, force),
+          () => previousEntry && renderIncrementalAnalysis(previousEntry)
+        );
         return;
       }
 
@@ -3940,15 +4050,18 @@ ${supportReading}`;
         const entry = await generateIncrementalAnalysis(sentenceIndex);
         incrementalAnalyses.set(requestKey, entry);
         saveIncrementalAnalyses();
+        syncIncrementalGrammarAnalyses(entry);
         if (sentenceIndex === activeIndex && sentenceStudyTab === "incremental") {
+          renderCard(sentenceIndex);
           renderIncrementalAnalysis(entry);
         }
       } catch (error) {
         if (sentenceIndex === activeIndex && sentenceStudyTab === "incremental") {
-          showIncrementalPlaceholder(
-            error instanceof Error ? error.message : "Não foi possível gerar a leitura incremental.",
-            true
-          );
+          const message = error instanceof Error
+            ? error.message
+            : "Não foi possível gerar a leitura incremental.";
+          if (previousEntry) renderIncrementalAnalysis(previousEntry, message);
+          else showIncrementalPlaceholder(message, true);
         }
       } finally {
         incrementalRequests.delete(requestKey);
@@ -3962,13 +4075,18 @@ ${supportReading}`;
     }
 
     function setSentenceStudyTab(tab, persist = true, generate = false) {
-      sentenceStudyTab = tab === "incremental" ? "incremental" : "chunks";
+      sentenceStudyTab = ["chunks", "incremental", "translation"].includes(tab)
+        ? tab
+        : "chunks";
       chunksTab.setAttribute("aria-selected", String(sentenceStudyTab === "chunks"));
       chunksTab.tabIndex = sentenceStudyTab === "chunks" ? 0 : -1;
       incrementalTab.setAttribute("aria-selected", String(sentenceStudyTab === "incremental"));
       incrementalTab.tabIndex = sentenceStudyTab === "incremental" ? 0 : -1;
+      translationTab.setAttribute("aria-selected", String(sentenceStudyTab === "translation"));
+      translationTab.tabIndex = sentenceStudyTab === "translation" ? 0 : -1;
       chunksPanel.hidden = sentenceStudyTab !== "chunks";
       incrementalPanel.hidden = sentenceStudyTab !== "incremental";
+      translationPanel.hidden = sentenceStudyTab !== "translation";
       if (persist) {
         try {
           localStorage.setItem(sentenceStudyTabStorageKey, sentenceStudyTab);
@@ -3979,17 +4097,29 @@ ${supportReading}`;
       if (sentenceStudyTab === "incremental") {
         stopSentenceAudio();
         stopBrowserSpeech();
+        if (!furiganaVisible) {
+          furiganaVisible = true;
+          updateFuriganaState();
+        }
         renderIncrementalForActiveSentence(generate);
+      } else if (sentenceStudyTab === "translation") {
+        stopSentenceAudio();
+        stopBrowserSpeech();
       }
     }
 
     chunksTab.addEventListener("click", () => setSentenceStudyTab("chunks"));
     incrementalTab.addEventListener("click", () => setSentenceStudyTab("incremental", true, true));
-    [chunksTab, incrementalTab].forEach((tabButton) => {
+    translationTab.addEventListener("click", () => setSentenceStudyTab("translation"));
+    const sentenceStudyTabs = [chunksTab, incrementalTab, translationTab];
+    sentenceStudyTabs.forEach((tabButton, index) => {
       tabButton.addEventListener("keydown", (event) => {
         if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
         event.preventDefault();
-        const target = tabButton === chunksTab ? incrementalTab : chunksTab;
+        const offset = event.key === "ArrowRight" ? 1 : -1;
+        const target = sentenceStudyTabs[
+          (index + offset + sentenceStudyTabs.length) % sentenceStudyTabs.length
+        ];
         target.focus();
         target.click();
       });
@@ -5369,7 +5499,7 @@ ${supportReading}`;
     glossExport.addEventListener("click", () => {
       captureReadingPosition();
       const payload = {
-        schema_version: 7,
+        schema_version: 8,
         source_file: bookData?.source_file || null,
         exported_at: new Date().toISOString(),
         reader_state: {
@@ -5402,7 +5532,7 @@ ${supportReading}`;
       if (!file) return;
       try {
         const payload = JSON.parse(await file.text());
-        if (![1, 2, 3, 4, 5, 6, 7].includes(payload?.schema_version) || !Array.isArray(payload.glosses)) {
+        if (![1, 2, 3, 4, 5, 6, 7, 8].includes(payload?.schema_version) || !Array.isArray(payload.glosses)) {
           throw new Error("Formato incompatível");
         }
         const imported = payload.glosses.map((entry) => {
@@ -5411,7 +5541,7 @@ ${supportReading}`;
           return normalized;
         });
         let importedGrammarAnalyses = null;
-        if ([4, 5, 6, 7].includes(payload.schema_version)) {
+        if ([4, 5, 6, 7, 8].includes(payload.schema_version)) {
           if (!Array.isArray(payload.grammar_analyses)) throw new Error("Análises gramaticais inválidas");
           const normalizedAnalyses = payload.grammar_analyses.map((entry) => {
             const normalized = normalizeGrammarAnalysis(entry);
@@ -5424,7 +5554,7 @@ ${supportReading}`;
           ]));
         }
         let importedVocabularyAnalyses = null;
-        if ([6, 7].includes(payload.schema_version)) {
+        if ([6, 7, 8].includes(payload.schema_version)) {
           if (!Array.isArray(payload.vocabulary_analyses)) throw new Error("Análises de vocabulário inválidas");
           const normalizedVocabulary = payload.vocabulary_analyses.map((entry) => {
             const normalized = normalizeVocabularyAnalysis(entry);
@@ -5437,28 +5567,31 @@ ${supportReading}`;
           ]));
         }
         let importedIncrementalAnalyses = null;
-        if (payload.schema_version === 7) {
+        if ([7, 8].includes(payload.schema_version)) {
           if (!Array.isArray(payload.incremental_analyses)) throw new Error("Leituras incrementais inválidas");
-          const normalizedIncremental = payload.incremental_analyses.map((entry) => {
-            const normalized = normalizeIncrementalAnalysis(entry);
-            if (!normalized) throw new Error("Leitura incremental inválida");
-            return normalized;
-          });
+          const normalizedIncremental = payload.incremental_analyses
+            .map(normalizeIncrementalAnalysis)
+            .filter(Boolean);
+          if (payload.schema_version === 8
+            && normalizedIncremental.length !== payload.incremental_analyses.length) {
+            throw new Error("Leitura incremental inválida");
+          }
           importedIncrementalAnalyses = new Map(normalizedIncremental.map((entry) => [
             incrementalAnalysisKey(entry.sentence_index, entry.sentence_text),
             entry
           ]));
         }
         let importedReaderState = null;
-        if ([2, 3, 4, 5, 6, 7].includes(payload.schema_version)) {
+        if ([2, 3, 4, 5, 6, 7, 8].includes(payload.schema_version)) {
           const state = payload.reader_state;
           const storedSentenceChapterPositions = state?.sentence_chapter_positions;
           if (payload.source_file !== bookData?.source_file
             || !state || typeof state !== "object"
             || !["sentence", "continuous", "vertical"].includes(state.reading_mode)
             || !Number.isInteger(state.active_sentence_index)
-            || (payload.schema_version === 7
-              && !["chunks", "incremental"].includes(state.sentence_study_tab))
+            || ([7, 8].includes(payload.schema_version)
+              && !["chunks", "incremental", ...(payload.schema_version === 8 ? ["translation"] : [])]
+                .includes(state.sentence_study_tab))
             || (storedSentenceChapterPositions !== undefined
               && !validSentenceChapterPositions(storedSentenceChapterPositions))
             || !Number.isInteger(state.font_level)
@@ -5477,7 +5610,7 @@ ${supportReading}`;
               storedSentenceChapterPositions,
               importedActiveIndex
             ),
-            sentenceStudyTab: payload.schema_version === 7
+            sentenceStudyTab: [7, 8].includes(payload.schema_version)
               ? state.sentence_study_tab
               : sentenceStudyTab,
             readingMode: state.reading_mode,
