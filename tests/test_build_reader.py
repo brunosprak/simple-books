@@ -47,6 +47,13 @@ class BuildReaderTests(unittest.TestCase):
         self.assertNotIn('>−1¶</button>', first)
         self.assertNotIn('>＋1¶</button>', first)
         self.assertIn('id="chapter-select"', first)
+        self.assertIn('id="editable-book-panel"', first)
+        self.assertIn('id="editable-chapter-form"', first)
+        self.assertIn('id="editable-paragraph-generate"', first)
+        self.assertIn('simple-ja-books:editable-book:v1:', first)
+        self.assertIn('function generateEditableParagraph', first)
+        self.assertIn('function renderEditableBookManager', first)
+        self.assertIn('A API dividirá o parágrafo em frases e chunks', first)
         self.assertIn('id="furigana-toggle"', first)
         self.assertIn('id="gloss-export"', first)
         self.assertIn('id="gloss-import"', first)
@@ -115,7 +122,7 @@ class BuildReaderTests(unittest.TestCase):
         self.assertNotIn('id="vocabulary-tab"', first)
         self.assertNotIn('id="sentence-vocabulary"', first)
         self.assertIn('id="vocabulary-confirm-dialog"', first)
-        self.assertIn('simple-ja-books:vocabulary-analyses:v2:', first)
+        self.assertIn('simple-ja-books:vocabulary-analyses:v3:', first)
         self.assertIn('function vocabularyPrompt', first)
         self.assertIn('function generateVocabularyAnalysis', first)
         self.assertIn('somente do chunk-alvo', first)
@@ -126,7 +133,9 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('strict: true', first)
         self.assertIn('dictionary_form: { type: "string" }', first)
         self.assertIn('reading: { type: "string" }', first)
-        self.assertIn('pitch_accent: { type: "string" }', first)
+        self.assertIn('jlpt_level: { type: "string", enum: vocabularyJlptLevels }', first)
+        self.assertIn('JLPT: ${item.jlpt_level}', first)
+        self.assertNotIn('pitch_accent', first)
         self.assertIn('part_of_speech: { type: "string", enum: vocabularyPartsOfSpeech }', first)
         self.assertIn('meaning: { type: "string" }', first)
         self.assertIn('checked_entries: []', first)
@@ -139,6 +148,11 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('confirmVocabularyGeneration(chunkSurface)', first)
         self.assertIn('vocabulary_analyses: [...vocabularyAnalyses.values()]', first)
         self.assertIn('vocabulario-selecionado.json', first)
+        vocabulary_export_block = first[
+            first.index('vocabularyExport.addEventListener("click"'):
+            first.index('function glossKey')
+        ]
+        self.assertIn('schema_version: 2', vocabulary_export_block)
         self.assertIn('id="incremental-confirm-dialog"', first)
         self.assertIn('simple-ja-books:incremental-analyses:v2:', first)
         self.assertIn('simple-ja-books:sentence-study-tab:v1:', first)
@@ -330,7 +344,7 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('reasons: [...reasons]', first)
         self.assertIn("Exportar dados de leitura em JSON", first)
         self.assertIn("Importar dados de leitura em JSON", first)
-        self.assertIn("schema_version: 8", first)
+        self.assertIn("schema_version: 9", first)
         self.assertIn("reader_state:", first)
         self.assertIn("grammar_analyses: [...grammarAnalyses.values()]", first)
         self.assertIn("active_sentence_index: activeIndex", first)
@@ -339,11 +353,11 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn("storedSentenceChapterPositions !== undefined", first)
         self.assertIn("positions: readingPositions", first)
         self.assertIn("dados-de-leitura.json", first)
-        self.assertIn("[1, 2, 3, 4, 5, 6, 7, 8].includes(payload?.schema_version)", first)
-        self.assertIn("[2, 3, 4, 5, 6, 7, 8].includes(payload.schema_version)", first)
-        self.assertIn("[4, 5, 6, 7, 8].includes(payload.schema_version)", first)
-        self.assertIn("[6, 7, 8].includes(payload.schema_version)", first)
-        self.assertIn("payload.schema_version === 8", first)
+        self.assertIn("[1, 2, 3, 4, 5, 6, 7, 8, 9].includes(payload?.schema_version)", first)
+        self.assertIn("[2, 3, 4, 5, 6, 7, 8, 9].includes(payload.schema_version)", first)
+        self.assertIn("[4, 5, 6, 7, 8, 9].includes(payload.schema_version)", first)
+        self.assertIn("[6, 7, 8, 9].includes(payload.schema_version)", first)
+        self.assertIn("payload.schema_version === 9", first)
         self.assertIn("saveGrammarAnalyses()", first)
         export_block = first[
             first.index('glossExport.addEventListener("click"'):
@@ -612,6 +626,26 @@ class BuildReaderTests(unittest.TestCase):
         with self.assertRaisesRegex(build_reader.BuildError, "punctuation only"):
             build_reader.validate_data(invalid)
 
+    def test_editable_book_may_start_without_chapters_or_paragraphs(self) -> None:
+        editable = json.loads(
+            (ROOT / "texts" / "final-fantasy-resonance-ja.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertTrue(
+            build_reader.validate_data(copy.deepcopy(editable))["page"]["editable"]
+        )
+
+        editable["chapters"] = [{"title": "Capítulo 1", "paragraphs": []}]
+        validated = build_reader.validate_data(editable)
+        self.assertEqual(validated["chapters"][0]["paragraphs"], [])
+
+    def test_noneditable_book_requires_content(self) -> None:
+        data = copy.deepcopy(self.data)
+        data["chapters"] = []
+        with self.assertRaisesRegex(build_reader.BuildError, "editable book"):
+            build_reader.validate_data(data)
+
     def test_backslashes_in_json_are_not_interpreted_by_regex(self) -> None:
         data = copy.deepcopy(self.data)
         self.first_sentence(data)["pt"] = r"C:\temp\1"
@@ -664,7 +698,7 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('request.mode === "navigate"', worker)
         self.assertIn('self.registration.scope', worker)
         self.assertIn('const PWA_CACHE_PREFIX', worker)
-        self.assertIn('const PWA_CACHE_NAME = `${PWA_CACHE_PREFIX}v4`', worker)
+        self.assertIn('const PWA_CACHE_NAME = `${PWA_CACHE_PREFIX}v5`', worker)
         self.assertIn('const PWA_SHELL_URLS', worker)
         self.assertIn('cache.addAll(PWA_SHELL_URLS)', worker)
         self.assertIn('name.startsWith(PWA_CACHE_PREFIX)', worker)
@@ -692,7 +726,7 @@ class BuildReaderTests(unittest.TestCase):
         ]
         self.assertIn(("icons/icon-192.png?v=2", "192x192", "any"), icon_declarations)
         self.assertIn(("icons/icon-maskable-512.png?v=2", "512x512", "maskable"), icon_declarations)
-        self.assertEqual(len(manifest["shortcuts"]), 2)
+        self.assertEqual(len(manifest["shortcuts"]), 3)
 
         library = (ROOT / "site" / "index.html").read_text(encoding="utf-8")
         self.assertIn('<link rel="manifest" href="manifest.webmanifest?v=2">', library)
@@ -702,6 +736,8 @@ class BuildReaderTests(unittest.TestCase):
         self.assertIn('navigator.serviceWorker.register("offline-sw.js", { updateViaCache: "none" })', library)
         self.assertIn('id="install-pwa"', library)
         self.assertIn('src="icons/icon-192.png?v=2"', library)
+        self.assertIn('href="final-fantasy-resonance/"', library)
+        self.assertIn('Final Fantasy Resonance', library)
 
         worker = (ROOT / "site" / "offline-sw.js").read_text(encoding="utf-8")
         for shell_url in (
@@ -711,6 +747,8 @@ class BuildReaderTests(unittest.TestCase):
             '"./books/princess-of-mars-ja.json"',
             '"./mary-beard-spqr/"',
             '"./books/mary-beard-spqr-ja.json"',
+            '"./final-fantasy-resonance/"',
+            '"./books/final-fantasy-resonance-ja.json"',
         ):
             self.assertIn(shell_url, worker)
 

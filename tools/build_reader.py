@@ -62,6 +62,9 @@ def validate_data(data: Any) -> dict[str, Any]:
     for key in ("eyebrow", "study_hint"):
         if not isinstance(page.get(key), str):
             raise BuildError(f"page.{key} must be a string")
+    editable = page.get("editable", False)
+    if not isinstance(editable, bool):
+        raise BuildError("page.editable must be a boolean")
 
     levels = page.get("font_levels_percent")
     if (
@@ -106,15 +109,20 @@ def validate_data(data: Any) -> dict[str, Any]:
             )
 
     chapters = data.get("chapters")
-    if not isinstance(chapters, list) or not chapters:
-        raise BuildError("chapters must be a non-empty array")
+    if not isinstance(chapters, list) or (not editable and not chapters):
+        raise BuildError(
+            "chapters must be an array and may be empty only for an editable book"
+        )
     for chapter_index, chapter in enumerate(chapters, start=1):
         if not isinstance(chapter, dict):
             raise BuildError(f"chapters[{chapter_index}] must be an object")
         require_string(chapter, "title", f"chapters[{chapter_index}]")
         paragraphs = chapter.get("paragraphs")
-        if not isinstance(paragraphs, list) or not paragraphs:
-            raise BuildError(f"chapters[{chapter_index}].paragraphs must be non-empty")
+        if not isinstance(paragraphs, list) or (not editable and not paragraphs):
+            raise BuildError(
+                f"chapters[{chapter_index}].paragraphs must be an array and may be "
+                "empty only for an editable book"
+            )
 
         for paragraph_index, paragraph in enumerate(paragraphs, start=1):
             if not isinstance(paragraph, list) or not paragraph:

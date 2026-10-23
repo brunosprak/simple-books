@@ -15,6 +15,15 @@ This document defines the user-visible behavior and compatibility requirements o
 - `site/<book-slug>/audio/` contains generated MP3 files and their manifest when audio is enabled.
 - A translation-only change may update the public JSON without changing the generated HTML bytes.
 
+## Editable pseudobook
+
+- The library includes `Final Fantasy Resonance`, an initially empty pseudobook whose canonical JSON sets `page.editable` to `true`. Unlike ordinary books, an editable book may begin with no chapters and its chapters may temporarily contain no paragraphs.
+- Its construction panel always remains available. The reader can add a locally named chapter without an API request, then choose a chapter and submit one Japanese paragraph at a time.
+- Adding a paragraph explicitly calls the OpenAI Responses API and may incur charges. It uses a strict Structured Outputs schema to divide the original paragraph into complete Japanese sentences and minimal chunks and to add each chunk's reading and concise Portuguese gloss plus each sentence's natural Portuguese translation.
+- The browser accepts the generated paragraph only when every sentence is nonempty, every chunk is valid, no chunk consists only of punctuation, the ordered chunk surfaces reproduce their sentence exactly, and the ordered sentences reproduce the submitted paragraph exactly. A failed request or validation does not partially alter the book.
+- Chapters and generated paragraphs are stored in `localStorage`, scoped to this pseudobook. They are personal browser data: they are not written back to the static public JSON and do not travel to another browser unless a future dedicated export is provided.
+- The pseudobook has no sentence audio and hides offline-book download controls. As soon as it contains a generated paragraph, it exposes the same reading modes, chunks, incremental reading, translation, study marking, import/export, and API-assisted analyses as a normal book.
+
 ## Reading modes
 
 The mode selector appears in the normal document flow and exposes three modes.
@@ -49,7 +58,7 @@ The mode selector appears in the normal document flow and exposes three modes.
 - Progress-bar segments can jump directly to any step. Moving between steps updates Japanese, interpretation and grammar together without changing word order or revealing later segments.
 - Entering the incremental tab enables furigana so kanji readings are immediately visible. Furigana and font-size controls remain shared with `Chunks`, and clicking or activating the incremental Japanese text toggles furigana normally afterward.
 - Grammar points generated for an incremental step are the same saved analysis used by its corresponding chunk in `Chunks`. Their checkboxes and checked state are shared across both views, and the grammar total counts each selected point only once. Regenerating requires confirmation, replaces the saved incremental analysis only after a successful response, and refreshes the shared chunk grammar; a failure leaves the previous saved analysis available.
-- The generated analysis and the zero-based current step persist per sentence and per book in browser storage and in version 8 reader backups.
+- The generated analysis and the zero-based current step persist per sentence and per book in browser storage and in version 9 reader backups.
 
 ### Corrido
 
@@ -125,10 +134,10 @@ Switching modes restores the last position used in the destination mode. Switchi
 
 - `★ Chunk` is the manual, no-API shortcut formerly labelled `★ Palavra`. It marks the original chunk together with its existing Portuguese gloss and remains independent from generated vocabulary.
 - Every chunk has a separate `Vocabulário` action. Its first activation asks for confirmation and then sends the target chunk plus the complete sentence as context to the OpenAI Responses API. The result includes lexical material only from that chunk, ignores particles and other function words, and includes only nouns, dictionary-form verbs, dictionary-form い and な adjectives, adverbs, and idiomatic expressions. Before generation the button shows `📖＋`; afterward its own icon becomes `📖✓ N`, where `N` is the number of checked vocabulary entries, including zero. A saved result opens immediately without another request or confirmation.
-- Every generated entry has its common modern dictionary spelling. If the source writes in kana a word normally written with common kanji, the generated form restores that kanji; kana remains when it is the normal or predominant modern spelling. When the dictionary form contains kanji, its hiragana reading appears directly above it as furigana and is also retained as a separate data field. The entry additionally has Tokyo pitch accent marked with `/` for a rise and `\` for a fall, a part of speech, and a concise Portuguese meaning.
+- Every generated entry has its common modern dictionary spelling. If the source writes in kana a word normally written with common kanji, the generated form restores that kanji; kana remains when it is the normal or predominant modern spelling. When the dictionary form contains kanji, its hiragana reading appears directly above it as furigana and is also retained as a separate data field. The entry additionally has a best-effort JLPT estimate (`N5`, `N4`, `N3`, `N2`, `N1`, or `Acima de N1`), a part of speech, and a concise Portuguese meaning. Pitch accent is neither requested nor stored.
 - The sentence context is used only to identify and disambiguate the lexeme. The Portuguese meaning represents the word's central, general meaning across contexts rather than narrowing it to a specialized, technical, figurative, or incidental use in the current sentence. It should preferably contain one word and never more than two.
 - The response uses a strict Structured Outputs JSON schema and is validated again in the browser before being stored. Entries have independent checkboxes, and generated chunk analyses and checked entries persist per book in browser storage.
-- `↓ Vocabulário` downloads `vocabulario-selecionado.json`, containing only the unique checked entries from all generated lists and only their five vocabulary fields, inside a versioned vocabulary-export envelope.
+- `↓ Vocabulário` downloads `vocabulario-selecionado.json`, containing only the unique checked entries from all generated lists and only their five vocabulary fields, inside a version 2 vocabulary-export envelope. In version 2, `jlpt_level` replaces the former pitch-accent field.
 
 ## On-demand grammar analyses
 
@@ -144,9 +153,9 @@ Switching modes restores the last position used in the destination mode. Switchi
 
 The reader downloads its backup as `dados-de-leitura.json`.
 
-### Backup schema version 8
+### Backup schema version 9
 
-Version 8 contains:
+Version 9 contains:
 
 - `source_file`, identifying the book;
 - export timestamp;
@@ -162,12 +171,12 @@ Version 8 contains:
 - furigana visibility;
 - the independent positions for `Frases`, `Corrido`, and `Vertical`.
 
-Version 8 reader state and all three analysis collections may be applied only when `source_file` matches the currently open book. Importing a version 8 backup replaces grammar, vocabulary, and incremental analyses for that book. The API key is deliberately excluded. The complete payload is validated before any gloss, analysis, or reader state is changed, so a failed import is atomic.
+Version 9 reader state and all three analysis collections may be applied only when `source_file` matches the currently open book. Importing a version 9 backup replaces grammar, vocabulary, and incremental analyses for that book. The API key is deliberately excluded. The complete payload is validated before any gloss, analysis, or reader state is changed, so a failed import is atomic.
 Grammar analyses exported before topic marking existed remain valid: a missing `checked_topics` field is normalized to an empty list, so every imported topic begins unchecked.
 
 ### Legacy compatibility
 
-The importer continues to accept schema versions 1 through 7. Version 1 updates glosses without replacing reader positions or preferences; versions 2 and 3 retain their reader state. Versions 4 and 5 replace grammar analyses. Version 5 sentence-level vocabulary lists are deliberately not imported into the new per-chunk format, so existing per-chunk vocabulary remains unchanged. Version 6 replaces grammar and per-chunk vocabulary analyses but leaves incremental analyses and the selected sentence-content tab unchanged. Version 7 incremental analyses whose old model-selected segmentation does not exactly match the canonical chunks are discarded during import; its other valid data is preserved. Earlier versions likewise leave unsupported newer analysis collections unchanged. Backups made before per-chapter sentence positions existed remain valid: their single active sentence is retained and other chapters begin at their first sentence. In any legacy version, every gloss without a `reasons` field is migrated to `reasons: ["vocabulary"]`.
+The importer continues to accept schema versions 1 through 8. Version 1 updates glosses without replacing reader positions or preferences; versions 2 and 3 retain their reader state. Versions 4 and 5 replace grammar analyses. Version 5 sentence-level vocabulary lists are deliberately not imported into the new per-chunk format, so existing per-chunk vocabulary remains unchanged. Version 6 replaces grammar and per-chunk vocabulary analyses but leaves incremental analyses and the selected sentence-content tab unchanged. Version 7 incremental analyses whose old model-selected segmentation does not exactly match the canonical chunks are discarded during import; its other valid data is preserved. Version 8 vocabulary entries still carrying pitch accent have no trustworthy JLPT replacement and are discarded during import, while its other valid data is preserved. Earlier versions likewise leave unsupported newer analysis collections unchanged. Backups made before per-chapter sentence positions existed remain valid: their single active sentence is retained and other chapters begin at their first sentence. In any legacy version, every gloss without a `reasons` field is migrated to `reasons: ["vocabulary"]`.
 
 ## Offline reading
 

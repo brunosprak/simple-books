@@ -1,6 +1,6 @@
 const OFFLINE_CACHE_PREFIX = "simple-ja-books-offline:v1:";
 const PWA_CACHE_PREFIX = "simple-ja-books-pwa:";
-const PWA_CACHE_NAME = `${PWA_CACHE_PREFIX}v4`;
+const PWA_CACHE_NAME = `${PWA_CACHE_PREFIX}v5`;
 const PWA_SHELL_URLS = [
   "./",
   "./index.html",
@@ -8,6 +8,8 @@ const PWA_SHELL_URLS = [
   "./books/princess-of-mars-ja.json",
   "./mary-beard-spqr/",
   "./books/mary-beard-spqr-ja.json",
+  "./final-fantasy-resonance/",
+  "./books/final-fantasy-resonance-ja.json",
   "./manifest.webmanifest?v=2",
   "./icons/icon-32.png?v=2",
   "./icons/icon-180.png?v=2",
